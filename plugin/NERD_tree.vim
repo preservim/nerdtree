@@ -3,9 +3,6 @@
 " Maintainer:   Martin Grenfell <martin_grenfell at msn dot com>
 let s:NERD_tree_version = '2.6.2.5'
 
-"A help file is installed when the script is run for the first time. 
-"Go :help NERD_tree.txt to see it.
-
 " SECTION: Script init stuff {{{1
 "============================================================
 if exists("loaded_nerd_tree")
