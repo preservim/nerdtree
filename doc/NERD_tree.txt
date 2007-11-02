@@ -1,4 +1,4 @@
-*NERD_tree.txt*   A tree explorer plugin that owns your momma!        v2.6.2.5
+*NERD_tree.txt*   A tree explorer plugin that owns your momma!      v2.6.2.5
 
 
 
@@ -963,6 +963,3 @@ in 2.6.0
 Thanks to  Niels Aan de Brugh for the suggestion that the script now split the
 window if you try to open a file in a window containing a modified buffer when
 the &hidden option is set.
-
-
- vim:tw=78:ts=8:ft=help:norl:
