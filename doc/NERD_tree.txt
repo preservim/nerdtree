@@ -1,0 +1,968 @@
+*NERD_tree.txt*   A tree explorer plugin that owns your momma!        v2.6.2.5
+
+
+
+
+
+    ________  ________   _   ____________  ____     __________  ____________~
+   /_  __/ / / / ____/  / | / / ____/ __ \/ __ \   /_  __/ __ \/ ____/ ____/~
+    / / / /_/ / __/    /  |/ / __/ / /_/ / / / /    / / / /_/ / __/ / __/   ~
+   / / / __  / /___   / /|  / /___/ _, _/ /_/ /    / / / _, _/ /___/ /___   ~
+  /_/ /_/ /_/_____/  /_/ |_/_____/_/ |_/_____/    /_/ /_/ |_/_____/_____/   ~
+
+
+                              Reference Manual~
+
+
+
+
+==============================================================================
+CONTENTS                                                   *NERDTree-contents* 
+
+    1.Intro...................................|NERDTree|
+    2.Functionality provided..................|NERDTreeFunctionality|
+        2.1 Commands..........................|NERDTreeCommands|
+        2.2 NERD tree mappings................|NERDTreeMappings|
+        2.3 The filesystem menu...............|NERDTreeFilesysMenu|
+    3.Options.................................|NERDTreeOptions|
+        3.1 Option summary....................|NERDTreeOptionSummary|
+        3.2 Option details....................|NERDTreeOptionDetails|
+    4.Public functions........................|NERDTreePublicFunctions|
+    5.TODO list...............................|NERDTreeTodo|
+    6.The Author..............................|NERDTreeAuthor|
+    7.Changelog...............................|NERDTreeChangelog|
+    8.Credits.................................|NERDTreeCredits|
+
+==============================================================================
+1. Intro                                                            *NERDTree*
+
+What is this "NERD tree"??
+
+The NERD tree allows you to explore your filesystem and to open files and
+directories. It presents the filesystem to you in the form of a tree which you
+manipulate with the keyboard and/or mouse. It also allows you to perform
+simple filesystem operations so you can alter the tree dynamically.
+
+The following features and functionality are provided by the NERD tree:
+    * Files and directories are displayed in a hierarchical tree structure
+    * Different highlighting is provided for the following types of nodes:
+        * files
+        * directories
+        * sym-links
+        * windows .lnk files
+        * read-only files
+    * Many (customisable) mappings are provided to manipulate the tree:
+        * Mappings to open/close/explore directory nodes
+        * Mappings to open files in new/existing windows/tabs     
+        * Mappings to change the current root of the tree 
+        * Mappings to navigate around the tree 
+        * ...
+    * Most NERD tree navigation can also be done with the mouse  
+    * Dynamic customisation of tree content
+        * custom file filters to prevent e.g. vim backup files being displayed
+        * optional displaying of hidden files (. files)
+        * files can be "turned off" so that only directories are displayed
+    * A textual filesystem menu is provided which allows you to
+      create/delete/rename file and directory nodes
+    * The position and size of the NERD tree window can be customised 
+    * The order in which the nodes in the tree are listed can be customised.
+    * A model of your filesystem is created/maintained as you explore it. This
+      has several advantages:
+        * All filesystem information is cached and is only re-read on demand
+        * If you revisit a part of the tree that you left earlier in your
+          session, the directory nodes will be opened/closed as you left them       
+    * The script remembers the cursor position and window position in the NERD
+      tree so you can toggle it off (or just close the tree window) and then
+      reopen it (with NERDTreeToggle) the NERD tree window will appear EXACTLY
+      as you left it
+    * You can have a separate NERD tree for each tab   
+
+==============================================================================
+2. Functionality provided                              *NERDTreeFunctionality* 
+
+------------------------------------------------------------------------------
+2.1. Commands                                               *NERDTreeCommands*
+
+:NERDTree [start-directory]                                 *:NERDTree*
+                Opens a fresh NERD tree in [start-directory] or the current
+                directory if [start-directory] isn't specified.
+                For example: >
+                    :NERDTree /home/marty/vim7/src
+<               will open a NERD tree in /home/marty/vim7/src.
+
+:NERDTreeToggle [start-directory]                           *:NERDTreeToggle*
+                If a NERD tree already exists for this tab, it is reopened and
+                rendered again.  If no NERD tree exists for this tab then this
+                command acts the same as the |:NERDTree| command.
+
+------------------------------------------------------------------------------
+2.2. NERD tree Mappings                                     *NERDTreeMappings*
+
+Default  Description~                                             help-tag~
+Key~
+
+o.......Open selected file, or expand selected dir...............|NERDTree-o|
+go......Open selected file, but leave cursor in the NERDTree.....|NERDTree-go|
+t.......Open selected node in a new tab..........................|NERDTree-t|
+T.......Same as 't' but keep the focus on the current tab........|NERDTree-T|
+<tab>...Open selected file in a split window.....................|NERDTree-tab|
+g<tab>..Same as <tab>, but leave the cursor on the NERDTree......|NERDTree-gtab|
+!.......Execute the current file.................................|NERDTree-!|
+O.......Recursively open the selected directory..................|NERDTree-O|
+x.......Close the current nodes parent...........................|NERDTree-x|
+X.......Recursively close all children of the current node.......|NERDTree-X|
+e.......Open a netrw for the current dir.........................|NERDTree-e|
+
+double-click.......same as the |NERDTree-o| map.
+middle-click.......same as |NERDTree-tab| for files, same as 
+                   |NERDTree-e| for dirs.
+
+P.......Jump to the root node....................................|NERDTree-P|
+p.......Jump to current nodes parent.............................|NERDTree-p|
+K.......Jump up inside directories at the current tree depth.....|NERDTree-K|
+J.......Jump down inside directories at the current tree depth...|NERDTree-J|
+<C-j>...Jump down to the next sibling of the current directory...|NERDTree-c-j|
+<C-k>...Jump up to the previous sibling of the current directory.|NERDTree-c-k|
+
+C.......Change the tree root to the selected dir.................|NERDTree-C|
+u.......Move the tree root up one directory......................|NERDTree-u|
+U.......Same as 'u' except the old root node is left open........|NERDTree-U|
+r.......Recursively refresh the current directory................|NERDTree-r|
+R.......Recursively refresh the current root.....................|NERDTree-R|
+m.......Display the filesystem menu..............................|NERDTree-m|
+cd......Change the CWD to the dir of the selected node...........|NERDTree-cd|
+
+H.......Toggle whether hidden files displayed....................|NERDTree-H|
+f.......Toggle whether the file filters are used.................|NERDTree-f|
+F.......Toggle whether files are displayed.......................|NERDTree-F|
+
+q.......Close the NERDTree window................................|NERDTree-q|
+?.......Toggle the display of the quick help.....................|NERDTree-?|
+
+------------------------------------------------------------------------------
+                                                                  *NERDTree-o*
+Default key: o
+Map option: NERDTreeMapActivateNode
+Applies to: files and directories.
+
+If a file node is selected, it is opened in the previous window. If a
+directory is selected it is opened or closed depending on its current state.
+
+------------------------------------------------------------------------------
+                                                                 *NERDTree-go*
+Default key: go
+Map option: None
+Applies to: files.
+
+If a file node is selected, it is opened in the previous window, but the
+cursor does not move.
+
+The key combo for this mapping is always "g" + NERDTreeMapActivateNode (see
+|NERDTree-o|).
+
+------------------------------------------------------------------------------
+                                                                  *NERDTree-t*
+Default key: t
+Map option: NERDTreeMapOpenInTab
+Applies to: files and directories.
+
+Opens the selected file in a new tab. If a directory is selected, a netrw is
+opened in a new tab.
+
+------------------------------------------------------------------------------
+                                                                  *NERDTree-T*
+Default key: T
+Map option: NERDTreeMapOpenInTabSilent
+Applies to: files and directories.
+
+The same as |NERDTree-t| except that the focus is kept in the current tab.
+
+------------------------------------------------------------------------------
+                                                                *NERDTree-tab*
+Default key: <tab>
+Map option: NERDTreeMapOpenSplit
+Applies to: files.
+
+Opens the selected file in a new split window and puts the cursor in the new
+window.
+
+------------------------------------------------------------------------------
+                                                               *NERDTree-gtab*
+Default key: g<tab>
+Map option: None
+Applies to: files.
+
+The same as |NERDTree-tab| except that the cursor is not moved.
+
+The key combo for this mapping is always "g" + NERDTreeMapOpenSplit (see
+|NERDTree-tab|).
+
+------------------------------------------------------------------------------
+                                                                  *NERDTree-!*
+Default key: !
+Map option: NERDTreeMapExecute
+Applies to: files.
+
+Executes the selected file, prompting for arguments first.
+
+------------------------------------------------------------------------------
+                                                                  *NERDTree-O*
+Default key: O
+Map option: NERDTreeMapOpenRecursively
+Applies to: directories.
+
+Recursively opens the selelected directory.
+
+All files and directories are cached, but if a directory would not be
+displayed due to file filters (see |NERDTreeIgnore| |NERDTree-f|) or the
+hidden file filter (see |NERDTreeShowHidden|) then it is not opened. This is
+handy, especially if you have .svn directories.
+
+
+------------------------------------------------------------------------------
+                                                                  *NERDTree-x*
+Default key: x
+Map option: NERDTreeMapCloseDir
+Applies to: files and directories.
+
+Closes the parent of the selected node.
+
+------------------------------------------------------------------------------
+                                                                  *NERDTree-X*
+Default key: X
+Map option: NERDTreeMapCloseChildren
+Applies to: directories.
+
+Recursively closes all children of the selected directory.
+
+Tip: To quickly "reset" the tree, use |NERDTree-P| with this mapping.
+
+------------------------------------------------------------------------------
+                                                                  *NERDTree-e*
+Default key: e
+Map option: NERDTreeMapOpenExpl
+Applies to: files and directories.
+
+Opens a netrw on the selected directory, or the selected file's directory.
+
+------------------------------------------------------------------------------
+                                                                  *NERDTree-P*
+Default key: P
+Map option: NERDTreeMapJumpRoot
+Applies to: no restrictions.
+
+Jump to the tree root.
+
+------------------------------------------------------------------------------
+                                                                  *NERDTree-p*
+Default key: p
+Map option: NERDTreeMapJumpParent
+Applies to: files and directories.
+
+Jump to the parent node of the selected node.
+
+------------------------------------------------------------------------------
+                                                                  *NERDTree-K*
+Default key: K
+Map option: NERDTreeMapJumpFirstChild
+Applies to: files and directories.
+
+Jump to the first child of the current nodes parent.
+
+If the cursor is already on the first node then do the following:
+    * loop back thru the siblings of the current nodes parent until we find an
+      open dir with children
+    * go to the first child of that node
+
+------------------------------------------------------------------------------
+                                                                  *NERDTree-J*
+Default key: J
+Map option: NERDTreeMapJumpLastChild
+Applies to: files and directories.
+
+Jump to the last child of the current nodes parent.
+
+If the cursor is already on the last node then do the following:
+    * loop forward thru the siblings of the current nodes parent until we find
+      an open dir with children
+    * go to the last child of that node
+
+------------------------------------------------------------------------------
+                                                                *NERDTree-c-j*
+Default key: <C-j>
+Map option: NERDTreeMapJumpNextSibling
+Applies to: files and directories.
+
+If a dir node is selected, jump to the next sibling of that node.
+If a file node is selected, jump to the next sibling of that nodes parent.
+
+------------------------------------------------------------------------------
+                                                                *NERDTree-c-k*
+Default key: <C-k>
+Map option: NERDTreeMapJumpPrevSibling
+Applies to: files and directories.
+
+If a dir node is selected, jump to the previous sibling of that node.
+If a file node is selected, jump to the previous sibling of that nodes parent.
+
+------------------------------------------------------------------------------
+                                                                  *NERDTree-C*
+Default key: C
+Map option: NERDTreeMapChdir
+Applies to: directories.
+
+Made the selected directory node the new tree root.
+
+------------------------------------------------------------------------------
+                                                                  *NERDTree-u*
+Default key: u
+Map option: NERDTreeMapUpdir
+Applies to: no restrictions.
+
+Move the tree root up a dir (like doing a "cd ..").
+
+------------------------------------------------------------------------------
+                                                                  *NERDTree-U*
+Default key: U
+Map option: NERDTreeMapUpdirKeepOpen
+Applies to: no restrictions.
+
+Like |NERDTree-u| except that the old tree root is kept open.
+
+------------------------------------------------------------------------------
+                                                                  *NERDTree-r*
+Default key: r
+Map option: NERDTreeMapRefresh
+Applies to: files and directories.
+
+If a dir is selected, recursively refresh that dir, i.e. scan the filesystem
+for changes and represent them in the tree.
+
+If a file node is selected then the above is done on it's parent.
+
+------------------------------------------------------------------------------
+                                                                  *NERDTree-R*
+Default key: R
+Map option: NERDTreeMapRefreshRoot
+Applies to: no restrictions.
+
+Recursively refresh the tree root.
+
+------------------------------------------------------------------------------
+                                                                  *NERDTree-m*
+Default key: m
+Map option: NERDTreeMapFilesystemMenu
+Applies to: files and directories.
+
+Display the filesystem menu. See |NERDTreeFilesysMenu| for details.
+
+------------------------------------------------------------------------------
+                                                                  *NERDTree-H*
+Default key: H
+Map option: NERDTreeMapToggleHidden
+Applies to: no restrictions.
+
+Toggles whether hidden files are displayed. Hidden files are any
+file/directory that starts with a "."
+
+------------------------------------------------------------------------------
+                                                                  *NERDTree-f*
+Default key: f
+Map option: NERDTreeMapToggleFilters
+Applies to: no restrictions.
+
+Toggles whether file filters are used. See |NERDTreeIgnore| for details.
+
+------------------------------------------------------------------------------
+                                                                  *NERDTree-F*
+Default key: F
+Map option: NERDTreeMapToggleFiles
+Applies to: no restrictions.
+
+Toggles whether file nodes are displayed.
+
+------------------------------------------------------------------------------
+                                                                  *NERDTree-q*
+Default key: q
+Map option: NERDTreeMapQuit
+Applies to: no restrictions.
+
+Closes the NERDtree window.
+
+------------------------------------------------------------------------------
+                                                                  *NERDTree-?*
+Default key: ?
+Map option: NERDTreeMapHelp
+Applies to: no restrictions.
+
+Toggles whether the quickhelp is displayed.
+
+------------------------------------------------------------------------------
+2.3. The filesystem menu                                 *NERDTreeFilesysMenu*
+
+The purpose of the filesystem menu is to allow you to perform basic filesystem
+operations quickly from the NERD tree rather than the console.  
+
+The filesystem menu can be accessed with 'm' mapping and has three supported
+operations: >
+    1. Adding nodes.
+    2. Renaming nodes.
+    3. Deleting nodes.
+<
+1. Adding nodes:
+To add a node move the cursor onto (or anywhere inside) the directory you wish
+to create the new node inside. Select the 'add node' option from the
+filesystem menu and type a filename. If the filename you type ends with a '/'
+character then a directory will be created. Once the operation is completed,
+the cursor is placed on the new node.
+
+2. Renaming nodes:
+To rename a node, put the cursor on it and select the 'rename' option from the
+filesystem menu.  Enter the new name for the node and it will be renamed. If
+the old file is open in a buffer, you will be asked if you wish to delete that
+buffer. Once the operation is complete the cursor will be placed on the
+renamed node.
+
+3. Deleting nodes:
+To delete a node put the cursor on it and select the 'delete' option from the
+filesystem menu. After confirmation the node will be deleted. If a file is
+deleted but still exists as a buffer you will be given the option to delete
+that buffer. 
+
+==============================================================================
+3. Customisation                                             *NERDTreeOptions*
+
+
+------------------------------------------------------------------------------
+3.1. Customisation summary                             *NERDTreeOptionSummary*
+
+The script provides the following options that can customise the behaviour the
+NERD tree. These options should be set in your vimrc.
+
+|loaded_nerd_tree|              Turns off the script.
+
+|NERDChristmasTree|             Tells the NERD tree to make itself colourful
+                                and pretty.
+
+|NERDTreeAutoCenter|            Controls whether the NERD tree window centers
+                                when the cursor moves within a specified
+                                distance to the top/bottom of the window.
+|NERDTreeAutoCenterThreshold|   Controls the sensitivity of autocentering.
+
+|NERDTreeCaseSensitiveSort|     Tells the NERD tree whether to be case
+                                sensitive or not when sorting nodes.
+
+|NERDTreeChDirMode|             Tells the NERD tree if/when it should change
+                                vim's current working directory.
+
+|NERDTreeHighlightCursorline|   Tell the NERD tree whether to highlight the
+                                current cursor line.
+
+|NERDTreeIgnore|                Tells the NERD tree which files to ignore.
+
+|NERDTreeMouseMode|             Tells the NERD tree how to handle mouse
+                                clicks.
+
+|NERDTreeShowFiles|             Tells the NERD tree whether to display files
+                                in the tree on startup.
+
+|NERDTreeShowHidden|            Tells the NERD tree whether to display hidden
+                                files on startup.
+
+|NERDTreeSortOrder|             Tell the NERD tree how to sort the nodes in
+                                the tree.
+
+|NERDTreeSplitVertical|         Tells the script whether the NERD tree should
+                                be created by splitting the window vertically
+                                or horizontally.
+
+|NERDTreeWinPos|                Tells the script where to put the NERD tree
+                                window.
+                               
+
+|NERDTreeWinSize|               Sets the window size when the NERD tree is
+                                opened.
+
+------------------------------------------------------------------------------
+3.2. Customisation details                             *NERDTreeOptionDetails*
+
+To enable any of the below options you should put the given line in your 
+~/.vimrc
+
+                                                            *loaded_nerd_tree*              
+If this plugin is making you feel homicidal, it may be a good idea to turn it
+off with this line in your vimrc: >
+    let loaded_nerd_tree=1
+<
+------------------------------------------------------------------------------
+                                                           *NERDChristmasTree*
+Values: 0 or 1.
+Default: 1.
+
+If this option is set to 1 then some extra syntax highlighting elements are
+added to the nerd tree to make it more colourful.
+
+Set it to 0 for a more vanilla looking tree.
+
+------------------------------------------------------------------------------
+                                                          *NERDTreeAutoCenter*                
+Values: 0 or 1.
+Default: 1
+
+If set to 1, the NERD tree window will center around the cursor if it moves to
+within |NERDTreeAutoCenterThreshold| lines of the top/bottom of the window.
+
+This is ONLY done in response to tree navigation mappings, 
+i.e. |NERDTree-J| |NERDTree-K| |NERDTree-C-J| |NERDTree-c-K| |NERDTree-p|
+|NERDTree-P|
+
+The centering is done with a |zz| operation.
+
+------------------------------------------------------------------------------
+                                                 *NERDTreeAutoCenterThreshold*                
+Values: Any natural number.
+Default: 3
+
+This option controls the "sensitivity" of the NERD tree auto centering. See
+|NERDTreeAutoCenter| for details.
+
+------------------------------------------------------------------------------
+                                                   *NERDTreeCaseSensitiveSort*        
+Values: 0 or 1.
+Default: 0.
+
+By default the NERD tree does not sort nodes case sensitively, i.e. nodes
+could appear like this: >
+    bar.c
+    Baz.c
+    blarg.c
+    boner.c
+    Foo.c
+<
+But, if you set this option to 1 then the case of the nodes will be taken into
+account. The above nodes would then be sorted like this: >
+    Baz.c
+    Foo.c
+    bar.c
+    blarg.c
+    boner.c
+<
+------------------------------------------------------------------------------
+                                                           *NERDTreeChDirMode*                
+
+Values: 0, 1 or 2.
+Default: 1.
+
+Use this option to tell the script when (if at all) to change the current
+working directory (CWD) for vim.
+
+If it is set to 0 then the CWD is never changed by the NERD tree.
+
+If set to 1 then the CWD is changed when the NERD tree is first loaded to the
+directory it is initialized in. For example, if you start the NERD tree with >
+    :NERDTree /home/marty/foobar
+<
+then the CWD will be changed to /home/marty/foobar and will not be changed
+again unless you init another NERD tree with a similar command.
+
+If the option is set to 2 then it behaves the same as if set to 1 except that
+the CWD is changed whenever the tree root is changed. For example, if the CWD
+is /home/marty/foobar and you make the node for /home/marty/foobar/baz the new
+root then the CWD will become /home/marty/foobar/baz.
+
+Note to windows users: it is highly recommended that you have this option set
+to either 1 or 2 or else the script wont function properly if you attempt to
+open a NERD tree on a different drive to the one vim is currently in.
+
+Authors note: at work i have this option set to 1 because i have a giant ctags
+file in the root dir of my project. This way i can initialise the NERD tree
+with the root dir of my project and always have ctags available to me --- no
+matter where i go with the NERD tree.
+
+------------------------------------------------------------------------------
+                                                 *NERDTreeHighlightCursorline*
+Values: 0 or 1.
+Default: 1.
+
+If set to 1, the current cursor line in the NERD tree buffer will be
+highlighted. This is done using the |cursorline| option.
+
+------------------------------------------------------------------------------
+                                                              *NERDTreeIgnore*                
+Values: a list of regular expressions.
+Default: ['\~$'].
+
+This option is used to specify which files the NERD tree should ignore.  It
+must be a list of regular expressions. When the NERD tree is rendered, any
+files/dirs that match any of the regex's in NERDTreeIgnore wont be displayed. 
+
+For example if you put the following line in your vimrc: >
+    let NERDTreeIgnore=['\.vim$', '\~$']
+<
+then all files ending in .vim or ~ will be ignored. 
+
+Note: to tell the NERD tree not to ignore any files you must use the following
+line: >
+    let NERDTreeIgnore=[]
+<
+
+The file filters can be turned on and off dynamically with the |NERDTree-f|
+mapping.
+
+------------------------------------------------------------------------------
+                                                           *NERDTreeMouseMode*                
+Values: 1, 2 or 3.
+Default: 1.
+
+If set to 1 then a double click on a node is required to open it. 
+If set to 2 then a single click will open directory nodes, while a double
+click will still be required for file nodes.
+If set to 3 then a single click will open any node.
+
+Note: a double click anywhere on a line that a tree node is on will
+activate it, but all single-click activations must be done on name of the node
+itself. For example, if you have the following node: >
+    | | |-application.rb
+<
+then (to single click activate it) you must click somewhere in
+'application.rb'.
+
+------------------------------------------------------------------------------
+                                                           *NERDTreeShowFiles*            
+Values: 0 or 1.
+Default: 1.
+
+If this option is set to 1 then files are displayed in the NERD tree. If it is
+set to 0 then only directories are displayed.
+
+This option can be toggled dynamically with the |NERDTree-F| mapping and is
+useful for drastically shrinking the tree when you are navigating to a
+different part of the tree.
+
+------------------------------------------------------------------------------
+                                                          *NERDTreeShowHidden*            
+Values: 0 or 1.
+Default: 0.
+
+This option tells vim whether to display hidden files by default. This option
+can be dynamically toggled with the |NERDTree-H| mapping.
+Use one of the follow lines to set this option: >
+    let NERDTreeShowHidden=0
+    let NERDTreeShowHidden=1
+<
+                                                       
+------------------------------------------------------------------------------
+                                                           *NERDTreeSortOrder*
+Values: a list of regular expressions.
+Default: ['\/$', '*', '\.swp$',  '\.bak$', '\~$']
+
+This option is set to a list of regular expressions which are used to
+specify the order of nodes under their parent.
+
+For example, if the option is set to: >
+    ['\.vim$', '\.c$', '\.h$', '*', 'foobar']
+<
+then all .vim files will be placed at the top, followed by all .c files then
+all .h files. All files containing the string 'foobar' will be placed at the
+end.  The star is a special flag: it tells the script that every node that
+doesnt match any of the other regexps should be placed here.
+
+If no star is present in NERDTreeSortOrder then one is automatically appended
+to the array.
+
+The regex '\/$' should be used to match directory nodes.
+
+After this sorting is done, the files in each group are sorted alphabetically.
+
+Other examples: >
+    (1) ['*', '\/$']
+    (2) []
+    (3) ['\/$', '\.rb$', '\.php$', '*', '\.swp$',  '\.bak$', '\~$']
+<
+1. Directories will appear last, everything else will appear above.
+2. Every will simply appear in alphabetical order.
+3. Dirs will appear first, then ruby and php. Swap files, bak files and vim
+   backup files will appear last with everything else preceding them.
+
+------------------------------------------------------------------------------
+                                                       *NERDTreeSplitVertical*
+Values: 0 or 1.
+Default: 1.
+
+This option, along with |NERDTreeWinPos|, is used to determine where the NERD
+tree window appears. 
+
+If it is set to 1 then the NERD tree window will appear on either the left or
+right side of the screen (depending on the |NERDTreeWinPos| option).
+
+If it set to 0 then the NERD tree window will appear at the top of the screen.
+
+------------------------------------------------------------------------------
+                                                              *NERDTreeWinPos*
+Values: 0 or 1.
+Default: 1.
+
+This option works in conjunction with the |NERDTreeSplitVertical| option to
+determine where NERD tree window is placed on the screen.
+
+If the option is set to 1 then the NERD tree will appear on the left or top of
+the screen (depending on the value of |NERDTreeSplitVertical|). If set to 0,
+the window will appear on the right or bottom of the screen. 
+
+This option is makes it possible to use two different explorer type
+plugins simultaneously. For example, you could have the taglist plugin on the
+left of the window and the NERD tree on the right.
+
+------------------------------------------------------------------------------
+                                                             *NERDTreeWinSize*
+Values: a positive integer.
+Default: 31.
+
+This option is used to change the size of the NERD tree when it is loaded.
+
+==============================================================================
+                                                     *NERDTreePublicFunctions*
+5. Public functions      ~
+
+The script provides 2 public functions for your hacking pleasure. Their
+signatures are: >
+    function! NERDTreeGetCurrentNode()
+    function! NERDTreeGetCurrentPath()
+<
+The first returns the node object that the cursor is currently on, while the
+second returns the corresponding path object.
+
+This is probably a good time to mention that the script implements prototype
+style OO. To see the functions that each class provides you can read look at
+the code.
+
+Use the node objects to manipulate the structure of the tree. Use the path
+objects to access the data the tree represents and to make changes to the
+filesystem.
+
+==============================================================================
+5. TODO list                                                    *NERDTreeTodo*
+
+Window manager integration?
+
+==============================================================================
+6. The Author                                                 *NERDTreeAuthor*
+
+The author of the NERD tree is a terrible terrible monster called Martyzilla
+who gobbles up small children with milk and sugar for breakfast. He has an odd
+love/hate relationship with computers (but monsters hate everything by nature
+you know...) which can be awkward for him since he is a pro computer nerd for
+a living.
+
+He can be reached at martin_grenfell at msn.com. He would love to hear from
+you, so feel free to send him suggestions and/or comments about this plugin.
+Don't be shy --- the worst he can do is slaughter you and stuff you in the
+fridge for later ;)
+
+==============================================================================
+7. Changelog                                               *NERDTreeChangelog* 
+
+2.6.2.4
+    - Now when you have the tree on teh right and you open it with multiple
+      windows stacked, it will take up the full height of the vim window. 
+    - Now line numbers always turned off in the tree by default
+    - Copying of nodes (via the filesystem menu) has been implemented for
+      *nix/macosx
+
+2.6.2
+    - Now when you try to open a file node into a window that is modified, the
+      window is not split if the &hidden option is set. Thanks to  Niels Aan
+      de Brugh for this suggestion.
+
+2.6.1
+    - Fixed a major bug with the <tab> mapping. Thanks to Zhang Weiwu for
+      emailing me.
+
+2.6.0
+    - Extended the behaviour of <c-j/k>. Now if the cursor is on a file node
+      and you use <c-j/k> the cursor will jump to its PARENTS next/previous
+      sibling. Go :help NERDTree-c-j and :help NERDTree-c-k for info.
+    - Extended the behaviour of the J/K mappings. Now if the cursor is on the
+      last child of a node and you push J/K it will jump down to the last child
+      of the next/prev of its parents siblings that is open and has children.
+      Go :help NERDTree-J and :help NERDTree-K for info.
+    - The goal of these changes is to make tree navigation faster.
+    - Reorganised the help page a bit.
+    - Removed the E mapping.
+    - bugfixes
+
+2.5.0
+    - Added an option to enforce case sensitivity when sorting tree nodes.
+      Read :help NERDTreeCaseSensitiveSort for details.  (thanks to Michael
+      Madsen for emailing me about this). Case sensitivity defaults to off.
+    - Made the script echo a "please wait" style message when opening large
+      directories. Thanks to AOYAMA Shotaro for this suggestion.
+    - Added 2 public functions that can be used to retrieve the treenode and
+      path that the cursor is on. Read :help NERDTreePublicFunctions for
+      details (thanks again to AOYAMA Shotaro for the idea :).
+    - added 2 new mappings for file nodes: "g<tab>" and "go". These are the
+      same as the "<tab>" and "o" maps except that the cursor stays in the
+      NERDTree. Note: these maps are slaved to the o and <tab> mappings, so if
+      eg you remap "<tab>" to "i" then the "g<tab>" map will also be changed
+      to "gi".
+    - Renamed many of the help tags to be simpler.
+    - Simplified the ascii "graphics" for the filesystem menu
+    - Fixed bugs.
+    - Probably created bugs.
+    - Refactoring.
+
+2.4.0
+    - Added the P mapping to jump to the tree root.
+    - Added window centering functionality that can be triggered when doing
+      using any of the tree nav mappings. Essentially, if the cursor comes
+      within a certain distance of the top/bottom of the window then a zz is
+      done in the window. Two related options were added: NERDTreeAutoCenter
+      to turn this functionality on/off, and NERDTreeAutoCenterThreshold to
+      control how close the cursor has to be to the window edge to trigger the
+      centering.
+
+2.3.0
+    - Tree navigation changes:
+      - Added J and K mappings to jump to last/first child of the current dir.
+        Options to customise these mappings have also been added.
+      - Remapped the jump to next/prev sibling commands to be <C-j> and <C-k> by
+        default.
+      These changes should hopefully make tree navigation mappings easier to
+      remember and use as the j and k keys are simply reused 3 times (twice
+      with modifier keys).
+
+    - Made it so that, when any of the tree filters are toggled, the cursor
+      stays with the selected node (or goes to its parent/grandparent/... if
+      that node is no longer visible)
+    - Fixed an error in the doc for the mouse mode option.
+    - Made the quickhelp correctly display the current single/double click
+      mappings for opening nodes as specified by the NERDTreeMouseMode option.
+    - Fixed a bug where the script was spazzing after prompting you to delete
+      a modified buffer when using the filesystem menu.  
+    - Refactoring
+2.2.3
+    - Refactored the :echo output from the script.
+    - Fixed some minor typos in the doc.
+    - Made some minor changes to the output of the 'Tree filtering mappings'
+      part of the quickhelp 
+
+2.2.2
+    - More bugfixes... doh.
+
+2.2.1
+    - Bug fix that was causing an exception when closing the nerd tree. Thanks
+      to Tim carey-smith and Yu Jun for pointing this out.
+
+2.2.0
+    - Now 'cursorline' is set in the NERD tree buffer by default. See :help
+      NERDTreeHighlightCursorline for how to disable it.
+
+2.1.2
+    - Stopped the script from clobbering the 1,2,3 .. 9 registers.
+    - Made it "silent!"ly delete buffers when renaming/deleting file nodes.
+    - Minor correction to the doc
+    - Fixed a bug when refreshing that was occurring when the node you
+      refreshed had been deleted externally.
+    - Fixed a bug that was occurring when you open a file that is already open
+      and modified.
+
+2.1.1
+    - Added a bit more info about the buffers you are prompted to delete when
+      renaming/deleting nodes from the filesystem menu that are already loaded
+      into buffers.
+    - Refactoring and bugfixes
+
+2.1.0
+    - Finally removed the blank line that always appears at the top of the
+      NERDTree buffer
+    - Added NERDTreeMouseMode option. If set to 1, then a double click is
+      required to activate all nodes, if set to 2 then a single click will
+      activate directory nodes, if set to 3 then a single click will activate
+      all nodes.
+    - Now if you delete a file node and have it open in a buffer you are given
+      the option to delete that buffer as well. Similarly if you rename a file
+      you are given the option to delete any buffers containing the old file
+      (if any exist)
+    - When you rename or create a node, the cursor is now put on the new node,
+      this makes it easy immediately edit  the new file.
+    - Fixed a bug with the ! mapping that was occurring on windows with paths
+      containing spaces.
+    - Made all the mappings customisable. See |NERD_tree-mappings| for
+      details. A side effect is that a lot of the "double mappings" have
+      disappeared. E.g 'o' is now the key that is used to activate a node,
+      <CR> is no longer mapped to the same.
+    - Made the script echo warnings in some places rather than standard echos
+    - Insane amounts of refactoring all over the place.
+
+2.0.0
+    - Added two new NERDChristmasTree decorations. First person to spot them
+      and email me gets a free copy of the NERDTree.
+    - Made it so that when you jump around the tree (with the p, s and S
+      mappings) it is counted as a jump by vim. This means if you, eg, push
+      'p' one too many times then you can go `` or ctrl-o.
+    - Added a new option called NERDTreeSortOrder which takes an array of
+      regexs and is used to determine the order that the treenodes are listed
+      in. Go :help NERDTreeSortOrder for details.
+    - Removed the NERDTreeSortDirs option because it is consumed by
+      NERDTreeSortOrder
+    - Added the 'i' mapping which is the same as <tab> but requires less
+      effort to reach.
+    - Added the ! mapping which is  used to execute file in the tree (after it
+      prompts you for arguments etc)
+
+
+==============================================================================
+8. Credits                                                   *NERDTreeCredits*
+
+Thanks to Tim Carey-Smith for testing/using the NERD tree from the first
+pre-beta version, for his many suggestions and for his constant stream of bug
+complaints.
+
+Thanks to Vigil for trying it out before the first release :) and suggesting
+that mappings to open files in new tabs should be implemented.
+
+Thanks to Nick Brettell for testing, fixing my spelling and suggesting i put a
+    .. (up a directory)
+line in the gui.
+
+Thanks to Thomas Scott Urban - the author of the vtreeexplorer plugin - whose
+gui code i borrowed from.
+
+Thanks to Terrance Cohen for pointing out a bug where the script was changing
+vims CWD all over the show.
+
+Thanks to Yegappan Lakshmanan (author of Taglist and other orgasmically
+wonderful plugins) for telling me how to fix a bug that was causing vim to go
+into visual mode everytime you double clicked a node :)
+
+Thanks to Jason Mills for sending me a fix that allows windows paths to use
+forward slashes as well as backward.
+
+Thanks to Michael Geddes (frogonwheels on #vim at freenode) for giving me some
+tips about syntax highlighting when i was doing highlighting for the
+quickhelp.
+
+Thanks to Yu Jun for emailing me about a bug that was occurring when closing
+the tree.
+
+Thanks to Michael Madsen for emailing me about making case sensitivity
+optional when sorting nodes.
+
+Thanks to AOYAMA Shotaro for suggesting that i echo a "please wait" message
+when opening large directories. 
+
+Thanks to Michael Madsen for requesting the NERDTreeCaseSensitiveSort option.
+
+Thanks to AOYAMA Shotaro for suggesting that a "please wait" style message be
+echoed when opening large directories. Also, thanks for the suggestion of
+having public functions in the script to access the internal data :D
+
+Thanks to Zhang Weiwu for emailing me about a bug with the the <tab> mapping
+in 2.6.0
+
+Thanks to  Niels Aan de Brugh for the suggestion that the script now split the
+window if you try to open a file in a window containing a modified buffer when
+the &hidden option is set.
+
+
+ vim:tw=78:ts=8:ft=help:norl:
