@@ -1,4 +1,4 @@
-*NERD_tree.txt*   A tree explorer plugin that owns your momma!      v2.6.2.5
+*NERD_tree.txt*   A tree explorer plugin that owns your momma!
 
 
 
@@ -762,12 +762,15 @@ fridge for later ;)
 ==============================================================================
 7. Changelog                                               *NERDTreeChangelog* 
 
-2.6.2.4
-    - Now when you have the tree on teh right and you open it with multiple
-      windows stacked, it will take up the full height of the vim window. 
+2.6.3
+    - Bug fix: Now when you have the tree on the right and you open it with
+      multiple windows stacked, it will take up the full height of the vim
+      window. 
     - Now line numbers always turned off in the tree by default
     - Copying of nodes (via the filesystem menu) has been implemented for
       *nix/macosx
+    - took the help doc out of the script and repackaged the whole thing as a
+      zip
 
 2.6.2
     - Now when you try to open a file node into a window that is modified, the
