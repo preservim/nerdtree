@@ -767,8 +767,7 @@ fridge for later ;)
       multiple windows stacked, it will take up the full height of the vim
       window. 
     - Now line numbers always turned off in the tree by default
-    - Copying of nodes (via the filesystem menu) has been implemented for
-      *nix/macosx
+    - Implemented copying of nodes (via the filesystem menu) for *nix/macosx
     - took the help doc out of the script and repackaged the whole thing as a
       zip
 
