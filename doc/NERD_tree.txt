@@ -403,11 +403,12 @@ Toggles whether the quickhelp is displayed.
 The purpose of the filesystem menu is to allow you to perform basic filesystem
 operations quickly from the NERD tree rather than the console.  
 
-The filesystem menu can be accessed with 'm' mapping and has three supported
+The filesystem menu can be accessed with 'm' mapping and has four supported
 operations: >
     1. Adding nodes.
-    2. Renaming nodes.
+    2. Move nodes.
     3. Deleting nodes.
+    3. Copying nodes.
 <
 1. Adding nodes:
 To add a node move the cursor onto (or anywhere inside) the directory you wish
@@ -416,18 +417,25 @@ filesystem menu and type a filename. If the filename you type ends with a '/'
 character then a directory will be created. Once the operation is completed,
 the cursor is placed on the new node.
 
-2. Renaming nodes:
-To rename a node, put the cursor on it and select the 'rename' option from the
-filesystem menu.  Enter the new name for the node and it will be renamed. If
-the old file is open in a buffer, you will be asked if you wish to delete that
-buffer. Once the operation is complete the cursor will be placed on the
-renamed node.
+2. Move nodes:
+To move/rename a node, put the cursor on it and select the 'move' option from
+the filesystem menu.  Enter the new location for the node and it will be
+moved.  If the old file is open in a buffer, you will be asked if you wish to
+delete that buffer. Once the operation is complete the cursor will be placed
+on the renamed node.
 
 3. Deleting nodes:
 To delete a node put the cursor on it and select the 'delete' option from the
 filesystem menu. After confirmation the node will be deleted. If a file is
 deleted but still exists as a buffer you will be given the option to delete
 that buffer. 
+
+4. Copying nodes:
+To copy a node put the cursor on it and select the 'copy' option from the
+filesystem menu. Enter the new location and you're done. Note: copying is
+currently only supported for *nix operating systems. If someone knows a
+one line copying command for windows that doesnt require user confirmation
+then id be grateful if you'd email me.
 
 ==============================================================================
 3. Customisation                                             *NERDTreeOptions*
