@@ -2829,11 +2829,11 @@ function! s:ShowFileSystemMenu()
     let prompt = "NERDTree Filesystem Menu\n" .
        \ "==========================================================\n". 
        \ "Select the desired operation:                             \n" . 
-       \ " (1) - Add a childnode\n".
-       \ " (2) - Rename the current node\n".
-       \ " (3) - Delete the current node\n"
+       \ " (a)dd a childnode\n".
+       \ " (m)ove the current node\n".
+       \ " (d)elete the current node\n"
 	if s:oPath.CopyingSupported() 
-		let prompt = prompt . " (4) - Copy the current node\n\n"
+		let prompt = prompt . " (c)opy the current node\n\n"
 	else
 		let prompt = prompt . " \n"
 	endif
@@ -2842,13 +2842,13 @@ function! s:ShowFileSystemMenu()
 
     let choice = nr2char(getchar())
 
-    if choice == 1
+    if choice ==? "a"
         call s:InsertNewNode()
-    elseif choice == 2
+    elseif choice ==? "m"
         call s:RenameCurrent()
-    elseif choice == 3
+    elseif choice ==? "d"
         call s:DeleteNode()
-    elseif choice == 4 && s:oPath.CopyingSupported()
+    elseif choice ==? "c" && s:oPath.CopyingSupported()
         call s:CopyNode()
     endif
 endfunction
