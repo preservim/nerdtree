@@ -770,6 +770,11 @@ fridge for later ;)
 ==============================================================================
 7. Changelog                                               *NERDTreeChangelog* 
 
+2.7.1
+    - Changed the keys for the filesystem menu to be mnemonic rather than
+      arbitrary integers
+    - Documented the copying functionality in the filesystem menu
+
 2.7.0
     - Bug fix: Now when you have the tree on the right and you open it with
       multiple windows stacked, it will take up the full height of the vim
