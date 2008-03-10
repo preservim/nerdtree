@@ -784,6 +784,10 @@ fridge for later ;)
 ==============================================================================
 7. Changelog                                               *NERDTreeChangelog* 
 
+2.something
+    - added an option to enable/disable line numbers in the NERD tree window,
+      thanks to Olivier Yiptong for the email.
+
 2.7.1
     - Changed the keys for the filesystem menu to be mnemonic rather than
       arbitrary integers
@@ -992,3 +996,6 @@ in 2.6.0
 Thanks to  Niels Aan de Brugh for the suggestion that the script now split the
 window if you try to open a file in a window containing a modified buffer when
 the &hidden option is set.
+
+Thanks to Olivier Yiptong for prompting me to make line numbers in the
+NERD tree window optional.
