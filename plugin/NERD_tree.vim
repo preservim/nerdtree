@@ -43,8 +43,9 @@ endif
 call s:InitVariable("g:NERDTreeHighlightCursorline", 1)
 call s:InitVariable("g:NERDTreeMouseMode", 1)
 call s:InitVariable("g:NERDTreeNotificationThreshold", 100)
-call s:InitVariable("g:NERDTreeShowHidden", 0)
 call s:InitVariable("g:NERDTreeShowFiles", 1)
+call s:InitVariable("g:NERDTreeShowHidden", 0)
+call s:InitVariable("g:NERDTreeShowLineNumbers", 0)
 call s:InitVariable("g:NERDTreeSortDirs", 1)
 
 if !exists("g:NERDTreeSortOrder")
@@ -1442,7 +1443,12 @@ function! s:CreateTreeWin()
     setlocal foldcolumn=0
     setlocal nobuflisted
     setlocal nospell
-    setlocal nonu
+    if g:NERDTreeShowLineNumbers
+        setlocal nu
+    else
+        setlocal nonu
+    endif
+
     iabc <buffer>
 
     if g:NERDTreeHighlightCursorline
