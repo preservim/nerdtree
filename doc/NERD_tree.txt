@@ -784,7 +784,7 @@ fridge for later ;)
 ==============================================================================
 7. Changelog                                               *NERDTreeChangelog* 
 
-2.something
+2.8.0
     - added an option to enable/disable line numbers in the NERD tree window,
       thanks to Olivier Yiptong for the email.
 
