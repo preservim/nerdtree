@@ -1312,7 +1312,9 @@ function! s:InitNerdTree(dir)
     let dir = a:dir == '' ? expand('%:p:h') : a:dir
     let dir = resolve(dir)
 
-    if !isdirectory(dir)
+	let path = s:oPath.New(dir)
+
+    if !path.isDirectory
         call s:EchoWarning("Error reading: " . dir)
         return
     endif
@@ -1320,7 +1322,7 @@ function! s:InitNerdTree(dir)
     "if instructed to, then change the vim CWD to the dir the NERDTree is
     "inited in 
     if g:NERDTreeChDirMode != 0
-        exec "cd " . dir
+        exec "cd " . path.StrForOS(1)
     endif
 
     let t:treeShowHelp = 0
@@ -1333,7 +1335,6 @@ function! s:InitNerdTree(dir)
         unlet t:NERDTreeRoot
     endif
 
-	let path = s:oPath.New(dir)
     let t:NERDTreeRoot = s:oTreeDirNode.New(path)
     call t:NERDTreeRoot.Open()
 

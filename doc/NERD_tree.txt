@@ -999,3 +999,6 @@ the &hidden option is set.
 
 Thanks to Olivier Yiptong for prompting me to make line numbers in the
 NERD tree window optional.
+
+Thanks to Zhang Shuhan for a bug report when initializing the tree in a dir
+containing spaces.
