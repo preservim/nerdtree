@@ -110,7 +110,7 @@ call s:InitVariable("g:NERDTreeMapUpdir", "u")
 call s:InitVariable("g:NERDTreeMapUpdirKeepOpen", "U")
 
 "SECTION: Script level variable declaration{{{2
-let s:escape_chars =  " `|\"~'#"
+let s:escape_chars =  " \\`\|\"#%&,?()\*^<>"
 let s:NERDTreeWinName = '_NERD_tree_'
 
 "init all the nerd tree markup 
@@ -553,7 +553,7 @@ function! s:oTreeDirNode.InitChildren(silent) dict
 
     "get an array of all the files in the nodes dir 
     let dir = self.path
-    let filesStr = globpath(dir.StrForOS(0), '*') . "\n" . globpath(dir.StrForOS(0), '.*')
+    let filesStr = globpath(dir.StrForOS(1), '*') . "\n" . globpath(dir.StrForOS(1), '.*')
     let files = split(filesStr, "\n")
 
     if !a:silent && len(files) > g:NERDTreeNotificationThreshold
@@ -564,7 +564,7 @@ function! s:oTreeDirNode.InitChildren(silent) dict
     for i in files
 
         "filter out the .. and . directories 
-        if i !~ '\.\.$' && i !~ '\.$'
+        if i !~ '\.\..\?$' && i !~ '\..\?$'
 
             "put the next file in a new node and attach it 
             try
@@ -933,7 +933,7 @@ function! s:oPath.Delete() dict
             "if we are runnnig windows then put quotes around the pathstring 
             let cmd = g:NERDTreeRemoveDirCmd . self.StrForOS(1)
         else
-            let cmd = g:NERDTreeRemoveDirCmd . self.StrForOS(0)
+            let cmd = g:NERDTreeRemoveDirCmd . self.StrForOS(1)
         endif
         let success = system(cmd)
 
@@ -1129,7 +1129,7 @@ endfunction
 
 "FUNCTION: oPath.Refresh() {{{3 
 function! s:oPath.Refresh() dict
-    call self.ReadInfoFromDisk(self.Str(0))
+    call self.ReadInfoFromDisk(self.Str(1))
 endfunction
 
 "FUNCTION: oPath.Rename() {{{3 
@@ -1322,7 +1322,7 @@ function! s:InitNerdTree(dir)
     "if instructed to, then change the vim CWD to the dir the NERDTree is
     "inited in 
     if g:NERDTreeChDirMode != 0
-        exec "cd " . path.StrForOS(1)
+        exec 'cd ' . path.StrForOS(1)
     endif
 
     let t:treeShowHelp = 0
