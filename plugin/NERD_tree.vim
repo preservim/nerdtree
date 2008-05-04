@@ -2812,7 +2812,7 @@ function! s:RenameCurrent()
         "if the node is open in a buffer, ask the user if they want to
         "close that buffer 
         if bufnum != -1
-            let prompt = "|\n|Node renamed.\n|\n|The old file is open in buffer ". bufnum . (bufwinnr(bufnum) == -1 ? " (hidden)" : "") .". Delete this buffer? (yN)"
+            let prompt = "\nNode renamed.\n\nThe old file is open in buffer ". bufnum . (bufwinnr(bufnum) == -1 ? " (hidden)" : "") .". Delete this buffer? (yN)"
             call s:PromptToDelBuffer(bufnum, prompt)
         endif
 
