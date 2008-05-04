@@ -1131,7 +1131,7 @@ endfunction
 
 "FUNCTION: oPath.Refresh() {{{3 
 function! s:oPath.Refresh() dict
-    call self.ReadInfoFromDisk(self.Str(1))
+    call self.ReadInfoFromDisk(self.Str(0))
 endfunction
 
 "FUNCTION: oPath.Rename() {{{3 
