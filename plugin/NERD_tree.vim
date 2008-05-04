@@ -553,7 +553,7 @@ function! s:oTreeDirNode.InitChildren(silent) dict
 
     "get an array of all the files in the nodes dir 
     let dir = self.path
-    let filesStr = globpath(dir.StrForOS(1), '*') . "\n" . globpath(dir.StrForOS(1), '.*')
+    let filesStr = globpath(dir.StrForGlob(), '*') . "\n" . globpath(dir.StrForGlob(), '.*')
     let files = split(filesStr, "\n")
 
     if !a:silent && len(files) > g:NERDTreeNotificationThreshold
@@ -664,7 +664,7 @@ function! s:oTreeDirNode.Refresh() dict
 
     "go thru all the files/dirs under this node 
     let dir = self.path
-    let filesStr = globpath(dir.StrForOS(0), '*') . "\n" . globpath(dir.StrForOS(0), '.*')
+    let filesStr = globpath(dir.StrForGlob(), '*') . "\n" . globpath(dir.StrForGlob(), '.*')
     let files = split(filesStr, "\n")
     for i in files
         if i !~ '\.\.$' && i !~ '\.$'
@@ -1209,6 +1209,22 @@ function! s:oPath.StrForEditCmd() dict
         return self.Str(1)
     endif
 
+endfunction
+"FUNCTION: oPath.StrForGlob() {{{3
+function! s:oPath.StrForGlob() dict
+    let lead = s:os_slash
+
+    "if we are running windows then slap a drive letter on the front
+    if s:running_windows
+        let lead = strpart(getcwd(), 0, 2) . s:os_slash
+    endif
+
+    let toReturn = lead . join(self.pathSegments, s:os_slash)
+
+    if !s:running_windows
+        let toReturn = escape(toReturn, s:escape_chars)
+    endif
+    return toReturn
 endfunction
 "FUNCTION: oPath.StrForOS(esc) {{{3 
 "
