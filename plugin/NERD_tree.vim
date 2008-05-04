@@ -563,7 +563,9 @@ function! s:oTreeDirNode.InitChildren(silent) dict
     let invalidFilesFound = 0
     for i in files
 
-        "filter out the .. and . directories 
+        "filter out the .. and . directories
+        "Note: we must match .. AND ../ cos sometimes the globpath returns
+        "../ for path with strange chars (eg $)
         if i !~ '\.\..\?$' && i !~ '\..\?$'
 
             "put the next file in a new node and attach it 
