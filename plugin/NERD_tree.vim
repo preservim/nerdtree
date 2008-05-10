@@ -1078,18 +1078,6 @@ function! s:oPath.New(fullpath) dict
     return newPath
 endfunction
 
-"FUNCTION: oPath.NewMinimal() {{{3 
-function! s:oPath.NewMinimal(fullpath) dict
-    let newPath = copy(self)
-    let fullpath = s:oPath.WinToUnixPath(a:fullpath)
-
-    let newPath.pathSegments = split(fullpath, '/')
-    
-    let newPath.isDirectory = isdirectory(fullpath)
-
-    return newPath
-endfunction
-
 "FUNCTION: oPath.ReadInfoFromDisk(fullpath) {{{3 
 "
 "
@@ -1810,8 +1798,9 @@ function! s:GetPath(ln)
             endif
         endif
     endwhile
-    let curFile = dir . curFile
-    return s:oPath.NewMinimal(curFile)
+    let curFile = t:NERDTreeRoot.path.drive . dir . curFile
+    let toReturn = s:oPath.New(curFile)
+    return toReturn
 endfunction 
 
 "FUNCTION: s:GetSelectedDir() {{{2 
