@@ -63,7 +63,8 @@ The following features and functionality are provided by the NERD tree:
         * optional displaying of hidden files (. files)
         * files can be "turned off" so that only directories are displayed
     * A textual filesystem menu is provided which allows you to
-      create/delete/rename file and directory nodes
+      create/delete/rename file and directory nodes as well as copy (for
+      supported OSs)
     * The position and size of the NERD tree window can be customised 
     * The order in which the nodes in the tree are listed can be customised.
     * A model of your filesystem is created/maintained as you explore it. This
@@ -698,7 +699,7 @@ Other examples: >
     (3) ['\/$', '\.rb$', '\.php$', '*', '\.swp$',  '\.bak$', '\~$']
 <
 1. Directories will appear last, everything else will appear above.
-2. Every will simply appear in alphabetical order.
+2. Everything will simply appear in alphabetical order.
 3. Dirs will appear first, then ruby and php. Swap files, bak files and vim
    backup files will appear last with everything else preceding them.
 
