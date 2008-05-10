@@ -1188,6 +1188,19 @@ function! s:oPath.StrAbs() dict
     return resolve(self.Str(1))
 endfunction
 
+"FUNCTION: oPath.StrForCd() {{{3
+"
+" returns a string that can be used with :cd
+"
+"Return:
+"a string that can be used in the view to represent this path
+function! s:oPath.StrForCd() dict
+    if s:running_windows
+        return self.StrForOS(0)
+    else
+        return self.StrForOS(1)
+    endif
+endfunction
 "FUNCTION: oPath.StrDisplay() {{{3 
 "
 "Returns a string that specifies how the path should be represented as a
