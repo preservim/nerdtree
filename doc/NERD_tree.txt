@@ -581,10 +581,6 @@ the CWD is changed whenever the tree root is changed. For example, if the CWD
 is /home/marty/foobar and you make the node for /home/marty/foobar/baz the new
 root then the CWD will become /home/marty/foobar/baz.
 
-Note to windows users: it is highly recommended that you have this option set
-to either 1 or 2 or else the script wont function properly if you attempt to
-open a NERD tree on a different drive to the one vim is currently in.
-
 Authors note: at work i have this option set to 1 because i have a giant ctags
 file in the root dir of my project. This way i can initialise the NERD tree
 with the root dir of my project and always have ctags available to me --- no
