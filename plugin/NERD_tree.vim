@@ -319,7 +319,6 @@ function! s:oTreeFileNode.Rename(newName) dict
         call newParent.CreateChild(self.path, 1)
     endif
 endfunction
-
 "FUNCTION: oTreeFileNode.StrDisplay() {{{3 
 "
 "Returns a string that specifies how the node should be represented as a
@@ -984,8 +983,6 @@ function! s:oPath.GetParent() dict
     let path = '/'. join(self.pathSegments[0:-2], '/')
     return s:oPath.New(path)
 endfunction
-
-
 "FUNCTION: oPath.GetLastPathComponent(dirSlash) {{{3 
 "
 "Gets the last part of this path.   
@@ -2635,7 +2632,6 @@ function! s:InsertNewNode()
 
     try
         let newPath = s:oPath.Create(newNodeName)
-
         let parentNode = t:NERDTreeRoot.FindNode(newPath.GetPathTrunk())
 
         let newTreeNode = s:oTreeFileNode.New(newPath)
