@@ -890,7 +890,7 @@ function! s:oPath.Copy(dest) dict
     let cmd = g:NERDTreeCopyCmd . " " . self.StrForOS(0) . " " . dest
     let success = system(cmd)
     if success != 0
-        throw "NERDTree.Path Exception: Could not copy ''". self.StrForOS() ."'' to: '" . a:dest . "'"
+        throw "NERDTree.Path Exception: Could not copy ''". self.StrForOS(0) ."'' to: '" . a:dest . "'"
     endif
 endfunction
 
