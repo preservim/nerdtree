@@ -1063,15 +1063,13 @@ endfunction
 
 "FUNCTION: oPath.Equals() {{{3 
 "
-"Determines whether 2 path objecs are "equal".
+"Determines whether 2 path objects are "equal".
 "They are equal if the paths they represent are the same
 "
 "Args:
 "path: the other path obj to compare this with
 function! s:oPath.Equals(path) dict
-    let this = self.ChopTrailingSlash(self.Str(1))
-    let that = self.ChopTrailingSlash(a:path.Str(1))
-    return this == that
+    return self.Str(0) == a:path.Str(0)
 endfunction
 
 "FUNCTION: oPath.New() {{{3 
