@@ -773,9 +773,9 @@ let s:oPath = {}
 let oPath = s:oPath
 "FUNCTION: oPath.ChangeToDir() {{{3 
 function! s:oPath.ChangeToDir() dict
-    let dir = self.Str(1)
+    let dir = self.StrForCd()
     if self.isDirectory == 0
-        let dir = self.GetPathTrunk().Str(1)
+        let dir = self.GetPathTrunk().StrForCd()
     endif
 
     try
@@ -1363,7 +1363,7 @@ function! s:InitNerdTree(dir)
     "if instructed to, then change the vim CWD to the dir the NERDTree is
     "inited in 
     if g:NERDTreeChDirMode != 0
-        exec 'cd ' . path.StrForOS(1)
+        exec 'cd ' . path.StrForCd()
     endif
 
     let t:treeShowHelp = 0
