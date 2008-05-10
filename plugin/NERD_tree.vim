@@ -950,6 +950,17 @@ function! s:oPath.Delete() dict
     endif
 endfunction
 
+"FUNCTION: oPath.ExtractDriveLetter(fullpath) {{{3 
+"
+"If running windows, cache the drive letter for this path
+function! s:oPath.ExtractDriveLetter(fullpath) dict
+    if s:running_windows
+        let self.drive = substitute(a:fullpath, '\(^[a-zA-Z]:\).*', '\1', '')
+    else
+        let self.drive = ''
+    endif
+
+endfunction
 "FUNCTION: oPath.GetDir() {{{3 
 "
 "Returns this path if it is a directory, else this paths parent.
