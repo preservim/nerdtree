@@ -308,7 +308,8 @@ endfunction
 "FUNCTION: oTreeFileNode.Rename {{{3 
 "Calls the rename method for this nodes path obj 
 function! s:oTreeFileNode.Rename(newName) dict
-    call self.path.Rename(a:newName)
+    let newName = substitute(a:newName, '\(\\\|\/\)$', '', '')
+    call self.path.Rename(newName)
     call self.parent.RemoveChild(self)
 
     let parentPath = self.path.GetPathTrunk()
@@ -2842,8 +2843,6 @@ function! s:RenameCurrent()
         call s:Echo("Node Renaming Aborted.")
         return
     endif
-
-    let newNodePath = substitute(newNodePath, '\/$', '', '')
 
     try
         let bufnum = bufnr(curNode.path.Str(0))
