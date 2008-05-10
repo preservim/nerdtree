@@ -851,27 +851,24 @@ function! s:oPath.Create(fullpath) dict
         throw "NERDTree.Path.Exists Exception: Directory Exists: '" . a:fullpath . "'"
     endif
 
-    "get the unix version of the input path 
-    let fullpath = s:oPath.WinToUnixPath(a:fullpath)
-
     try 
 
         "if it ends with a slash, assume its a dir create it 
-        if fullpath =~ '\/$'
+        if a:fullpath =~ '\(\\\|\/\)$'
             "whack the trailing slash off the end if it exists 
-            let fullpath = substitute(fullpath, '\/$', '', '')
+            let fullpath = substitute(a:fullpath, '\(\\\|\/\)$', '', '')
 
             call mkdir(fullpath, 'p')
 
         "assume its a file and create 
         else
-            call writefile([], fullpath)
+            call writefile([], a:fullpath)
         endif
     catch /.*/
         throw "NERDTree.Path Exception: Could not create path: '" . a:fullpath . "'"
     endtry
 
-    return s:oPath.New(fullpath)
+    return s:oPath.New(a:fullpath)
 endfunction
 
 "FUNCTION: oPath.Copy(dest) {{{3 
@@ -944,7 +941,7 @@ function! s:oPath.Delete() dict
             throw "NERDTree.Path.Deletion Exception: Could not delete directory: '" . self.StrForOS(0) . "'"
         endif
     else
-        let success = delete(self.Str(0))
+        let success = delete(self.StrForOS(!s:running_windows))
         if success != 0
             throw "NERDTree.Path.Deletion Exception: Could not delete file: '" . self.Str(0) . "'"
         endif
@@ -1010,7 +1007,7 @@ endfunction
 "FUNCTION: oPath.GetPathTrunk() {{{3 
 "Gets the path without the last segment on the end.
 function! s:oPath.GetPathTrunk() dict
-    return s:oPath.New('/' . join(self.pathSegments[0:-2], '/'))
+    return s:oPath.New(self.StrTrunk())
 endfunction
 
 "FUNCTION: oPath.GetSortOrderIndex() {{{3 
@@ -1101,18 +1098,20 @@ endfunction
 "
 "Throws NERDTree.Path.InvalidArguments exception.
 function! s:oPath.ReadInfoFromDisk(fullpath) dict
+    call self.ExtractDriveLetter(a:fullpath)
+
     let fullpath = s:oPath.WinToUnixPath(a:fullpath)
 
     let self.pathSegments = split(fullpath, '/')
 
     let self.isReadOnly = 0
-    if isdirectory(fullpath)
+    if isdirectory(a:fullpath)
         let self.isDirectory = 1
-    elseif filereadable(fullpath)
+    elseif filereadable(a:fullpath)
         let self.isDirectory = 0
-        let self.isReadOnly = filewritable(fullpath) == 0
+        let self.isReadOnly = filewritable(a:fullpath) == 0
     else
-        throw "NERDTree.Path.InvalidArguments Exception: Invalid path = " . fullpath
+        throw "NERDTree.Path.InvalidArguments Exception: Invalid path = " . a:fullpath
     endif
 
     "grab the last part of the path (minus the trailing slash) 
@@ -1141,7 +1140,7 @@ endfunction
 
 "FUNCTION: oPath.Refresh() {{{3 
 function! s:oPath.Refresh() dict
-    call self.ReadInfoFromDisk(self.Str(0))
+    call self.ReadInfoFromDisk(self.StrForGlob())
 endfunction
 
 "FUNCTION: oPath.Rename() {{{3 
@@ -1152,11 +1151,11 @@ function! s:oPath.Rename(newPath) dict
         throw "NERDTree.Path.InvalidArguments exception. Invalid newPath for renaming = ". a:newPath
     endif
 
-    let success =  rename(self.Str(0), a:newPath)
+    let success =  rename(self.StrForOS(!s:running_windows), a:newPath)
     if success != 0
-        throw "NERDTree.Path.Rename Exception: Could not rename: '" . self.Str(0) . "'" . 'to:' . a:newPath
+        throw "NERDTree.Path.Rename Exception: Could not rename: '" . self.StrForOS(0) . "'" . 'to:' . a:newPath
     endif
-    let self.pathSegments = split(a:newPath, '/')
+    call self.ReadInfoFromDisk(a:newPath)
 endfunction
 
 "FUNCTION: oPath.Str(esc) {{{3 
@@ -1239,7 +1238,7 @@ function! s:oPath.StrForGlob() dict
 
     "if we are running windows then slap a drive letter on the front
     if s:running_windows
-        let lead = strpart(getcwd(), 0, 2) . s:os_slash
+        let lead = self.drive . '\'
     endif
 
     let toReturn = lead . join(self.pathSegments, s:os_slash)
@@ -1263,7 +1262,7 @@ function! s:oPath.StrForOS(esc) dict
 
     "if we are running windows then slap a drive letter on the front 
     if s:running_windows
-        let lead = strpart(getcwd(), 0, 2) . s:os_slash
+        let lead = self.drive . '\'
     endif
 
     let toReturn = lead . join(self.pathSegments, s:os_slash)
@@ -1281,7 +1280,7 @@ endfunction
 "FUNCTION: oPath.StrTrunk() {{{3 
 "Gets the path without the last segment on the end.
 function! s:oPath.StrTrunk() dict
-    return '/' . join(self.pathSegments[0:-2], '/')
+    return self.drive . '/' . join(self.pathSegments[0:-2], '/')
 endfunction
 
 "FUNCTION: oPath.WinToUnixPath(pathstr){{{3
@@ -2627,7 +2626,7 @@ function! s:InsertNewNode()
     let newNodeName = input("Add a childnode\n".
                           \ "==========================================================\n". 
                           \ "Enter the dir/file name to be created. Dirs end with a '/'\n" . 
-                          \ "", curDirNode.path.Str(0))
+                          \ "", curDirNode.path.StrForGlob() . s:os_slash)
     
     if newNodeName == ''
         call s:Echo("Node Creation Aborted.")
@@ -2835,7 +2834,7 @@ function! s:RenameCurrent()
     let newNodePath = input("Rename the current node\n" .
                           \ "==========================================================\n" . 
                           \ "Enter the new path for the node:                          \n" . 
-                          \ "", curNode.path.Str(0))
+                          \ "", curNode.path.StrForOS(0))
     
     if newNodePath == ''
         call s:Echo("Node Renaming Aborted.")
