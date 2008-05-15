@@ -1337,7 +1337,7 @@ function! s:InitNerdTree(dir)
     let dir = a:dir == '' ? expand('%:p:h') : a:dir
     let dir = resolve(dir)
 
-	let path = s:oPath.New(dir)
+    let path = s:oPath.New(dir)
 
     if !path.isDirectory
         call s:EchoWarning("Error reading: " . dir)
@@ -1998,7 +1998,7 @@ function! s:OpenNodeSplit(treenode)
     try
         exec("silent " . splitMode." sp " . a:treenode.path.StrForEditCmd())
     catch /^Vim\%((\a\+)\)\=:E37/
-		call s:PutCursorInTreeWin()
+        call s:PutCursorInTreeWin()
         throw "NERDTree.view.FileOpen exception: ". a:treenode.path.Str(0) ." is already open and modified."
     catch /^Vim\%((\a\+)\)\=:/
         do nothing 
@@ -2052,11 +2052,11 @@ endfunction
 "FUNCTION: s:PutCursorInTreeWin(){{{2
 "Places the cursor in the nerd tree window
 function! s:PutCursorInTreeWin() 
-	if !s:IsTreeOpen()
-		throw "NERDTree.view.InvalidOperation Exception: No NERD tree window exists"
-	endif
+    if !s:IsTreeOpen()
+        throw "NERDTree.view.InvalidOperation Exception: No NERD tree window exists"
+    endif
 
-	exec s:GetTreeWinNum() . "wincmd w"
+    exec s:GetTreeWinNum() . "wincmd w"
 endfunction
 
 "FUNCTION: s:RenderView {{{2 
@@ -2862,13 +2862,13 @@ function! s:ShowFileSystemMenu()
        \ " (a)dd a childnode\n".
        \ " (m)ove the current node\n".
        \ " (d)elete the current node\n"
-	if s:oPath.CopyingSupported() 
-		let prompt = prompt . " (c)opy the current node\n\n"
-	else
-		let prompt = prompt . " \n"
-	endif
+    if s:oPath.CopyingSupported()
+        let prompt = prompt . " (c)opy the current node\n\n"
+    else
+        let prompt = prompt . " \n"
+    endif
 
-	echo prompt
+    echo prompt
 
     let choice = nr2char(getchar())
 
