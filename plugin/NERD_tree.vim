@@ -1,7 +1,7 @@
 " vim global plugin that provides a nice tree explorer
-" Last Change:  31 March 2008
+" Last Change:  17 May 2008
 " Maintainer:   Martin Grenfell <martin_grenfell at msn dot com>
-let s:NERD_tree_version = '2.8.0.1'
+let s:NERD_tree_version = '2.9.0'
 
 " SECTION: Script init stuff {{{1
 "============================================================
