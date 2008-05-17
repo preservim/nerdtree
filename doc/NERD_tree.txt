@@ -781,6 +781,16 @@ fridge for later ;)
 ==============================================================================
 7. Changelog                                               *NERDTreeChangelog* 
 
+2.9.0
+
+    - path handling improvements, thanks to Zhang Shuhan for heaps of
+      testing/bug reports
+        * improved how paths are stored, now the script will no longer get
+          confused about drives on MF Windows
+        * made the script way better at handling paths with strange characters
+          in them (eg '$@; etc)
+
+
 2.8.0
     - added an option to enable/disable line numbers in the NERD tree window,
       thanks to Olivier Yiptong for the email.
@@ -997,5 +1007,5 @@ the &hidden option is set.
 Thanks to Olivier Yiptong for prompting me to make line numbers in the
 NERD tree window optional.
 
-Thanks to Zhang Shuhan for a bug report when initializing the tree in a dir
-containing spaces.
+Thanks to Zhang Shuhan for all of his emails and testing to help improve the
+NERD tree path handling.
