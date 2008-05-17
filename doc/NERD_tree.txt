@@ -96,6 +96,9 @@ The following features and functionality are provided by the NERD tree:
                 rendered again.  If no NERD tree exists for this tab then this
                 command acts the same as the |:NERDTree| command.
 
+:NERDTreeClose
+                Close the NERD tree in this tab.
+
 ------------------------------------------------------------------------------
 2.2. NERD tree Mappings                                     *NERDTreeMappings*
 
@@ -789,7 +792,9 @@ fridge for later ;)
           confused about drives on MF Windows
         * made the script way better at handling paths with strange characters
           in them (eg '$@; etc)
-
+    - applied a patch from Cory Echols
+        * add the command :NERDTreeClose to close the tree for the current tab
+        * set the filetype for the NERD tree buffer to "nerdtree"
 
 2.8.0
     - added an option to enable/disable line numbers in the NERD tree window,

@@ -139,6 +139,7 @@ endif
 "init the command that users start the nerd tree with 
 command! -n=? -complete=dir NERDTree :call s:InitNerdTree('<args>')
 command! -n=? -complete=dir NERDTreeToggle :call s:Toggle('<args>')
+command! -n=0 NERDTreeClose :call s:CloseTreeIfOpen()
 " SECTION: Auto commands {{{1
 "============================================================
 "Save the cursor position whenever we close the nerd tree
@@ -1430,7 +1431,13 @@ function! s:CenterView()
         endif
     endif
 endfunction
-
+"FUNCTION: s:CloseTreeIfOpen() {{{2
+"Closes the NERD tree window if it is open
+function! s:CloseTreeIfOpen()
+   if s:IsTreeOpen()
+      call s:CloseTree()
+   endif
+endfunction
 "FUNCTION: s:CloseTree() {{{2 
 "Closes the NERD tree window
 function! s:CloseTree()
@@ -1481,16 +1488,17 @@ function! s:CreateTreeWin()
         setlocal cursorline
     endif
 
-    " syntax highlighting
-    if has("syntax") && exists("g:syntax_on") && !has("syntax_items")
-        call s:SetupSyntaxHighlighting()
-    endif
 
     " for line continuation
     let cpo_save1 = &cpo
     set cpo&vim
 
     call s:BindMappings()
+    setfiletype nerdtree
+    " syntax highlighting
+    if has("syntax") && exists("g:syntax_on") && !has("syntax_items")
+        call s:SetupSyntaxHighlighting()
+    endif
 endfunction
 
 "FUNCTION: s:DrawTree {{{2 
