@@ -1014,3 +1014,6 @@ NERD tree window optional.
 
 Thanks to Zhang Shuhan for all of his emails and testing to help improve the
 NERD tree path handling.
+
+Thanks to Cory Echols for sending a patch to add the :NERDTreeClose command and
+set the NERD tree buffers filetype to 'nerdtree'
