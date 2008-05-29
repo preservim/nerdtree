@@ -784,6 +784,9 @@ fridge for later ;)
 ==============================================================================
 7. Changelog                                               *NERDTreeChangelog* 
 
+2.9.1
+    - fix screen jumping bug with when &scrolloff != 0
+
 2.9.0
 
     - path handling improvements, thanks to Zhang Shuhan for heaps of

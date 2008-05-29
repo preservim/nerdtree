@@ -2107,9 +2107,12 @@ function! s:RenderView()
     :silent 1,1delete _
 
     "restore the view 
+    let old_scrolloff=&scrolloff
+    let &scrolloff=0
     call cursor(topLine, 1)
     normal! zt
     call cursor(curLine, curCol)
+    let &scrolloff = old_scrolloff
 
     setlocal nomodifiable
 endfunction
