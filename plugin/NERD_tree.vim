@@ -2495,6 +2495,9 @@ function! s:CopyNode()
                           \ "", currentNode.path.Str(0))
 
     if newNodePath != ""
+        "strip trailing slash
+        let newNodePath = substitute(newNodePath, '\/$', '', '')
+
         let confirmed = 1
         if currentNode.path.CopyingWillOverwrite(newNodePath)
             echo "\nWarning: copying may overwrite files! Continue? (yN)"
