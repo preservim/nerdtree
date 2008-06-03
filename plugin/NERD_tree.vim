@@ -169,10 +169,11 @@ endfunction
 function! s:oTreeFileNode.Copy(dest) dict
     call self.path.Copy(a:dest)
     let newPath = s:oPath.New(a:dest)
-    let parentNode = t:NERDTreeRoot.FindNode(newPath.GetParent())
-    if !empty(parentNode)
-        call parentNode.Refresh()
+    let parent = t:NERDTreeRoot.FindNode(newPath.GetParent())
+    if !empty(parent)
+        call parent.Refresh()
     endif
+    return parent.FindNode(newPath)
 endfunction
 
 "FUNCTION: oTreeFileNode.Delete {{{3 
@@ -2507,12 +2508,13 @@ function! s:CopyNode()
 
         if confirmed
             try
-                call currentNode.Copy(newNodePath)
+                let newNode = currentNode.Copy(newNodePath)
+                call s:RenderView()
+                call s:PutCursorOnNode(newNode, 0)
             catch /^NERDTree/
                 call s:EchoWarning("Could not copy node")
             endtry
         endif
-        call s:RenderView()
     else
         call s:Echo("Copy aborted.")
     endif
