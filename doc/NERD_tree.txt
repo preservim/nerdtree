@@ -786,6 +786,7 @@ fridge for later ;)
 
 2.9.1
     - fix screen jumping bug with when &scrolloff != 0
+    - fix some bugs with copying nodes
 
 2.9.0
 
