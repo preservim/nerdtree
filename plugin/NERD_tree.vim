@@ -169,7 +169,7 @@ endfunction
 function! s:oTreeFileNode.Copy(dest) dict
     call self.path.Copy(a:dest)
     let newPath = s:oPath.New(a:dest)
-    let parentNode = t:NERDTreeRoot.FindNode(newPath.GetDir())
+    let parentNode = t:NERDTreeRoot.FindNode(newPath.GetParent())
     if !empty(parentNode)
         call parentNode.Refresh()
     endif
