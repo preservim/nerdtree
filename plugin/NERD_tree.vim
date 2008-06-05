@@ -1886,7 +1886,7 @@ function! s:JumpToChild(direction)
         endif
     endif
 
-    call s:PutCursorOnNode(targetNode, 1)
+    call s:PutCursorOnNode(targetNode, 1, 0)
 
     call s:CenterView()
 endfunction
@@ -2042,19 +2042,25 @@ function! s:PromptToDelBuffer(bufnum, msg)
     endif
 endfunction
 
-"FUNCTION: s:PutCursorOnNode(treenode, is_jump){{{2
+"FUNCTION: s:PutCursorOnNode(treenode, isJump, recurseUpward){{{2
 "Places the cursor on the line number representing the given node
 "
 "Args:
 "treenode: the node to put the cursor on
-"is_jump: 1 if this cursor movement should be counted as a jump by vim
-function! s:PutCursorOnNode(treenode, is_jump) 
+"isJump: 1 if this cursor movement should be counted as a jump by vim
+"recurseUpward: try to put the cursor on the parent if the this node isnt
+"visible
+function! s:PutCursorOnNode(treenode, isJump, recurseUpward)
     let ln = s:FindNodeLineNumber(a:treenode)
     if ln != -1
-        if a:is_jump
+        if a:isJump
             mark '
         endif
         call cursor(ln, col("."))
+    else
+        if a:recurseUpward && a:treenode.parent != {}
+            call s:PutCursorOnNode(a:treenode.parent, a:isJump, 1)
+        endif
     endif
 endfunction
 
@@ -2133,7 +2139,7 @@ function! s:RenderViewSavingPosition()
     call s:RenderView()
 
     if currentNode != {}
-        call s:PutCursorOnNode(currentNode, 0)
+        call s:PutCursorOnNode(currentNode, 0, 0)
     endif
 endfunction
 "FUNCTION: s:RestoreScreenState() {{{2 
@@ -2323,7 +2329,7 @@ function! s:ActivateNode()
     if treenode.path.isDirectory
         call treenode.ToggleOpen()
         call s:RenderView()
-        call s:PutCursorOnNode(treenode, 0)
+        call s:PutCursorOnNode(treenode, 0, 0)
     else
         call s:OpenFileNode(treenode)
     endif
@@ -2447,7 +2453,7 @@ function! s:ChRoot()
 
 
     call s:RenderView()
-    call s:PutCursorOnNode(t:NERDTreeRoot, 0)
+    call s:PutCursorOnNode(t:NERDTreeRoot, 0, 0)
 endfunction
 
 " FUNCTION: s:CloseChildren() {{{2
@@ -2461,7 +2467,7 @@ function! s:CloseChildren()
 
     call currentNode.CloseChildren()
     call s:RenderView()
-    call s:PutCursorOnNode(currentNode, 0)
+    call s:PutCursorOnNode(currentNode, 0, 0)
 endfunction
 " FUNCTION: s:CloseCurrentDir() {{{2
 " closes the parent dir of the current node
@@ -2478,7 +2484,7 @@ function! s:CloseCurrentDir()
     else
         call treenode.parent.Close()
         call s:RenderView()
-        call s:PutCursorOnNode(treenode.parent, 0)
+        call s:PutCursorOnNode(treenode.parent, 0, 0)
     endif
 endfunction
 
@@ -2510,7 +2516,7 @@ function! s:CopyNode()
             try
                 let newNode = currentNode.Copy(newNodePath)
                 call s:RenderView()
-                call s:PutCursorOnNode(newNode, 0)
+                call s:PutCursorOnNode(newNode, 0, 0)
             catch /^NERDTree/
                 call s:EchoWarning("Could not copy node")
             endtry
@@ -2643,7 +2649,7 @@ function! s:InsertNewNode()
         if parentNode.isOpen || !empty(parentNode.children) 
             call parentNode.AddChild(newTreeNode, 1)
             call s:RenderView()
-            call s:PutCursorOnNode(newTreeNode, 1)
+            call s:PutCursorOnNode(newTreeNode, 1, 0)
         endif
     catch /^NERDTree/
         call s:EchoWarning("Node Not Created.")
@@ -2668,7 +2674,7 @@ function! s:JumpToParent()
     let currentNode = s:GetSelectedNode()
     if !empty(currentNode)
         if !empty(currentNode.parent) 
-            call s:PutCursorOnNode(currentNode.parent, 1)
+            call s:PutCursorOnNode(currentNode.parent, 1, 0)
             call s:CenterView()
         else
             call s:Echo("cannot jump to parent")
@@ -2681,7 +2687,7 @@ endfunction
 " FUNCTION: s:JumpToRoot() {{{2
 " moves the cursor to the root node
 function! s:JumpToRoot() 
-    call s:PutCursorOnNode(t:NERDTreeRoot, 1)
+    call s:PutCursorOnNode(t:NERDTreeRoot, 1, 0)
     call s:CenterView()
 endfunction
 
@@ -2708,7 +2714,7 @@ function! s:JumpToSibling(forward)
         endif
 
         if !empty(sibling)
-            call s:PutCursorOnNode(sibling, 1)
+            call s:PutCursorOnNode(sibling, 1, 0)
             call s:CenterView()
         endif
     else
@@ -2855,7 +2861,7 @@ function! s:RenameCurrent()
             call s:PromptToDelBuffer(bufnum, prompt)
         endif
 
-        call s:PutCursorOnNode(curNode, 1)
+        call s:PutCursorOnNode(curNode, 1, 0)
 
         redraw
     catch /^NERDTree/
@@ -2952,7 +2958,7 @@ function! s:UpDir(keepState)
         endif
 
         call s:RenderView()
-        call s:PutCursorOnNode(oldRoot, 0)
+        call s:PutCursorOnNode(oldRoot, 0, 0)
     endif
 endfunction
 
