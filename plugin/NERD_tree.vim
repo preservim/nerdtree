@@ -1673,6 +1673,12 @@ function! s:EchoError(msg)
     call s:Echo(a:msg)
     echohl normal
 endfunction
+" FUNCTION: s:FindMarks(A,L,P) {{{2
+" completion function for the RecallMark command
+function! s:FindMarks(A,L,P)
+    let keys = keys(s:GetMarks())
+    return filter(keys, 'v:val =~ "^' . a:A . '"')
+endfunction
 "FUNCTION: s:FindNodeLineNumber(treenode){{{2
 "Finds the line number for the given tree node
 "
@@ -1735,6 +1741,14 @@ function! s:FindRootNodeLineNumber()
     return rootLine
 endfunction
 
+" FUNCTION: s:GetMarks(name) {{{2
+" getter/lazy initializer for the t:NERDTreeMarks hash
+function! s:GetMarks()
+    if !exists("t:NERDTreeMarks")
+        let t:NERDTreeMarks = {}
+    endif
+    return t:NERDTreeMarks
+endfunction
 "FUNCTION: s:GetPath(ln) {{{2 
 "Gets the full path to the node that is rendered on the given line number
 "
@@ -2385,6 +2399,9 @@ function! s:BindMappings()
     exec "nnoremap <silent> <buffer> ". g:NERDTreeMapOpenInTabSilent ." :call <SID>OpenNodeNewTab(1)<cr>"
 
     exec "nnoremap <silent> <buffer> ". g:NERDTreeMapOpenExpl ." :call <SID>OpenExplorer()<cr>"
+
+    command! -buffer -nargs=1 Mark :call <SID>MarkNode('<args>')
+    command! -buffer -complete=customlist,s:FindMarks -nargs=1 RecallMark :call <SID>RecallMark('<args>')
 endfunction
 
 "FUNCTION: s:CheckForActivate() {{{2
@@ -2722,6 +2739,17 @@ function! s:JumpToSibling(forward)
     endif
 endfunction
 
+" FUNCTION: s:MarkNode(name) {{{2
+" Associate the current node with the given name
+function! s:MarkNode(name)
+    let currentNode = s:GetSelectedNode()
+    if currentNode != {}
+        let marks = s:GetMarks()
+        let marks[a:name] = currentNode.path
+    else
+        call s:Echo("select a node first")
+    endif
+endfunction
 " FUNCTION: s:OpenEntrySplit() {{{2
 " Opens the currently selected file from the explorer in a
 " new window 
@@ -2803,6 +2831,13 @@ function! s:PreviewNode(openNewWin)
     call s:PutCursorInTreeWin()
 endfunction
 
+" FUNCTION: s:RecallMark(name) {{{2
+" put the cursor on the node associate with the given name
+function! s:RecallMark(name)
+    let mark = s:GetMarks()[a:name]
+    let targetNode = t:NERDTreeRoot.FindNode(mark)
+    call s:PutCursorOnNode(targetNode, 0, 1)
+endfunction
 " FUNCTION: s:RefreshRoot() {{{2
 " Reloads the current root. All nodes below this will be lost and the root dir
 " will be reloaded.
