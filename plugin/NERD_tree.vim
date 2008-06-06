@@ -2431,6 +2431,7 @@ function! s:BindMappings()
 
     command! -buffer -nargs=1 Mark :call <SID>MarkNode('<args>')
     command! -buffer -complete=customlist,s:FindMarks -nargs=1 RecallMark :call <SID>RecallMark('<args>')
+    command! -buffer -complete=customlist,s:FindMarks -nargs=1 OpenMark :call <SID>OpenMark('<args>')
 endfunction
 
 "FUNCTION: s:CheckForActivate() {{{2
@@ -2814,6 +2815,22 @@ function! s:OpenExplorer()
     endif
 endfunction
 
+" FUNCTION: s:OpenMark(name) {{{2
+" put the cursor on the given mark and, if its a file, open it
+function! s:OpenMark(name)
+    try
+        let mark = s:GetMarks()[a:name]
+    catch /E716/ "key not in dictionary error
+        call s:Echo("Invalid mark name")
+        return
+    endtry
+
+    let targetNode = t:NERDTreeRoot.FindNode(mark)
+    call s:PutCursorOnNode(targetNode, 0, 1)
+    if !targetNode.path.isDirectory
+        call s:OpenFileNode(targetNode)
+    endif
+endfunction
 " FUNCTION: s:OpenNodeNewTab(stayCurrentTab) {{{2
 " Opens the currently selected file from the explorer in a
 " new tab
