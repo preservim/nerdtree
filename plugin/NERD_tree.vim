@@ -1207,13 +1207,13 @@ endfunction
 function! s:oPath.StrDisplay() dict
     let toReturn = self.GetLastPathComponent(1)
 
-    if self.isSymLink
-        let toReturn .=  ' -> ' . self.symLinkDest
-    endif
-
     let marks = self.MarkNames()
     if !empty(marks)
         let toReturn .= ' {' . join(marks, ',') . '}'
+    endif
+
+    if self.isSymLink
+        let toReturn .=  ' -> ' . self.symLinkDest
     endif
 
     if self.isReadOnly
