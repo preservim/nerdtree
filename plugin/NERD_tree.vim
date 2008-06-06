@@ -2864,7 +2864,13 @@ endfunction
 " FUNCTION: s:RecallMark(name) {{{2
 " put the cursor on the node associate with the given name
 function! s:RecallMark(name)
-    let mark = s:GetMarks()[a:name]
+    try
+        let mark = s:GetMarks()[a:name]
+    catch /E716/ "key not in dictionary error
+        call s:Echo("Invalid mark name")
+        return
+    endtry
+
     let targetNode = t:NERDTreeRoot.FindNode(mark)
     call s:PutCursorOnNode(targetNode, 0, 1)
 endfunction
