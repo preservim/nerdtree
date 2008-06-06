@@ -2234,10 +2234,10 @@ function! s:SetupSyntaxHighlighting()
     syn match treeHelp  #^" .*# contains=treeHelpKey,treeHelpTitle,treeFlag,treeToggleOff,treeToggleOn
 
     "highlighting for sym links 
-    syn match treeLink #[^-| `].* -> #
+    syn match treeLink #[^-| `].* -> # contains=treeMark
 
     "highlighting for readonly files 
-    syn match treeRO #[0-9a-zA-Z]\+.*\[RO\]# contains=treeFlag
+    syn match treeRO #[0-9a-zA-Z]\+.*\[RO\]# contains=treeFlag,treeMark
 
     "highlighting for marks
     syn match treeMark # {.*}#hs=s+1
