@@ -2771,6 +2771,11 @@ endfunction
 " FUNCTION: s:MarkNode(name) {{{2
 " Associate the current node with the given name
 function! s:MarkNode(name)
+    if a:name !~ '^[0-9a-zA-Z_]*$'
+        call s:Echo("Marks must be named using numbers, letters and underscores only")
+        return
+    endif
+
     let currentNode = s:GetSelectedNode()
     if currentNode != {}
         let marks = s:GetMarks()
