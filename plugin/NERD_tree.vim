@@ -2239,11 +2239,14 @@ function! s:SetupSyntaxHighlighting()
     "highlighting for readonly files 
     syn match treeRO #[0-9a-zA-Z]\+.*\[RO\]# contains=treeFlag
 
+    "highlighting for marks
+    syn match treeMark # {.*}#hs=s+1
+
     "highlighing for directory nodes and file nodes 
     syn match treeDirSlash #/#
-    syn match treeDir #[^-| `].*/\([ {}]\{4\}\)*$# contains=treeLink,treeDirSlash,treeOpenable,treeClosable
-    syn match treeFile  #|-.*# contains=treeLink,treePart,treeRO,treePartFile
-    syn match treeFile  #`-.*# contains=treeLink,treePart,treeRO,treePartFile
+    syn match treeDir #[^-| `].*/# contains=treeLink,treeDirSlash,treeOpenable,treeClosable
+    syn match treeFile  #|-.*# contains=treeLink,treePart,treeRO,treePartFile,treeMark
+    syn match treeFile  #`-.*# contains=treeLink,treePart,treeRO,treePartFile,treeMark
     syn match treeCWD #^/.*$# 
 
     if g:NERDChristmasTree
@@ -2272,6 +2275,7 @@ function! s:SetupSyntaxHighlighting()
     hi def link treeOpenable Title
     hi def link treeFlag ignore
     hi def link treeRO WarningMsg
+    hi def link treeMark Statement
 
     hi def link NERDTreeCurrentNode Search
 endfunction
@@ -2309,6 +2313,9 @@ function! s:StripMarkupFromLine(line, removeLeadingSpaces)
 
     "strip off any read only flag 
     let line = substitute (line, s:tree_RO_str_reg, "","")
+
+    "strip off any mark flags
+    let line = substitute (line, ' {[^}*]}', "","")
 
     let wasdir = 0
     if line =~ '/$' 
