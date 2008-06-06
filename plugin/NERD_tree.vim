@@ -2821,7 +2821,7 @@ function! s:OpenMark(name)
     try
         let mark = s:GetMarks()[a:name]
     catch /E716/ "key not in dictionary error
-        call s:Echo("Invalid mark name")
+        call s:Echo("Mark doesnt exist")
         return
     endtry
 
@@ -2890,7 +2890,7 @@ function! s:RecallMark(name)
     try
         let mark = s:GetMarks()[a:name]
     catch /E716/ "key not in dictionary error
-        call s:Echo("Invalid mark name")
+        call s:Echo("Mark doesnt exist")
         return
     endtry
 
