@@ -1068,6 +1068,17 @@ function! s:oPath.Equals(path) dict
     return self.Str(0) == a:path.Str(0)
 endfunction
 
+"FUNCTION: oPath.MarkNames() {{{3
+function! s:oPath.MarkNames() dict
+    let toReturn = []
+    let marks = s:GetMarks()
+    for k in keys(marks)
+        if marks[k].Equals(self)
+            call add(toReturn, k)
+        endif
+    endfor
+    return toReturn
+endfunction
 "FUNCTION: oPath.New() {{{3 
 "
 "The Constructor for the Path object
