@@ -1211,6 +1211,11 @@ function! s:oPath.StrDisplay() dict
         let toReturn .=  ' -> ' . self.symLinkDest
     endif
 
+    let marks = self.MarkNames()
+    if !empty(marks)
+        let toReturn .= ' {' . join(marks, ',') . '}'
+    endif
+
     if self.isReadOnly
         let toReturn .=  s:tree_RO_str
     endif
@@ -2763,6 +2768,7 @@ function! s:MarkNode(name)
     if currentNode != {}
         let marks = s:GetMarks()
         let marks[a:name] = currentNode.path
+        call s:RenderView()
     else
         call s:Echo("select a node first")
     endif
