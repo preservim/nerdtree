@@ -1747,7 +1747,7 @@ function! s:FindNodeLineNumber(treenode)
     return -1
 endfunction
 
-"FUNCTION: s:FindRootNodeLineNumber(path){{{2
+"FUNCTION: s:FindRootNodeLineNumber(){{{2
 "Finds the line number of the root node  
 function! s:FindRootNodeLineNumber() 
     let rootLine = 1
