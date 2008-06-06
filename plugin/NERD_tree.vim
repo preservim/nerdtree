@@ -2827,6 +2827,7 @@ function! s:OpenMark(name)
 
     let targetNode = t:NERDTreeRoot.FindNode(mark)
     call s:PutCursorOnNode(targetNode, 0, 1)
+    redraw!
     if !targetNode.path.isDirectory
         call s:OpenFileNode(targetNode)
     endif
