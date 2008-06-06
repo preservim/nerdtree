@@ -2072,8 +2072,14 @@ function! s:PutCursorOnNode(treenode, isJump, recurseUpward)
         endif
         call cursor(ln, col("."))
     else
-        if a:recurseUpward && a:treenode.parent != {}
-            call s:PutCursorOnNode(a:treenode.parent, a:isJump, 1)
+        if a:recurseUpward
+            let node = a:treenode
+            while s:FindNodeLineNumber(node) == -1 && node != {}
+                let node = node.parent
+                call node.Open()
+            endwhile
+            call s:RenderView()
+            call s:PutCursorOnNode(a:treenode, a:isJump, 0)
         endif
     endif
 endfunction
