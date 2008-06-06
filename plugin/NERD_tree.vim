@@ -2315,7 +2315,7 @@ function! s:StripMarkupFromLine(line, removeLeadingSpaces)
     let line = substitute (line, s:tree_RO_str_reg, "","")
 
     "strip off any mark flags
-    let line = substitute (line, ' {[^}*]}', "","")
+    let line = substitute (line, ' {[^}]*}', "","")
 
     let wasdir = 0
     if line =~ '/$' 
