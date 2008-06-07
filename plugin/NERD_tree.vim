@@ -2447,6 +2447,7 @@ function! s:BindMappings()
     command! -buffer -nargs=1 Mark :call <SID>MarkNode('<args>')
     command! -buffer -complete=customlist,s:FindMarks -nargs=1 RecallMark :call <SID>RecallMark('<args>')
     command! -buffer -complete=customlist,s:FindMarks -nargs=1 OpenMark :call <SID>OpenMark('<args>')
+    command! -buffer -complete=customlist,s:FindMarks -nargs=+ ClearMarks call <SID>ClearMarks('<args>')
 endfunction
 
 "FUNCTION: s:CheckForActivate() {{{2
@@ -2518,6 +2519,16 @@ function! s:ChRoot()
     call s:PutCursorOnNode(t:NERDTreeRoot, 0, 0)
 endfunction
 
+" FUNCTION: s:ClearMarks(marks) {{{2
+function! s:ClearMarks(marks)
+    let marks = s:GetMarks()
+    for name in split(a:marks, ' ')
+        if count(keys(marks), name)
+            call remove(marks, name)
+        endif
+    endfor
+    call s:RenderView()
+endfunction
 " FUNCTION: s:CloseChildren() {{{2
 " closes all childnodes of the current node
 function! s:CloseChildren() 
