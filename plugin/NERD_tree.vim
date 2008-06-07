@@ -1428,6 +1428,8 @@ function! s:InitNerdTree(dir)
         unlet t:NERDTreeRoot
     endif
 
+    call s:ClearAllMarks()
+
     let t:NERDTreeRoot = s:oTreeDirNode.New(path)
     call t:NERDTreeRoot.Open()
 
