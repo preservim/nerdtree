@@ -1369,6 +1369,11 @@ function! s:BufInWindows(bnum)
     return cnt
 endfunction " >>>
 
+"FUNCTION: s:ClearAllMarks() {{{2
+"delete all marks
+function! s:ClearAllMarks()
+    let t:NERDTreeMarks = {}
+endfunction
 "FUNCTION: s:GetNodeForMark(name, searchFromAbsoluteRoot) {{{2
 "get the treenode for the mark with the given name
 "
@@ -2479,7 +2484,7 @@ function! s:BindMappings()
     command! -buffer -complete=customlist,s:FindMarks -nargs=1 OpenMark :call <SID>OpenMark('<args>')
     command! -buffer -complete=customlist,s:FindMarks -nargs=+ ClearMarks call <SID>ClearMarks('<args>')
     command! -buffer -complete=customlist,s:FindMarks -nargs=+ MarkToRoot call <SID>MarkToRoot('<args>')
-    command! -buffer -nargs=0 ClearAllMarks let t:NERDTreeMarks = {} <bar> call <SID>RenderView()
+    command! -buffer -nargs=0 ClearAllMarks call <SID>ClearAllMarks() <bar> call <SID>RenderView()
 endfunction
 
 "FUNCTION: s:CheckForActivate() {{{2
