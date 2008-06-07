@@ -2448,6 +2448,7 @@ function! s:BindMappings()
     command! -buffer -complete=customlist,s:FindMarks -nargs=1 RecallMark :call <SID>RecallMark('<args>')
     command! -buffer -complete=customlist,s:FindMarks -nargs=1 OpenMark :call <SID>OpenMark('<args>')
     command! -buffer -complete=customlist,s:FindMarks -nargs=+ ClearMarks call <SID>ClearMarks('<args>')
+    command! -buffer -nargs=0 ClearAllMarks let t:NERDTreeMarks = {} <bar> call <SID>RenderView()
 endfunction
 
 "FUNCTION: s:CheckForActivate() {{{2
