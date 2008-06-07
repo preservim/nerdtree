@@ -290,6 +290,22 @@ function! s:oTreeFileNode.IsRoot() dict
     return self.Equals(t:NERDTreeRoot)
 endfunction
 
+"FUNCTION: oTreeFileNode.MakeRoot() {{{3
+"Make this node the root of the tree
+function! s:oTreeFileNode.MakeRoot() dict
+    if self.path.isDirectory
+        let t:NERDTreeRoot = self
+    else
+        let t:NERDTreeRoot = self.parent
+    endif
+
+    call t:NERDTreeRoot.Open()
+
+    "change dir to the dir of the new root if instructed to
+    if g:NERDTreeChDirMode == 2
+        exec "cd " . t:NERDTreeRoot.path.StrForEditCmd()
+    endif
+endfunction
 "FUNCTION: oTreeFileNode.New(path) {{{3 
 "Returns a new TreeNode object with the given path and parent
 "
@@ -2507,23 +2523,12 @@ endfunction
 " changes the current root to the selected one
 function! s:ChRoot() 
     let treenode = s:GetSelectedNode()
-    if treenode == {} || treenode.path.isDirectory == 0
-        call s:Echo("Select a directory node first")
+    if treenode == {}
+        call s:Echo("Select a node first")
         return
     endif
 
-    if treenode.isOpen == 0
-        call treenode.Open()
-    endif
-
-    let t:NERDTreeRoot = treenode
-    
-    "change dir to the dir of the new root if instructed to 
-    if g:NERDTreeChDirMode == 2
-        exec "cd " . treenode.path.StrForEditCmd()
-    endif
-
-
+    call treenode.MakeRoot()
     call s:RenderView()
     call s:PutCursorOnNode(t:NERDTreeRoot, 0, 0)
 endfunction
