@@ -1358,7 +1358,7 @@ function! s:GetNodeForMark(name)
     if empty(targetNode)
         throw "NERDTree.MarkNotFound no node was found for mark: " . a:name
     endif
-    call s:PutCursorOnNode(targetNode, 0, 1)
+    return targetNode
 endfunction
 "FUNCTION: s:InitNerdTree(dir) {{{2 
 "Initialized the NERD tree, where the root will be initialized with the given
