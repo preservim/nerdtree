@@ -1369,16 +1369,22 @@ function! s:BufInWindows(bnum)
     return cnt
 endfunction " >>>
 
-"FUNCTION: s:GetNodeForMark(name) {{{2
+"FUNCTION: s:GetNodeForMark(name, searchFromAbsoluteRoot) {{{2
 "get the treenode for the mark with the given name
-function! s:GetNodeForMark(name)
+"
+"Args:
+"name: name of mark
+"searchFromAbsoluteRoot: specifies wheather we should search from the current
+"tree root, or the highest cached node
+function! s:GetNodeForMark(name, searchFromAbsoluteRoot)
     try
         let mark = s:GetMarks()[a:name]
     catch /E716/ "key not in dictionary error
         throw "NERDTree.MarkDoesntExist no mark found with name: " . a:name
     endtry
 
-    let targetNode = t:NERDTreeRoot.FindNode(mark)
+    let searchRoot = a:searchFromAbsoluteRoot ? s:AbsoluteTreeRoot() : t:NERDTreeRoot
+    let targetNode = searchRoot.FindNode(mark)
     if empty(targetNode)
         throw "NERDTree.MarkNotFound no node was found for mark: " . a:name
     endif
@@ -2858,7 +2864,7 @@ endfunction
 " FUNCTION: s:OpenMark(name) {{{2
 " put the cursor on the given mark and, if its a file, open it
 function! s:OpenMark(name)
-    let targetNode = s:GetNodeForMark(a:name)
+    let targetNode = s:GetNodeForMark(a:name, 0)
     call s:PutCursorOnNode(targetNode, 0, 1)
     redraw!
     if !targetNode.path.isDirectory
@@ -2920,7 +2926,7 @@ endfunction
 " FUNCTION: s:RecallMark(name) {{{2
 " put the cursor on the node associate with the given name
 function! s:RecallMark(name)
-    let targetNode = s:GetNodeForMark(a:name)
+    let targetNode = s:GetNodeForMark(a:name, 0)
     call s:PutCursorOnNode(targetNode, 0, 1)
 endfunction
 " FUNCTION: s:RefreshRoot() {{{2
