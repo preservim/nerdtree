@@ -2839,6 +2839,7 @@ function! s:MarkToRoot(name)
     let targetNode = s:GetNodeForMark(a:name, 1)
     call targetNode.MakeRoot()
     call s:RenderView()
+    call s:PutCursorOnNode(targetNode, 0, 0)
 endfunction
 " FUNCTION: s:OpenEntrySplit() {{{2
 " Opens the currently selected file from the explorer in a
