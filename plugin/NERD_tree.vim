@@ -1345,6 +1345,21 @@ function! s:BufInWindows(bnum)
     return cnt
 endfunction " >>>
 
+"FUNCTION: s:GetNodeForMark(name) {{{2
+"get the treenode for the mark with the given name
+function! s:GetNodeForMark(name)
+    try
+        let mark = s:GetMarks()[a:name]
+    catch /E716/ "key not in dictionary error
+        throw "NERDTree.MarkDoesntExist no mark found with name: " . a:name
+    endtry
+
+    let targetNode = t:NERDTreeRoot.FindNode(mark)
+    if empty(targetNode)
+        throw "NERDTree.MarkNotFound no node was found for mark: " . a:name
+    endif
+    call s:PutCursorOnNode(targetNode, 0, 1)
+endfunction
 "FUNCTION: s:InitNerdTree(dir) {{{2 
 "Initialized the NERD tree, where the root will be initialized with the given
 "directory
@@ -2818,14 +2833,7 @@ endfunction
 " FUNCTION: s:OpenMark(name) {{{2
 " put the cursor on the given mark and, if its a file, open it
 function! s:OpenMark(name)
-    try
-        let mark = s:GetMarks()[a:name]
-    catch /E716/ "key not in dictionary error
-        call s:Echo("Mark doesnt exist")
-        return
-    endtry
-
-    let targetNode = t:NERDTreeRoot.FindNode(mark)
+    let targetNode = s:GetNodeForMark(a:name)
     call s:PutCursorOnNode(targetNode, 0, 1)
     redraw!
     if !targetNode.path.isDirectory
@@ -2887,14 +2895,7 @@ endfunction
 " FUNCTION: s:RecallMark(name) {{{2
 " put the cursor on the node associate with the given name
 function! s:RecallMark(name)
-    try
-        let mark = s:GetMarks()[a:name]
-    catch /E716/ "key not in dictionary error
-        call s:Echo("Mark doesnt exist")
-        return
-    endtry
-
-    let targetNode = t:NERDTreeRoot.FindNode(mark)
+    let targetNode = s:GetNodeForMark(a:name)
     call s:PutCursorOnNode(targetNode, 0, 1)
 endfunction
 " FUNCTION: s:RefreshRoot() {{{2
