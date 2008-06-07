@@ -1320,7 +1320,15 @@ function! s:Abs(num)
         return 0 - a:num
     end
 endfunction
-
+"FUNCTION: s:AbsoluteTreeRoot(){{{2
+" returns the highest cached ancestor of the current root
+function! s:AbsoluteTreeRoot()
+    let currentNode = t:NERDTreeRoot
+    while currentNode.parent != {}
+        let currentNode = currentNode.parent
+    endwhile
+    return currentNode
+endfunction
 "FUNCTION: s:BufInWindows(bnum){{{2
 "[[STOLEN FROM VTREEEXPLORER.VIM]]
 "Determine the number of windows open to this buffer number. 
