@@ -2478,6 +2478,7 @@ function! s:BindMappings()
     command! -buffer -complete=customlist,s:FindMarks -nargs=1 RecallMark :call <SID>RecallMark('<args>')
     command! -buffer -complete=customlist,s:FindMarks -nargs=1 OpenMark :call <SID>OpenMark('<args>')
     command! -buffer -complete=customlist,s:FindMarks -nargs=+ ClearMarks call <SID>ClearMarks('<args>')
+    command! -buffer -complete=customlist,s:FindMarks -nargs=+ MarkToRoot call <SID>MarkToRoot('<args>')
     command! -buffer -nargs=0 ClearAllMarks let t:NERDTreeMarks = {} <bar> call <SID>RenderView()
 endfunction
 
@@ -2831,6 +2832,13 @@ function! s:MarkNode(name)
     else
         call s:Echo("select a node first")
     endif
+endfunction
+" FUNCTION: s:MarkToRoot(name) {{{2
+" Make the node for the given mark the new tree root
+function! s:MarkToRoot(name)
+    let targetNode = s:GetNodeForMark(a:name, 1)
+    call targetNode.MakeRoot()
+    call s:RenderView()
 endfunction
 " FUNCTION: s:OpenEntrySplit() {{{2
 " Opens the currently selected file from the explorer in a
