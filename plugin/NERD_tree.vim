@@ -1439,14 +1439,16 @@ endfunction
 
 " Function: s:ReadMarks()   {{{2
 function! s:ReadMarks()
-    let marks = s:GetMarks()
-    let markStrings = readfile(g:NERDTreeMarksFile)
-    for i in markStrings
-        let key = substitute(i, '^\(\w.\{-}\) .*$', '\1', '')
-        let path = substitute(i, '^\w.\{-} \(.*\)$', '\1', '')
-        let marks[key] = s:oPath.New(path)
-    endfor
-    call s:RenderView()
+    if filereadable(g:NERDTreeMarksFile)
+        let marks = s:GetMarks()
+        let markStrings = readfile(g:NERDTreeMarksFile)
+        for i in markStrings
+            let key = substitute(i, '^\(\w.\{-}\) .*$', '\1', '')
+            let path = substitute(i, '^\w.\{-} \(.*\)$', '\1', '')
+            let marks[key] = s:oPath.New(path)
+        endfor
+        call s:RenderView()
+    endif
 endfunction
 " Function: s:TreeExistsForTab()   {{{2
 " Returns 1 if a nerd tree root exists in the current tab
