@@ -2864,7 +2864,12 @@ endfunction
 " FUNCTION: s:MarkToRoot(name) {{{2
 " Make the node for the given mark the new tree root
 function! s:MarkToRoot(name)
-    let targetNode = s:GetNodeForMark(a:name, 1)
+    try
+        let targetNode = s:GetNodeForMark(a:name, 1)
+    catch /NERDTree.MarkNotFound/
+        let marks = s:GetMarks()
+        let targetNode = s:oTreeFileNode.New(marks[a:name])
+    endtry
     call targetNode.MakeRoot()
     call s:RenderView()
     call s:PutCursorOnNode(targetNode, 0, 0)
