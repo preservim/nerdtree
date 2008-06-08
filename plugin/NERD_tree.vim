@@ -59,7 +59,7 @@ endif
 
 "we need to use this number many times for sorting... so we calculate it only
 "once here 
-let g:NERDTreeSortStarIndex = index(g:NERDTreeSortOrder, '*')
+let s:NERDTreeSortStarIndex = index(g:NERDTreeSortOrder, '*')
 
 call s:InitVariable("g:NERDTreeSplitVertical", 1)
 call s:InitVariable("g:NERDTreeWinPos", 1)
@@ -1035,7 +1035,7 @@ function! s:oPath.GetSortOrderIndex() dict
         endif
         let i = i + 1
     endwhile
-    return g:NERDTreeSortStarIndex
+    return s:NERDTreeSortStarIndex
 endfunction
 
 "FUNCTION: oPath.Ignore() {{{3 
