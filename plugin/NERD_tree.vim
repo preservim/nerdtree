@@ -2033,7 +2033,7 @@ function! s:OpenFileNode(treenode)
     else
         try
             wincmd p
-            exec ("edit " . a:treenode.path.StrForEditCmd())
+            silent exec ("edit " . a:treenode.path.StrForEditCmd())
         catch /^Vim\%((\a\+)\)\=:E37/
             call s:PutCursorInTreeWin()
             call s:Echo("Cannot open file, it is already open and modified")
