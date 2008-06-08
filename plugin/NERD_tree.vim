@@ -2921,9 +2921,15 @@ endfunction
 " FUNCTION: s:OpenMark(name) {{{2
 " put the cursor on the given mark and, if its a file, open it
 function! s:OpenMark(name)
-    let targetNode = s:GetNodeForMark(a:name, 0)
-    call s:PutCursorOnNode(targetNode, 0, 1)
-    redraw!
+    try
+        let targetNode = s:GetNodeForMark(a:name, 0)
+        call s:PutCursorOnNode(targetNode, 0, 1)
+        redraw!
+    catch /NERDTree.MarkNotFound/
+        call s:Echo("note - target node is not cached")
+        let marks = s:GetMarks()
+        let targetNode = s:oTreeFileNode.New(marks[a:name])
+    endtry
     if !targetNode.path.isDirectory
         call s:OpenFileNode(targetNode)
     endif
