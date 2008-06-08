@@ -1436,10 +1436,30 @@ function! s:InitNerdTree(dir)
     call s:RenderView()
 endfunction
 
+" Function: s:ReadMarks()   {{{2
+function! s:ReadMarks()
+    let marks = s:GetMarks()
+    let markStrings = readfile(expand('$HOME') . '/.NERDTreeMarks')
+    for i in markStrings
+        let key = substitute(i, '^\(\w.\{-}\) .*$', '\1', '')
+        let path = substitute(i, '^\w.\{-} \(.*\)$', '\1', '')
+        let marks[key] = s:oPath.New(path)
+    endfor
+    call s:RenderView()
+endfunction
 " Function: s:TreeExistsForTab()   {{{2
 " Returns 1 if a nerd tree root exists in the current tab
 function! s:TreeExistsForTab()
     return exists("t:NERDTreeRoot")
+endfunction
+" Function: s:WriteMarks()   {{{2
+function! s:WriteMarks()
+    let marks = s:GetMarks()
+    let markStrings = []
+    for k in keys(marks)
+        call add(markStrings, k . ' ' . marks[k].StrForOS(0))
+    endfor
+    call writefile(markStrings, expand('$HOME') . '/.NERDTreeMarks')
 endfunction
 
 " SECTION: Public Functions {{{1
@@ -2485,6 +2505,8 @@ function! s:BindMappings()
     command! -buffer -complete=customlist,s:FindMarks -nargs=+ ClearMarks call <SID>ClearMarks('<args>')
     command! -buffer -complete=customlist,s:FindMarks -nargs=+ MarkToRoot call <SID>MarkToRoot('<args>')
     command! -buffer -nargs=0 ClearAllMarks call <SID>ClearAllMarks() <bar> call <SID>RenderView()
+    command! -buffer -nargs=0 ReadMarks call <SID>ReadMarks()
+    command! -buffer -nargs=0 WriteMarks call <SID>WriteMarks()
 endfunction
 
 "FUNCTION: s:CheckForActivate() {{{2
