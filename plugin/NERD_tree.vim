@@ -154,6 +154,17 @@ exec "autocmd BufWinLeave *". s:NERDTreeWinName ."* :call <SID>SaveScreenState()
 "classes.
 "============================================================
 let s:oTreeFileNode = {}
+"FUNCTION: oTreeFileNode.CacheParent {{{3
+"initializes self.parent if it isnt already
+function! s:oTreeFileNode.CacheParent() dict
+    if empty(self.parent)
+        let parentPath = self.path.GetParent()
+        if parentPath.Equals(self.path)
+            throw "NERDTree.CannotCacheParent exception: already at root"
+        endif
+        let self.parent = s:oTreeFileNode.New(parentPath)
+    endif
+endfunction
 "FUNCTION: oTreeFileNode.CompareNodes {{{3 
 "This is supposed to be a class level method but i cant figure out how to
 "get func refs to work from a dict.. 
