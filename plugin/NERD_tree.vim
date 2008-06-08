@@ -1372,7 +1372,7 @@ endfunction " >>>
 "FUNCTION: s:ClearAllMarks() {{{2
 "delete all marks
 function! s:ClearAllMarks()
-    let t:NERDTreeMarks = {}
+    let g:NERDTreeMarks = {}
 endfunction
 "FUNCTION: s:GetNodeForMark(name, searchFromAbsoluteRoot) {{{2
 "get the treenode for the mark with the given name
@@ -1427,8 +1427,6 @@ function! s:InitNerdTree(dir)
         endif
         unlet t:NERDTreeRoot
     endif
-
-    call s:ClearAllMarks()
 
     let t:NERDTreeRoot = s:oTreeDirNode.New(path)
     call t:NERDTreeRoot.Open()
@@ -1810,12 +1808,12 @@ function! s:FindRootNodeLineNumber()
 endfunction
 
 " FUNCTION: s:GetMarks(name) {{{2
-" getter/lazy initializer for the t:NERDTreeMarks hash
+" getter/lazy initializer for the g:NERDTreeMarks hash
 function! s:GetMarks()
-    if !exists("t:NERDTreeMarks")
-        let t:NERDTreeMarks = {}
+    if !exists("g:NERDTreeMarks")
+        let g:NERDTreeMarks = {}
     endif
-    return t:NERDTreeMarks
+    return g:NERDTreeMarks
 endfunction
 "FUNCTION: s:GetPath(ln) {{{2 
 "Gets the full path to the node that is rendered on the given line number
