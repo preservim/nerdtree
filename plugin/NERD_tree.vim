@@ -2989,8 +2989,12 @@ endfunction
 " FUNCTION: s:RecallMark(name) {{{2
 " put the cursor on the node associate with the given name
 function! s:RecallMark(name)
-    let targetNode = s:GetNodeForMark(a:name, 0)
-    call s:PutCursorOnNode(targetNode, 0, 1)
+    try
+        let targetNode = s:GetNodeForMark(a:name, 0)
+        call s:PutCursorOnNode(targetNode, 0, 1)
+    catch /NERDTree.MarkDoesntExist/
+        call s:Echo("Mark isnt cached under the current root")
+    endtry
 endfunction
 " FUNCTION: s:RefreshRoot() {{{2
 " Reloads the current root. All nodes below this will be lost and the root dir
