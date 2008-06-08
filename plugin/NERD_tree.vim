@@ -41,6 +41,7 @@ if !exists("g:NERDTreeIgnore")
     let g:NERDTreeIgnore = ['\~$']
 endif
 call s:InitVariable("g:NERDTreeHighlightCursorline", 1)
+call s:InitVariable("g:NERDTreeMarksFile", expand('$HOME') . '/.NERDTreeMarks')
 call s:InitVariable("g:NERDTreeMouseMode", 1)
 call s:InitVariable("g:NERDTreeNotificationThreshold", 100)
 call s:InitVariable("g:NERDTreeShowFiles", 1)
@@ -1439,7 +1440,7 @@ endfunction
 " Function: s:ReadMarks()   {{{2
 function! s:ReadMarks()
     let marks = s:GetMarks()
-    let markStrings = readfile(expand('$HOME') . '/.NERDTreeMarks')
+    let markStrings = readfile(g:NERDTreeMarksFile)
     for i in markStrings
         let key = substitute(i, '^\(\w.\{-}\) .*$', '\1', '')
         let path = substitute(i, '^\w.\{-} \(.*\)$', '\1', '')
@@ -1459,7 +1460,7 @@ function! s:WriteMarks()
     for k in keys(marks)
         call add(markStrings, k . ' ' . marks[k].StrForOS(0))
     endfor
-    call writefile(markStrings, expand('$HOME') . '/.NERDTreeMarks')
+    call writefile(markStrings, g:NERDTreeMarksFile)
 endfunction
 
 " SECTION: Public Functions {{{1
