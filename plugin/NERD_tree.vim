@@ -1432,7 +1432,7 @@ function! s:InitNerdTree(dir)
     call t:NERDTreeRoot.Open()
 
     call s:CreateTreeWin()
-
+    call s:ReadMarks()
     call s:RenderView()
 endfunction
 
@@ -2855,6 +2855,7 @@ function! s:MarkNode(name)
     if currentNode != {}
         let marks = s:GetMarks()
         let marks[a:name] = currentNode.path
+        call s:WriteMarks()
         call s:RenderView()
     else
         call s:Echo("select a node first")
