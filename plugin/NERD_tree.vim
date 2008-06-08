@@ -3104,4 +3104,4 @@ function! s:UpDir(keepState)
     endif
 endfunction
 
-
+" vim: set sw=4 sts=4 et fdm=marker:
