@@ -308,6 +308,7 @@ function! s:oTreeFileNode.MakeRoot() dict
     if self.path.isDirectory
         let t:NERDTreeRoot = self
     else
+        call self.CacheParent()
         let t:NERDTreeRoot = self.parent
     endif
 
