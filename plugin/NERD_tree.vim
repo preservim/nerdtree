@@ -2408,7 +2408,7 @@ function! s:ShouldSplitToOpen(winnumber)
     return winnr("$") == 1 || (modified && s:BufInWindows(winbufnr(a:winnumber)) < 2)
 endfunction
 
-"FUNCTION: s:StripMarkupFromLine(line){{{2
+"FUNCTION: s:StripMarkupFromLine(line, removeLeadingSpaces){{{2
 "returns the given line with all the tree parts stripped off
 "
 "Args:
