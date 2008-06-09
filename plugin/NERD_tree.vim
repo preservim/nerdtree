@@ -348,6 +348,10 @@ function! s:oTreeFileNode.New(path) dict
     endif
 endfunction
 
+"FUNCTION: oTreeFileNode.Refresh {{{3
+function! s:oTreeFileNode.Refresh() dict
+    call self.path.Refresh()
+endfunction
 "FUNCTION: oTreeFileNode.Rename {{{3
 "Calls the rename method for this nodes path obj
 function! s:oTreeFileNode.Rename(newName) dict
@@ -701,55 +705,50 @@ function! s:oTreeDirNode.OpenRecursively2(forceOpen) dict
 endfunction
 
 "FUNCTION: oTreeDirNode.Refresh {{{3
+unlet s:oTreeDirNode.Refresh
 function! s:oTreeDirNode.Refresh() dict
-    let newChildNodes = []
-    let invalidFilesFound = 0
+    call self.path.Refresh()
 
-    "go thru all the files/dirs under this node
-    let dir = self.path
-    let filesStr = globpath(dir.StrForGlob(), '*') . "\n" . globpath(dir.StrForGlob(), '.*')
-    let files = split(filesStr, "\n")
-    for i in files
-        if i !~ '\.\.$' && i !~ '\.$'
+    "if this node was ever opened, refresh its children
+    if self.isOpen || !empty(self.children)
+        "go thru all the files/dirs under this node
+        let newChildNodes = []
+        let invalidFilesFound = 0
+        let dir = self.path
+        let filesStr = globpath(dir.StrForGlob(), '*') . "\n" . globpath(dir.StrForGlob(), '.*')
+        let files = split(filesStr, "\n")
+        for i in files
+            if i !~ '\.\.$' && i !~ '\.$'
 
-            try
-                "create a new path and see if it exists in this nodes children
-                let path = s:oPath.New(i)
-                let newNode = self.GetChild(path)
-                if newNode != {}
-
-                    "if the existing node is a dir can be refreshed then
-                    "refresh it
-                    if newNode.path.isDirectory && (!empty(newNode.children) || newNode.isOpen == 1)
+                try
+                    "create a new path and see if it exists in this nodes children
+                    let path = s:oPath.New(i)
+                    let newNode = self.GetChild(path)
+                    if newNode != {}
                         call newNode.Refresh()
+                        call add(newChildNodes, newNode)
 
-                    "if we have a filenode then refresh the path
-                    elseif newNode.path.isDirectory == 0
-                        call newNode.path.Refresh()
+                    "the node doesnt exist so create it
+                    else
+                        let newNode = s:oTreeFileNode.New(path)
+                        let newNode.parent = self
+                        call add(newChildNodes, newNode)
                     endif
 
-                    call add(newChildNodes, newNode)
 
-                "the node doesnt exist so create it
-                else
-                    let newNode = s:oTreeFileNode.New(path)
-                    let newNode.parent = self
-                    call add(newChildNodes, newNode)
-                endif
+                catch /^NERDTree.InvalidArguments/
+                    let invalidFilesFound = 1
+                endtry
+            endif
+        endfor
 
+        "swap this nodes children out for the children we just read/refreshed
+        let self.children = newChildNodes
+        call self.SortChildren()
 
-            catch /^NERDTree.InvalidArguments/
-                let invalidFilesFound = 1
-            endtry
+        if invalidFilesFound
+            call s:EchoWarning("some files could not be loaded into the NERD tree")
         endif
-    endfor
-
-    "swap this nodes children out for the children we just read/refreshed
-    let self.children = newChildNodes
-    call self.SortChildren()
-
-    if invalidFilesFound
-        call s:EchoWarning("some files could not be loaded into the NERD tree")
     endif
 endfunction
 
