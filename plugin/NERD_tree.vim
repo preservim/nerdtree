@@ -1459,7 +1459,6 @@ function! s:ReadMarks()
             let path = substitute(i, '^\w.\{-} \(.*\)$', '\1', '')
             let marks[key] = s:oPath.New(path)
         endfor
-        call s:RenderView()
     endif
 endfunction
 " Function: s:TreeExistsForTab()   {{{2
@@ -2520,7 +2519,7 @@ function! s:BindMappings()
     command! -buffer -complete=customlist,s:FindMarks -nargs=+ ClearMarks call <SID>ClearMarks('<args>')
     command! -buffer -complete=customlist,s:FindMarks -nargs=+ MarkToRoot call <SID>MarkToRoot('<args>')
     command! -buffer -nargs=0 ClearAllMarks call <SID>ClearAllMarks() <bar> call <SID>RenderView()
-    command! -buffer -nargs=0 ReadMarks call <SID>ReadMarks()
+    command! -buffer -nargs=0 ReadMarks call <SID>ReadMarks() <bar> call <SID>RenderView()
     command! -buffer -nargs=0 WriteMarks call <SID>WriteMarks()
 endfunction
 
