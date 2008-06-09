@@ -1912,10 +1912,7 @@ function! s:GetPath(ln)
     let wasdir = 0
     if curFile =~ '/$'
         let wasdir = 1
-    endif
-    let curFile = substitute (curFile,' -> .*',"","") " remove link to
-    if wasdir == 1
-        let curFile = substitute (curFile, '/\?$', '/', "")
+        let curFile = substitute(curFile, '/\?$', '/', "")
     endif
 
 
@@ -1924,24 +1921,19 @@ function! s:GetPath(ln)
     while lnum > 0
         let lnum = lnum - 1
         let curLine = getline(lnum)
+        let curLineStripped = s:StripMarkupFromLine(curLine, 1)
 
         "have we reached the top of the tree?
         if curLine =~ '^/'
-            let sd = substitute (curLine, '[ ]*$', "", "")
-            let dir = sd . dir
+            let dir = substitute (curLine, ' *$', "", "") . dir
             break
         endif
-        if curLine =~ '/$'
+        if curLineStripped =~ '/$'
             let lpindent = match(curLine,s:tree_markup_reg_neg) / s:tree_wid
             if lpindent < indent
                 let indent = indent - 1
-                let sd = substitute (curLine, '^' . s:tree_markup_reg . '*',"","")
-                let sd = substitute (sd, ' -> .*', '',"")
 
-                " remove leading escape
-                let sd = substitute (sd,'^\\', "", "")
-
-                let dir = sd . dir
+                let dir = substitute (curLineStripped,'^\\', "", "") . dir
                 continue
             endif
         endif
