@@ -180,6 +180,15 @@ function! s:CompareNodes(n1, n2)
     return a:n1.path.CompareTo(a:n2.path)
 endfunction
 
+"FUNCTION: oTreeFileNode.ClearMarks() {{{3
+function! s:oTreeFileNode.ClearMarks() dict
+    let marks = s:GetMarks()
+    for i in keys(marks)
+        if marks[i].Equals(self.path)
+            call remove(marks, i)
+        end
+    endfor
+endfunction
 "FUNCTION: oTreeFileNode.Copy(dest) {{{3
 function! s:oTreeFileNode.Copy(dest) dict
     call self.path.Copy(a:dest)
@@ -2528,7 +2537,7 @@ function! s:BindMappings()
     command! -buffer -nargs=1 Mark :call <SID>MarkNode('<args>')
     command! -buffer -complete=customlist,s:FindMarks -nargs=1 RecallMark :call <SID>RecallMark('<args>')
     command! -buffer -complete=customlist,s:FindMarks -nargs=1 OpenMark :call <SID>OpenMark('<args>')
-    command! -buffer -complete=customlist,s:FindMarks -nargs=+ ClearMarks call <SID>ClearMarks('<args>')
+    command! -buffer -complete=customlist,s:FindMarks -nargs=* ClearMarks call <SID>ClearMarks('<args>')
     command! -buffer -complete=customlist,s:FindMarks -nargs=+ MarkToRoot call <SID>MarkToRoot('<args>')
     command! -buffer -nargs=0 ClearAllMarks call <SID>ClearAllMarks() <bar> call <SID>RenderView()
     command! -buffer -nargs=0 ReadMarks call <SID>ReadMarks() <bar> call <SID>RenderView()
@@ -2596,11 +2605,18 @@ endfunction
 " FUNCTION: s:ClearMarks(marks) {{{2
 function! s:ClearMarks(marks)
     let marks = s:GetMarks()
-    for name in split(a:marks, ' ')
-        if count(keys(marks), name)
-            call remove(marks, name)
+    if a:marks == ''
+        let currentNode = s:GetSelectedNode()
+        if currentNode != {}
+            call currentNode.ClearMarks()
         endif
-    endfor
+    else
+        for name in split(a:marks, ' ')
+            if count(keys(marks), name)
+                call remove(marks, name)
+            endif
+        endfor
+    endif
     call s:RenderView()
 endfunction
 " FUNCTION: s:CloseChildren() {{{2
