@@ -31,7 +31,7 @@ function! s:InitVariable(var, value)
     return 0
 endfunction
 
-"SECTION: Init variable calls and other random constants {{{2 
+"SECTION: Init variable calls and other random constants {{{2
 call s:InitVariable("g:NERDChristmasTree", 1)
 call s:InitVariable("g:NERDTreeAutoCenter", 1)
 call s:InitVariable("g:NERDTreeAutoCenterThreshold", 3)
@@ -52,14 +52,14 @@ call s:InitVariable("g:NERDTreeSortDirs", 1)
 if !exists("g:NERDTreeSortOrder")
     let g:NERDTreeSortOrder = ['\/$', '*', '\.swp$',  '\.bak$', '\~$']
 else
-    "if there isnt a * in the sort sequence then add one 
+    "if there isnt a * in the sort sequence then add one
     if count(g:NERDTreeSortOrder, '*') < 1
         call add(g:NERDTreeSortOrder, '*')
     endif
 endif
 
 "we need to use this number many times for sorting... so we calculate it only
-"once here 
+"once here
 let s:NERDTreeSortStarIndex = index(g:NERDTreeSortOrder, '*')
 
 call s:InitVariable("g:NERDTreeSplitVertical", 1)
@@ -68,7 +68,7 @@ call s:InitVariable("g:NERDTreeWinSize", 31)
 
 let s:running_windows = has("win16") || has("win32") || has("win64")
 
-"init the shell commands that will be used to copy nodes, and remove dir trees 
+"init the shell commands that will be used to copy nodes, and remove dir trees
 "
 "Note: the space after the command is important
 if s:running_windows
@@ -79,7 +79,7 @@ else
 endif
 
 
-"SECTION: Init variable calls for key mappings {{{2 
+"SECTION: Init variable calls for key mappings {{{2
 call s:InitVariable("g:NERDTreeMapActivateNode", "o")
 call s:InitVariable("g:NERDTreeMapChangeRoot", "C")
 call s:InitVariable("g:NERDTreeMapChdir", "cd")
@@ -114,7 +114,7 @@ call s:InitVariable("g:NERDTreeMapUpdirKeepOpen", "U")
 let s:escape_chars =  " \\`\|\"#%&,?()\*^<>"
 let s:NERDTreeWinName = '_NERD_tree_'
 
-"init all the nerd tree markup 
+"init all the nerd tree markup
 let s:tree_vert = '|'
 let s:tree_vert_last = '`'
 let s:tree_wid = 2
@@ -137,7 +137,7 @@ endif
 
 " SECTION: Commands {{{1
 "============================================================
-"init the command that users start the nerd tree with 
+"init the command that users start the nerd tree with
 command! -n=? -complete=dir NERDTree :call s:InitNerdTree('<args>')
 command! -n=? -complete=dir NERDTreeToggle :call s:Toggle('<args>')
 command! -n=0 NERDTreeClose :call s:CloseTreeIfOpen()
@@ -168,9 +168,9 @@ function! s:oTreeFileNode.CacheParent() dict
         let self.parent = s:oTreeFileNode.New(parentPath)
     endif
 endfunction
-"FUNCTION: oTreeFileNode.CompareNodes {{{3 
+"FUNCTION: oTreeFileNode.CompareNodes {{{3
 "This is supposed to be a class level method but i cant figure out how to
-"get func refs to work from a dict.. 
+"get func refs to work from a dict..
 "
 "A class level method that compares two nodes
 "
@@ -180,7 +180,7 @@ function! s:CompareNodes(n1, n2)
     return a:n1.path.CompareTo(a:n2.path)
 endfunction
 
-"FUNCTION: oTreeFileNode.Copy(dest) {{{3 
+"FUNCTION: oTreeFileNode.Copy(dest) {{{3
 function! s:oTreeFileNode.Copy(dest) dict
     call self.path.Copy(a:dest)
     let newPath = s:oPath.New(a:dest)
@@ -191,14 +191,14 @@ function! s:oTreeFileNode.Copy(dest) dict
     return parent.FindNode(newPath)
 endfunction
 
-"FUNCTION: oTreeFileNode.Delete {{{3 
+"FUNCTION: oTreeFileNode.Delete {{{3
 "Removes this node from the tree and calls the Delete method for its path obj
 function! s:oTreeFileNode.Delete() dict
     call self.path.Delete()
     call self.parent.RemoveChild(self)
 endfunction
 
-"FUNCTION: oTreeFileNode.Equals(treenode) {{{3 
+"FUNCTION: oTreeFileNode.Equals(treenode) {{{3
 "
 "Compares this treenode to the input treenode and returns 1 if they are the
 "same node.
@@ -212,7 +212,7 @@ function! s:oTreeFileNode.Equals(treenode) dict
     return self.path.Str(1) == a:treenode.path.Str(1)
 endfunction
 
-"FUNCTION: oTreeFileNode.FindNode(path) {{{3 
+"FUNCTION: oTreeFileNode.FindNode(path) {{{3
 "Returns self if this node.path.Equals the given path.
 "Returns {} if not equal.
 "
@@ -224,7 +224,7 @@ function! s:oTreeFileNode.FindNode(path) dict
     endif
     return {}
 endfunction
-"FUNCTION: oTreeFileNode.FindOpenDirSiblingWithChildren(direction) {{{3 
+"FUNCTION: oTreeFileNode.FindOpenDirSiblingWithChildren(direction) {{{3
 "
 "Finds the next sibling for this node in the indicated direction. This sibling
 "must be a directory and may/may not have children as specified.
@@ -235,7 +235,7 @@ endfunction
 "Return:
 "a treenode object or {} if no appropriate sibling could be found
 function! s:oTreeFileNode.FindOpenDirSiblingWithChildren(direction) dict
-    "if we have no parent then we can have no siblings 
+    "if we have no parent then we can have no siblings
     if self.parent != {}
         let nextSibling = self.FindSibling(a:direction)
 
@@ -249,9 +249,9 @@ function! s:oTreeFileNode.FindOpenDirSiblingWithChildren(direction) dict
 
     return {}
 endfunction
-"FUNCTION: oTreeFileNode.FindSibling(direction) {{{3 
+"FUNCTION: oTreeFileNode.FindSibling(direction) {{{3
 "
-"Finds the next sibling for this node in the indicated direction  
+"Finds the next sibling for this node in the indicated direction
 "
 "Args:
 "direction: 0 if you want to find the previous sibling, 1 for the next sibling
@@ -259,17 +259,17 @@ endfunction
 "Return:
 "a treenode object or {} if no sibling could be found
 function! s:oTreeFileNode.FindSibling(direction) dict
-    "if we have no parent then we can have no siblings 
+    "if we have no parent then we can have no siblings
     if self.parent != {}
 
-        "get the index of this node in its parents children 
+        "get the index of this node in its parents children
         let siblingIndx = self.parent.GetChildIndex(self.path)
 
         if siblingIndx != -1
-            "move a long to the next potential sibling node 
+            "move a long to the next potential sibling node
             let siblingIndx = a:direction == 1 ? siblingIndx+1 : siblingIndx-1
 
-            "keep moving along to the next sibling till we find one that is valid 
+            "keep moving along to the next sibling till we find one that is valid
             let numSiblings = self.parent.GetChildCount()
             while siblingIndx >= 0 && siblingIndx < numSiblings
 
@@ -279,7 +279,7 @@ function! s:oTreeFileNode.FindSibling(direction) dict
                     return self.parent.children[siblingIndx]
                 endif
 
-                "go to next node 
+                "go to next node
                 let siblingIndx = a:direction == 1 ? siblingIndx+1 : siblingIndx-1
             endwhile
         endif
@@ -288,7 +288,7 @@ function! s:oTreeFileNode.FindSibling(direction) dict
     return {}
 endfunction
 
-"FUNCTION: oTreeFileNode.IsVisible() {{{3 
+"FUNCTION: oTreeFileNode.IsVisible() {{{3
 "returns 1 if this node should be visible according to the tree filters and
 "hidden file filters (and their on/off status)
 function! s:oTreeFileNode.IsVisible() dict
@@ -296,8 +296,8 @@ function! s:oTreeFileNode.IsVisible() dict
 endfunction
 
 
-"FUNCTION: oTreeFileNode.IsRoot() {{{3 
-"returns 1 if this node is t:NERDTreeRoot 
+"FUNCTION: oTreeFileNode.IsRoot() {{{3
+"returns 1 if this node is t:NERDTreeRoot
 function! s:oTreeFileNode.IsRoot() dict
     if !s:TreeExistsForTab()
         throw "NERDTree.TreeFileNode.IsRoot exception: No tree exists for the current tab"
@@ -322,7 +322,7 @@ function! s:oTreeFileNode.MakeRoot() dict
         exec "cd " . t:NERDTreeRoot.path.StrForEditCmd()
     endif
 endfunction
-"FUNCTION: oTreeFileNode.New(path) {{{3 
+"FUNCTION: oTreeFileNode.New(path) {{{3
 "Returns a new TreeNode object with the given path and parent
 "
 "Args:
@@ -339,8 +339,8 @@ function! s:oTreeFileNode.New(path) dict
     endif
 endfunction
 
-"FUNCTION: oTreeFileNode.Rename {{{3 
-"Calls the rename method for this nodes path obj 
+"FUNCTION: oTreeFileNode.Rename {{{3
+"Calls the rename method for this nodes path obj
 function! s:oTreeFileNode.Rename(newName) dict
     let newName = substitute(a:newName, '\(\\\|\/\)$', '', '')
     call self.path.Rename(newName)
@@ -353,7 +353,7 @@ function! s:oTreeFileNode.Rename(newName) dict
         call newParent.CreateChild(self.path, 1)
     endif
 endfunction
-"FUNCTION: oTreeFileNode.StrDisplay() {{{3 
+"FUNCTION: oTreeFileNode.StrDisplay() {{{3
 "
 "Returns a string that specifies how the node should be represented as a
 "string
@@ -370,7 +370,7 @@ endfunction
 "classes.
 "============================================================
 let s:oTreeDirNode = copy(s:oTreeFileNode)
-"FUNCTION: oTreeDirNode.AddChild(treenode, inOrder) {{{3 
+"FUNCTION: oTreeDirNode.AddChild(treenode, inOrder) {{{3
 "Adds the given treenode to the list of children for this node
 "
 "Args:
@@ -385,14 +385,14 @@ function! s:oTreeDirNode.AddChild(treenode, inOrder) dict
     endif
 endfunction
 
-"FUNCTION: oTreeDirNode.Close {{{3 
+"FUNCTION: oTreeDirNode.Close {{{3
 "Closes this directory
 function! s:oTreeDirNode.Close() dict
     let self.isOpen = 0
 endfunction
 
-"FUNCTION: oTreeDirNode.CloseChildren {{{3 
-"Closes all the child dir nodes of this node 
+"FUNCTION: oTreeDirNode.CloseChildren {{{3
+"Closes all the child dir nodes of this node
 function! s:oTreeDirNode.CloseChildren() dict
     for i in self.children
         if i.path.isDirectory
@@ -402,7 +402,7 @@ function! s:oTreeDirNode.CloseChildren() dict
     endfor
 endfunction
 
-"FUNCTION: oTreeDirNode.CreateChild(path, inOrder) {{{3 
+"FUNCTION: oTreeDirNode.CreateChild(path, inOrder) {{{3
 "Instantiates a new child node for this node with the given path. The new
 "nodes parent is set to this node.
 "
@@ -418,7 +418,7 @@ function! s:oTreeDirNode.CreateChild(path, inOrder) dict
     return newTreeNode
 endfunction
 
-"FUNCTION: oTreeDirNode.FindNode(path) {{{3 
+"FUNCTION: oTreeDirNode.FindNode(path) {{{3
 "Will find one of the children (recursively) that has the given path
 "
 "Args:
@@ -443,13 +443,13 @@ function! s:oTreeDirNode.FindNode(path) dict
     return {}
 endfunction
 
-"FUNCTION: oTreeDirNode.GetChildDirs() {{{3 
+"FUNCTION: oTreeDirNode.GetChildDirs() {{{3
 "Returns the number of children this node has
 function! s:oTreeDirNode.GetChildCount() dict
     return len(self.children)
 endfunction
 
-"FUNCTION: oTreeDirNode.GetChildDirs() {{{3 
+"FUNCTION: oTreeDirNode.GetChildDirs() {{{3
 "Returns an array of all children of this node that are directories
 "
 "Return:
@@ -464,7 +464,7 @@ function! s:oTreeDirNode.GetChildDirs() dict
     return toReturn
 endfunction
 
-"FUNCTION: oTreeDirNode.GetChildFiles() {{{3 
+"FUNCTION: oTreeDirNode.GetChildFiles() {{{3
 "Returns an array of all children of this node that are files
 "
 "Return:
@@ -479,7 +479,7 @@ function! s:oTreeDirNode.GetChildFiles() dict
     return toReturn
 endfunction
 
-"FUNCTION: oTreeDirNode.GetChild(path) {{{3 
+"FUNCTION: oTreeDirNode.GetChild(path) {{{3
 "Returns child node of this node that has the given path or {} if no such node
 "exists.
 "
@@ -501,7 +501,7 @@ function! s:oTreeDirNode.GetChild(path) dict
 
 endfunction
 
-"FUNCTION: oTreeDirNode.GetChildByIndex(indx, visible) {{{3 
+"FUNCTION: oTreeDirNode.GetChildByIndex(indx, visible) {{{3
 "returns the child at the given index
 "Args:
 "indx: the index to get the child from
@@ -515,7 +515,7 @@ function! s:oTreeDirNode.GetChildByIndex(indx, visible) dict
     return array_to_search[a:indx]
 endfunction
 
-"FUNCTION: oTreeDirNode.GetChildIndex(path) {{{3 
+"FUNCTION: oTreeDirNode.GetChildIndex(path) {{{3
 "Returns the index of the child node of this node that has the given path or
 "-1 if no such node exists.
 "
@@ -528,7 +528,7 @@ function! s:oTreeDirNode.GetChildIndex(path) dict
         return -1
     endif
 
-    "do a binary search for the child 
+    "do a binary search for the child
     let a = 0
     let z = self.GetChildCount()
     while a < z
@@ -546,13 +546,13 @@ function! s:oTreeDirNode.GetChildIndex(path) dict
     return -1
 endfunction
 
-"FUNCTION: oTreeDirNode.GetVisibleChildCount() {{{3 
+"FUNCTION: oTreeDirNode.GetVisibleChildCount() {{{3
 "Returns the number of visible children this node has
 function! s:oTreeDirNode.GetVisibleChildCount() dict
     return len(self.GetVisibleChildren())
 endfunction
 
-"FUNCTION: oTreeDirNode.GetVisibleChildren() {{{3 
+"FUNCTION: oTreeDirNode.GetVisibleChildren() {{{3
 "Returns a list of children to display for this node, in the correct order
 "
 "Return:
@@ -567,13 +567,13 @@ function! s:oTreeDirNode.GetVisibleChildren() dict
     return toReturn
 endfunction
 
-"FUNCTION: oTreeDirNode.HasVisibleChildren {{{3 
+"FUNCTION: oTreeDirNode.HasVisibleChildren {{{3
 "returns 1 if this node has any childre, 0 otherwise..
 function! s:oTreeDirNode.HasVisibleChildren()
     return self.GetChildCount() != 0
 endfunction
 
-"FUNCTION: oTreeDirNode.InitChildren {{{3 
+"FUNCTION: oTreeDirNode.InitChildren {{{3
 "Removes all childen from this node and re-reads them
 "
 "Args:
@@ -582,10 +582,10 @@ endfunction
 "
 "Return: the number of child nodes read
 function! s:oTreeDirNode.InitChildren(silent) dict
-    "remove all the current child nodes 
+    "remove all the current child nodes
     let self.children = []
 
-    "get an array of all the files in the nodes dir 
+    "get an array of all the files in the nodes dir
     let dir = self.path
     let filesStr = globpath(dir.StrForGlob(), '*') . "\n" . globpath(dir.StrForGlob(), '.*')
     let files = split(filesStr, "\n")
@@ -602,7 +602,7 @@ function! s:oTreeDirNode.InitChildren(silent) dict
         "../ for path with strange chars (eg $)
         if i !~ '\.\.\/\?$' && i !~ '\.\/\?$'
 
-            "put the next file in a new node and attach it 
+            "put the next file in a new node and attach it
             try
                 let path = s:oPath.New(i)
                 call self.CreateChild(path, 0)
@@ -623,7 +623,7 @@ function! s:oTreeDirNode.InitChildren(silent) dict
     endif
     return self.GetChildCount()
 endfunction
-"FUNCTION: oTreeDirNode.New(path) {{{3 
+"FUNCTION: oTreeDirNode.New(path) {{{3
 "Returns a new TreeNode object with the given path and parent
 "
 "Args:
@@ -644,7 +644,7 @@ function! s:oTreeDirNode.New(path) dict
 
     return newTreeNode
 endfunction
-"FUNCTION: oTreeDirNode.Open {{{3 
+"FUNCTION: oTreeDirNode.Open {{{3
 "Reads in all this nodes children
 "
 "Return: the number of child nodes read
@@ -657,7 +657,7 @@ function! s:oTreeDirNode.Open() dict
     endif
 endfunction
 
-"FUNCTION: oTreeDirNode.OpenRecursively {{{3 
+"FUNCTION: oTreeDirNode.OpenRecursively {{{3
 "Opens this treenode and all of its children whose paths arent 'ignored'
 "because of the file filters.
 "
@@ -667,7 +667,7 @@ function! s:oTreeDirNode.OpenRecursively() dict
     call self.OpenRecursively2(1)
 endfunction
 
-"FUNCTION: oTreeDirNode.OpenRecursively2 {{{3 
+"FUNCTION: oTreeDirNode.OpenRecursively2 {{{3
 "Dont call this method from outside this object.
 "
 "Opens this all children of this treenode recursively if either:
@@ -685,18 +685,18 @@ function! s:oTreeDirNode.OpenRecursively2(forceOpen) dict
 
         for i in self.children
             if i.path.isDirectory == 1
-                call i.OpenRecursively2(0) 
+                call i.OpenRecursively2(0)
             endif
         endfor
     endif
 endfunction
 
-"FUNCTION: oTreeDirNode.Refresh {{{3 
+"FUNCTION: oTreeDirNode.Refresh {{{3
 function! s:oTreeDirNode.Refresh() dict
     let newChildNodes = []
     let invalidFilesFound = 0
 
-    "go thru all the files/dirs under this node 
+    "go thru all the files/dirs under this node
     let dir = self.path
     let filesStr = globpath(dir.StrForGlob(), '*') . "\n" . globpath(dir.StrForGlob(), '.*')
     let files = split(filesStr, "\n")
@@ -704,24 +704,24 @@ function! s:oTreeDirNode.Refresh() dict
         if i !~ '\.\.$' && i !~ '\.$'
 
             try
-                "create a new path and see if it exists in this nodes children 
+                "create a new path and see if it exists in this nodes children
                 let path = s:oPath.New(i)
                 let newNode = self.GetChild(path)
-                if newNode != {} 
+                if newNode != {}
 
                     "if the existing node is a dir can be refreshed then
-                    "refresh it   
+                    "refresh it
                     if newNode.path.isDirectory && (!empty(newNode.children) || newNode.isOpen == 1)
                         call newNode.Refresh()
 
-                    "if we have a filenode then refresh the path 
+                    "if we have a filenode then refresh the path
                     elseif newNode.path.isDirectory == 0
                         call newNode.path.Refresh()
                     endif
 
                     call add(newChildNodes, newNode)
 
-                "the node doesnt exist so create it 
+                "the node doesnt exist so create it
                 else
                     let newNode = s:oTreeFileNode.New(path)
                     let newNode.parent = self
@@ -735,16 +735,16 @@ function! s:oTreeDirNode.Refresh() dict
         endif
     endfor
 
-    "swap this nodes children out for the children we just read/refreshed 
+    "swap this nodes children out for the children we just read/refreshed
     let self.children = newChildNodes
     call self.SortChildren()
-    
+
     if invalidFilesFound
         call s:EchoWarning("some files could not be loaded into the NERD tree")
     endif
 endfunction
 
-"FUNCTION: oTreeDirNode.RemoveChild {{{3 
+"FUNCTION: oTreeDirNode.RemoveChild {{{3
 "
 "Removes the given treenode from this nodes set of children
 "
@@ -763,7 +763,7 @@ function! s:oTreeDirNode.RemoveChild(treenode) dict
     throw "NERDTree.TreeDirNode exception: child node was not found"
 endfunction
 
-"FUNCTION: oTreeDirNode.SortChildren {{{3 
+"FUNCTION: oTreeDirNode.SortChildren {{{3
 "
 "Sorts the children of this node according to alphabetical order and the
 "directory priority.
@@ -773,7 +773,7 @@ function! s:oTreeDirNode.SortChildren() dict
     call sort(self.children, CompareFunc)
 endfunction
 
-"FUNCTION: oTreeDirNode.ToggleOpen {{{3 
+"FUNCTION: oTreeDirNode.ToggleOpen {{{3
 "Opens this directory if it is closed and vice versa
 function! s:oTreeDirNode.ToggleOpen() dict
     if self.isOpen == 1
@@ -783,13 +783,13 @@ function! s:oTreeDirNode.ToggleOpen() dict
     endif
 endfunction
 
-"FUNCTION: oTreeDirNode.TransplantChild(newNode) {{{3 
+"FUNCTION: oTreeDirNode.TransplantChild(newNode) {{{3
 "Replaces the child of this with the given node (where the child node's full
 "path matches a:newNode's fullpath). The search for the matching node is
 "non-recursive
 "
 "Arg:
-"newNode: the node to graft into the tree 
+"newNode: the node to graft into the tree
 function! s:oTreeDirNode.TransplantChild(newNode) dict
     for i in range(0, self.GetChildCount()-1)
         if self.children[i].Equals(a:newNode)
@@ -802,9 +802,9 @@ endfunction
 "============================================================
 "CLASS: oPath {{{2
 "============================================================
-let s:oPath = {} 
+let s:oPath = {}
 let oPath = s:oPath
-"FUNCTION: oPath.ChangeToDir() {{{3 
+"FUNCTION: oPath.ChangeToDir() {{{3
 function! s:oPath.ChangeToDir() dict
     let dir = self.StrForCd()
     if self.isDirectory == 0
@@ -819,7 +819,7 @@ function! s:oPath.ChangeToDir() dict
     endtry
 endfunction
 
-"FUNCTION: oPath.ChopTrailingSlash(str) {{{3 
+"FUNCTION: oPath.ChopTrailingSlash(str) {{{3
 function! s:oPath.ChopTrailingSlash(str) dict
     if a:str =~ '\/$'
         return substitute(a:str, "\/$", "", "")
@@ -828,7 +828,7 @@ function! s:oPath.ChopTrailingSlash(str) dict
     endif
 endfunction
 
-"FUNCTION: oPath.CompareTo() {{{3 
+"FUNCTION: oPath.CompareTo() {{{3
 "
 "Compares this oPath to the given path and returns 0 if they are equal, -1 if
 "this oPath is "less than" the given path, or 1 if it is "greater".
@@ -842,23 +842,23 @@ function! s:oPath.CompareTo(path) dict
     let thisPath = self.GetLastPathComponent(1)
     let thatPath = a:path.GetLastPathComponent(1)
 
-    "if the paths are the same then clearly we return 0 
+    "if the paths are the same then clearly we return 0
     if thisPath == thatPath
         return 0
     endif
 
     let thisSS = self.GetSortOrderIndex()
     let thatSS = a:path.GetSortOrderIndex()
-    
+
     "compare the sort sequences, if they are different then the return
-    "value is easy 
+    "value is easy
     if thisSS < thatSS
         return -1
-    elseif thisSS > thatSS 
+    elseif thisSS > thatSS
         return 1
     else
         "if the sort sequences are the same then compare the paths
-        "alphabetically 
+        "alphabetically
         let pathCompare = g:NERDTreeCaseSensitiveSort ? thisPath <# thatPath : thisPath <? thatPath
         if pathCompare
             return -1
@@ -868,7 +868,7 @@ function! s:oPath.CompareTo(path) dict
     endif
 endfunction
 
-"FUNCTION: oPath.Create(fullpath) {{{3 
+"FUNCTION: oPath.Create(fullpath) {{{3
 "
 "Factory method.
 "
@@ -879,21 +879,21 @@ endfunction
 "Args:
 "fullpath: the full filesystem path to the file/dir to create
 function! s:oPath.Create(fullpath) dict
-    "bail if the a:fullpath already exists 
+    "bail if the a:fullpath already exists
     if isdirectory(a:fullpath) || filereadable(a:fullpath)
         throw "NERDTree.Path.Exists Exception: Directory Exists: '" . a:fullpath . "'"
     endif
 
-    try 
+    try
 
-        "if it ends with a slash, assume its a dir create it 
+        "if it ends with a slash, assume its a dir create it
         if a:fullpath =~ '\(\\\|\/\)$'
-            "whack the trailing slash off the end if it exists 
+            "whack the trailing slash off the end if it exists
             let fullpath = substitute(a:fullpath, '\(\\\|\/\)$', '', '')
 
             call mkdir(fullpath, 'p')
 
-        "assume its a file and create 
+        "assume its a file and create
         else
             call writefile([], a:fullpath)
         endif
@@ -904,7 +904,7 @@ function! s:oPath.Create(fullpath) dict
     return s:oPath.New(a:fullpath)
 endfunction
 
-"FUNCTION: oPath.Copy(dest) {{{3 
+"FUNCTION: oPath.Copy(dest) {{{3
 "
 "Copies the file/dir represented by this Path to the given location
 "
@@ -924,7 +924,7 @@ function! s:oPath.Copy(dest) dict
     endif
 endfunction
 
-"FUNCTION: oPath.CopyingSupported() {{{3 
+"FUNCTION: oPath.CopyingSupported() {{{3
 "
 "returns 1 if copying is supported for this OS
 function! s:oPath.CopyingSupported() dict
@@ -932,7 +932,7 @@ function! s:oPath.CopyingSupported() dict
 endfunction
 
 
-"FUNCTION: oPath.CopyingWillOverwrite(dest) {{{3 
+"FUNCTION: oPath.CopyingWillOverwrite(dest) {{{3
 "
 "returns 1 if copy this path to the given location will cause files to
 "overwritten
@@ -952,18 +952,18 @@ function! s:oPath.CopyingWillOverwrite(dest) dict
     endif
 endfunction
 
-"FUNCTION: oPath.Delete() {{{3 
+"FUNCTION: oPath.Delete() {{{3
 "
 "Deletes the file represented by this path.
 "Deletion of directories is not supported
 "
 "Throws NERDTree.Path.Deletion exceptions
 function! s:oPath.Delete() dict
-    if self.isDirectory 
+    if self.isDirectory
 
         let cmd = ""
         if s:running_windows
-            "if we are runnnig windows then put quotes around the pathstring 
+            "if we are runnnig windows then put quotes around the pathstring
             let cmd = g:NERDTreeRemoveDirCmd . self.StrForOS(1)
         else
             let cmd = g:NERDTreeRemoveDirCmd . self.StrForOS(1)
@@ -981,7 +981,7 @@ function! s:oPath.Delete() dict
     endif
 endfunction
 
-"FUNCTION: oPath.ExtractDriveLetter(fullpath) {{{3 
+"FUNCTION: oPath.ExtractDriveLetter(fullpath) {{{3
 "
 "If running windows, cache the drive letter for this path
 function! s:oPath.ExtractDriveLetter(fullpath) dict
@@ -992,7 +992,7 @@ function! s:oPath.ExtractDriveLetter(fullpath) dict
     endif
 
 endfunction
-"FUNCTION: oPath.GetDir() {{{3 
+"FUNCTION: oPath.GetDir() {{{3
 "
 "Returns this path if it is a directory, else this paths parent.
 "
@@ -1007,7 +1007,7 @@ function! s:oPath.GetDir() dict
 endfunction
 
 
-"FUNCTION: oPath.GetParent() {{{3 
+"FUNCTION: oPath.GetParent() {{{3
 "
 "Returns a new path object for this paths parent
 "
@@ -1017,9 +1017,9 @@ function! s:oPath.GetParent() dict
     let path = '/'. join(self.pathSegments[0:-2], '/')
     return s:oPath.New(path)
 endfunction
-"FUNCTION: oPath.GetLastPathComponent(dirSlash) {{{3 
+"FUNCTION: oPath.GetLastPathComponent(dirSlash) {{{3
 "
-"Gets the last part of this path.   
+"Gets the last part of this path.
 "
 "Args:
 "dirSlash: if 1 then a trailing slash will be added to the returned value for
@@ -1035,14 +1035,14 @@ function! s:oPath.GetLastPathComponent(dirSlash) dict
     return toReturn
 endfunction
 
-"FUNCTION: oPath.GetPathTrunk() {{{3 
+"FUNCTION: oPath.GetPathTrunk() {{{3
 "Gets the path without the last segment on the end.
 function! s:oPath.GetPathTrunk() dict
     return s:oPath.New(self.StrTrunk())
 endfunction
 
-"FUNCTION: oPath.GetSortOrderIndex() {{{3 
-"returns the index of the pattern in g:NERDTreeSortOrder that this path matches 
+"FUNCTION: oPath.GetSortOrderIndex() {{{3
+"returns the index of the pattern in g:NERDTreeSortOrder that this path matches
 function! s:oPath.GetSortOrderIndex() dict
     let i = 0
     while i < len(g:NERDTreeSortOrder)
@@ -1054,12 +1054,12 @@ function! s:oPath.GetSortOrderIndex() dict
     return s:NERDTreeSortStarIndex
 endfunction
 
-"FUNCTION: oPath.Ignore() {{{3 
+"FUNCTION: oPath.Ignore() {{{3
 "returns true if this path should be ignored
 function! s:oPath.Ignore() dict
     let lastPathComponent = self.GetLastPathComponent(0)
 
-    "filter out the user specified paths to ignore 
+    "filter out the user specified paths to ignore
     if t:NERDTreeIgnoreEnabled
         for i in g:NERDTreeIgnore
             if lastPathComponent =~ i
@@ -1068,7 +1068,7 @@ function! s:oPath.Ignore() dict
         endfor
     endif
 
-    "dont show hidden files unless instructed to 
+    "dont show hidden files unless instructed to
     if g:NERDTreeShowHidden == 0 && lastPathComponent =~ '^\.'
         return 1
     endif
@@ -1080,7 +1080,7 @@ function! s:oPath.Ignore() dict
     return 0
 endfunction
 
-"FUNCTION: oPath.JoinPathStrings(...) {{{3 
+"FUNCTION: oPath.JoinPathStrings(...) {{{3
 function! s:oPath.JoinPathStrings(...) dict
     let components = []
     for i in a:000
@@ -1089,7 +1089,7 @@ function! s:oPath.JoinPathStrings(...) dict
     return '/' . join(components, '/')
 endfunction
 
-"FUNCTION: oPath.Equals() {{{3 
+"FUNCTION: oPath.Equals() {{{3
 "
 "Determines whether 2 path objects are "equal".
 "They are equal if the paths they represent are the same
@@ -1111,7 +1111,7 @@ function! s:oPath.MarkNames() dict
     endfor
     return toReturn
 endfunction
-"FUNCTION: oPath.New() {{{3 
+"FUNCTION: oPath.New() {{{3
 "
 "The Constructor for the Path object
 "Throws NERDTree.Path.InvalidArguments exception.
@@ -1123,7 +1123,7 @@ function! s:oPath.New(fullpath) dict
     return newPath
 endfunction
 
-"FUNCTION: oPath.ReadInfoFromDisk(fullpath) {{{3 
+"FUNCTION: oPath.ReadInfoFromDisk(fullpath) {{{3
 "
 "
 "Throws NERDTree.Path.InvalidArguments exception.
@@ -1144,22 +1144,22 @@ function! s:oPath.ReadInfoFromDisk(fullpath) dict
         throw "NERDTree.Path.InvalidArguments Exception: Invalid path = " . a:fullpath
     endif
 
-    "grab the last part of the path (minus the trailing slash) 
+    "grab the last part of the path (minus the trailing slash)
     let lastPathComponent = self.GetLastPathComponent(0)
 
-    "get the path to the new node with the parent dir fully resolved 
+    "get the path to the new node with the parent dir fully resolved
     let hardPath = resolve(self.StrTrunk()) . '/' . lastPathComponent
 
-    "if  the last part of the path is a symlink then flag it as such 
+    "if  the last part of the path is a symlink then flag it as such
     let self.isSymLink = (resolve(hardPath) != hardPath)
     if self.isSymLink
         let self.symLinkDest = resolve(fullpath)
 
-        "if the link is a dir then slap a / on the end of its dest 
-        if isdirectory(self.symLinkDest) 
-            
+        "if the link is a dir then slap a / on the end of its dest
+        if isdirectory(self.symLinkDest)
+
             "we always wanna treat MS windows shortcuts as files for
-            "simplicity 
+            "simplicity
             if hardPath !~ '\.lnk$'
 
                 let self.symLinkDest = self.symLinkDest . '/'
@@ -1168,12 +1168,12 @@ function! s:oPath.ReadInfoFromDisk(fullpath) dict
     endif
 endfunction
 
-"FUNCTION: oPath.Refresh() {{{3 
+"FUNCTION: oPath.Refresh() {{{3
 function! s:oPath.Refresh() dict
     call self.ReadInfoFromDisk(self.StrForOS(0))
 endfunction
 
-"FUNCTION: oPath.Rename() {{{3 
+"FUNCTION: oPath.Rename() {{{3
 "
 "Renames this node on the filesystem
 function! s:oPath.Rename(newPath) dict
@@ -1188,12 +1188,12 @@ function! s:oPath.Rename(newPath) dict
     call self.ReadInfoFromDisk(a:newPath)
 endfunction
 
-"FUNCTION: oPath.Str(esc) {{{3 
+"FUNCTION: oPath.Str(esc) {{{3
 "
 "Gets the actual string path that this obj represents.
 "
 "Args:
-"esc: if 1 then all the tricky chars in the returned string will be escaped      
+"esc: if 1 then all the tricky chars in the returned string will be escaped
 function! s:oPath.Str(esc) dict
     let toReturn = '/' . join(self.pathSegments, '/')
     if self.isDirectory && toReturn != '/'
@@ -1206,7 +1206,7 @@ function! s:oPath.Str(esc) dict
     return toReturn
 endfunction
 
-"FUNCTION: oPath.StrAbs() {{{3 
+"FUNCTION: oPath.StrAbs() {{{3
 "
 "Returns a string representing this path with all the symlinks resolved
 "
@@ -1229,7 +1229,7 @@ function! s:oPath.StrForCd() dict
         return self.StrForOS(1)
     endif
 endfunction
-"FUNCTION: oPath.StrDisplay() {{{3 
+"FUNCTION: oPath.StrDisplay() {{{3
 "
 "Returns a string that specifies how the path should be represented as a
 "string
@@ -1255,7 +1255,7 @@ function! s:oPath.StrDisplay() dict
     return toReturn
 endfunction
 
-"FUNCTION: oPath.StrForEditCmd() {{{3 
+"FUNCTION: oPath.StrForEditCmd() {{{3
 "
 "Return: the string for this path that is suitable to be used with the :edit
 "command
@@ -1283,19 +1283,19 @@ function! s:oPath.StrForGlob() dict
     endif
     return toReturn
 endfunction
-"FUNCTION: oPath.StrForOS(esc) {{{3 
+"FUNCTION: oPath.StrForOS(esc) {{{3
 "
 "Gets the string path for this path object that is appropriate for the OS.
 "EG, in windows c:\foo\bar
 "    in *nix  /foo/bar
 "
-"Args: 
+"Args:
 "esc: if 1 then all the tricky chars in the returned string will be
 " escaped. If we are running windows then the str is double quoted instead.
 function! s:oPath.StrForOS(esc) dict
     let lead = s:os_slash
 
-    "if we are running windows then slap a drive letter on the front 
+    "if we are running windows then slap a drive letter on the front
     if s:running_windows
         let lead = self.drive . '\'
     endif
@@ -1312,7 +1312,7 @@ function! s:oPath.StrForOS(esc) dict
     return toReturn
 endfunction
 
-"FUNCTION: oPath.StrTrunk() {{{3 
+"FUNCTION: oPath.StrTrunk() {{{3
 "Gets the path without the last segment on the end.
 function! s:oPath.StrTrunk() dict
     return self.drive . '/' . join(self.pathSegments[0:-2], '/')
@@ -1335,7 +1335,7 @@ function! s:oPath.WinToUnixPath(pathstr) dict
     "remove the x:\ of the front
     let toReturn = substitute(toReturn, '^.*:\(\\\|/\)\?', '/', "")
 
-    "convert all \ chars to / 
+    "convert all \ chars to /
     let toReturn = substitute(toReturn, '\', '/', "g")
 
     return toReturn
@@ -1345,7 +1345,7 @@ endfunction
 "============================================================
 "FUNCTION: s:Abs(num){{{2
 "returns the absolute value of the input
-function! s:Abs(num) 
+function! s:Abs(num)
     if a:num > 0
         return a:num
     else
@@ -1363,12 +1363,12 @@ function! s:AbsoluteTreeRoot()
 endfunction
 "FUNCTION: s:BufInWindows(bnum){{{2
 "[[STOLEN FROM VTREEEXPLORER.VIM]]
-"Determine the number of windows open to this buffer number. 
-"Care of Yegappan Lakshman.  Thanks! 
+"Determine the number of windows open to this buffer number.
+"Care of Yegappan Lakshman.  Thanks!
 "
 "Args:
 "bnum: the subject buffers buffer number
-function! s:BufInWindows(bnum) 
+function! s:BufInWindows(bnum)
     let cnt = 0
     let winnum = 1
     while 1
@@ -1411,7 +1411,7 @@ function! s:GetNodeForMark(name, searchFromAbsoluteRoot)
     endif
     return targetNode
 endfunction
-"FUNCTION: s:InitNerdTree(dir) {{{2 
+"FUNCTION: s:InitNerdTree(dir) {{{2
 "Initialized the NERD tree, where the root will be initialized with the given
 "directory
 "
@@ -1429,7 +1429,7 @@ function! s:InitNerdTree(dir)
     endif
 
     "if instructed to, then change the vim CWD to the dir the NERDTree is
-    "inited in 
+    "inited in
     if g:NERDTreeChDirMode != 0
         exec 'cd ' . path.StrForCd()
     endif
@@ -1501,7 +1501,7 @@ function! NERDTreeGetCurrentNode()
     if !s:TreeExistsForTab() || !s:IsTreeOpen()
         throw "NERDTree.NoTreeForTab exception: there is no NERD tree open for the current tab"
     endif
-    
+
     let winnr = winnr()
     if winnr != s:GetTreeWinNum()
         call s:PutCursorInTreeWin()
@@ -1516,7 +1516,7 @@ function! NERDTreeGetCurrentNode()
     return treenode
 endfunction
 
-"Returns the path object for the current node. 
+"Returns the path object for the current node.
 "
 "Subject to the same conditions as NERDTreeGetCurrentNode
 function! NERDTreeGetCurrentPath()
@@ -1530,7 +1530,7 @@ endfunction
 
 " SECTION: View Functions {{{1
 "============================================================
-"FUNCTION: s:CenterView() {{{2 
+"FUNCTION: s:CenterView() {{{2
 "centers the nerd tree window around the cursor (provided the nerd tree
 "options permit)
 function! s:CenterView()
@@ -1550,7 +1550,7 @@ function! s:CloseTreeIfOpen()
       call s:CloseTree()
    endif
 endfunction
-"FUNCTION: s:CloseTree() {{{2 
+"FUNCTION: s:CloseTree() {{{2
 "Closes the NERD tree window
 function! s:CloseTree()
     if !s:IsTreeOpen()
@@ -1566,14 +1566,14 @@ function! s:CloseTree()
     endif
 endfunction
 
-"FUNCTION: s:CreateTreeWin() {{{2 
+"FUNCTION: s:CreateTreeWin() {{{2
 "Inits the NERD tree window. ie. opens it, sizes it, sets all the local
 "options etc
 function! s:CreateTreeWin()
-    "create the nerd tree window 
+    "create the nerd tree window
     let splitLocation = g:NERDTreeWinPos ? "topleft " : "botright "
     let splitMode = g:NERDTreeSplitVertical ? "vertical " : ""
-    let splitSize = g:NERDTreeWinSize 
+    let splitSize = g:NERDTreeWinSize
     let t:NERDTreeWinName = localtime() . s:NERDTreeWinName
     let cmd = splitLocation . splitMode . splitSize . ' new ' . t:NERDTreeWinName
     silent! execute cmd
@@ -1583,7 +1583,7 @@ function! s:CreateTreeWin()
     "throwaway buffer options
     setlocal noswapfile
     setlocal buftype=nofile
-    setlocal bufhidden=delete 
+    setlocal bufhidden=delete
     setlocal nowrap
     setlocal foldcolumn=0
     setlocal nobuflisted
@@ -1613,7 +1613,7 @@ function! s:CreateTreeWin()
     endif
 endfunction
 
-"FUNCTION: s:DrawTree {{{2 
+"FUNCTION: s:DrawTree {{{2
 "Draws the given node recursively
 "
 "Args:
@@ -1645,7 +1645,7 @@ function! s:DrawTree(curNode, depth, drawText, vertMap, isLastChild)
         if a:isLastChild
             let treeParts = treeParts . s:tree_vert_last
         else
-            let treeParts = treeParts . s:tree_vert 
+            let treeParts = treeParts . s:tree_vert
         endif
 
 
@@ -1666,13 +1666,13 @@ function! s:DrawTree(curNode, depth, drawText, vertMap, isLastChild)
         call cursor(line(".")+1, col("."))
     endif
 
-    "if the node is an open dir, draw its children 
-    if a:curNode.path.isDirectory == 1 && a:curNode.isOpen == 1 
+    "if the node is an open dir, draw its children
+    if a:curNode.path.isDirectory == 1 && a:curNode.isOpen == 1
 
         let childNodesToDraw = a:curNode.GetVisibleChildren()
         if len(childNodesToDraw) > 0
 
-            "draw all the nodes children except the last 
+            "draw all the nodes children except the last
             let lastIndx = len(childNodesToDraw)-1
             if lastIndx > 0
                 for i in childNodesToDraw[0:lastIndx-1]
@@ -1680,7 +1680,7 @@ function! s:DrawTree(curNode, depth, drawText, vertMap, isLastChild)
                 endfor
             endif
 
-            "draw the last child, indicating that it IS the last 
+            "draw the last child, indicating that it IS the last
             call s:DrawTree(childNodesToDraw[lastIndx], a:depth + 1, 1, add(copy(a:vertMap), 0), 1)
         endif
     endif
@@ -1688,7 +1688,7 @@ endfunction
 
 
 "FUNCTION: s:DumpHelp  {{{2
-"prints out the quick help 
+"prints out the quick help
 function! s:DumpHelp()
     let old_h = @h
     if t:treeShowHelp == 1
@@ -1768,7 +1768,7 @@ function! s:Echo(msg)
 endfunction
 "FUNCTION: s:EchoWarning {{{2
 "Wrapper for s:Echo, sets the message type to warningmsg for this message
-"Args: 
+"Args:
 "msg: the message to echo
 function! s:EchoWarning(msg)
     echohl warningmsg
@@ -1777,7 +1777,7 @@ function! s:EchoWarning(msg)
 endfunction
 "FUNCTION: s:EchoError {{{2
 "Wrapper for s:Echo, sets the message type to errormsg for this message
-"Args: 
+"Args:
 "msg: the message to echo
 function! s:EchoError(msg)
     echohl errormsg
@@ -1795,17 +1795,17 @@ endfunction
 "
 "Args:
 "treenode: the node to find the line no. for
-function! s:FindNodeLineNumber(treenode) 
-    "if the node is the root then return the root line no. 
+function! s:FindNodeLineNumber(treenode)
+    "if the node is the root then return the root line no.
     if a:treenode.IsRoot()
         return s:FindRootNodeLineNumber()
     endif
 
     let totalLines = line("$")
 
-    "the path components we have matched so far 
+    "the path components we have matched so far
     let pathcomponents = [substitute(t:NERDTreeRoot.path.Str(0), '/ *$', '', '')]
-    "the index of the component we are searching for 
+    "the index of the component we are searching for
     let curPathComponent = 1
 
     let fullpath = a:treenode.path.Str(0)
@@ -1814,7 +1814,7 @@ function! s:FindNodeLineNumber(treenode)
     let lnum = s:FindRootNodeLineNumber()
     while lnum > 0
         let lnum = lnum + 1
-        "have we reached the bottom of the tree? 
+        "have we reached the bottom of the tree?
         if lnum == totalLines+1
             return -1
         endif
@@ -1826,7 +1826,7 @@ function! s:FindNodeLineNumber(treenode)
             let curLine = s:StripMarkupFromLine(curLine, 1)
 
             let curPath =  join(pathcomponents, '/') . '/' . curLine
-            if stridx(fullpath, curPath, 0) == 0 
+            if stridx(fullpath, curPath, 0) == 0
                 if fullpath == curPath || strpart(fullpath, len(curPath)-1,1) == '/'
                     let curLine = substitute(curLine, '/ *$', '', '')
                     call add(pathcomponents, curLine)
@@ -1843,8 +1843,8 @@ function! s:FindNodeLineNumber(treenode)
 endfunction
 
 "FUNCTION: s:FindRootNodeLineNumber(){{{2
-"Finds the line number of the root node  
-function! s:FindRootNodeLineNumber() 
+"Finds the line number of the root node
+function! s:FindRootNodeLineNumber()
     let rootLine = 1
     while getline(rootLine) !~ '^/'
         let rootLine = rootLine + 1
@@ -1860,7 +1860,7 @@ function! s:GetMarks()
     endif
     return g:NERDTreeMarks
 endfunction
-"FUNCTION: s:GetPath(ln) {{{2 
+"FUNCTION: s:GetPath(ln) {{{2
 "Gets the full path to the node that is rendered on the given line number
 "
 "Args:
@@ -1870,10 +1870,10 @@ endfunction
 "A path if a node was selected, {} if nothing is selected.
 "If the 'up a dir' line was selected then the path to the parent of the
 "current root is returned
-function! s:GetPath(ln) 
+function! s:GetPath(ln)
     let line = getline(a:ln)
 
-    "check to see if we have the root node 
+    "check to see if we have the root node
     if line =~ '^\/'
         return t:NERDTreeRoot.path
     endif
@@ -1887,16 +1887,16 @@ function! s:GetPath(ln)
         return t:NERDTreeRoot.path.GetParent()
     endif
 
-    "get the indent level for the file (i.e. how deep in the tree it is) 
+    "get the indent level for the file (i.e. how deep in the tree it is)
     "let indent = match(line,'[^-| `]') / s:tree_wid
     let indent = match(line, s:tree_markup_reg_neg) / s:tree_wid
 
 
-    "remove the tree parts and the leading space 
+    "remove the tree parts and the leading space
     let curFile = s:StripMarkupFromLine(line, 0)
 
     let wasdir = 0
-    if curFile =~ '/$' 
+    if curFile =~ '/$'
         let wasdir = 1
     endif
     let curFile = substitute (curFile,' -> .*',"","") " remove link to
@@ -1911,7 +1911,7 @@ function! s:GetPath(ln)
         let lnum = lnum - 1
         let curLine = getline(lnum)
 
-        "have we reached the top of the tree? 
+        "have we reached the top of the tree?
         if curLine =~ '^/'
             let sd = substitute (curLine, '[ ]*$', "", "")
             let dir = sd . dir
@@ -1921,8 +1921,8 @@ function! s:GetPath(ln)
             let lpindent = match(curLine,s:tree_markup_reg_neg) / s:tree_wid
             if lpindent < indent
                 let indent = indent - 1
-                let sd = substitute (curLine, '^' . s:tree_markup_reg . '*',"","") 
-                let sd = substitute (sd, ' -> .*', '',"") 
+                let sd = substitute (curLine, '^' . s:tree_markup_reg . '*',"","")
+                let sd = substitute (sd, ' -> .*', '',"")
 
                 " remove leading escape
                 let sd = substitute (sd,'^\\', "", "")
@@ -1935,12 +1935,12 @@ function! s:GetPath(ln)
     let curFile = t:NERDTreeRoot.path.drive . dir . curFile
     let toReturn = s:oPath.New(curFile)
     return toReturn
-endfunction 
+endfunction
 
-"FUNCTION: s:GetSelectedDir() {{{2 
+"FUNCTION: s:GetSelectedDir() {{{2
 "Returns the current node if it is a dir node, or else returns the current
 "nodes parent
-function! s:GetSelectedDir() 
+function! s:GetSelectedDir()
     let currentDir = s:GetSelectedNode()
     if currentDir != {} && !currentDir.IsRoot()
         if currentDir.path.isDirectory == 0
@@ -1949,10 +1949,10 @@ function! s:GetSelectedDir()
     endif
     return currentDir
 endfunction
-"FUNCTION: s:GetSelectedNode() {{{2 
+"FUNCTION: s:GetSelectedNode() {{{2
 "gets the treenode that the cursor is currently over
-function! s:GetSelectedNode() 
-    try 
+function! s:GetSelectedNode()
+    try
         let path = s:GetPath(line("."))
         if path == {}
             return {}
@@ -1964,7 +1964,7 @@ function! s:GetSelectedNode()
 endfunction
 "FUNCTION: s:GetTreeBufNum() {{{2
 "gets the nerd tree buffer number for this tab
-function! s:GetTreeBufNum() 
+function! s:GetTreeBufNum()
     if exists("t:NERDTreeWinName")
         return bufnr(t:NERDTreeWinName)
     else
@@ -1973,7 +1973,7 @@ function! s:GetTreeBufNum()
 endfunction
 "FUNCTION: s:GetTreeWinNum() {{{2
 "gets the nerd tree window number for this tab
-function! s:GetTreeWinNum() 
+function! s:GetTreeWinNum()
     if exists("t:NERDTreeWinName")
         return bufwinnr(t:NERDTreeWinName)
     else
@@ -1982,14 +1982,14 @@ function! s:GetTreeWinNum()
 endfunction
 
 "FUNCTION: s:IsTreeOpen() {{{2
-function! s:IsTreeOpen() 
+function! s:IsTreeOpen()
     return s:GetTreeWinNum() != -1
 endfunction
 
 " FUNCTION: s:JumpToChild(direction) {{{2
 " Args:
 " direction: 0 if going to first child, 1 if going to last
-function! s:JumpToChild(direction) 
+function! s:JumpToChild(direction)
     let currentNode = s:GetSelectedNode()
     if currentNode == {} || currentNode.IsRoot()
         call s:Echo("cannot jump to " . (a:direction ? "last" : "first") .  " child")
@@ -2005,7 +2005,7 @@ function! s:JumpToChild(direction)
 
     if targetNode.Equals(currentNode)
         let siblingDir = currentNode.parent.FindOpenDirSiblingWithChildren(a:direction)
-        if siblingDir != {} 
+        if siblingDir != {}
             let indx = a:direction ? siblingDir.GetVisibleChildCount()-1 : 0
             let targetNode = siblingDir.GetChildByIndex(indx, 1)
         endif
@@ -2023,7 +2023,7 @@ endfunction
 "
 "ARGS:
 "treenode: file node to open
-function! s:OpenDirNodeSplit(treenode) 
+function! s:OpenDirNodeSplit(treenode)
     if a:treenode.path.isDirectory == 1
         call s:OpenNodeSplit(a:treenode)
     endif
@@ -2035,7 +2035,7 @@ endfunction
 "
 "ARGS:
 "treenode: file node to open
-function! s:OpenFileNode(treenode) 
+function! s:OpenFileNode(treenode)
     call s:PutCursorInTreeWin()
 
     if s:ShouldSplitToOpen(winnr("#"))
@@ -2059,7 +2059,7 @@ endfunction
 "
 "ARGS:
 "treenode: file node to open
-function! s:OpenFileNodeSplit(treenode) 
+function! s:OpenFileNodeSplit(treenode)
     if a:treenode.path.isDirectory == 0
         try
             call s:OpenNodeSplit(a:treenode)
@@ -2074,7 +2074,7 @@ endfunction
 "
 "ARGS:
 "treenode: file node to open
-function! s:OpenNodeSplit(treenode) 
+function! s:OpenNodeSplit(treenode)
     call s:PutCursorInTreeWin()
 
     " Save the user's settings for splitbelow and splitright
@@ -2135,7 +2135,7 @@ function! s:OpenNodeSplit(treenode)
         call s:PutCursorInTreeWin()
         throw "NERDTree.view.FileOpen exception: ". a:treenode.path.Str(0) ." is already open and modified."
     catch /^Vim\%((\a\+)\)\=:/
-        do nothing 
+        do nothing
     endtry
 
     " resize the explorer window if it is larger than the requested size
@@ -2150,7 +2150,7 @@ function! s:OpenNodeSplit(treenode)
     " Restore splitmode settings
     let &splitbelow=savesplitbelow
     let &splitright=savesplitright
-endfunction 
+endfunction
 
 "FUNCTION: s:PromptToDelBuffer(bufnum, msg){{{2
 "prints out the given msg and, if the user responds by pushing 'y' then the
@@ -2160,7 +2160,7 @@ endfunction
 "bufnum: the buffer that may be deleted
 "msg: a message that will be echoed to the user asking them if they wish to
 "     del the buffer
-function! s:PromptToDelBuffer(bufnum, msg) 
+function! s:PromptToDelBuffer(bufnum, msg)
     echo a:msg
     if nr2char(getchar()) == 'y'
         exec "silent bdelete! " . a:bufnum
@@ -2197,7 +2197,7 @@ endfunction
 
 "FUNCTION: s:PutCursorInTreeWin(){{{2
 "Places the cursor in the nerd tree window
-function! s:PutCursorInTreeWin() 
+function! s:PutCursorInTreeWin()
     if !s:IsTreeOpen()
         throw "NERDTree.view.InvalidOperation Exception: No NERD tree window exists"
     endif
@@ -2205,7 +2205,7 @@ function! s:PutCursorInTreeWin()
     exec s:GetTreeWinNum() . "wincmd w"
 endfunction
 
-"FUNCTION: s:RenderView {{{2 
+"FUNCTION: s:RenderView {{{2
 "The entry function for rendering the tree. Renders the root then calls
 "s:DrawTree to draw the children of the root
 "
@@ -2221,30 +2221,30 @@ function! s:RenderView()
     let curCol = col(".")
     let topLine = line("w0")
 
-    "delete all lines in the buffer (being careful not to clobber a register)  
+    "delete all lines in the buffer (being careful not to clobber a register)
     :silent 1,$delete _
 
     call s:DumpHelp()
 
-    "delete the blank line before the help and add one after it 
+    "delete the blank line before the help and add one after it
     call setline(line(".")+1, " ")
     call cursor(line(".")+1, col("."))
 
-    "add the 'up a dir' line 
+    "add the 'up a dir' line
     call setline(line(".")+1, s:tree_up_dir_line)
     call cursor(line(".")+1, col("."))
 
-    "draw the header line  
+    "draw the header line
     call setline(line(".")+1, t:NERDTreeRoot.path.Str(0))
     call cursor(line(".")+1, col("."))
 
-    "draw the tree 
+    "draw the tree
     call s:DrawTree(t:NERDTreeRoot, 0, 0, [], t:NERDTreeRoot.GetChildCount() == 1)
 
     "delete the blank line at the top of the buffer
     :silent 1,1delete _
 
-    "restore the view 
+    "restore the view
     let old_scrolloff=&scrolloff
     let &scrolloff=0
     call cursor(topLine, 1)
@@ -2255,14 +2255,14 @@ function! s:RenderView()
     setlocal nomodifiable
 endfunction
 
-"FUNCTION: s:RenderViewSavingPosition {{{2 
+"FUNCTION: s:RenderViewSavingPosition {{{2
 "Renders the tree and ensures the cursor stays on the current node or the
 "current nodes parent if it is no longer available upon re-rendering
 function! s:RenderViewSavingPosition()
     let currentNode = s:GetSelectedNode()
 
     "go up the tree till we find a node that will be visible or till we run
-    "out of nodes 
+    "out of nodes
     while currentNode != {} && !currentNode.IsVisible() && !currentNode.IsRoot()
         let currentNode = currentNode.parent
     endwhile
@@ -2273,7 +2273,7 @@ function! s:RenderViewSavingPosition()
         call s:PutCursorOnNode(currentNode, 0, 0)
     endif
 endfunction
-"FUNCTION: s:RestoreScreenState() {{{2 
+"FUNCTION: s:RestoreScreenState() {{{2
 "
 "Sets the screen state back to what it was when s:SaveScreenState was last
 "called.
@@ -2289,9 +2289,9 @@ function! s:RestoreScreenState()
     call setpos(".", t:NERDTreeOldPos)
 endfunction
 
-"FUNCTION: s:SaveScreenState() {{{2 
+"FUNCTION: s:SaveScreenState() {{{2
 "Saves the current cursor position in the current buffer and the window
-"scroll position 
+"scroll position
 "
 "Assumes the cursor is in the NERDTree window
 function! s:SaveScreenState()
@@ -2299,28 +2299,28 @@ function! s:SaveScreenState()
     let t:NERDTreeOldTopLine = line("w0")
 endfunction
 
-"FUNCTION: s:SetupSyntaxHighlighting() {{{2 
+"FUNCTION: s:SetupSyntaxHighlighting() {{{2
 function! s:SetupSyntaxHighlighting()
     "treeFlags are syntax items that should be invisible, but give clues as to
     "how things should be highlighted
     syn match treeFlag #\~#
     syn match treeFlag #\[RO\]#
 
-    "highlighting for the .. (up dir) line at the top of the tree 
+    "highlighting for the .. (up dir) line at the top of the tree
     execute "syn match treeUp #". s:tree_up_dir_line ."#"
 
-    "highlighting for the ~/+ symbols for the directory nodes 
+    "highlighting for the ~/+ symbols for the directory nodes
     syn match treeClosable #\~\<#
     syn match treeClosable #\~\.#
     syn match treeOpenable #+\<#
     syn match treeOpenable #+\.#he=e-1
 
-    "highlighting for the tree structural parts 
+    "highlighting for the tree structural parts
     syn match treePart #|#
     syn match treePart #`#
     syn match treePartFile #[|`]-#hs=s+1 contains=treePart
 
-    "quickhelp syntax elements 
+    "quickhelp syntax elements
     syn match treeHelpKey #" \{1,2\}[^ ]*:#hs=s+2,he=e-1
     syn match treeHelpKey #" \{1,2\}[^ ]*,#hs=s+2,he=e-1
     syn match treeHelpTitle #" .*\~#hs=s+2,he=e-1 contains=treeFlag
@@ -2328,21 +2328,21 @@ function! s:SetupSyntaxHighlighting()
     syn match treeToggleOff #".*(off)#hs=e-3,he=e-1 contains=treeHelpKey
     syn match treeHelp  #^" .*# contains=treeHelpKey,treeHelpTitle,treeFlag,treeToggleOff,treeToggleOn
 
-    "highlighting for sym links 
+    "highlighting for sym links
     syn match treeLink #[^-| `].* -> # contains=treeMark
 
-    "highlighting for readonly files 
+    "highlighting for readonly files
     syn match treeRO #[0-9a-zA-Z]\+.*\[RO\]# contains=treeFlag,treeMark
 
     "highlighting for marks
     syn match treeMark # {.*}#hs=s+1
 
-    "highlighing for directory nodes and file nodes 
+    "highlighing for directory nodes and file nodes
     syn match treeDirSlash #/#
     syn match treeDir #[^-| `].*/# contains=treeLink,treeDirSlash,treeOpenable,treeClosable
     syn match treeFile  #|-.*# contains=treeLink,treePart,treeRO,treePartFile,treeMark
     syn match treeFile  #`-.*# contains=treeLink,treePart,treeRO,treePartFile,treeMark
-    syn match treeCWD #^/.*$# 
+    syn match treeCWD #^/.*$#
 
     if g:NERDChristmasTree
         hi def link treePart Special
@@ -2379,7 +2379,7 @@ endfunction
 "Returns 1 if opening a file from the tree in the given window requires it to
 "be split
 "
-"Args: 
+"Args:
 "winnumber: the number of the window in question
 function! s:ShouldSplitToOpen(winnumber)
     if &hidden
@@ -2401,19 +2401,19 @@ endfunction
 "line: the subject line
 "removeLeadingSpaces: 1 if leading spaces are to be removed (leading spaces =
 "any spaces before the actual text of the node)
-function! s:StripMarkupFromLine(line, removeLeadingSpaces) 
+function! s:StripMarkupFromLine(line, removeLeadingSpaces)
     let line = a:line
-    "remove the tree parts and the leading space 
+    "remove the tree parts and the leading space
     let line = substitute (line,"^" . s:tree_markup_reg . "*","","")
 
-    "strip off any read only flag 
+    "strip off any read only flag
     let line = substitute (line, s:tree_RO_str_reg, "","")
 
     "strip off any mark flags
     let line = substitute (line, ' {[^}]*}', "","")
 
     let wasdir = 0
-    if line =~ '/$' 
+    if line =~ '/$'
         let wasdir = 1
     endif
     let line = substitute (line,' -> .*',"","") " remove link to
@@ -2428,9 +2428,9 @@ function! s:StripMarkupFromLine(line, removeLeadingSpaces)
     return line
 endfunction
 
-"FUNCTION: s:Toggle(dir) {{{2 
+"FUNCTION: s:Toggle(dir) {{{2
 "Toggles the NERD tree. I.e the NERD tree is open, it is closed, if it is
-"closed it is restored or initialized (if it doesnt exist)     
+"closed it is restored or initialized (if it doesnt exist)
 "
 "Args:
 "dir: the full path for the root node (is only used if the NERD tree is being
@@ -2459,7 +2459,7 @@ function! s:ActivateNode()
         return s:UpDir(0)
     endif
     let treenode = s:GetSelectedNode()
-    if treenode == {} 
+    if treenode == {}
         call s:EchoWarning("cannot open selected entry")
         return
     endif
@@ -2540,12 +2540,12 @@ endfunction
 "clicked)
 function! s:CheckForActivate()
     let currentNode = s:GetSelectedNode()
-    if currentNode != {} 
+    if currentNode != {}
         let startToCur = strpart(getline(line(".")), 0, col("."))
         let char = strpart(startToCur, strlen(startToCur)-1, 1)
 
         "if they clicked a dir, check if they clicked on the + or ~ sign
-        "beside it 
+        "beside it
         if currentNode.path.isDirectory
             let reg = '^' . s:tree_markup_reg .'*[' . s:tree_dir_open . s:tree_dir_closed . ']$'
             if startToCur =~ reg
@@ -2564,9 +2564,9 @@ function! s:CheckForActivate()
 endfunction
 
 " FUNCTION: s:ChCwd() {{{2
-function! s:ChCwd() 
+function! s:ChCwd()
     let treenode = s:GetSelectedNode()
-    if treenode == {} 
+    if treenode == {}
         call s:Echo("Select a node first")
         return
     endif
@@ -2580,7 +2580,7 @@ endfunction
 
 " FUNCTION: s:ChRoot() {{{2
 " changes the current root to the selected one
-function! s:ChRoot() 
+function! s:ChRoot()
     let treenode = s:GetSelectedNode()
     if treenode == {}
         call s:Echo("Select a node first")
@@ -2604,7 +2604,7 @@ function! s:ClearMarks(marks)
 endfunction
 " FUNCTION: s:CloseChildren() {{{2
 " closes all childnodes of the current node
-function! s:CloseChildren() 
+function! s:CloseChildren()
     let currentNode = s:GetSelectedDir()
     if currentNode == {}
         call s:Echo("Select a node first")
@@ -2617,7 +2617,7 @@ function! s:CloseChildren()
 endfunction
 " FUNCTION: s:CloseCurrentDir() {{{2
 " closes the parent dir of the current node
-function! s:CloseCurrentDir() 
+function! s:CloseCurrentDir()
     let treenode = s:GetSelectedNode()
     if treenode == {}
         call s:Echo("Select a node first")
@@ -2635,7 +2635,7 @@ function! s:CloseCurrentDir()
 endfunction
 
 " FUNCTION: s:CopyNode() {{{2
-function! s:CopyNode() 
+function! s:CopyNode()
     let currentNode = s:GetSelectedNode()
     if currentNode == {}
         call s:Echo("Put the cursor on a file node first")
@@ -2643,8 +2643,8 @@ function! s:CopyNode()
     endif
 
     let newNodePath = input("Copy the current node\n" .
-                          \ "==========================================================\n" . 
-                          \ "Enter the new path to copy the node to:                   \n" . 
+                          \ "==========================================================\n" .
+                          \ "Enter the new path to copy the node to:                   \n" .
                           \ "", currentNode.path.Str(0))
 
     if newNodePath != ""
@@ -2676,7 +2676,7 @@ endfunction
 " FUNCTION: s:DeleteNode() {{{2
 " if the current node is a file, pops up a dialog giving the user the option
 " to delete it
-function! s:DeleteNode() 
+function! s:DeleteNode()
     let currentNode = s:GetSelectedNode()
     if currentNode == {}
         call s:Echo("Put the cursor on a file node first")
@@ -2687,14 +2687,14 @@ function! s:DeleteNode()
 
     if currentNode.path.isDirectory
         let choice =input("Delete the current node\n" .
-                         \ "==========================================================\n" . 
-                         \ "STOP! To delete this entire directory, type 'yes'\n" . 
+                         \ "==========================================================\n" .
+                         \ "STOP! To delete this entire directory, type 'yes'\n" .
                          \ "" . currentNode.path.StrForOS(0) . ": ")
         let confirmed = choice == 'yes'
     else
         echo "Delete the current node\n" .
-           \ "==========================================================\n". 
-           \ "Are you sure you wish to delete the node:\n" . 
+           \ "==========================================================\n".
+           \ "Are you sure you wish to delete the node:\n" .
            \ "" . currentNode.path.StrForOS(0) . " (yN):"
         let choice = nr2char(getchar())
         let confirmed = choice == 'y'
@@ -2707,7 +2707,7 @@ function! s:DeleteNode()
             call s:RenderView()
 
             "if the node is open in a buffer, ask the user if they want to
-            "close that buffer 
+            "close that buffer
             let bufnum = bufnr(currentNode.path.Str(0))
             if buflisted(bufnum)
                 let prompt = "\nNode deleted.\n\nThe file is open in buffer ". bufnum . (bufwinnr(bufnum) == -1 ? " (hidden)" : "") .". Delete this buffer? (yN)"
@@ -2726,7 +2726,7 @@ endfunction
 
 " FUNCTION: s:DisplayHelp() {{{2
 " toggles the help display
-function! s:DisplayHelp() 
+function! s:DisplayHelp()
     let t:treeShowHelp = t:treeShowHelp ? 0 : 1
     call s:RenderView()
     call s:CenterView()
@@ -2739,9 +2739,9 @@ function! s:ExecuteNode()
         call s:Echo("Select an executable file node first" )
     else
         echo "NERDTree executor\n" .
-           \ "==========================================================\n". 
+           \ "==========================================================\n".
            \ "Complete the command to execute (add arguments etc): \n\n"
-        let cmd = treenode.path.StrForOS(1) 
+        let cmd = treenode.path.StrForOS(1)
         let cmd = input(':!', cmd . ' ')
 
         if cmd != ''
@@ -2753,7 +2753,7 @@ function! s:ExecuteNode()
 endfunction
 
 " FUNCTION: s:HandleMiddleMouse() {{{2
-function! s:HandleMiddleMouse() 
+function! s:HandleMiddleMouse()
     let curNode = s:GetSelectedNode()
     if curNode == {}
         call s:Echo("Put the cursor on a node first" )
@@ -2770,7 +2770,7 @@ endfunction
 
 " FUNCTION: s:InsertNewNode() {{{2
 " Adds a new node to the filesystem and then into the tree
-function! s:InsertNewNode() 
+function! s:InsertNewNode()
     let curDirNode = s:GetSelectedDir()
     if curDirNode == {}
         call s:Echo("Put the cursor on a node first" )
@@ -2778,10 +2778,10 @@ function! s:InsertNewNode()
     endif
 
     let newNodeName = input("Add a childnode\n".
-                          \ "==========================================================\n". 
-                          \ "Enter the dir/file name to be created. Dirs end with a '/'\n" . 
+                          \ "==========================================================\n".
+                          \ "Enter the dir/file name to be created. Dirs end with a '/'\n" .
                           \ "", curDirNode.path.StrForGlob() . s:os_slash)
-    
+
     if newNodeName == ''
         call s:Echo("Node Creation Aborted.")
         return
@@ -2792,7 +2792,7 @@ function! s:InsertNewNode()
         let parentNode = t:NERDTreeRoot.FindNode(newPath.GetPathTrunk())
 
         let newTreeNode = s:oTreeFileNode.New(newPath)
-        if parentNode.isOpen || !empty(parentNode.children) 
+        if parentNode.isOpen || !empty(parentNode.children)
             call parentNode.AddChild(newTreeNode, 1)
             call s:RenderView()
             call s:PutCursorOnNode(newTreeNode, 1, 0)
@@ -2804,22 +2804,22 @@ endfunction
 
 " FUNCTION: s:JumpToFirstChild() {{{2
 " wrapper for the jump to child method
-function! s:JumpToFirstChild() 
+function! s:JumpToFirstChild()
     call s:JumpToChild(0)
 endfunction
 
 " FUNCTION: s:JumpToLastChild() {{{2
 " wrapper for the jump to child method
-function! s:JumpToLastChild() 
+function! s:JumpToLastChild()
     call s:JumpToChild(1)
 endfunction
 
 " FUNCTION: s:JumpToParent() {{{2
 " moves the cursor to the parent of the current node
-function! s:JumpToParent() 
+function! s:JumpToParent()
     let currentNode = s:GetSelectedNode()
     if !empty(currentNode)
-        if !empty(currentNode.parent) 
+        if !empty(currentNode.parent)
             call s:PutCursorOnNode(currentNode.parent, 1, 0)
             call s:CenterView()
         else
@@ -2832,7 +2832,7 @@ endfunction
 
 " FUNCTION: s:JumpToRoot() {{{2
 " moves the cursor to the root node
-function! s:JumpToRoot() 
+function! s:JumpToRoot()
     call s:PutCursorOnNode(t:NERDTreeRoot, 1, 0)
     call s:CenterView()
 endfunction
@@ -2843,7 +2843,7 @@ endfunction
 " Args:
 " forward: 1 if the cursor should move to the next sibling, 0 if it should
 " move back to the previous sibling
-function! s:JumpToSibling(forward) 
+function! s:JumpToSibling(forward)
     let currentNode = s:GetSelectedNode()
     if !empty(currentNode)
 
@@ -2901,18 +2901,18 @@ function! s:MarkToRoot(name)
 endfunction
 " FUNCTION: s:OpenEntrySplit() {{{2
 " Opens the currently selected file from the explorer in a
-" new window 
-function! s:OpenEntrySplit() 
+" new window
+function! s:OpenEntrySplit()
     let treenode = s:GetSelectedNode()
     if treenode != {}
         call s:OpenFileNodeSplit(treenode)
     else
         call s:Echo("select a node first")
     endif
-endfunction 
+endfunction
 
 " FUNCTION: s:OpenExplorer() {{{2
-function! s:OpenExplorer() 
+function! s:OpenExplorer()
     let treenode = s:GetSelectedDir()
     if treenode != {}
         let oldwin = winnr()
@@ -2951,7 +2951,7 @@ endfunction
 " Args:
 " stayCurrentTab: if 1 then vim will stay in the current tab, if 0 then vim
 " will go to the tab where the new file is opened
-function! s:OpenNodeNewTab(stayCurrentTab) 
+function! s:OpenNodeNewTab(stayCurrentTab)
     let treenode = s:GetSelectedNode()
     if treenode != {}
         let curTabNr = tabpagenr()
@@ -2962,11 +2962,11 @@ function! s:OpenNodeNewTab(stayCurrentTab)
     else
         call s:Echo("select a node first")
     endif
-endfunction 
+endfunction
 
 
 " FUNCTION: s:OpenNodeRecursively() {{{2
-function! s:OpenNodeRecursively() 
+function! s:OpenNodeRecursively()
     let treenode = s:GetSelectedNode()
     if treenode == {} || treenode.path.isDirectory == 0
         call s:Echo("Select a directory node first" )
@@ -2977,11 +2977,11 @@ function! s:OpenNodeRecursively()
         redraw
         call s:Echo("Recursively opening node. Please wait... DONE")
     endif
-    
+
 endfunction
 
 "FUNCTION: s:PreviewNode() {{{2
-function! s:PreviewNode(openNewWin) 
+function! s:PreviewNode(openNewWin)
     let treenode = s:GetSelectedNode()
     if treenode == {} || treenode.path.isDirectory
         call s:Echo("Select a file node first" )
@@ -3009,7 +3009,7 @@ endfunction
 " FUNCTION: s:RefreshRoot() {{{2
 " Reloads the current root. All nodes below this will be lost and the root dir
 " will be reloaded.
-function! s:RefreshRoot() 
+function! s:RefreshRoot()
     call s:Echo("Refreshing the root node. This could take a while...")
     call t:NERDTreeRoot.Refresh()
     call s:RenderView()
@@ -3019,9 +3019,9 @@ endfunction
 
 " FUNCTION: s:RefreshCurrent() {{{2
 " refreshes the root for the current node
-function! s:RefreshCurrent() 
+function! s:RefreshCurrent()
     let treenode = s:GetSelectedDir()
-    if treenode == {} 
+    if treenode == {}
         call s:Echo("Refresh failed. Select a node first")
         return
     endif
@@ -3034,7 +3034,7 @@ function! s:RefreshCurrent()
 endfunction
 " FUNCTION: s:RenameCurrent() {{{2
 " allows the user to rename the current node
-function! s:RenameCurrent() 
+function! s:RenameCurrent()
     let curNode = s:GetSelectedNode()
     if curNode == {}
         call s:Echo("Put the cursor on a node first" )
@@ -3042,10 +3042,10 @@ function! s:RenameCurrent()
     endif
 
     let newNodePath = input("Rename the current node\n" .
-                          \ "==========================================================\n" . 
-                          \ "Enter the new path for the node:                          \n" . 
+                          \ "==========================================================\n" .
+                          \ "Enter the new path for the node:                          \n" .
                           \ "", curNode.path.StrForOS(0))
-    
+
     if newNodePath == ''
         call s:Echo("Node Renaming Aborted.")
         return
@@ -3058,7 +3058,7 @@ function! s:RenameCurrent()
         call s:RenderView()
 
         "if the node is open in a buffer, ask the user if they want to
-        "close that buffer 
+        "close that buffer
         if bufnum != -1
             let prompt = "\nNode renamed.\n\nThe old file is open in buffer ". bufnum . (bufwinnr(bufnum) == -1 ? " (hidden)" : "") .". Delete this buffer? (yN)"
             call s:PromptToDelBuffer(bufnum, prompt)
@@ -3073,7 +3073,7 @@ function! s:RenameCurrent()
 endfunction
 
 " FUNCTION: s:ShowFileSystemMenu() {{{2
-function! s:ShowFileSystemMenu() 
+function! s:ShowFileSystemMenu()
     let curNode = s:GetSelectedNode()
     if curNode == {}
         call s:Echo("Put the cursor on a node first" )
@@ -3082,8 +3082,8 @@ function! s:ShowFileSystemMenu()
 
 
     let prompt = "NERDTree Filesystem Menu\n" .
-       \ "==========================================================\n". 
-       \ "Select the desired operation:                             \n" . 
+       \ "==========================================================\n".
+       \ "Select the desired operation:                             \n" .
        \ " (a)dd a childnode\n".
        \ " (m)ove the current node\n".
        \ " (d)elete the current node\n"
@@ -3109,8 +3109,8 @@ function! s:ShowFileSystemMenu()
 endfunction
 
 " FUNCTION: s:ToggleIgnoreFilter() {{{2
-" toggles the use of the NERDTreeIgnore option 
-function! s:ToggleIgnoreFilter() 
+" toggles the use of the NERDTreeIgnore option
+function! s:ToggleIgnoreFilter()
     let t:NERDTreeIgnoreEnabled = !t:NERDTreeIgnoreEnabled
     call s:RenderViewSavingPosition()
     call s:CenterView()
@@ -3118,7 +3118,7 @@ endfunction
 
 " FUNCTION: s:ToggleShowFiles() {{{2
 " toggles the display of hidden files
-function! s:ToggleShowFiles() 
+function! s:ToggleShowFiles()
     let g:NERDTreeShowFiles = !g:NERDTreeShowFiles
     call s:RenderViewSavingPosition()
     call s:CenterView()
@@ -3126,7 +3126,7 @@ endfunction
 
 " FUNCTION: s:ToggleShowHidden() {{{2
 " toggles the display of hidden files
-function! s:ToggleShowHidden() 
+function! s:ToggleShowHidden()
     let g:NERDTreeShowHidden = !g:NERDTreeShowHidden
     call s:RenderViewSavingPosition()
     call s:CenterView()
@@ -3138,7 +3138,7 @@ endfunction
 "Args:
 "keepState: 1 if the current root should be left open when the tree is
 "re-rendered
-function! s:UpDir(keepState) 
+function! s:UpDir(keepState)
     let cwd = t:NERDTreeRoot.path.Str(0)
     if cwd == "/" || cwd =~ '^[^/]..$'
         call s:Echo("already at top dir")
