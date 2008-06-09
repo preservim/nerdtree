@@ -812,6 +812,17 @@ endfunction
 "============================================================
 let s:oPath = {}
 let oPath = s:oPath
+"FUNCTION: oPath.CacheMarkNames() {{{3
+function! s:oPath.CacheMarkNames() dict
+    let self.markNames = []
+    let marks = s:GetMarks()
+    for k in keys(marks)
+        if marks[k].Equals(self)
+            call add(self.markNames, k)
+        endif
+    endfor
+    return self.markNames
+endfunction
 "FUNCTION: oPath.ChangeToDir() {{{3
 function! s:oPath.ChangeToDir() dict
     let dir = self.StrForCd()
@@ -1110,14 +1121,10 @@ endfunction
 
 "FUNCTION: oPath.MarkNames() {{{3
 function! s:oPath.MarkNames() dict
-    let toReturn = []
-    let marks = s:GetMarks()
-    for k in keys(marks)
-        if marks[k].Equals(self)
-            call add(toReturn, k)
-        endif
-    endfor
-    return toReturn
+    if !exists("self.markNames")
+        call self.CacheMarkNames()
+    endif
+    return self.markNames
 endfunction
 "FUNCTION: oPath.New() {{{3
 "
@@ -1179,6 +1186,7 @@ endfunction
 "FUNCTION: oPath.Refresh() {{{3
 function! s:oPath.Refresh() dict
     call self.ReadInfoFromDisk(self.StrForOS(0))
+    call self.CacheMarkNames()
 endfunction
 
 "FUNCTION: oPath.Rename() {{{3
