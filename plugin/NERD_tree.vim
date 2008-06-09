@@ -1449,6 +1449,7 @@ function! s:InitNerdTree(dir)
 
     call s:CreateTreeWin()
     call s:RenderView()
+    call s:PutCursorOnNode(t:NERDTreeRoot, 0, 0)
 endfunction
 
 "FUNCTION: s:InitNerdTreeFromMark(name) {{{2
