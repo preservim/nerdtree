@@ -188,6 +188,7 @@ function! s:oTreeFileNode.ClearMarks() dict
             call remove(marks, i)
         end
     endfor
+    call self.path.CacheMarkNames()
 endfunction
 "FUNCTION: oTreeFileNode.Copy(dest) {{{3
 function! s:oTreeFileNode.Copy(dest) dict
@@ -1404,7 +1405,18 @@ endfunction " >>>
 "FUNCTION: s:ClearAllMarks() {{{2
 "delete all marks
 function! s:ClearAllMarks()
-    let g:NERDTreeMarks = {}
+    for name in keys(g:NERDTreeMarks)
+        let node = {}
+        try
+            let node = s:GetNodeForMark(name, 1)
+        catch /NERDTree/
+        endtry
+        call remove(g:NERDTreeMarks, name)
+        if !empty(node)
+            call node.path.CacheMarkNames()
+        endif
+    endfor
+    call s:WriteMarks()
 endfunction
 "FUNCTION: s:GetNodeForMark(name, searchFromAbsoluteRoot) {{{2
 "get the treenode for the mark with the given name
@@ -2609,10 +2621,19 @@ function! s:ClearMarks(marks)
     else
         for name in split(a:marks, ' ')
             if count(keys(marks), name)
+                let node = {}
+                try
+                    let node = s:GetNodeForMark(name, 1)
+                catch /NERDTree/
+                endtry
                 call remove(marks, name)
+                if !empty(node)
+                    call node.path.CacheMarkNames()
+                endif
             endif
         endfor
     endif
+    call s:WriteMarks()
     call s:RenderView()
 endfunction
 " FUNCTION: s:CloseChildren() {{{2
@@ -2893,6 +2914,7 @@ function! s:MarkNode(name)
     if currentNode != {}
         let marks = s:GetMarks()
         let marks[a:name] = currentNode.path
+        call currentNode.path.CacheMarkNames()
         call s:WriteMarks()
         call s:RenderView()
     else
