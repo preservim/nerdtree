@@ -141,6 +141,7 @@ endif
 command! -n=? -complete=dir NERDTree :call s:InitNerdTree('<args>')
 command! -n=? -complete=dir NERDTreeToggle :call s:Toggle('<args>')
 command! -n=0 NERDTreeClose :call s:CloseTreeIfOpen()
+command! -n=1 -complete=customlist,s:FindMarks NERDTreeFromMark call s:InitNerdTreeFromMark('<args>')
 " SECTION: Auto commands {{{1
 "============================================================
 "Save the cursor position whenever we close the nerd tree
@@ -1450,6 +1451,15 @@ function! s:InitNerdTree(dir)
     call s:RenderView()
 endfunction
 
+"FUNCTION: s:InitNerdTreeFromMark(name) {{{2
+"initialise a new NERD tree from the path associated with the given mark name
+function! s:InitNerdTreeFromMark(name)
+    let target = s:GetMarks()[a:name]
+    if !target.isDirectory
+        let target = target.GetParent()
+    endif
+    call s:InitNerdTree(target.StrForOS(0))
+endfunction
 " Function: s:ReadMarks()   {{{2
 function! s:ReadMarks()
     if filereadable(g:NERDTreeMarksFile)
