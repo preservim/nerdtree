@@ -145,6 +145,8 @@ command! -n=0 NERDTreeClose :call s:CloseTreeIfOpen()
 "============================================================
 "Save the cursor position whenever we close the nerd tree
 exec "autocmd BufWinLeave *". s:NERDTreeWinName ."* :call <SID>SaveScreenState()"
+"cache marks when vim loads
+autocmd VimEnter * call <SID>ReadMarks()
 
 "SECTION: Classes {{{1
 "============================================================
@@ -1445,7 +1447,6 @@ function! s:InitNerdTree(dir)
     call t:NERDTreeRoot.Open()
 
     call s:CreateTreeWin()
-    call s:ReadMarks()
     call s:RenderView()
 endfunction
 
