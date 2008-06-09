@@ -1420,21 +1420,28 @@ function! s:GetNodeForMark(name, searchFromAbsoluteRoot)
     endif
     return targetNode
 endfunction
-"FUNCTION: s:InitNerdTree(dir) {{{2
-"Initialized the NERD tree, where the root will be initialized with the given
-"directory
+"FUNCTION: s:InitNerdTree(name) {{{2
+"Initialise the nerd tree for this tab. The tree will start in either the
+"given directory, or the directory associated with the given mark
 "
-"Arg:
-"dir: the dir to init the root with
-function! s:InitNerdTree(dir)
-    let dir = a:dir == '' ? expand('%:p:h') : a:dir
-    let dir = resolve(dir)
-
-    let path = s:oPath.New(dir)
-
-    if !path.isDirectory
-        call s:EchoWarning("Error reading: " . dir)
-        return
+"Args:
+"name: the name of a mark or a directory
+function! s:InitNerdTree(name)
+    let path = {}
+    if count(keys(s:GetMarks()), a:name)
+        let path = s:GetMarks()[a:name]
+    else
+        let dir = a:name == '' ? expand('%:p:h') : a:name
+        let dir = resolve(dir)
+        try
+            let path = s:oPath.New(dir)
+        catch /NERDTree.Path.InvalidArguments/
+            call s:Echo("No mark or directory found for: " . a:name)
+            return
+        endtry
+        if !path.isDirectory
+            let path = path.GetParent()
+        endif
     endif
 
     "if instructed to, then change the vim CWD to the dir the NERDTree is
@@ -1459,16 +1466,6 @@ function! s:InitNerdTree(dir)
     call s:CreateTreeWin()
     call s:RenderView()
     call s:PutCursorOnNode(t:NERDTreeRoot, 0, 0)
-endfunction
-
-"FUNCTION: s:InitNerdTreeFromMark(name) {{{2
-"initialise a new NERD tree from the path associated with the given mark name
-function! s:InitNerdTreeFromMark(name)
-    let target = s:GetMarks()[a:name]
-    if !target.isDirectory
-        let target = target.GetParent()
-    endif
-    call s:InitNerdTree(target.StrForOS(0))
 endfunction
 " Function: s:ReadMarks()   {{{2
 function! s:ReadMarks()
