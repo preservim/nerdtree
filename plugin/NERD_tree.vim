@@ -141,7 +141,7 @@ endif
 command! -n=? -complete=dir NERDTree :call s:InitNerdTree('<args>')
 command! -n=? -complete=dir NERDTreeToggle :call s:Toggle('<args>')
 command! -n=0 NERDTreeClose :call s:CloseTreeIfOpen()
-command! -n=1 -complete=customlist,s:FindMarks NERDTreeFromMark call s:InitNerdTreeFromMark('<args>')
+command! -n=1 -complete=customlist,s:FindMarks NERDTreeFromMark call s:InitNerdTree('<args>')
 " SECTION: Auto commands {{{1
 "============================================================
 "Save the cursor position whenever we close the nerd tree
