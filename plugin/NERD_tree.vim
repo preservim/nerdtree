@@ -1775,6 +1775,13 @@ function! s:DumpHelp()
         let @h=@h."\" Other mappings~\n"
         let @h=@h."\" ". g:NERDTreeMapQuit .": Close the NERDTree window\n"
         let @h=@h."\" ". g:NERDTreeMapHelp .": toggle help\n"
+        let @h=@h."\" \n\" ----------------------------\n"
+        let @h=@h."\" Mark commands~\n"
+        let @h=@h."\" :Mark <name>\n"
+        let @h=@h."\" :MarkToRoot <name>\n"
+        let @h=@h."\" :OpenMark <name>\n"
+        let @h=@h."\" :ClearMarks [<mark names>]\n"
+        let @h=@h."\" :ClearAllMarks\n"
     else
         let @h="\" Press ". g:NERDTreeMapHelp ." for help\n"
     endif
@@ -2344,7 +2351,8 @@ function! s:SetupSyntaxHighlighting()
     syn match treeHelpTitle #" .*\~#hs=s+2,he=e-1 contains=treeFlag
     syn match treeToggleOn #".*(on)#hs=e-2,he=e-1 contains=treeHelpKey
     syn match treeToggleOff #".*(off)#hs=e-3,he=e-1 contains=treeHelpKey
-    syn match treeHelp  #^" .*# contains=treeHelpKey,treeHelpTitle,treeFlag,treeToggleOff,treeToggleOn
+    syn match treeHelpCommand #" :.\{-}\>#hs=s+3
+    syn match treeHelp  #^" .*# contains=treeHelpKey,treeHelpTitle,treeFlag,treeToggleOff,treeToggleOn,treeHelpCommand
 
     "highlighting for sym links
     syn match treeLink #[^-| `].* -> # contains=treeMark
@@ -2377,6 +2385,7 @@ function! s:SetupSyntaxHighlighting()
 
     hi def link treeHelp String
     hi def link treeHelpKey Identifier
+    hi def link treeHelpCommand Identifier
     hi def link treeHelpTitle Macro
     hi def link treeToggleOn Question
     hi def link treeToggleOff WarningMsg
