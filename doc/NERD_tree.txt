@@ -17,7 +17,7 @@
 
 
 ==============================================================================
-CONTENTS                                                   *NERDTree-contents* 
+CONTENTS                                                   *NERDTree-contents*
 
     1.Intro...................................|NERDTree|
     2.Functionality provided..................|NERDTreeFunctionality|
@@ -54,11 +54,11 @@ The following features and functionality are provided by the NERD tree:
         * read-only files
     * Many (customisable) mappings are provided to manipulate the tree:
         * Mappings to open/close/explore directory nodes
-        * Mappings to open files in new/existing windows/tabs     
-        * Mappings to change the current root of the tree 
-        * Mappings to navigate around the tree 
+        * Mappings to open files in new/existing windows/tabs
+        * Mappings to change the current root of the tree
+        * Mappings to navigate around the tree
         * ...
-    * Most NERD tree navigation can also be done with the mouse  
+    * Most NERD tree navigation can also be done with the mouse
     * Dynamic customisation of tree content
         * custom file filters to prevent e.g. vim backup files being displayed
         * optional displaying of hidden files (. files)
@@ -66,21 +66,21 @@ The following features and functionality are provided by the NERD tree:
     * A textual filesystem menu is provided which allows you to
       create/delete/rename file and directory nodes as well as copy (for
       supported OSs)
-    * The position and size of the NERD tree window can be customised 
+    * The position and size of the NERD tree window can be customised
     * The order in which the nodes in the tree are listed can be customised.
     * A model of your filesystem is created/maintained as you explore it. This
       has several advantages:
         * All filesystem information is cached and is only re-read on demand
         * If you revisit a part of the tree that you left earlier in your
-          session, the directory nodes will be opened/closed as you left them       
+          session, the directory nodes will be opened/closed as you left them
     * The script remembers the cursor position and window position in the NERD
       tree so you can toggle it off (or just close the tree window) and then
       reopen it (with NERDTreeToggle) the NERD tree window will appear EXACTLY
       as you left it
-    * You can have a separate NERD tree for each tab   
+    * You can have a separate NERD tree for each tab
 
 ==============================================================================
-2. Functionality provided                              *NERDTreeFunctionality* 
+2. Functionality provided                              *NERDTreeFunctionality*
 
 ------------------------------------------------------------------------------
 2.1. Global Commands                                  *NERDTreeGlobalCommands*
@@ -156,7 +156,7 @@ X.......Recursively close all children of the current node.......|NERDTree-X|
 e.......Open a netrw for the current dir.........................|NERDTree-e|
 
 double-click.......same as the |NERDTree-o| map.
-middle-click.......same as |NERDTree-tab| for files, same as 
+middle-click.......same as |NERDTree-tab| for files, same as
                    |NERDTree-e| for dirs.
 
 P.......Jump to the root node....................................|NERDTree-P|
@@ -443,7 +443,7 @@ Toggles whether the quickhelp is displayed.
 2.3. The filesystem menu                                 *NERDTreeFilesysMenu*
 
 The purpose of the filesystem menu is to allow you to perform basic filesystem
-operations quickly from the NERD tree rather than the console.  
+operations quickly from the NERD tree rather than the console.
 
 The filesystem menu can be accessed with 'm' mapping and has four supported
 operations: >
@@ -470,7 +470,7 @@ on the renamed node.
 To delete a node put the cursor on it and select the 'delete' option from the
 filesystem menu. After confirmation the node will be deleted. If a file is
 deleted but still exists as a buffer you will be given the option to delete
-that buffer. 
+that buffer.
 
 4. Copying nodes:
 To copy a node put the cursor on it and select the 'copy' option from the
@@ -533,7 +533,7 @@ NERD tree. These options should be set in your vimrc.
 
 |NERDTreeWinPos|                Tells the script where to put the NERD tree
                                 window.
-                               
+
 
 |NERDTreeWinSize|               Sets the window size when the NERD tree is
                                 opened.
@@ -541,10 +541,10 @@ NERD tree. These options should be set in your vimrc.
 ------------------------------------------------------------------------------
 3.2. Customisation details                             *NERDTreeOptionDetails*
 
-To enable any of the below options you should put the given line in your 
+To enable any of the below options you should put the given line in your
 ~/.vimrc
 
-                                                            *loaded_nerd_tree*              
+                                                            *loaded_nerd_tree*
 If this plugin is making you feel homicidal, it may be a good idea to turn it
 off with this line in your vimrc: >
     let loaded_nerd_tree=1
@@ -560,21 +560,21 @@ added to the nerd tree to make it more colourful.
 Set it to 0 for a more vanilla looking tree.
 
 ------------------------------------------------------------------------------
-                                                          *NERDTreeAutoCenter*                
+                                                          *NERDTreeAutoCenter*
 Values: 0 or 1.
 Default: 1
 
 If set to 1, the NERD tree window will center around the cursor if it moves to
 within |NERDTreeAutoCenterThreshold| lines of the top/bottom of the window.
 
-This is ONLY done in response to tree navigation mappings, 
+This is ONLY done in response to tree navigation mappings,
 i.e. |NERDTree-J| |NERDTree-K| |NERDTree-C-J| |NERDTree-c-K| |NERDTree-p|
 |NERDTree-P|
 
 The centering is done with a |zz| operation.
 
 ------------------------------------------------------------------------------
-                                                 *NERDTreeAutoCenterThreshold*                
+                                                 *NERDTreeAutoCenterThreshold*
 Values: Any natural number.
 Default: 3
 
@@ -582,7 +582,7 @@ This option controls the "sensitivity" of the NERD tree auto centering. See
 |NERDTreeAutoCenter| for details.
 
 ------------------------------------------------------------------------------
-                                                   *NERDTreeCaseSensitiveSort*        
+                                                   *NERDTreeCaseSensitiveSort*
 Values: 0 or 1.
 Default: 0.
 
@@ -603,7 +603,7 @@ account. The above nodes would then be sorted like this: >
     boner.c
 <
 ------------------------------------------------------------------------------
-                                                           *NERDTreeChDirMode*                
+                                                           *NERDTreeChDirMode*
 
 Values: 0, 1 or 2.
 Default: 1.
@@ -639,18 +639,18 @@ If set to 1, the current cursor line in the NERD tree buffer will be
 highlighted. This is done using the |cursorline| option.
 
 ------------------------------------------------------------------------------
-                                                              *NERDTreeIgnore*                
+                                                              *NERDTreeIgnore*
 Values: a list of regular expressions.
 Default: ['\~$'].
 
 This option is used to specify which files the NERD tree should ignore.  It
 must be a list of regular expressions. When the NERD tree is rendered, any
-files/dirs that match any of the regex's in NERDTreeIgnore wont be displayed. 
+files/dirs that match any of the regex's in NERDTreeIgnore wont be displayed.
 
 For example if you put the following line in your vimrc: >
     let NERDTreeIgnore=['\.vim$', '\~$']
 <
-then all files ending in .vim or ~ will be ignored. 
+then all files ending in .vim or ~ will be ignored.
 
 Note: to tell the NERD tree not to ignore any files you must use the following
 line: >
@@ -668,11 +668,11 @@ Default: $HOME/.NERDTreeMarks
 This is where marks are saved. See |NERDTreeMarkCommands|.
 
 ------------------------------------------------------------------------------
-                                                           *NERDTreeMouseMode*                
+                                                           *NERDTreeMouseMode*
 Values: 1, 2 or 3.
 Default: 1.
 
-If set to 1 then a double click on a node is required to open it. 
+If set to 1 then a double click on a node is required to open it.
 If set to 2 then a single click will open directory nodes, while a double
 click will still be required for file nodes.
 If set to 3 then a single click will open any node.
@@ -686,7 +686,7 @@ then (to single click activate it) you must click somewhere in
 'application.rb'.
 
 ------------------------------------------------------------------------------
-                                                           *NERDTreeShowFiles*            
+                                                           *NERDTreeShowFiles*
 Values: 0 or 1.
 Default: 1.
 
@@ -698,7 +698,7 @@ useful for drastically shrinking the tree when you are navigating to a
 different part of the tree.
 
 ------------------------------------------------------------------------------
-                                                          *NERDTreeShowHidden*            
+                                                          *NERDTreeShowHidden*
 Values: 0 or 1.
 Default: 0.
 
@@ -719,7 +719,7 @@ window.  Use one of the follow lines to set this option: >
     let NERDTreeShowLineNumbers=0
     let NERDTreeShowLineNumbers=1
 <
-                                                       
+
 ------------------------------------------------------------------------------
                                                            *NERDTreeSortOrder*
 Values: a list of regular expressions.
@@ -759,7 +759,7 @@ Values: 0 or 1.
 Default: 1.
 
 This option, along with |NERDTreeWinPos|, is used to determine where the NERD
-tree window appears. 
+tree window appears.
 
 If it is set to 1 then the NERD tree window will appear on either the left or
 right side of the screen (depending on the |NERDTreeWinPos| option).
@@ -776,7 +776,7 @@ determine where NERD tree window is placed on the screen.
 
 If the option is set to 1 then the NERD tree will appear on the left or top of
 the screen (depending on the value of |NERDTreeSplitVertical|). If set to 0,
-the window will appear on the right or bottom of the screen. 
+the window will appear on the right or bottom of the screen.
 
 This option is makes it possible to use two different explorer type
 plugins simultaneously. For example, you could have the taglist plugin on the
@@ -829,7 +829,7 @@ Don't be shy --- the worst he can do is slaughter you and stuff you in the
 fridge for later ;)
 
 ==============================================================================
-7. Changelog                                               *NERDTreeChangelog* 
+7. Changelog                                               *NERDTreeChangelog*
 
 2.9.1
     - fix screen jumping bug with when &scrolloff != 0
@@ -859,7 +859,7 @@ fridge for later ;)
 2.7.0
     - Bug fix: Now when you have the tree on the right and you open it with
       multiple windows stacked, it will take up the full height of the vim
-      window. 
+      window.
     - Now line numbers always turned off in the tree by default
     - Implemented copying of nodes (via the filesystem menu) for *nix/macosx
     - took the help doc out of the script and repackaged the whole thing as a
@@ -934,13 +934,13 @@ fridge for later ;)
     - Made the quickhelp correctly display the current single/double click
       mappings for opening nodes as specified by the NERDTreeMouseMode option.
     - Fixed a bug where the script was spazzing after prompting you to delete
-      a modified buffer when using the filesystem menu.  
+      a modified buffer when using the filesystem menu.
     - Refactoring
 2.2.3
     - Refactored the :echo output from the script.
     - Fixed some minor typos in the doc.
     - Made some minor changes to the output of the 'Tree filtering mappings'
-      part of the quickhelp 
+      part of the quickhelp
 
 2.2.2
     - More bugfixes... doh.
@@ -1045,7 +1045,7 @@ Thanks to Michael Madsen for emailing me about making case sensitivity
 optional when sorting nodes.
 
 Thanks to AOYAMA Shotaro for suggesting that i echo a "please wait" message
-when opening large directories. 
+when opening large directories.
 
 Thanks to Michael Madsen for requesting the NERDTreeCaseSensitiveSort option.
 
