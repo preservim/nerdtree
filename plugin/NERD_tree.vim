@@ -1819,7 +1819,7 @@ function! s:EchoError(msg)
     echohl normal
 endfunction
 " FUNCTION: s:FindMarks(A,L,P) {{{2
-" completion function for the RecallMark command
+" completion function for the mark commands
 function! s:FindMarks(A,L,P)
     let keys = keys(s:GetMarks())
     return filter(keys, 'v:val =~ "^' . a:A . '"')
