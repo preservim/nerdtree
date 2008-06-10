@@ -120,6 +120,11 @@ The following features and functionality are provided by the NERD tree:
     current tree will be used, otherwise a fresh tree will be opened.  Note
     that if <mark> points to a file then its parent will be used instead.
 
+:RevealMark <mark>
+    If the node is cached under the current root then it will be revealed
+    (i.e. directory nodes above it will be opened) and the cursor will be
+    placed on it.
+
 :OpenMark <mark>
     <mark> must point to a file. The file is opened as though |NERDTree-o| was
     applied. If the node is cached under the current root then it will be
