@@ -1778,9 +1778,10 @@ function! s:DumpHelp()
         let @h=@h."\" \n\" ----------------------------\n"
         let @h=@h."\" Mark commands~\n"
         let @h=@h."\" :Mark <name>\n"
-        let @h=@h."\" :MarkToRoot <name>\n"
-        let @h=@h."\" :OpenMark <name>\n"
-        let @h=@h."\" :ClearMarks [<mark names>]\n"
+        let @h=@h."\" :MarkToRoot <mark>\n"
+        let @h=@h."\" :OpenMark <mark>\n"
+        let @h=@h."\" :RevealMark <mark>\n"
+        let @h=@h."\" :ClearMarks [<marks>]\n"
         let @h=@h."\" :ClearAllMarks\n"
     else
         let @h="\" Press ". g:NERDTreeMapHelp ." for help\n"
