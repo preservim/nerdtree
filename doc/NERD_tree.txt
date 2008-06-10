@@ -58,6 +58,7 @@ The following features and functionality are provided by the NERD tree:
         * Mappings to change the current root of the tree
         * Mappings to navigate around the tree
         * ...
+    * Directories and files can be bookmarked.
     * Most NERD tree navigation can also be done with the mouse
     * Dynamic customisation of tree content
         * custom file filters to prevent e.g. vim backup files being displayed
