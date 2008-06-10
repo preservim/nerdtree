@@ -2,7 +2,7 @@
 
 
 
-
+    omg its ... ~
 
     ________  ________   _   ____________  ____     __________  ____________~
    /_  __/ / / / ____/  / | / / ____/ __ \/ __ \   /_  __/ __ \/ ____/ ____/~
@@ -21,7 +21,8 @@ CONTENTS                                                   *NERDTree-contents*
 
     1.Intro...................................|NERDTree|
     2.Functionality provided..................|NERDTreeFunctionality|
-        2.1 Commands..........................|NERDTreeCommands|
+        2.1 Global commands...................|NERDTreeGlobalCommands|
+        2.1 Mark commands.....................|NERDTreeMarkCommands|
         2.2 NERD tree mappings................|NERDTreeMappings|
         2.3 The filesystem menu...............|NERDTreeFilesysMenu|
     3.Options.................................|NERDTreeOptions|
@@ -82,25 +83,57 @@ The following features and functionality are provided by the NERD tree:
 2. Functionality provided                              *NERDTreeFunctionality* 
 
 ------------------------------------------------------------------------------
-2.1. Commands                                               *NERDTreeCommands*
+2.1. Global Commands                                  *NERDTreeGlobalCommands*
 
-:NERDTree [start-directory]                                 *:NERDTree*
-                Opens a fresh NERD tree in [start-directory] or the current
-                directory if [start-directory] isn't specified.
-                For example: >
-                    :NERDTree /home/marty/vim7/src
-<               will open a NERD tree in /home/marty/vim7/src.
+:NERDTree [<start-directory> | <mark-name>]                        *:NERDTree*
+    Opens a fresh NERD tree. The root of the tree depends on the argument
+    given. There are 3 cases: If no argument is given, the current directory
+    will be used.  If a directory is given, that will be used. If a mark name
+    is given, the corresponding directory will be used.  For example: >
+        :NERDTree /home/marty/vim7/src
+        :NERDTree foo   (foo is the name of a mark)
+<
+:NERDTreeFromMark <mark-name>
+    Opens a fresh NERD tree with the root initialized to dir for <mark-name>.
+    This only reason to use this command over :NERDTree is for the completion
+    (which is for marks rather than directories).
 
-:NERDTreeToggle [start-directory]                           *:NERDTreeToggle*
-                If a NERD tree already exists for this tab, it is reopened and
-                rendered again.  If no NERD tree exists for this tab then this
-                command acts the same as the |:NERDTree| command.
+:NERDTreeToggle [<start-directory> | <mark-name>]            *:NERDTreeToggle*
+    If a NERD tree already exists for this tab, it is reopened and rendered
+    again.  If no NERD tree exists for this tab then this command acts the
+    same as the |:NERDTree| command.
 
 :NERDTreeClose
-                Close the NERD tree in this tab.
+    Close the NERD tree in this tab.
 
 ------------------------------------------------------------------------------
-2.2. NERD tree Mappings                                     *NERDTreeMappings*
+2.2.                                                    *NERDTreeMarkCommands*
+
+:Mark <name>
+    Mark the current node as <name>. If there is already a <name> mark, it is
+    overwritten. <name> must consist of alphanumeric characters and
+    underscores.
+
+:MarkToRoot <mark>
+    Make the directory corresponding to <mark> the new root. If a treenode
+    corresponding to <mark> is already cached somewhere in the tree then the
+    current tree will be used, otherwise a fresh tree will be opened.  Note
+    that if <mark> points to a file then its parent will be used instead.
+
+:OpenMark <mark>
+    <mark> must point to a file. The file is opened as though |NERDTree-o| was
+    applied. If the node is cached under the current root then it will be
+    revealed and the cursor will be placed on it.
+
+:ClearMarks [<marks>]
+    Remove all the given marks. If no marks are given then remove all marks on
+    the current node.
+
+:ClearAllMarks
+    Remove all marks.
+
+------------------------------------------------------------------------------
+2.3. NERD tree Mappings                                     *NERDTreeMappings*
 
 Default  Description~                                             help-tag~
 Key~
@@ -472,6 +505,8 @@ NERD tree. These options should be set in your vimrc.
 
 |NERDTreeIgnore|                Tells the NERD tree which files to ignore.
 
+|NERDTreeMarksFile|             Where the marks are stored.
+
 |NERDTreeMouseMode|             Tells the NERD tree how to handle mouse
                                 clicks.
 
@@ -619,6 +654,13 @@ line: >
 
 The file filters can be turned on and off dynamically with the |NERDTree-f|
 mapping.
+
+------------------------------------------------------------------------------
+                                                           *NERDTreeMarksFile*
+Values: a path
+Default: $HOME/.NERDTreeMarks
+
+This is where marks are saved. See |NERDTreeMarkCommands|.
 
 ------------------------------------------------------------------------------
                                                            *NERDTreeMouseMode*                
