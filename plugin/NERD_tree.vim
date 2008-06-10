@@ -2552,7 +2552,7 @@ function! s:BindMappings()
     exec "nnoremap <silent> <buffer> ". g:NERDTreeMapOpenExpl ." :call <SID>OpenExplorer()<cr>"
 
     command! -buffer -nargs=1 Mark :call <SID>MarkNode('<args>')
-    command! -buffer -complete=customlist,s:FindMarks -nargs=1 RecallMark :call <SID>RecallMark('<args>')
+    command! -buffer -complete=customlist,s:FindMarks -nargs=1 RevealMark :call <SID>RevealMark('<args>')
     command! -buffer -complete=customlist,s:FindMarks -nargs=1 OpenMark :call <SID>OpenMark('<args>')
     command! -buffer -complete=customlist,s:FindMarks -nargs=* ClearMarks call <SID>ClearMarks('<args>')
     command! -buffer -complete=customlist,s:FindMarks -nargs=+ MarkToRoot call <SID>MarkToRoot('<args>')
@@ -3040,9 +3040,9 @@ function! s:PreviewNode(openNewWin)
     call s:PutCursorInTreeWin()
 endfunction
 
-" FUNCTION: s:RecallMark(name) {{{2
+" FUNCTION: s:RevealMark(name) {{{2
 " put the cursor on the node associate with the given name
-function! s:RecallMark(name)
+function! s:RevealMark(name)
     try
         let targetNode = s:GetNodeForMark(a:name, 0)
         call s:PutCursorOnNode(targetNode, 0, 1)
