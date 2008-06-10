@@ -22,9 +22,9 @@ CONTENTS                                                   *NERDTree-contents*
     1.Intro...................................|NERDTree|
     2.Functionality provided..................|NERDTreeFunctionality|
         2.1 Global commands...................|NERDTreeGlobalCommands|
-        2.1 Mark commands.....................|NERDTreeMarkCommands|
-        2.2 NERD tree mappings................|NERDTreeMappings|
-        2.3 The filesystem menu...............|NERDTreeFilesysMenu|
+        2.2 Mark commands.....................|NERDTreeMarkCommands|
+        2.3 NERD tree mappings................|NERDTreeMappings|
+        2.4 The filesystem menu...............|NERDTreeFilesysMenu|
     3.Options.................................|NERDTreeOptions|
         3.1 Option summary....................|NERDTreeOptionSummary|
         3.2 Option details....................|NERDTreeOptionDetails|
@@ -93,7 +93,7 @@ The following features and functionality are provided by the NERD tree:
         :NERDTree /home/marty/vim7/src
         :NERDTree foo   (foo is the name of a mark)
 <
-:NERDTreeFromMark <mark-name>
+:NERDTreeFromMark <mark-name>                             *:NERDTreeFromMark*
     Opens a fresh NERD tree with the root initialized to dir for <mark-name>.
     This only reason to use this command over :NERDTree is for the completion
     (which is for marks rather than directories).
@@ -107,7 +107,11 @@ The following features and functionality are provided by the NERD tree:
     Close the NERD tree in this tab.
 
 ------------------------------------------------------------------------------
-2.2.                                                    *NERDTreeMarkCommands*
+2.2. Mark Commands                                      *NERDTreeMarkCommands*
+
+Marks in the NERD tree are a way to tag files or directories of interest. For
+example, you could use marks to tag all of your project directories. See also
+|:NERDTreeFromMark|.
 
 :Mark <name>
     Mark the current node as <name>. If there is already a <name> mark, it is
