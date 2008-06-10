@@ -358,7 +358,8 @@ Default key: C
 Map option: NERDTreeMapChdir
 Applies to: directories.
 
-Made the selected directory node the new tree root.
+Make the selected directory node the new tree root. If a file is selected, its
+parent is used.
 
 ------------------------------------------------------------------------------
                                                                   *NERDTree-u*
