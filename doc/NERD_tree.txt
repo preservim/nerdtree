@@ -22,7 +22,7 @@ CONTENTS                                                   *NERDTree-contents*
     1.Intro...................................|NERDTree|
     2.Functionality provided..................|NERDTreeFunctionality|
         2.1 Global commands...................|NERDTreeGlobalCommands|
-        2.2 Mark commands.....................|NERDTreeMarkCommands|
+        2.2 Bookmark commands.................|NERDTreeBookmarkCommands|
         2.3 NERD tree mappings................|NERDTreeMappings|
         2.4 The filesystem menu...............|NERDTreeFilesysMenu|
     3.Options.................................|NERDTreeOptions|
@@ -86,20 +86,20 @@ The following features and functionality are provided by the NERD tree:
 ------------------------------------------------------------------------------
 2.1. Global Commands                                  *NERDTreeGlobalCommands*
 
-:NERDTree [<start-directory> | <mark-name>]                        *:NERDTree*
+:NERDTree [<start-directory> | <bookmark>]                         *:NERDTree*
     Opens a fresh NERD tree. The root of the tree depends on the argument
     given. There are 3 cases: If no argument is given, the current directory
-    will be used.  If a directory is given, that will be used. If a mark name
-    is given, the corresponding directory will be used.  For example: >
+    will be used.  If a directory is given, that will be used. If a bookmark
+    name is given, the corresponding directory will be used.  For example: >
         :NERDTree /home/marty/vim7/src
-        :NERDTree foo   (foo is the name of a mark)
+        :NERDTree foo   (foo is the name of a bookmark)
 <
-:NERDTreeFromMark <mark-name>                             *:NERDTreeFromMark*
-    Opens a fresh NERD tree with the root initialized to dir for <mark-name>.
+:NERDTreeFromBookmark <bookmark>                       *:NERDTreeFromBookmark*
+    Opens a fresh NERD tree with the root initialized to dir for <bookmark>.
     This only reason to use this command over :NERDTree is for the completion
-    (which is for marks rather than directories).
+    (which is for bookmarks rather than directories).
 
-:NERDTreeToggle [<start-directory> | <mark-name>]            *:NERDTreeToggle*
+:NERDTreeToggle [<start-directory> | <bookmark>]             *:NERDTreeToggle*
     If a NERD tree already exists for this tab, it is reopened and rendered
     again.  If no NERD tree exists for this tab then this command acts the
     same as the |:NERDTree| command.
@@ -108,39 +108,41 @@ The following features and functionality are provided by the NERD tree:
     Close the NERD tree in this tab.
 
 ------------------------------------------------------------------------------
-2.2. Mark Commands                                      *NERDTreeMarkCommands*
+2.2. Bookmark Commands                              *NERDTreeBookmarkCommands*
 
-Marks in the NERD tree are a way to tag files or directories of interest. For
-example, you could use marks to tag all of your project directories. See also
-|:NERDTreeFromMark|.
+Bookmarks in the NERD tree are a way to tag files or directories of interest.
+For example, you could use bookmarks to tag all of your project directories.
+See also
+|:NERDTreeFromBookmark|.
 
-:Mark <name>
-    Mark the current node as <name>. If there is already a <name> mark, it is
-    overwritten. <name> must consist of alphanumeric characters and
-    underscores.
+:Bookmark <name>
+    Bookmark the current node as <name>. If there is already a <name>
+    bookmark, it is overwritten. <name> must consist of alphanumeric
+    characters and underscores.
 
-:MarkToRoot <mark>
-    Make the directory corresponding to <mark> the new root. If a treenode
-    corresponding to <mark> is already cached somewhere in the tree then the
-    current tree will be used, otherwise a fresh tree will be opened.  Note
-    that if <mark> points to a file then its parent will be used instead.
+:BookmarkToRoot <bookmark>
+    Make the directory corresponding to <bookmark> the new root. If a treenode
+    corresponding to <bookmark> is already cached somewhere in the tree then
+    the current tree will be used, otherwise a fresh tree will be opened.
+    Note that if <bookmark> points to a file then its parent will be used
+    instead.
 
-:RevealMark <mark>
+:RevealBookmark <bookmark>
     If the node is cached under the current root then it will be revealed
     (i.e. directory nodes above it will be opened) and the cursor will be
     placed on it.
 
-:OpenMark <mark>
-    <mark> must point to a file. The file is opened as though |NERDTree-o| was
-    applied. If the node is cached under the current root then it will be
+:OpenBookmark <bookmark>
+    <bookmark> must point to a file. The file is opened as though |NERDTree-o|
+    was applied. If the node is cached under the current root then it will be
     revealed and the cursor will be placed on it.
 
-:ClearMarks [<marks>]
-    Remove all the given marks. If no marks are given then remove all marks on
-    the current node.
+:ClearBookmarks [<bookmarks>]
+    Remove all the given bookmarks. If no bookmarks are given then remove all
+    bookmarks on the current node.
 
-:ClearAllMarks
-    Remove all marks.
+:ClearAllBookmarks
+    Remove all bookmarks.
 
 ------------------------------------------------------------------------------
 2.3. NERD tree Mappings                                     *NERDTreeMappings*
@@ -516,7 +518,7 @@ NERD tree. These options should be set in your vimrc.
 
 |NERDTreeIgnore|                Tells the NERD tree which files to ignore.
 
-|NERDTreeMarksFile|             Where the marks are stored.
+|NERDTreeBookmarksFile|         Where the bookmarks are stored.
 
 |NERDTreeMouseMode|             Tells the NERD tree how to handle mouse
                                 clicks.
@@ -667,11 +669,11 @@ The file filters can be turned on and off dynamically with the |NERDTree-f|
 mapping.
 
 ------------------------------------------------------------------------------
-                                                           *NERDTreeMarksFile*
+                                                       *NERDTreeBookmarksFile*
 Values: a path
-Default: $HOME/.NERDTreeMarks
+Default: $HOME/.NERDTreeBookmarks
 
-This is where marks are saved. See |NERDTreeMarkCommands|.
+This is where bookmarks are saved. See |NERDTreeBookmarkCommands|.
 
 ------------------------------------------------------------------------------
                                                            *NERDTreeMouseMode*

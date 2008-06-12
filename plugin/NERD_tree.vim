@@ -41,7 +41,7 @@ if !exists("g:NERDTreeIgnore")
     let g:NERDTreeIgnore = ['\~$']
 endif
 call s:InitVariable("g:NERDTreeHighlightCursorline", 1)
-call s:InitVariable("g:NERDTreeMarksFile", expand('$HOME') . '/.NERDTreeMarks')
+call s:InitVariable("g:NERDTreeBookmarksFile", expand('$HOME') . '/.NERDTreeBookmarks')
 call s:InitVariable("g:NERDTreeMouseMode", 1)
 call s:InitVariable("g:NERDTreeNotificationThreshold", 100)
 call s:InitVariable("g:NERDTreeShowFiles", 1)
@@ -141,13 +141,13 @@ endif
 command! -n=? -complete=dir NERDTree :call s:InitNerdTree('<args>')
 command! -n=? -complete=dir NERDTreeToggle :call s:Toggle('<args>')
 command! -n=0 NERDTreeClose :call s:CloseTreeIfOpen()
-command! -n=1 -complete=customlist,s:FindMarks NERDTreeFromMark call s:InitNerdTree('<args>')
+command! -n=1 -complete=customlist,s:FindBookmarks NERDTreeFromBookmark call s:InitNerdTree('<args>')
 " SECTION: Auto commands {{{1
 "============================================================
 "Save the cursor position whenever we close the nerd tree
 exec "autocmd BufWinLeave *". s:NERDTreeWinName ."* :call <SID>SaveScreenState()"
-"cache marks when vim loads
-autocmd VimEnter * call <SID>ReadMarks()
+"cache bookmarks when vim loads
+autocmd VimEnter * call <SID>ReadBookmarks()
 
 "SECTION: Classes {{{1
 "============================================================
@@ -180,15 +180,15 @@ function! s:CompareNodes(n1, n2)
     return a:n1.path.CompareTo(a:n2.path)
 endfunction
 
-"FUNCTION: oTreeFileNode.ClearMarks() {{{3
-function! s:oTreeFileNode.ClearMarks() dict
-    let marks = s:GetMarks()
-    for i in keys(marks)
-        if marks[i].Equals(self.path)
-            call remove(marks, i)
+"FUNCTION: oTreeFileNode.ClearBookmarks() {{{3
+function! s:oTreeFileNode.ClearBookmarks() dict
+    let bookmarks = s:GetBookmarks()
+    for i in keys(bookmarks)
+        if bookmarks[i].Equals(self.path)
+            call remove(bookmarks, i)
         end
     endfor
-    call self.path.CacheMarkNames()
+    call self.path.CacheBookmarkNames()
 endfunction
 "FUNCTION: oTreeFileNode.Copy(dest) {{{3
 function! s:oTreeFileNode.Copy(dest) dict
@@ -813,16 +813,23 @@ endfunction
 "============================================================
 let s:oPath = {}
 let oPath = s:oPath
-"FUNCTION: oPath.CacheMarkNames() {{{3
-function! s:oPath.CacheMarkNames() dict
-    let self.markNames = []
-    let marks = s:GetMarks()
-    for k in keys(marks)
-        if marks[k].Equals(self)
-            call add(self.markNames, k)
+"FUNCTION: oPath.BookmarkNames() {{{3
+function! s:oPath.BookmarkNames() dict
+    if !exists("self.bookmarkNames")
+        call self.CacheBookmarkNames()
+    endif
+    return self.bookmarkNames
+endfunction
+"FUNCTION: oPath.CacheBookmarkNames() {{{3
+function! s:oPath.CacheBookmarkNames() dict
+    let self.bookmarkNames = []
+    let bookmarks = s:GetBookmarks()
+    for k in keys(bookmarks)
+        if bookmarks[k].Equals(self)
+            call add(self.bookmarkNames, k)
         endif
     endfor
-    return self.markNames
+    return self.bookmarkNames
 endfunction
 "FUNCTION: oPath.ChangeToDir() {{{3
 function! s:oPath.ChangeToDir() dict
@@ -1120,13 +1127,6 @@ function! s:oPath.Equals(path) dict
     return self.Str(0) == a:path.Str(0)
 endfunction
 
-"FUNCTION: oPath.MarkNames() {{{3
-function! s:oPath.MarkNames() dict
-    if !exists("self.markNames")
-        call self.CacheMarkNames()
-    endif
-    return self.markNames
-endfunction
 "FUNCTION: oPath.New() {{{3
 "
 "The Constructor for the Path object
@@ -1187,7 +1187,7 @@ endfunction
 "FUNCTION: oPath.Refresh() {{{3
 function! s:oPath.Refresh() dict
     call self.ReadInfoFromDisk(self.StrForOS(0))
-    call self.CacheMarkNames()
+    call self.CacheBookmarkNames()
 endfunction
 
 "FUNCTION: oPath.Rename() {{{3
@@ -1256,9 +1256,9 @@ endfunction
 function! s:oPath.StrDisplay() dict
     let toReturn = self.GetLastPathComponent(1)
 
-    let marks = self.MarkNames()
-    if !empty(marks)
-        let toReturn .= ' {' . join(marks, ',') . '}'
+    let bookmarks = self.BookmarkNames()
+    if !empty(bookmarks)
+        let toReturn .= ' {' . join(bookmarks, ',') . '}'
     endif
 
     if self.isSymLink
@@ -1402,60 +1402,60 @@ function! s:BufInWindows(bnum)
     return cnt
 endfunction " >>>
 
-"FUNCTION: s:ClearAllMarks() {{{2
-"delete all marks
-function! s:ClearAllMarks()
-    for name in keys(g:NERDTreeMarks)
+"FUNCTION: s:ClearAllBookmarks() {{{2
+"delete all bookmarks
+function! s:ClearAllBookmarks()
+    for name in keys(g:NERDTreeBookmarks)
         let node = {}
         try
-            let node = s:GetNodeForMark(name, 1)
+            let node = s:GetNodeForBookmark(name, 1)
         catch /NERDTree/
         endtry
-        call remove(g:NERDTreeMarks, name)
+        call remove(g:NERDTreeBookmarks, name)
         if !empty(node)
-            call node.path.CacheMarkNames()
+            call node.path.CacheBookmarkNames()
         endif
     endfor
-    call s:WriteMarks()
+    call s:WriteBookmarks()
 endfunction
-"FUNCTION: s:GetNodeForMark(name, searchFromAbsoluteRoot) {{{2
-"get the treenode for the mark with the given name
+"FUNCTION: s:GetNodeForBookmark(name, searchFromAbsoluteRoot) {{{2
+"get the treenode for the bookmark with the given name
 "
 "Args:
-"name: name of mark
+"name: name of bookmark
 "searchFromAbsoluteRoot: specifies wheather we should search from the current
 "tree root, or the highest cached node
-function! s:GetNodeForMark(name, searchFromAbsoluteRoot)
+function! s:GetNodeForBookmark(name, searchFromAbsoluteRoot)
     try
-        let mark = s:GetMarks()[a:name]
+        let bookmark = s:GetBookmarks()[a:name]
     catch /E716/ "key not in dictionary error
-        throw "NERDTree.MarkDoesntExist no mark found with name: " . a:name
+        throw "NERDTree.BookmarkDoesntExist no bookmark found with name: " . a:name
     endtry
 
     let searchRoot = a:searchFromAbsoluteRoot ? s:AbsoluteTreeRoot() : t:NERDTreeRoot
-    let targetNode = searchRoot.FindNode(mark)
+    let targetNode = searchRoot.FindNode(bookmark)
     if empty(targetNode)
-        throw "NERDTree.MarkNotFound no node was found for mark: " . a:name
+        throw "NERDTree.BookmarkNotFound no node was found for bookmark: " . a:name
     endif
     return targetNode
 endfunction
 "FUNCTION: s:InitNerdTree(name) {{{2
 "Initialise the nerd tree for this tab. The tree will start in either the
-"given directory, or the directory associated with the given mark
+"given directory, or the directory associated with the given bookmark
 "
 "Args:
-"name: the name of a mark or a directory
+"name: the name of a bookmark or a directory
 function! s:InitNerdTree(name)
     let path = {}
-    if count(keys(s:GetMarks()), a:name)
-        let path = s:GetMarks()[a:name]
+    if count(keys(s:GetBookmarks()), a:name)
+        let path = s:GetBookmarks()[a:name]
     else
         let dir = a:name == '' ? expand('%:p:h') : a:name
         let dir = resolve(dir)
         try
             let path = s:oPath.New(dir)
         catch /NERDTree.Path.InvalidArguments/
-            call s:Echo("No mark or directory found for: " . a:name)
+            call s:Echo("No bookmark or directory found for: " . a:name)
             return
         endtry
         if !path.isDirectory
@@ -1486,15 +1486,15 @@ function! s:InitNerdTree(name)
     call s:RenderView()
     call s:PutCursorOnNode(t:NERDTreeRoot, 0, 0)
 endfunction
-" Function: s:ReadMarks()   {{{2
-function! s:ReadMarks()
-    if filereadable(g:NERDTreeMarksFile)
-        let marks = s:GetMarks()
-        let markStrings = readfile(g:NERDTreeMarksFile)
-        for i in markStrings
+" Function: s:ReadBookmarks()   {{{2
+function! s:ReadBookmarks()
+    if filereadable(g:NERDTreeBookmarksFile)
+        let bookmarks = s:GetBookmarks()
+        let bookmarkStrings = readfile(g:NERDTreeBookmarksFile)
+        for i in bookmarkStrings
             let key = substitute(i, '^\(\w.\{-}\) .*$', '\1', '')
             let path = substitute(i, '^\w.\{-} \(.*\)$', '\1', '')
-            let marks[key] = s:oPath.New(path)
+            let bookmarks[key] = s:oPath.New(path)
         endfor
     endif
 endfunction
@@ -1503,14 +1503,14 @@ endfunction
 function! s:TreeExistsForTab()
     return exists("t:NERDTreeRoot")
 endfunction
-" Function: s:WriteMarks()   {{{2
-function! s:WriteMarks()
-    let marks = s:GetMarks()
-    let markStrings = []
-    for k in keys(marks)
-        call add(markStrings, k . ' ' . marks[k].StrForOS(0))
+" Function: s:WriteBookmarks()   {{{2
+function! s:WriteBookmarks()
+    let bookmarks = s:GetBookmarks()
+    let bookmarkStrings = []
+    for k in keys(bookmarks)
+        call add(bookmarkStrings, k . ' ' . bookmarks[k].StrForOS(0))
     endfor
-    call writefile(markStrings, g:NERDTreeMarksFile)
+    call writefile(bookmarkStrings, g:NERDTreeBookmarksFile)
 endfunction
 
 " SECTION: Public Functions {{{1
@@ -1776,13 +1776,13 @@ function! s:DumpHelp()
         let @h=@h."\" ". g:NERDTreeMapQuit .": Close the NERDTree window\n"
         let @h=@h."\" ". g:NERDTreeMapHelp .": toggle help\n"
         let @h=@h."\" \n\" ----------------------------\n"
-        let @h=@h."\" Mark commands~\n"
-        let @h=@h."\" :Mark <name>\n"
-        let @h=@h."\" :MarkToRoot <mark>\n"
-        let @h=@h."\" :RevealMark <mark>\n"
-        let @h=@h."\" :OpenMark <mark>\n"
-        let @h=@h."\" :ClearMarks [<marks>]\n"
-        let @h=@h."\" :ClearAllMarks\n"
+        let @h=@h."\" Bookmark commands~\n"
+        let @h=@h."\" :Bookmark <name>\n"
+        let @h=@h."\" :BookmarkToRoot <bookmark>\n"
+        let @h=@h."\" :RevealBookmark <bookmark>\n"
+        let @h=@h."\" :OpenBookmark <bookmark>\n"
+        let @h=@h."\" :ClearBookmarks [<bookmarks>]\n"
+        let @h=@h."\" :ClearAllBookmarks\n"
     else
         let @h="\" Press ". g:NERDTreeMapHelp ." for help\n"
     endif
@@ -1818,10 +1818,10 @@ function! s:EchoError(msg)
     call s:Echo(a:msg)
     echohl normal
 endfunction
-" FUNCTION: s:FindMarks(A,L,P) {{{2
-" completion function for the mark commands
-function! s:FindMarks(A,L,P)
-    let keys = keys(s:GetMarks())
+" FUNCTION: s:FindBookmarks(A,L,P) {{{2
+" completion function for the bookmark commands
+function! s:FindBookmarks(A,L,P)
+    let keys = keys(s:GetBookmarks())
     return filter(keys, 'v:val =~ "^' . a:A . '"')
 endfunction
 "FUNCTION: s:FindNodeLineNumber(treenode){{{2
@@ -1886,13 +1886,13 @@ function! s:FindRootNodeLineNumber()
     return rootLine
 endfunction
 
-" FUNCTION: s:GetMarks(name) {{{2
-" getter/lazy initializer for the g:NERDTreeMarks hash
-function! s:GetMarks()
-    if !exists("g:NERDTreeMarks")
-        let g:NERDTreeMarks = {}
+" FUNCTION: s:GetBookmarks(name) {{{2
+" getter/lazy initializer for the g:NERDTreeBookmarks hash
+function! s:GetBookmarks()
+    if !exists("g:NERDTreeBookmarks")
+        let g:NERDTreeBookmarks = {}
     endif
-    return g:NERDTreeMarks
+    return g:NERDTreeBookmarks
 endfunction
 "FUNCTION: s:GetPath(ln) {{{2
 "Gets the full path to the node that is rendered on the given line number
@@ -2356,19 +2356,19 @@ function! s:SetupSyntaxHighlighting()
     syn match treeHelp  #^" .*# contains=treeHelpKey,treeHelpTitle,treeFlag,treeToggleOff,treeToggleOn,treeHelpCommand
 
     "highlighting for sym links
-    syn match treeLink #[^-| `].* -> # contains=treeMark
+    syn match treeLink #[^-| `].* -> # contains=treeBookmark
 
     "highlighting for readonly files
-    syn match treeRO #[0-9a-zA-Z]\+.*\[RO\]# contains=treeFlag,treeMark
+    syn match treeRO #[0-9a-zA-Z]\+.*\[RO\]# contains=treeFlag,treeBookmark
 
-    "highlighting for marks
-    syn match treeMark # {.*}#hs=s+1
+    "highlighting for bookmarks
+    syn match treeBookmark # {.*}#hs=s+1
 
     "highlighing for directory nodes and file nodes
     syn match treeDirSlash #/#
     syn match treeDir #[^-| `].*/# contains=treeLink,treeDirSlash,treeOpenable,treeClosable
-    syn match treeFile  #|-.*# contains=treeLink,treePart,treeRO,treePartFile,treeMark
-    syn match treeFile  #`-.*# contains=treeLink,treePart,treeRO,treePartFile,treeMark
+    syn match treeFile  #|-.*# contains=treeLink,treePart,treeRO,treePartFile,treeBookmark
+    syn match treeFile  #`-.*# contains=treeLink,treePart,treeRO,treePartFile,treeBookmark
     syn match treeCWD #^/.*$#
 
     if g:NERDChristmasTree
@@ -2398,7 +2398,7 @@ function! s:SetupSyntaxHighlighting()
     hi def link treeOpenable Title
     hi def link treeFlag ignore
     hi def link treeRO WarningMsg
-    hi def link treeMark Statement
+    hi def link treeBookmark Statement
 
     hi def link NERDTreeCurrentNode Search
 endfunction
@@ -2437,7 +2437,7 @@ function! s:StripMarkupFromLine(line, removeLeadingSpaces)
     "strip off any read only flag
     let line = substitute (line, s:tree_RO_str_reg, "","")
 
-    "strip off any mark flags
+    "strip off any bookmark flags
     let line = substitute (line, ' {[^}]*}', "","")
 
     let wasdir = 0
@@ -2552,16 +2552,48 @@ function! s:BindMappings()
 
     exec "nnoremap <silent> <buffer> ". g:NERDTreeMapOpenExpl ." :call <SID>OpenExplorer()<cr>"
 
-    command! -buffer -nargs=1 Mark :call <SID>MarkNode('<args>')
-    command! -buffer -complete=customlist,s:FindMarks -nargs=1 RevealMark :call <SID>RevealMark('<args>')
-    command! -buffer -complete=customlist,s:FindMarks -nargs=1 OpenMark :call <SID>OpenMark('<args>')
-    command! -buffer -complete=customlist,s:FindMarks -nargs=* ClearMarks call <SID>ClearMarks('<args>')
-    command! -buffer -complete=customlist,s:FindMarks -nargs=+ MarkToRoot call <SID>MarkToRoot('<args>')
-    command! -buffer -nargs=0 ClearAllMarks call <SID>ClearAllMarks() <bar> call <SID>RenderView()
-    command! -buffer -nargs=0 ReadMarks call <SID>ReadMarks() <bar> call <SID>RenderView()
-    command! -buffer -nargs=0 WriteMarks call <SID>WriteMarks()
+    command! -buffer -nargs=1 Bookmark :call <SID>BookmarkNode('<args>')
+    command! -buffer -complete=customlist,s:FindBookmarks -nargs=1 RevealBookmark :call <SID>RevealBookmark('<args>')
+    command! -buffer -complete=customlist,s:FindBookmarks -nargs=1 OpenBookmark :call <SID>OpenBookmark('<args>')
+    command! -buffer -complete=customlist,s:FindBookmarks -nargs=* ClearBookmarks call <SID>ClearBookmarks('<args>')
+    command! -buffer -complete=customlist,s:FindBookmarks -nargs=+ BookmarkToRoot call <SID>BookmarkToRoot('<args>')
+    command! -buffer -nargs=0 ClearAllBookmarks call <SID>ClearAllBookmarks() <bar> call <SID>RenderView()
+    command! -buffer -nargs=0 ReadBookmarks call <SID>ReadBookmarks() <bar> call <SID>RenderView()
+    command! -buffer -nargs=0 WriteBookmarks call <SID>WriteBookmarks()
 endfunction
 
+" FUNCTION: s:BookmarkNode(name) {{{2
+" Associate the current node with the given name
+function! s:BookmarkNode(name)
+    if a:name !~ '^[0-9a-zA-Z_]*$'
+        call s:Echo("Bookmarks must be named using numbers, letters and underscores only")
+        return
+    endif
+
+    let currentNode = s:GetSelectedNode()
+    if currentNode != {}
+        let bookmarks = s:GetBookmarks()
+        let bookmarks[a:name] = currentNode.path
+        call currentNode.path.CacheBookmarkNames()
+        call s:WriteBookmarks()
+        call s:RenderView()
+    else
+        call s:Echo("select a node first")
+    endif
+endfunction
+" FUNCTION: s:BookmarkToRoot(name) {{{2
+" Make the node for the given bookmark the new tree root
+function! s:BookmarkToRoot(name)
+    try
+        let targetNode = s:GetNodeForBookmark(a:name, 1)
+    catch /NERDTree.BookmarkNotFound/
+        let bookmarks = s:GetBookmarks()
+        let targetNode = s:oTreeFileNode.New(bookmarks[a:name])
+    endtry
+    call targetNode.MakeRoot()
+    call s:RenderView()
+    call s:PutCursorOnNode(targetNode, 0, 0)
+endfunction
 "FUNCTION: s:CheckForActivate() {{{2
 "Checks if the click should open the current node, if so then activate() is
 "called (directories are automatically opened if the symbol beside them is
@@ -2620,30 +2652,30 @@ function! s:ChRoot()
     call s:PutCursorOnNode(t:NERDTreeRoot, 0, 0)
 endfunction
 
-" FUNCTION: s:ClearMarks(marks) {{{2
-function! s:ClearMarks(marks)
-    let marks = s:GetMarks()
-    if a:marks == ''
+" FUNCTION: s:ClearBookmarks(bookmarks) {{{2
+function! s:ClearBookmarks(bookmarks)
+    let bookmarks = s:GetBookmarks()
+    if a:bookmarks == ''
         let currentNode = s:GetSelectedNode()
         if currentNode != {}
-            call currentNode.ClearMarks()
+            call currentNode.ClearBookmarks()
         endif
     else
-        for name in split(a:marks, ' ')
-            if count(keys(marks), name)
+        for name in split(a:bookmarks, ' ')
+            if count(keys(bookmarks), name)
                 let node = {}
                 try
-                    let node = s:GetNodeForMark(name, 1)
+                    let node = s:GetNodeForBookmark(name, 1)
                 catch /NERDTree/
                 endtry
-                call remove(marks, name)
+                call remove(bookmarks, name)
                 if !empty(node)
-                    call node.path.CacheMarkNames()
+                    call node.path.CacheBookmarkNames()
                 endif
             endif
         endfor
     endif
-    call s:WriteMarks()
+    call s:WriteBookmarks()
     call s:RenderView()
 endfunction
 " FUNCTION: s:CloseChildren() {{{2
@@ -2912,37 +2944,21 @@ function! s:JumpToSibling(forward)
     endif
 endfunction
 
-" FUNCTION: s:MarkNode(name) {{{2
-" Associate the current node with the given name
-function! s:MarkNode(name)
-    if a:name !~ '^[0-9a-zA-Z_]*$'
-        call s:Echo("Marks must be named using numbers, letters and underscores only")
-        return
-    endif
-
-    let currentNode = s:GetSelectedNode()
-    if currentNode != {}
-        let marks = s:GetMarks()
-        let marks[a:name] = currentNode.path
-        call currentNode.path.CacheMarkNames()
-        call s:WriteMarks()
-        call s:RenderView()
-    else
-        call s:Echo("select a node first")
-    endif
-endfunction
-" FUNCTION: s:MarkToRoot(name) {{{2
-" Make the node for the given mark the new tree root
-function! s:MarkToRoot(name)
+" FUNCTION: s:OpenBookmark(name) {{{2
+" put the cursor on the given bookmark and, if its a file, open it
+function! s:OpenBookmark(name)
     try
-        let targetNode = s:GetNodeForMark(a:name, 1)
-    catch /NERDTree.MarkNotFound/
-        let marks = s:GetMarks()
-        let targetNode = s:oTreeFileNode.New(marks[a:name])
+        let targetNode = s:GetNodeForBookmark(a:name, 0)
+        call s:PutCursorOnNode(targetNode, 0, 1)
+        redraw!
+    catch /NERDTree.BookmarkNotFound/
+        call s:Echo("note - target node is not cached")
+        let bookmarks = s:GetBookmarks()
+        let targetNode = s:oTreeFileNode.New(bookmarks[a:name])
     endtry
-    call targetNode.MakeRoot()
-    call s:RenderView()
-    call s:PutCursorOnNode(targetNode, 0, 0)
+    if !targetNode.path.isDirectory
+        call s:OpenFileNode(targetNode)
+    endif
 endfunction
 " FUNCTION: s:OpenEntrySplit() {{{2
 " Opens the currently selected file from the explorer in a
@@ -2973,22 +2989,6 @@ function! s:OpenExplorer()
     endif
 endfunction
 
-" FUNCTION: s:OpenMark(name) {{{2
-" put the cursor on the given mark and, if its a file, open it
-function! s:OpenMark(name)
-    try
-        let targetNode = s:GetNodeForMark(a:name, 0)
-        call s:PutCursorOnNode(targetNode, 0, 1)
-        redraw!
-    catch /NERDTree.MarkNotFound/
-        call s:Echo("note - target node is not cached")
-        let marks = s:GetMarks()
-        let targetNode = s:oTreeFileNode.New(marks[a:name])
-    endtry
-    if !targetNode.path.isDirectory
-        call s:OpenFileNode(targetNode)
-    endif
-endfunction
 " FUNCTION: s:OpenNodeNewTab(stayCurrentTab) {{{2
 " Opens the currently selected file from the explorer in a
 " new tab
@@ -3041,14 +3041,14 @@ function! s:PreviewNode(openNewWin)
     call s:PutCursorInTreeWin()
 endfunction
 
-" FUNCTION: s:RevealMark(name) {{{2
+" FUNCTION: s:RevealBookmark(name) {{{2
 " put the cursor on the node associate with the given name
-function! s:RevealMark(name)
+function! s:RevealBookmark(name)
     try
-        let targetNode = s:GetNodeForMark(a:name, 0)
+        let targetNode = s:GetNodeForBookmark(a:name, 0)
         call s:PutCursorOnNode(targetNode, 0, 1)
-    catch /NERDTree.MarkDoesntExist/
-        call s:Echo("Mark isnt cached under the current root")
+    catch /NERDTree.BookmarkDoesntExist/
+        call s:Echo("Bookmark isnt cached under the current root")
     endtry
 endfunction
 " FUNCTION: s:RefreshRoot() {{{2
