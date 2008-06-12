@@ -1743,7 +1743,7 @@ function! s:DumpHelp()
         let @h=@h."\" \n\" ----------------------------\n"
         let @h=@h."\" Directory node mappings~\n"
         let @h=@h."\" ". (g:NERDTreeMouseMode == 1 ? "double" : "single") ."-click,\n"
-        let @h=@h."\" ". g:NERDTreeMapActivateNode .": open/close node \n"
+        let @h=@h."\" ". g:NERDTreeMapActivateNode .": open & close node\n"
         let @h=@h."\" ". g:NERDTreeMapOpenRecursively .": recursively open node\n"
         let @h=@h."\" ". g:NERDTreeMapCloseDir .": close parent of node\n"
         let @h=@h."\" ". g:NERDTreeMapCloseChildren .": close all child nodes of\n"
