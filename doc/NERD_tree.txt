@@ -95,9 +95,9 @@ The following features and functionality are provided by the NERD tree:
         :NERDTree foo   (foo is the name of a bookmark)
 <
 :NERDTreeFromBookmark <bookmark>                       *:NERDTreeFromBookmark*
-    Opens a fresh NERD tree with the root initialized to dir for <bookmark>.
-    This only reason to use this command over :NERDTree is for the completion
-    (which is for bookmarks rather than directories).
+    Opens a fresh NERD tree with the root initialized to the dir for
+    <bookmark>.  This only reason to use this command over :NERDTree is for
+    the completion (which is for bookmarks rather than directories).
 
 :NERDTreeToggle [<start-directory> | <bookmark>]             *:NERDTreeToggle*
     If a NERD tree already exists for this tab, it is reopened and rendered
@@ -112,8 +112,9 @@ The following features and functionality are provided by the NERD tree:
 
 Bookmarks in the NERD tree are a way to tag files or directories of interest.
 For example, you could use bookmarks to tag all of your project directories.
-See also
-|:NERDTreeFromBookmark|.
+See also |:NERDTree| and |:NERDTreeFromBookmark|.
+
+Note that the following commands are only available in the NERD tree buffer.
 
 :Bookmark <name>
     Bookmark the current node as <name>. If there is already a <name>
@@ -839,9 +840,11 @@ fridge for later ;)
 ==============================================================================
 7. Changelog                                               *NERDTreeChangelog*
 
-2.9.1
-    - fix screen jumping bug with when &scrolloff != 0
-    - fix some bugs with copying nodes
+2.10.0
+    - added bookmarks, see :help NERDTreeBookmarkCommands for details.
+    - fixed screen jumping bug with when &scrolloff != 0
+    - fixed some bugs with copying nodes
+    - other random fixes
 
 2.9.0
 
