@@ -1335,6 +1335,15 @@ function! s:oPath.StrTrunk() dict
     return self.drive . '/' . join(self.pathSegments[0:-2], '/')
 endfunction
 
+"FUNCTION: oPath.UncacheBookmark(name){{{3
+"remove the given bookmark from this paths cached bookmarks
+function! s:oPath.UncacheBookmark(name) dict
+    let bookmarks = self.BookmarkNames()
+    let i = index(bookmarks, a:name)
+    if i != -1
+        echo remove(bookmarks, i)
+    endif
+endfunction
 "FUNCTION: oPath.WinToUnixPath(pathstr){{{3
 "Takes in a windows path and returns the unix equiv
 "
@@ -2572,6 +2581,13 @@ function! s:BookmarkNode(name)
 
     let currentNode = s:GetSelectedNode()
     if currentNode != {}
+
+        try
+            let oldMarkedNode = s:GetNodeForBookmark(a:name, 1)
+            call oldMarkedNode.path.UncacheBookmark(a:name)
+        catch /NERDTree.Bookmark\(DoesntExist\|NotFound\)/
+        endtry
+
         let bookmarks = s:GetBookmarks()
         let bookmarks[a:name] = currentNode.path
         call currentNode.path.CacheBookmarkNames()
