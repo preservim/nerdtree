@@ -1467,9 +1467,9 @@ function! s:InitNerdTree(name)
             call s:Echo("No bookmark or directory found for: " . a:name)
             return
         endtry
-        if !path.isDirectory
-            let path = path.GetParent()
-        endif
+    endif
+    if !path.isDirectory
+        let path = path.GetParent()
     endif
 
     "if instructed to, then change the vim CWD to the dir the NERDTree is
