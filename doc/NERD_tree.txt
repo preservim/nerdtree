@@ -841,7 +841,8 @@ fridge for later ;)
 7. Changelog                                               *NERDTreeChangelog*
 
 2.10.0
-    - added bookmarks, see :help NERDTreeBookmarkCommands for details.
+    - added bookmarks, see :help NERDTreeBookmarkCommands for details. Thanks
+      to Piotr Czachur for all his testing and suggestions.
     - fixed screen jumping bug with when &scrolloff != 0
     - fixed some bugs with copying nodes
     - other random fixes
@@ -1079,3 +1080,6 @@ NERD tree path handling.
 
 Thanks to Cory Echols for sending a patch to add the :NERDTreeClose command and
 set the NERD tree buffers filetype to 'nerdtree'
+
+Thanks to Piotr Czachur for all his suggestions and testing for the bookmarks
+feature.
