@@ -2064,6 +2064,18 @@ function! s:OpenDirNodeSplit(treenode)
     endif
 endfunction
 
+" FUNCTION: s:OpenExplorerFor(treenode) {{{2
+" opens a netrw window for the given dir treenode
+function! s:OpenExplorerFor(treenode)
+    let oldwin = winnr()
+    wincmd p
+    if oldwin == winnr() || (&modified && s:BufInWindows(winbufnr(winnr())) < 2)
+        wincmd p
+        call s:OpenDirNodeSplit(a:treenode)
+    else
+        exec ("silent edit " . a:treenode.path.StrForEditCmd())
+    endif
+endfunction
 "FUNCTION: s:OpenFileNode(treenode) {{{2
 "Open the file represented by the given node in the current window, splitting
 "the window if needed
@@ -2992,14 +3004,7 @@ endfunction
 function! s:OpenExplorer()
     let treenode = s:GetSelectedDir()
     if treenode != {}
-        let oldwin = winnr()
-        wincmd p
-        if oldwin == winnr() || (&modified && s:BufInWindows(winbufnr(winnr())) < 2)
-            wincmd p
-            call s:OpenDirNodeSplit(treenode)
-        else
-            exec ("silent edit " . treenode.path.StrForEditCmd())
-        endif
+        call s:OpenExplorerFor(treenode)
     else
         call s:Echo("select a node first")
     endif
