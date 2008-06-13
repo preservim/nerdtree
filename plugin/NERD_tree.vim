@@ -2984,7 +2984,9 @@ function! s:OpenBookmark(name)
         let bookmarks = s:GetBookmarks()
         let targetNode = s:oTreeFileNode.New(bookmarks[a:name])
     endtry
-    if !targetNode.path.isDirectory
+    if targetNode.path.isDirectory
+        call s:OpenExplorerFor(targetNode)
+    else
         call s:OpenFileNode(targetNode)
     endif
 endfunction
