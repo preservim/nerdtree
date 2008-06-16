@@ -1502,8 +1502,8 @@ function! s:ReadBookmarks()
         let bookmarkStrings = readfile(g:NERDTreeBookmarksFile)
         let invalidBookmarksFound = 0
         for i in bookmarkStrings
-            let key = substitute(i, '^\(\w.\{-}\) .*$', '\1', '')
-            let path = substitute(i, '^\w.\{-} \(.*\)$', '\1', '')
+            let key = substitute(i, '^\(\w\{-}\) .*$', '\1', '')
+            let path = substitute(i, '^\w\{-} \(.*\)$', '\1', '')
 
             try
                 let bookmarks[key] = s:oPath.New(path)
