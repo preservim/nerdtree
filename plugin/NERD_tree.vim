@@ -1500,11 +1500,21 @@ function! s:ReadBookmarks()
     if filereadable(g:NERDTreeBookmarksFile)
         let bookmarks = s:GetBookmarks()
         let bookmarkStrings = readfile(g:NERDTreeBookmarksFile)
+        let invalidBookmarksFound = 0
         for i in bookmarkStrings
             let key = substitute(i, '^\(\w.\{-}\) .*$', '\1', '')
             let path = substitute(i, '^\w.\{-} \(.*\)$', '\1', '')
-            let bookmarks[key] = s:oPath.New(path)
+
+            try
+                let bookmarks[key] = s:oPath.New(path)
+            catch /NERDTree.Path.InvalidArguments/
+                let invalidBookmarksFound = 1
+            endtry
         endfor
+        if invalidBookmarksFound
+            call s:Echo("Invalid bookmarks were read and discarded")
+            call s:WriteBookmarks()
+        endif
     endif
 endfunction
 " Function: s:TreeExistsForTab()   {{{2
