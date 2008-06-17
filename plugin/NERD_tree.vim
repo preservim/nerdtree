@@ -1517,11 +1517,11 @@ function! s:ReadBookmarks()
             try
                 let bookmarks[key] = s:oPath.New(path)
             catch /NERDTree.Path.InvalidArguments/
-                let invalidBookmarksFound = 1
+                let invalidBookmarksFound += 1
             endtry
         endfor
         if invalidBookmarksFound
-            call s:Echo("Invalid bookmarks were read and discarded")
+            call s:Echo(invalidBookmarksFound . " invalid bookmarks were read and discarded")
             call s:WriteBookmarks()
         endif
     endif
