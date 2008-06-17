@@ -33,6 +33,7 @@ CONTENTS                                                   *NERDTree-contents*
     6.The Author..............................|NERDTreeAuthor|
     7.Changelog...............................|NERDTreeChangelog|
     8.Credits.................................|NERDTreeCredits|
+    9.License.................................|NERDTreeLicense|
 
 ==============================================================================
 1. Intro                                                            *NERDTree*
@@ -846,6 +847,7 @@ fridge for later ;)
     - fixed screen jumping bug with when &scrolloff != 0
     - fixed some bugs with copying nodes
     - other random fixes
+    - change license to wtfpl
 
 2.9.0
 
@@ -1083,3 +1085,9 @@ set the NERD tree buffers filetype to 'nerdtree'
 
 Thanks to Piotr Czachur for all his suggestions and testing for the bookmarks
 feature.
+
+==============================================================================
+9. License                                                   *NERDTreeLicense*
+
+The NERD tree is released under the wtfpl.
+See http://sam.zoy.org/wtfpl/COPYING.
