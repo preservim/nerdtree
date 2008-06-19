@@ -2104,7 +2104,12 @@ endfunction
 function! s:OpenFileNode(treenode)
     call s:PutCursorInTreeWin()
 
-    if s:ShouldSplitToOpen(winnr("#"))
+    "if the file is already open in this tab then just stick the cursor in it
+    let winnr = bufwinnr(a:treenode.path.StrForOS(0))
+    if winnr != -1
+        exec winnr . "wincmd w"
+
+    elseif s:ShouldSplitToOpen(winnr("#"))
         call s:OpenFileNodeSplit(a:treenode)
     else
         try
