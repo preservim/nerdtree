@@ -2450,16 +2450,28 @@ endfunction
 "Args:
 "winnumber: the number of the window in question
 function! s:ShouldSplitToOpen(winnumber)
-    if &hidden
-        return 0
+    "gotta split if theres only one window (i.e. the NERD tree)
+    if winnr("$") == 1
+        return 1
     endif
-    let oldwinnr = winnr()
 
+    let oldwinnr = winnr()
     exec a:winnumber . "wincmd p"
+    let specialWindow = getbufvar("%", '&buftype') != '' || getwinvar('%', '&previewwindow')
     let modified = &modified
     exec oldwinnr . "wincmd p"
 
-    return winnr("$") == 1 || (modified && s:BufInWindows(winbufnr(a:winnumber)) < 2)
+    "if its a special window e.g. quickfix or another explorer plugin then we
+    "have to split
+    if specialWindow
+        return 1
+    endif
+
+    if &hidden
+        return 0
+    endif
+
+    return modified && s:BufInWindows(winbufnr(a:winnumber)) < 2
 endfunction
 
 "FUNCTION: s:StripMarkupFromLine(line, removeLeadingSpaces){{{2
