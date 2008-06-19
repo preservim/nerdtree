@@ -1826,7 +1826,7 @@ endfunction
 "msg: the message to echo
 function! s:Echo(msg)
     redraw
-    echo "NERDTree: " . a:msg
+    echomsg "NERDTree: " . a:msg
 endfunction
 "FUNCTION: s:EchoWarning {{{2
 "Wrapper for s:Echo, sets the message type to warningmsg for this message
