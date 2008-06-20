@@ -1350,7 +1350,7 @@ function! s:oPath.UncacheBookmark(name) dict
     let bookmarks = self.BookmarkNames()
     let i = index(bookmarks, a:name)
     if i != -1
-        echo remove(bookmarks, i)
+        call remove(bookmarks, i)
     endif
 endfunction
 "FUNCTION: oPath.WinToUnixPath(pathstr){{{3
