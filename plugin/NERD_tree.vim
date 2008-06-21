@@ -1270,6 +1270,10 @@ endfunction
 function! s:oPath.StrDisplay() dict
     let toReturn = self.GetLastPathComponent(1)
 
+    if self.isExecutable
+        let toReturn = toReturn . '*'
+    endif
+
     let bookmarks = self.BookmarkNames()
     if !empty(bookmarks)
         let toReturn .= ' {' . join(bookmarks, ',') . '}'
@@ -2501,6 +2505,9 @@ function! s:StripMarkupFromLine(line, removeLeadingSpaces)
 
     "strip off any bookmark flags
     let line = substitute (line, ' {[^}]*}', "","")
+
+    "strip off any executable flags
+    let line = substitute (line, '*\ze\($\| \)', "","")
 
     let wasdir = 0
     if line =~ '/$'
