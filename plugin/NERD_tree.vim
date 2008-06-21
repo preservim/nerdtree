@@ -1010,7 +1010,7 @@ function! s:oPath.Delete() dict
             throw "NERDTree.Path.Deletion Exception: Could not delete directory: '" . self.StrForOS(0) . "'"
         endif
     else
-        let success = delete(self.StrForOS(!s:running_windows))
+        let success = delete(self.StrForOS(0))
         if success != 0
             throw "NERDTree.Path.Deletion Exception: Could not delete file: '" . self.Str(0) . "'"
         endif
