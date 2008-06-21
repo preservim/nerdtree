@@ -3001,18 +3001,7 @@ endfunction
 function! s:JumpToSibling(forward)
     let currentNode = s:GetSelectedNode()
     if !empty(currentNode)
-
-        if !currentNode.path.isDirectory
-
-            if a:forward
-                let sibling = currentNode.parent.FindSibling(1)
-            else
-                let sibling = currentNode.parent
-            endif
-
-        else
-            let sibling = currentNode.FindSibling(a:forward)
-        endif
+        let sibling = currentNode.FindSibling(a:forward)
 
         if !empty(sibling)
             call s:PutCursorOnNode(sibling, 1, 0)

@@ -344,8 +344,7 @@ Default key: <C-j>
 Map option: NERDTreeMapJumpNextSibling
 Applies to: files and directories.
 
-If a dir node is selected, jump to the next sibling of that node.
-If a file node is selected, jump to the next sibling of that nodes parent.
+Jump to the next sibling of the selected node.
 
 ------------------------------------------------------------------------------
                                                                 *NERDTree-c-k*
@@ -353,8 +352,7 @@ Default key: <C-k>
 Map option: NERDTreeMapJumpPrevSibling
 Applies to: files and directories.
 
-If a dir node is selected, jump to the previous sibling of that node.
-If a file node is selected, jump to the previous sibling of that nodes parent.
+Jump to the previous sibling of the selected node.
 
 ------------------------------------------------------------------------------
                                                                   *NERDTree-C*
