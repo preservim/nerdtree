@@ -2417,7 +2417,7 @@ function! s:SetupSyntaxHighlighting()
     syn match treeBookmark # {.*}#hs=s+1
 
     "highlighting for sym links
-    syn match treeLink #[^-| `].* -> # contains=treeBookmark
+    syn match treeLink #[^-| `].* -> # contains=treeBookmark,treeOpenable,treeClosable,treeDirSlash
 
     "highlighing for directory nodes and file nodes
     syn match treeDirSlash #/#
