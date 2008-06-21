@@ -43,7 +43,7 @@ What is this "NERD tree"??
 The NERD tree allows you to explore your filesystem and to open files and
 directories. It presents the filesystem to you in the form of a tree which you
 manipulate with the keyboard and/or mouse. It also allows you to perform
-simple filesystem operations so you can alter the tree dynamically.
+simple filesystem operations.
 
 The following features and functionality are provided by the NERD tree:
     * Files and directories are displayed in a hierarchical tree structure
@@ -53,6 +53,7 @@ The following features and functionality are provided by the NERD tree:
         * sym-links
         * windows .lnk files
         * read-only files
+        * executable files
     * Many (customisable) mappings are provided to manipulate the tree:
         * Mappings to open/close/explore directory nodes
         * Mappings to open files in new/existing windows/tabs
@@ -66,7 +67,7 @@ The following features and functionality are provided by the NERD tree:
         * optional displaying of hidden files (. files)
         * files can be "turned off" so that only directories are displayed
     * A textual filesystem menu is provided which allows you to
-      create/delete/rename file and directory nodes as well as copy (for
+      create/delete/move file and directory nodes as well as copy (for
       supported OSs)
     * The position and size of the NERD tree window can be customised
     * The order in which the nodes in the tree are listed can be customised.
@@ -266,9 +267,8 @@ Recursively opens the selelected directory.
 
 All files and directories are cached, but if a directory would not be
 displayed due to file filters (see |NERDTreeIgnore| |NERDTree-f|) or the
-hidden file filter (see |NERDTreeShowHidden|) then it is not opened. This is
-handy, especially if you have .svn directories.
-
+hidden file filter (see |NERDTreeShowHidden|) then its contents are not
+cached. This is handy, especially if you have .svn directories.
 
 ------------------------------------------------------------------------------
                                                                   *NERDTree-x*
@@ -826,10 +826,7 @@ Window manager integration?
 6. The Author                                                 *NERDTreeAuthor*
 
 The author of the NERD tree is a terrible terrible monster called Martyzilla
-who gobbles up small children with milk and sugar for breakfast. He has an odd
-love/hate relationship with computers (but monsters hate everything by nature
-you know...) which can be awkward for him since he is a pro computer nerd for
-a living.
+who gobbles up small children with milk and sugar for breakfast.
 
 He can be reached at martin_grenfell at msn.com. He would love to hear from
 you, so feel free to send him suggestions and/or comments about this plugin.
