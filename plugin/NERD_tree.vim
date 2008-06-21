@@ -2409,26 +2409,29 @@ function! s:SetupSyntaxHighlighting()
     syn match treeHelpCommand #" :.\{-}\>#hs=s+3
     syn match treeHelp  #^" .*# contains=treeHelpKey,treeHelpTitle,treeFlag,treeToggleOff,treeToggleOn,treeHelpCommand
 
-    "highlighting for sym links
-    syn match treeLink #[^-| `].* -> # contains=treeBookmark
 
     "highlighting for readonly files
-    syn match treeRO #[0-9a-zA-Z]\+.*\[RO\]# contains=treeFlag,treeBookmark
+    syn match treeRO #[\/0-9a-zA-Z]\+.*\[RO\]# contains=treeFlag,treeBookmark
 
     "highlighting for bookmarks
     syn match treeBookmark # {.*}#hs=s+1
 
+    "highlighting for sym links
+    syn match treeLink #[^-| `].* -> # contains=treeBookmark
+
     "highlighing for directory nodes and file nodes
     syn match treeDirSlash #/#
     syn match treeDir #[^-| `].*/# contains=treeLink,treeDirSlash,treeOpenable,treeClosable
-    syn match treeFile  #|-.*# contains=treeLink,treePart,treeRO,treePartFile,treeBookmark
-    syn match treeFile  #`-.*# contains=treeLink,treePart,treeRO,treePartFile,treeBookmark
+    syn match treeExecFile  #[|`]-.*\*\($\| \)# contains=treeLink,treePart,treeRO,treePartFile,treeBookmark
+    syn match treeFile  #|-.*# contains=treeLink,treePart,treeRO,treePartFile,treeBookmark,treeExecFile
+    syn match treeFile  #`-.*# contains=treeLink,treePart,treeRO,treePartFile,treeBookmark,treeExecFile
     syn match treeCWD #^/.*$#
 
     if g:NERDChristmasTree
         hi def link treePart Special
         hi def link treePartFile Type
-        hi def link treeFile Macro
+        hi def link treeFile Normal
+        hi def link treeExecFile Title
         hi def link treeDirSlash Identifier
         hi def link treeClosable Type
     else
@@ -2448,7 +2451,7 @@ function! s:SetupSyntaxHighlighting()
     hi def link treeDir Directory
     hi def link treeUp Directory
     hi def link treeCWD Statement
-    hi def link treeLink Title
+    hi def link treeLink Macro
     hi def link treeOpenable Title
     hi def link treeFlag ignore
     hi def link treeRO WarningMsg
