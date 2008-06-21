@@ -839,6 +839,19 @@ fridge for later ;)
 ==============================================================================
 7. Changelog                                               *NERDTreeChangelog*
 
+2.XX.X
+    - changes to the 'o' mapping when opening files:
+      - dont clobber "special" windows (eg taglist/quickfix/etc). This should
+        make the NERD tree play nicer with other explorer plugins. Thanks to
+        Yuan Jiang for the suggestion.
+      - if the file is already open in the current tab, just move the cursor
+        to that window
+    - highlight executable files, made some slight changes to other
+      highlighting
+    - remove the "magic" functionality from the <c-j>/<c-k> mappings (it was
+      more confusing than helpful)
+    - other minor fixes
+
 2.10.0
     - added bookmarks, see :help NERDTreeBookmarkCommands for details. Thanks
       to Piotr Czachur for all his testing and suggestions.
