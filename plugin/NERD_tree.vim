@@ -1760,7 +1760,7 @@ function! s:DumpHelp()
         let @h=@h."\" File node mappings~\n"
         let @h=@h."\" ". (g:NERDTreeMouseMode == 3 ? "single" : "double") ."-click,\n"
         let @h=@h."\" ". g:NERDTreeMapActivateNode .": open in prev window\n"
-        let @h=@h."\" ". g:NERDTreeMapPreview .": preview \n"
+        let @h=@h."\" ". g:NERDTreeMapPreview .": preview\n"
         let @h=@h."\" ". g:NERDTreeMapOpenInTab.": open in new tab\n"
         let @h=@h."\" ". g:NERDTreeMapOpenInTabSilent .": open in new tab silently\n"
         let @h=@h."\" middle-click,\n"
@@ -1768,7 +1768,7 @@ function! s:DumpHelp()
         let @h=@h."\" ". g:NERDTreeMapPreviewSplit .": preview split\n"
         let @h=@h."\" ". g:NERDTreeMapExecute.": Execute file\n"
 
-        let @h=@h."\" \n\" ----------------------------\n"
+        let @h=@h."\"\n\" ----------------------------\n"
         let @h=@h."\" Directory node mappings~\n"
         let @h=@h."\" ". (g:NERDTreeMouseMode == 1 ? "double" : "single") ."-click,\n"
         let @h=@h."\" ". g:NERDTreeMapActivateNode .": open & close node\n"
@@ -1778,9 +1778,9 @@ function! s:DumpHelp()
         let @h=@h."\"    current node recursively\n"
         let @h=@h."\" middle-click,\n"
         let @h=@h."\" ". g:NERDTreeMapOpenExpl.": Open netrw for selected\n"
-        let @h=@h."\"    node \n"
+        let @h=@h."\"    node\n"
 
-        let @h=@h."\" \n\" ----------------------------\n"
+        let @h=@h."\"\n\" ----------------------------\n"
         let @h=@h."\" Tree navigation mappings~\n"
         let @h=@h."\" ". g:NERDTreeMapJumpRoot .": go to root\n"
         let @h=@h."\" ". g:NERDTreeMapJumpParent .": go to parent\n"
@@ -1789,7 +1789,7 @@ function! s:DumpHelp()
         let @h=@h."\" ". g:NERDTreeMapJumpNextSibling .": go to next sibling\n"
         let @h=@h."\" ". g:NERDTreeMapJumpPrevSibling .": go to prev sibling\n"
 
-        let @h=@h."\" \n\" ----------------------------\n"
+        let @h=@h."\"\n\" ----------------------------\n"
         let @h=@h."\" Filesystem mappings~\n"
         let @h=@h."\" ". g:NERDTreeMapChangeRoot .": change tree root to the\n"
         let @h=@h."\"    selected dir\n"
@@ -1802,17 +1802,17 @@ function! s:DumpHelp()
         let @h=@h."\" ". g:NERDTreeMapChdir .":change the CWD to the\n"
         let @h=@h."\"    selected dir\n"
 
-        let @h=@h."\" \n\" ----------------------------\n"
+        let @h=@h."\"\n\" ----------------------------\n"
         let @h=@h."\" Tree filtering mappings~\n"
         let @h=@h."\" ". g:NERDTreeMapToggleHidden .": hidden files (" . (g:NERDTreeShowHidden ? "on" : "off") . ")\n"
         let @h=@h."\" ". g:NERDTreeMapToggleFilters .": file filters (" . (t:NERDTreeIgnoreEnabled ? "on" : "off") . ")\n"
         let @h=@h."\" ". g:NERDTreeMapToggleFiles .": files (" . (g:NERDTreeShowFiles ? "on" : "off") . ")\n"
 
-        let @h=@h."\" \n\" ----------------------------\n"
+        let @h=@h."\"\n\" ----------------------------\n"
         let @h=@h."\" Other mappings~\n"
         let @h=@h."\" ". g:NERDTreeMapQuit .": Close the NERDTree window\n"
         let @h=@h."\" ". g:NERDTreeMapHelp .": toggle help\n"
-        let @h=@h."\" \n\" ----------------------------\n"
+        let @h=@h."\"\n\" ----------------------------\n"
         let @h=@h."\" Bookmark commands~\n"
         let @h=@h."\" :Bookmark <name>\n"
         let @h=@h."\" :BookmarkToRoot <name>\n"
@@ -2307,7 +2307,7 @@ function! s:RenderView()
     call s:DumpHelp()
 
     "delete the blank line before the help and add one after it
-    call setline(line(".")+1, " ")
+    call setline(line(".")+1, "")
     call cursor(line(".")+1, col("."))
 
     "add the 'up a dir' line
@@ -2407,7 +2407,7 @@ function! s:SetupSyntaxHighlighting()
     syn match treeToggleOn #".*(on)#hs=e-2,he=e-1 contains=treeHelpKey
     syn match treeToggleOff #".*(off)#hs=e-3,he=e-1 contains=treeHelpKey
     syn match treeHelpCommand #" :.\{-}\>#hs=s+3
-    syn match treeHelp  #^" .*# contains=treeHelpKey,treeHelpTitle,treeFlag,treeToggleOff,treeToggleOn,treeHelpCommand
+    syn match treeHelp  #^".*# contains=treeHelpKey,treeHelpTitle,treeFlag,treeToggleOff,treeToggleOn,treeHelpCommand
 
 
     "highlighting for readonly files
