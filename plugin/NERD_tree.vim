@@ -1169,6 +1169,11 @@ function! s:oPath.ReadInfoFromDisk(fullpath) dict
         throw "NERDTree.Path.InvalidArguments Exception: Invalid path = " . a:fullpath
     endif
 
+    let self.isExecutable = 0
+    if !self.isDirectory
+        let self.isExecutable = getfperm(a:fullpath) =~ 'x'
+    endif
+
     "grab the last part of the path (minus the trailing slash)
     let lastPathComponent = self.GetLastPathComponent(0)
 
