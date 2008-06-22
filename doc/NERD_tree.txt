@@ -845,6 +845,9 @@ fridge for later ;)
         to that window
     - highlight executable files, made some slight changes to other
       highlighting
+    - if the user resizes the tree window, keep that new size. Dont reset to
+      the default during the <tab> mapping, or :NERDTreeToggle command. Only
+      reset the size if a fresh tree is started with :NERDTree.
     - remove the "magic" functionality from the <c-j>/<c-k> mappings (it was
       more confusing than helpful)
     - other minor fixes
