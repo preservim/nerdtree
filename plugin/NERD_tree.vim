@@ -2351,9 +2351,10 @@ endfunction
 "
 "Assumes the cursor is in the NERDTree window
 function! s:RestoreScreenState()
-    if !exists("t:NERDTreeOldTopLine") || !exists("t:NERDTreeOldPos")
+    if !exists("t:NERDTreeOldTopLine") || !exists("t:NERDTreeOldPos") || !exists("t:NERDTreeOldWindowSize")
         return
     endif
+    exec("silent ". (g:NERDTreeSplitVertical ? "vertical" : "") ." resize ".t:NERDTreeOldWindowSize)
 
     call cursor(t:NERDTreeOldTopLine, 0)
     normal! zt
@@ -2368,6 +2369,7 @@ endfunction
 function! s:SaveScreenState()
     let t:NERDTreeOldPos = getpos(".")
     let t:NERDTreeOldTopLine = line("w0")
+    let t:NERDTreeOldWindowSize = g:NERDTreeSplitVertical ? winwidth("") : winheight("")
 endfunction
 
 "FUNCTION: s:SetupSyntaxHighlighting() {{{2
