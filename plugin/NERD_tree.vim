@@ -2215,7 +2215,7 @@ function! s:OpenNodeSplit(treenode)
         call s:PutCursorInTreeWin()
         throw "NERDTree.view.FileOpen exception: ". a:treenode.path.Str(0) ." is already open and modified."
     catch /^Vim\%((\a\+)\)\=:/
-        do nothing
+        "do nothing
     endtry
 
     " resize the explorer window if it is larger than the requested size
