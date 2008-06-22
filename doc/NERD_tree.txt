@@ -1097,6 +1097,9 @@ set the NERD tree buffers filetype to 'nerdtree'
 Thanks to Piotr Czachur for all his suggestions and testing for the bookmarks
 feature.
 
+Thanks to Yuan Jiang for suggesting the "o" mapping shouldnt clobber "special"
+windows, like taglist.
+
 ==============================================================================
 9. License                                                   *NERDTreeLicense*
 
