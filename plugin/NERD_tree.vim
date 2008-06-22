@@ -1212,7 +1212,7 @@ function! s:oPath.Rename(newPath) dict
         throw "NERDTree.Path.InvalidArguments exception. Invalid newPath for renaming = ". a:newPath
     endif
 
-    let success =  rename(self.StrForOS(!s:running_windows), a:newPath)
+    let success =  rename(self.StrForOS(0), a:newPath)
     if success != 0
         throw "NERDTree.Path.Rename Exception: Could not rename: '" . self.StrForOS(0) . "'" . 'to:' . a:newPath
     endif
