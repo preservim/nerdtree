@@ -2222,7 +2222,7 @@ function! s:OpenNodeSplit(treenode)
     exec(there)
 
     if g:NERDTreeWinSize =~ '[0-9]\+' && winheight("") > g:NERDTreeWinSize
-        exec("silent vertical resize ".g:NERDTreeWinSize)
+        exec("silent resize ".g:NERDTreeWinSize)
     endif
 
     wincmd p
