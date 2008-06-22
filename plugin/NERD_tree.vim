@@ -2356,9 +2356,12 @@ function! s:RestoreScreenState()
     endif
     exec("silent ". (g:NERDTreeSplitVertical ? "vertical" : "") ." resize ".t:NERDTreeOldWindowSize)
 
+    let old_scrolloff=&scrolloff
+    let &scrolloff=0
     call cursor(t:NERDTreeOldTopLine, 0)
     normal! zt
     call setpos(".", t:NERDTreeOldPos)
+    let &scrolloff=old_scrolloff
 endfunction
 
 "FUNCTION: s:SaveScreenState() {{{2
