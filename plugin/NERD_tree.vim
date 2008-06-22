@@ -2218,15 +2218,6 @@ function! s:OpenNodeSplit(treenode)
         "do nothing
     endtry
 
-    " resize the explorer window if it is larger than the requested size
-    exec(there)
-
-    if g:NERDTreeWinSize =~ '[0-9]\+' && winheight("") > g:NERDTreeWinSize
-        exec("silent resize ".g:NERDTreeWinSize)
-    endif
-
-    wincmd p
-
     " Restore splitmode settings
     let &splitbelow=savesplitbelow
     let &splitright=savesplitright
