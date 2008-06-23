@@ -123,20 +123,10 @@ call s:InitVariable("g:NERDTreeMapUpdirKeepOpen", "U")
 let s:escape_chars =  " \\`\|\"#%&,?()\*^<>"
 let s:NERDTreeWinName = '_NERD_tree_'
 
-"init all the nerd tree markup
-let s:tree_vert = '|'
-let s:tree_vert_last = '`'
 let s:tree_wid = 2
-let s:tree_wid_str = '  '
-let s:tree_wid_strM1 = ' '
-let s:tree_dir_open = '~'
-let s:tree_dir_closed = '+'
-let s:tree_file = '-'
 let s:tree_markup_reg = '[ \-+~`|]'
 let s:tree_markup_reg_neg = '[^ \-+~`|]'
 let s:tree_up_dir_line = '.. (up a dir)'
-let s:tree_RO_str = ' [RO]'
-let s:tree_RO_str_reg = ' \[RO\]'
 
 let s:os_slash = '/'
 if s:running_windows
@@ -1284,7 +1274,7 @@ function! s:oPath.StrDisplay() dict
     endif
 
     if self.isReadOnly
-        let toReturn .=  s:tree_RO_str
+        let toReturn .=  ' [RO]'
     endif
 
     return toReturn
@@ -1696,9 +1686,9 @@ function! s:DrawTree(curNode, depth, drawText, vertMap, isLastChild)
         if a:depth > 1
             for j in a:vertMap[0:-2]
                 if j == 1
-                    let treeParts = treeParts . s:tree_vert . s:tree_wid_strM1
+                    let treeParts = treeParts . '| '
                 else
-                    let treeParts = treeParts . s:tree_wid_str
+                    let treeParts = treeParts . '  '
                 endif
             endfor
         endif
@@ -1706,9 +1696,9 @@ function! s:DrawTree(curNode, depth, drawText, vertMap, isLastChild)
         "get the last vertical tree part for this line which will be different
         "if this node is the last child of its parent
         if a:isLastChild
-            let treeParts = treeParts . s:tree_vert_last
+            let treeParts = treeParts . '`'
         else
-            let treeParts = treeParts . s:tree_vert
+            let treeParts = treeParts . '|'
         endif
 
 
@@ -1716,12 +1706,12 @@ function! s:DrawTree(curNode, depth, drawText, vertMap, isLastChild)
         "name itself
         if a:curNode.path.isDirectory
             if a:curNode.isOpen
-                let treeParts = treeParts . s:tree_dir_open
+                let treeParts = treeParts . '~'
             else
-                let treeParts = treeParts . s:tree_dir_closed
+                let treeParts = treeParts . '+'
             endif
         else
-            let treeParts = treeParts . s:tree_file
+            let treeParts = treeParts . '-'
         endif
         let line = treeParts . a:curNode.StrDisplay()
 
@@ -1959,7 +1949,6 @@ function! s:GetPath(ln)
     endif
 
     "get the indent level for the file (i.e. how deep in the tree it is)
-    "let indent = match(line,'[^-| `]') / s:tree_wid
     let indent = match(line, s:tree_markup_reg_neg) / s:tree_wid
 
 
@@ -2500,7 +2489,7 @@ function! s:StripMarkupFromLine(line, removeLeadingSpaces)
     let line = substitute (line,"^" . s:tree_markup_reg . "*","","")
 
     "strip off any read only flag
-    let line = substitute (line, s:tree_RO_str_reg, "","")
+    let line = substitute (line, ' \[RO\]', "","")
 
     "strip off any bookmark flags
     let line = substitute (line, ' {[^}]*}', "","")
@@ -2682,7 +2671,7 @@ function! s:CheckForActivate()
         "if they clicked a dir, check if they clicked on the + or ~ sign
         "beside it
         if currentNode.path.isDirectory
-            let reg = '^' . s:tree_markup_reg .'*[' . s:tree_dir_open . s:tree_dir_closed . ']$'
+            let reg = '^' . s:tree_markup_reg .'*[~+]$'
             if startToCur =~ reg
                 call s:ActivateNode()
                 return
