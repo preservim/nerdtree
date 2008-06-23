@@ -836,7 +836,7 @@ fridge for later ;)
 ==============================================================================
 7. Changelog                                               *NERDTreeChangelog*
 
-2.XX.X
+2.11.0
     - changes to the 'o' mapping when opening files:
       - dont clobber "special" windows (eg taglist/quickfix/etc). This should
         make the NERD tree play nicer with other explorer plugins. Thanks to
