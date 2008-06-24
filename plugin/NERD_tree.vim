@@ -2207,6 +2207,14 @@ function! s:OpenNodeSplit(treenode)
         "do nothing
     endtry
 
+    "resize the tree window if no other window was open before
+    if onlyOneWin
+        let size = exists("t:NERDTreeOldWindowSize") ? t:NERDTreeOldWindowSize : g:NERDTreeWinSize
+        exec(there)
+        exec("silent ". splitMode ." resize ". size)
+        wincmd p
+    endif
+
     " Restore splitmode settings
     let &splitbelow=savesplitbelow
     let &splitright=savesplitright
