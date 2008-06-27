@@ -53,6 +53,7 @@ call s:InitVariable("g:NERDTreeHighlightCursorline", 1)
 call s:InitVariable("g:NERDTreeBookmarksFile", expand('$HOME') . '/.NERDTreeBookmarks')
 call s:InitVariable("g:NERDTreeMouseMode", 1)
 call s:InitVariable("g:NERDTreeNotificationThreshold", 100)
+call s:InitVariable("g:NERDTreeQuitOnOpen", 0)
 call s:InitVariable("g:NERDTreeShowFiles", 1)
 call s:InitVariable("g:NERDTreeShowHidden", 0)
 call s:InitVariable("g:NERDTreeShowLineNumbers", 0)
@@ -2563,6 +2564,9 @@ function! s:ActivateNode()
         call s:PutCursorOnNode(treenode, 0, 0)
     else
         call s:OpenFileNode(treenode)
+        if g:NERDTreeQuitOnOpen
+            call s:CloseTree()
+        endif
     endif
 endfunction
 
@@ -3030,6 +3034,9 @@ function! s:OpenEntrySplit()
     let treenode = s:GetSelectedNode()
     if treenode != {}
         call s:OpenFileNodeSplit(treenode)
+        if g:NERDTreeQuitOnOpen
+            call s:CloseTree()
+        endif
     else
         call s:Echo("select a node first")
     endif
