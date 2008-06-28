@@ -2298,8 +2298,6 @@ function! s:RenderBookmarks()
         call setline(line(".")+1,'>' . i . ' [' . bookmarks[i].StrForOS(0) . ']')
         call cursor(line(".")+1, col("."))
     endfor
-    call setline(line(".")+1, '>---------------------------')
-    call cursor(line(".")+1, col("."))
 
     call setline(line(".")+1, '')
     call cursor(line(".")+1, col("."))
