@@ -814,7 +814,6 @@ endfunction
 "CLASS: oPath {{{2
 "============================================================
 let s:oPath = {}
-let oPath = s:oPath
 "FUNCTION: oPath.BookmarkNames() {{{3
 function! s:oPath.BookmarkNames() dict
     if !exists("self.bookmarkNames")
