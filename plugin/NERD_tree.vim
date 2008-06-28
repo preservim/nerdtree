@@ -281,6 +281,16 @@ function! s:oBookmark.New(name, path) dict
     let newBookmark.path = a:path
     return newBookmark
 endfunction
+" Function: oBookmark.Str()   {{{3
+" Get the string that should be rendered in the view for this bookmark
+function! s:oBookmark.Str() dict
+    let pathStrMaxLen = 26 - len(self.name)
+    let pathStr = self.path.StrForOS(0)
+    if len(pathStr) > pathStrMaxLen
+        let pathStr = '<' . strpart(pathStr, len(pathStr) - pathStrMaxLen)
+    endif
+    return '>' . self.name . ' [' . pathStr . ']'
+endfunction
 " Function: oBookmark.Write()   {{{3
 " Class method to write all bookmarks to the bookmarks file
 function! s:oBookmark.Write() dict
@@ -2363,14 +2373,7 @@ function! s:RenderBookmarks()
     call cursor(line(".")+1, col("."))
 
     for i in s:oBookmark.Bookmarks()
-
-        let pathStrMaxLen = 26 - len(i.name)
-        let pathStr = i.path.StrForOS(0)
-        if len(pathStr) > pathStrMaxLen
-            let pathStr = '<' . strpart(pathStr, len(pathStr) - pathStrMaxLen)
-        endif
-
-        call setline(line(".")+1,'>' . i.name . ' [' . pathStr . ']')
+        call setline(line(".")+1, i.Str())
         call cursor(line(".")+1, col("."))
     endfor
 
