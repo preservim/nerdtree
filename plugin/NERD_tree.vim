@@ -2688,7 +2688,11 @@ function! s:ActivateNode()
     else
         let bookmark = s:GetSelectedBookmark()
         if !empty(bookmark)
-            call s:BookmarkToRoot(bookmark.name)
+            if bookmark.path.isDirectory
+                call s:BookmarkToRoot(bookmark.name)
+            else
+                call s:OpenFileNode(s:oTreeFileNode.New(bookmark.path))
+            endif
         endif
     endif
 endfunction
