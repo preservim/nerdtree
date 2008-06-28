@@ -2436,12 +2436,8 @@ function! s:SetupSyntaxHighlighting()
     syn match treeHelpCommand #" :.\{-}\>#hs=s+3
     syn match treeHelp  #^".*# contains=treeHelpKey,treeHelpTitle,treeFlag,treeToggleOff,treeToggleOn,treeHelpCommand
 
-
     "highlighting for readonly files
     syn match treeRO #[\/0-9a-zA-Z]\+.*\[RO\]# contains=treeFlag,treeBookmark
-
-    "highlighting for bookmarks
-    syn match treeBookmark # {.*}#hs=s+1
 
     "highlighting for sym links
     syn match treeLink #[^-| `].* -> # contains=treeBookmark,treeOpenable,treeClosable,treeDirSlash
@@ -2453,6 +2449,15 @@ function! s:SetupSyntaxHighlighting()
     syn match treeFile  #|-.*# contains=treeLink,treePart,treeRO,treePartFile,treeBookmark,treeExecFile
     syn match treeFile  #`-.*# contains=treeLink,treePart,treeRO,treePartFile,treeBookmark,treeExecFile
     syn match treeCWD #^/.*$#
+
+    "highlighting for bookmarks
+    syn match treeBookmark # {.*}#hs=s+1
+
+    "highlighting for the bookmarks display
+    syn match treeBookmarksLeader #^>#
+    syn match treeBookmarksHeader #^>-\+Bookmarks-\+# contains=treeBookmarksLeader
+    syn match treeBookmarkName #^>[a-zA-Z_]\{-} #he=e-1 contains=treeBookmarksLeader
+    syn match treeBookmark #^>.*$# contains=treeBookmarksLeader,treeBookmarkName
 
     if g:NERDChristmasTree
         hi def link treePart Special
@@ -2467,6 +2472,11 @@ function! s:SetupSyntaxHighlighting()
         hi def link treeFile Normal
         hi def link treeClosable Title
     endif
+
+    hi def link treeBookmarksHeader macro
+    hi def link treeBookmarksLeader ignore
+    hi def link treeBookmarkName Identifier
+    hi def link treeBookmark Statement
 
     hi def link treeHelp String
     hi def link treeHelpKey Identifier
