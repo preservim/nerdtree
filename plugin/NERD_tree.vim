@@ -156,7 +156,9 @@ autocmd VimEnter * call s:oBookmark.CacheBookmarks()
 "CLASS: oBookmark {{{2
 "============================================================
 let s:oBookmark = {}
-"FUNCTION: oBookmark.AddBookmark(name, path) {{{3
+" FUNCTION: oBookmark.AddBookmark(name, path) {{{3
+" Class method to add a new bookmark to the list, if a previous bookmark exists
+" with the same name, just update the path for that bookmark
 function! s:oBookmark.AddBookmark(name, path) dict
     for i in s:oBookmark.Bookmarks()
         if i.name == a:name
@@ -166,7 +168,38 @@ function! s:oBookmark.AddBookmark(name, path) dict
     endfor
     call add(s:oBookmark.Bookmarks(), s:oBookmark.New(a:name, a:path))
 endfunction
-"FUNCTION: oBookmark.CacheBookmarks() {{{3
+" Function: oBookmark.Bookmarks()   {{{3
+" Class method to get all bookmarks. Lazily initializes the bookmarks global
+" variable
+function! s:oBookmark.Bookmarks() dict
+    if !exists("g:NERDTreeBookmarks")
+        let g:NERDTreeBookmarks = []
+    endif
+    return g:NERDTreeBookmarks
+endfunction
+" Function: oBookmark.BookmarkFor(name)   {{{3
+" Class method to get the bookmark that has the given name. {} is return if no
+" bookmark is found
+function! s:oBookmark.BookmarkFor(name) dict
+    for i in s:oBookmark.Bookmarks()
+        if i.name == a:name
+            return i
+        endif
+    endfor
+    return {}
+endfunction
+" Function: oBookmark.BookmarkNames()   {{{3
+" Class method to return an array of all bookmark names
+function! s:oBookmark.BookmarkNames() dict
+    let names = []
+    for i in s:oBookmark.Bookmarks()
+        call add(names, i.name)
+    endfor
+    return names
+endfunction
+" FUNCTION: oBookmark.CacheBookmarks() {{{3
+" Class method to read all bookmarks from the bookmarks file intialize
+" bookmark objects for each one.
 function! s:oBookmark.CacheBookmarks() dict
     if filereadable(g:NERDTreeBookmarksFile)
         let bookmarks = []
@@ -190,7 +223,54 @@ function! s:oBookmark.CacheBookmarks() dict
         endif
     endif
 endfunction
-"FUNCTION: oBookmark.New(name, path) {{{3
+" FUNCTION: oBookmark.ClearAll() {{{3
+" Class method to delete all bookmarks.
+function! s:oBookmark.ClearAll() dict
+    for i in s:oBookmark.Bookmarks()
+        call i.Delete()
+    endfor
+    call s:oBookmark.Write()
+endfunction
+" FUNCTION: oBookmark.Delete() {{{3
+" Delete this bookmark. If the node for this bookmark is under the current
+" root, then recache bookmarks for its Path object
+function! s:oBookmark.Delete() dict
+    let node = {}
+    try
+        let node = self.GetNode(1)
+    catch /NERDTree.BookmarkNodeNotFound/
+    endtry
+    call remove(s:oBookmark.Bookmarks(), index(s:oBookmark.Bookmarks(), self))
+    if !empty(node)
+        call node.path.CacheBookmarks()
+    endif
+endfunction
+" FUNCTION: oBookmark.GetNode(searchFromAbsoluteRoot) {{{3
+" Gets the treenode for this bookmark
+"
+" Args:
+" searchFromAbsoluteRoot: specifies whether we should search from the current
+" tree root, or the highest cached node
+function! s:oBookmark.GetNode(searchFromAbsoluteRoot) dict
+    let searchRoot = a:searchFromAbsoluteRoot ? s:AbsoluteTreeRoot() : t:NERDTreeRoot
+    let targetNode = searchRoot.FindNode(self.path)
+    if empty(targetNode)
+        throw "NERDTree.BookmarkNodeNotFound no node was found for bookmark: " . self.name
+    endif
+    return targetNode
+endfunction
+" FUNCTION: oBookmark.GetNodeForName(name, searchFromAbsoluteRoot) {{{3
+" Class method that finds the bookmark with the given name and returns the
+" treenode for it.
+function! s:oBookmark.GetNodeForName(name, searchFromAbsoluteRoot) dict
+    let bookmark = s:oBookmark.BookmarkFor(a:name)
+    if bookmark == {}
+        throw "NERDTree.BookmarkNotFound no node was found for bookmark: " . a:name
+    endif
+    return bookmark.GetNode(a:searchFromAbsoluteRoot)
+endfunction
+" FUNCTION: oBookmark.New(name, path) {{{3
+" Create a new bookmark object with the given name and path object
 function! s:oBookmark.New(name, path) dict
     if a:name !~ '^[0-9a-zA-Z_]*$'
         throw "NERDTree.IllegalBookmarkName illegal name:" a:name
@@ -202,77 +282,13 @@ function! s:oBookmark.New(name, path) dict
     return newBookmark
 endfunction
 " Function: oBookmark.Write()   {{{3
+" Class method to write all bookmarks to the bookmarks file
 function! s:oBookmark.Write() dict
     let bookmarkStrings = []
     for i in s:oBookmark.Bookmarks()
         call add(bookmarkStrings, i.name . ' ' . i.path.StrForOS(0))
     endfor
     call writefile(bookmarkStrings, g:NERDTreeBookmarksFile)
-endfunction
-" Function: oBookmark.Bookmarks()   {{{3
-function! s:oBookmark.Bookmarks() dict
-    if !exists("g:NERDTreeBookmarks")
-        let g:NERDTreeBookmarks = []
-    endif
-    return g:NERDTreeBookmarks
-endfunction
-" Function: oBookmark.BookmarkNames()   {{{3
-function! s:oBookmark.BookmarkNames() dict
-    let names = []
-    for i in s:oBookmark.Bookmarks()
-        call add(names, i.name)
-    endfor
-    return names
-endfunction
-" Function: oBookmark.BookmarkFor(name)   {{{3
-function! s:oBookmark.BookmarkFor(name) dict
-    for i in s:oBookmark.Bookmarks()
-        if i.name == a:name
-            return i
-        endif
-    endfor
-    return {}
-endfunction
-"FUNCTION: oBookmark.ClearAll() {{{3
-function! s:oBookmark.ClearAll() dict
-    for i in s:oBookmark.Bookmarks()
-        call i.Delete()
-    endfor
-    call s:oBookmark.Write()
-endfunction
-"FUNCTION: oBookmark.GetNode(searchFromAbsoluteRoot) {{{3
-"get the treenode this bookmark
-"
-"Args:
-"searchFromAbsoluteRoot: specifies wheather we should search from the current
-"tree root, or the highest cached node
-function! s:oBookmark.GetNode(searchFromAbsoluteRoot) dict
-    let searchRoot = a:searchFromAbsoluteRoot ? s:AbsoluteTreeRoot() : t:NERDTreeRoot
-    let targetNode = searchRoot.FindNode(self.path)
-    if empty(targetNode)
-        throw "NERDTree.BookmarkNodeNotFound no node was found for bookmark: " . self.name
-    endif
-    return targetNode
-endfunction
-"FUNCTION: oBookmark.GetNodeForName(name, searchFromAbsoluteRoot) {{{3
-function! s:oBookmark.GetNodeForName(name, searchFromAbsoluteRoot) dict
-    let bookmark = s:oBookmark.BookmarkFor(a:name)
-    if bookmark == {}
-        throw "NERDTree.BookmarkNotFound no node was found for bookmark: " . a:name
-    endif
-    return bookmark.GetNode(a:searchFromAbsoluteRoot)
-endfunction
-"FUNCTION: oBookmark.Delete() {{{3
-function! s:oBookmark.Delete() dict
-    let node = {}
-    try
-        let node = self.GetNode(1)
-    catch /NERDTree.BookmarkNodeNotFound/
-    endtry
-    call remove(s:oBookmark.Bookmarks(), index(s:oBookmark.Bookmarks(), self))
-    if !empty(node)
-        call node.path.CacheBookmarks()
-    endif
 endfunction
 "CLASS: oTreeFileNode {{{2
 "This class is the parent of the oTreeDirNode class and constitures the
