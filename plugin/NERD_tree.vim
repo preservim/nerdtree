@@ -1990,6 +1990,17 @@ function! s:GetPath(ln)
     return toReturn
 endfunction
 
+"FUNCTION: s:GetSelectedBookmark() {{{2
+"Returns the current node if it is a dir node, or else returns the current
+"nodes parent
+function! s:GetSelectedBookmark()
+    let line = getline(".")
+    let name = substitute(line, '^>\(.\{-}\) \[.*\]$', '\1', '')
+    if name != line
+        return name
+    endif
+endfunction
+
 "FUNCTION: s:GetSelectedDir() {{{2
 "Returns the current node if it is a dir node, or else returns the current
 "nodes parent
@@ -2572,20 +2583,23 @@ function! s:ActivateNode()
     if getline(".") == s:tree_up_dir_line
         return s:UpDir(0)
     endif
-    let treenode = s:GetSelectedNode()
-    if treenode == {}
-        call s:EchoWarning("cannot open selected entry")
-        return
-    endif
 
-    if treenode.path.isDirectory
-        call treenode.ToggleOpen()
-        call s:RenderView()
-        call s:PutCursorOnNode(treenode, 0, 0)
+    let treenode = s:GetSelectedNode()
+    if treenode != {}
+        if treenode.path.isDirectory
+            call treenode.ToggleOpen()
+            call s:RenderView()
+            call s:PutCursorOnNode(treenode, 0, 0)
+        else
+            call s:OpenFileNode(treenode)
+            if g:NERDTreeQuitOnOpen
+                call s:CloseTree()
+            endif
+        endif
     else
-        call s:OpenFileNode(treenode)
-        if g:NERDTreeQuitOnOpen
-            call s:CloseTree()
+        let bookmark = s:GetSelectedBookmark()
+        if bookmark != ""
+            call s:BookmarkToRoot(bookmark)
         endif
     endif
 endfunction
