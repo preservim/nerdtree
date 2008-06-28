@@ -1800,6 +1800,7 @@ function! s:DumpHelp()
         let @h=@h."\" ". g:NERDTreeMapToggleHidden .": hidden files (" . (g:NERDTreeShowHidden ? "on" : "off") . ")\n"
         let @h=@h."\" ". g:NERDTreeMapToggleFilters .": file filters (" . (t:NERDTreeIgnoreEnabled ? "on" : "off") . ")\n"
         let @h=@h."\" ". g:NERDTreeMapToggleFiles .": files (" . (g:NERDTreeShowFiles ? "on" : "off") . ")\n"
+        let @h=@h."\" ". g:NERDTreeMapToggleBookmarks .": bookmarks (" . (g:NERDTreeShowBookmarks ? "on" : "off") . ")\n"
 
         let @h=@h."\"\n\" ----------------------------\n"
         let @h=@h."\" Other mappings~\n"
