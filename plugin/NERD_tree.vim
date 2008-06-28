@@ -2328,7 +2328,9 @@ function! s:RenderView()
     call setline(line(".")+1, "")
     call cursor(line(".")+1, col("."))
 
-    call s:RenderBookmarks()
+    if g:NERDTreeShowBookmarks
+        call s:RenderBookmarks()
+    endif
 
     "add the 'up a dir' line
     call setline(line(".")+1, s:tree_up_dir_line)
