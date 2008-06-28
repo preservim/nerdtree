@@ -2290,12 +2290,20 @@ endfunction
 "FUNCTION: s:RenderBookmarks {{{2
 function! s:RenderBookmarks()
 
-    call setline(line(".")+1, ">---------Bookmarks---------")
+    call setline(line(".")+1, ">----------Bookmarks----------")
     call cursor(line(".")+1, col("."))
 
     let bookmarks = s:GetBookmarks()
     for i in keys(bookmarks)
-        call setline(line(".")+1,'>' . i . ' [' . bookmarks[i].StrForOS(0) . ']')
+
+        let pathStrMaxLen = 26 - len(i)
+        let pathStr = bookmarks[i].StrForOS(0)
+        if len(pathStr) > pathStrMaxLen
+            let pathStr = '<' . strpart(pathStr, len(pathStr) - pathStrMaxLen)
+        endif
+
+        "call setline(line(".")+1,'>' . i . ' [' . bookmarks[i].StrForOS(0) . ']')
+        call setline(line(".")+1,'>' . i . ' [' . pathStr . ']')
         call cursor(line(".")+1, col("."))
     endfor
 
