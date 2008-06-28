@@ -54,6 +54,7 @@ call s:InitVariable("g:NERDTreeBookmarksFile", expand('$HOME') . '/.NERDTreeBook
 call s:InitVariable("g:NERDTreeMouseMode", 1)
 call s:InitVariable("g:NERDTreeNotificationThreshold", 100)
 call s:InitVariable("g:NERDTreeQuitOnOpen", 0)
+call s:InitVariable("g:NERDTreeShowBookmarks", 1)
 call s:InitVariable("g:NERDTreeShowFiles", 1)
 call s:InitVariable("g:NERDTreeShowHidden", 0)
 call s:InitVariable("g:NERDTreeShowLineNumbers", 0)
@@ -114,6 +115,7 @@ call s:InitVariable("g:NERDTreeMapPreviewSplit", "g" . NERDTreeMapOpenSplit)
 call s:InitVariable("g:NERDTreeMapQuit", "q")
 call s:InitVariable("g:NERDTreeMapRefresh", "r")
 call s:InitVariable("g:NERDTreeMapRefreshRoot", "R")
+call s:InitVariable("g:NERDTreeMapToggleBookmarks", "B")
 call s:InitVariable("g:NERDTreeMapToggleFiles", "F")
 call s:InitVariable("g:NERDTreeMapToggleFilters", "f")
 call s:InitVariable("g:NERDTreeMapToggleHidden", "H")
@@ -2637,6 +2639,7 @@ function! s:BindMappings()
     exec "nnoremap <silent> <buffer> ". g:NERDTreeMapToggleHidden ." :call <SID>ToggleShowHidden()<cr>"
     exec "nnoremap <silent> <buffer> ". g:NERDTreeMapToggleFilters ." :call <SID>ToggleIgnoreFilter()<cr>"
     exec "nnoremap <silent> <buffer> ". g:NERDTreeMapToggleFiles ." :call <SID>ToggleShowFiles()<cr>"
+    exec "nnoremap <silent> <buffer> ". g:NERDTreeMapToggleBookmarks ." :call <SID>ToggleShowBookmarks()<cr>"
 
     exec "nnoremap <silent> <buffer> ". g:NERDTreeMapCloseDir ." :call <SID>CloseCurrentDir()<cr>"
     exec "nnoremap <silent> <buffer> ". g:NERDTreeMapCloseChildren ." :call <SID>CloseChildren()<cr>"
@@ -3258,6 +3261,13 @@ function! s:ToggleIgnoreFilter()
     call s:CenterView()
 endfunction
 
+" FUNCTION: s:ToggleShowBookmarks() {{{2
+" toggles the display of bookmarks
+function! s:ToggleShowBookmarks()
+    let g:NERDTreeShowBookmarks = !g:NERDTreeShowBookmarks
+    call s:RenderViewSavingPosition()
+    call s:CenterView()
+endfunction
 " FUNCTION: s:ToggleShowFiles() {{{2
 " toggles the display of hidden files
 function! s:ToggleShowFiles()
