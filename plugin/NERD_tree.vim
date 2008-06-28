@@ -2274,6 +2274,24 @@ function! s:PutCursorInTreeWin()
     exec s:GetTreeWinNum() . "wincmd w"
 endfunction
 
+"FUNCTION: s:RenderBookmarks {{{2
+function! s:RenderBookmarks()
+
+    call setline(line(".")+1, ">---------Bookmarks---------")
+    call cursor(line(".")+1, col("."))
+
+    let bookmarks = s:GetBookmarks()
+    for i in keys(bookmarks)
+        call setline(line(".")+1,'>' . i . ' [' . bookmarks[i].StrForOS(0) . ']')
+        call cursor(line(".")+1, col("."))
+    endfor
+    call setline(line(".")+1, '>---------------------------')
+    call cursor(line(".")+1, col("."))
+
+    call setline(line(".")+1, '')
+    call cursor(line(".")+1, col("."))
+
+endfunction
 "FUNCTION: s:RenderView {{{2
 "The entry function for rendering the tree. Renders the root then calls
 "s:DrawTree to draw the children of the root
@@ -2298,6 +2316,8 @@ function! s:RenderView()
     "delete the blank line before the help and add one after it
     call setline(line(".")+1, "")
     call cursor(line(".")+1, col("."))
+
+    call s:RenderBookmarks()
 
     "add the 'up a dir' line
     call setline(line(".")+1, s:tree_up_dir_line)
