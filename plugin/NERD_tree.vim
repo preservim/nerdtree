@@ -2328,7 +2328,7 @@ function! s:RenderView()
     let topLine = line("w0")
 
     "delete all lines in the buffer (being careful not to clobber a register)
-    :silent 1,$delete _
+    silent 1,$delete _
 
     call s:DumpHelp()
 
@@ -2352,7 +2352,7 @@ function! s:RenderView()
     call s:DrawTree(t:NERDTreeRoot, 0, 0, [], t:NERDTreeRoot.GetChildCount() == 1)
 
     "delete the blank line at the top of the buffer
-    :silent 1,1delete _
+    silent 1,1delete _
 
     "restore the view
     let old_scrolloff=&scrolloff
