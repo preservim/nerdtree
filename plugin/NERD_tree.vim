@@ -54,7 +54,7 @@ call s:InitVariable("g:NERDTreeBookmarksFile", expand('$HOME') . '/.NERDTreeBook
 call s:InitVariable("g:NERDTreeMouseMode", 1)
 call s:InitVariable("g:NERDTreeNotificationThreshold", 100)
 call s:InitVariable("g:NERDTreeQuitOnOpen", 0)
-call s:InitVariable("g:NERDTreeShowBookmarks", 1)
+call s:InitVariable("g:NERDTreeShowBookmarks", 0)
 call s:InitVariable("g:NERDTreeShowFiles", 1)
 call s:InitVariable("g:NERDTreeShowHidden", 0)
 call s:InitVariable("g:NERDTreeShowLineNumbers", 0)
