@@ -1868,7 +1868,9 @@ function! s:DumpHelp()
         let @h=@h."\"\n\" ----------------------------\n"
         let @h=@h."\" Bookmark table mappings~\n"
         let @h=@h."\" double-click,\n"
-        let @h=@h."\" ". g:NERDTreeMapActivateNode .": activate bookmark\n"
+        let @h=@h."\" ". g:NERDTreeMapActivateNode .": open bookmark\n"
+        let @h=@h."\" ". g:NERDTreeMapOpenInTab.": open in new tab\n"
+        let @h=@h."\" ". g:NERDTreeMapOpenInTabSilent .": open in new tab silently\n"
 
         let @h=@h."\"\n\" ----------------------------\n"
         let @h=@h."\" Tree navigation mappings~\n"
