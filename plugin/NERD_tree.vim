@@ -166,6 +166,7 @@ function! s:oBookmark.AddBookmark(name, path) dict
         endif
     endfor
     call add(s:oBookmark.Bookmarks(), s:oBookmark.New(a:name, a:path))
+    call s:oBookmark.Sort()
 endfunction
 " Function: oBookmark.Bookmarks()   {{{3
 " Class method to get all bookmarks. Lazily initializes the bookmarks global
@@ -221,6 +222,11 @@ function! s:oBookmark.CacheBookmarks() dict
             call s:WriteBookmarks()
         endif
     endif
+endfunction
+" FUNCTION: oBookmark.CompareTo(otherbookmark) {{{3
+" Compare these two bookmarks for sorting purposes
+function! s:oBookmark.CompareTo(otherbookmark) dict
+    return a:otherbookmark.name < self.name
 endfunction
 " FUNCTION: oBookmark.ClearAll() {{{3
 " Class method to delete all bookmarks.
@@ -279,6 +285,12 @@ function! s:oBookmark.New(name, path) dict
     let newBookmark.name = a:name
     let newBookmark.path = a:path
     return newBookmark
+endfunction
+" Function: oBookmark.Sort()   {{{3
+" Class method that sorts all bookmarks
+function! s:oBookmark.Sort() dict
+    let CompareFunc = function("s:CompareBookmarks")
+    call sort(s:oBookmark.Bookmarks(), CompareFunc)
 endfunction
 " Function: oBookmark.Str()   {{{3
 " Get the string that should be rendered in the view for this bookmark
@@ -1580,6 +1592,12 @@ function! s:BufInWindows(bnum)
 
     return cnt
 endfunction " >>>
+
+"FUNCTION: CompareBookmarks(first, second) {{{2
+"Compares two bookmarks
+function! s:CompareBookmarks(first, second)
+    return a:first.CompareTo(a:second)
+endfunction
 
 " FUNCTION: s:CompleteBookmarks(A,L,P) {{{2
 " completion function for the bookmark commands
