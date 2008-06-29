@@ -2563,7 +2563,7 @@ function! s:SetupSyntaxHighlighting()
     "highlighting for the bookmarks display
     syn match treeBookmarksLeader #^>#
     syn match treeBookmarksHeader #^>-\+Bookmarks-\+# contains=treeBookmarksLeader
-    syn match treeBookmarkName #^>[a-zA-Z_]\{-} #he=e-1 contains=treeBookmarksLeader
+    syn match treeBookmarkName #^>[a-zA-Z1-9_]\{-} #he=e-1 contains=treeBookmarksLeader
     syn match treeBookmark #^>.*$# contains=treeBookmarksLeader,treeBookmarkName
 
     if g:NERDChristmasTree
