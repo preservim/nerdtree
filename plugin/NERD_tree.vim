@@ -1866,6 +1866,11 @@ function! s:DumpHelp()
         let @h=@h."\"    node\n"
 
         let @h=@h."\"\n\" ----------------------------\n"
+        let @h=@h."\" Bookmark table mappings~\n"
+        let @h=@h."\" double-click,\n"
+        let @h=@h."\" ". g:NERDTreeMapActivateNode .": activate bookmark\n"
+
+        let @h=@h."\"\n\" ----------------------------\n"
         let @h=@h."\" Tree navigation mappings~\n"
         let @h=@h."\" ". g:NERDTreeMapJumpRoot .": go to root\n"
         let @h=@h."\" ". g:NERDTreeMapJumpParent .": go to parent\n"
