@@ -876,8 +876,12 @@ fridge for later ;)
 7. Changelog                                               *NERDTreeChangelog*
 
 2.12.0
+    - added a UI for bookmarks. See :help NERDTreeBookmarkTable for details.
+    - combined the NERDTreeWinPos and NERDTreeSplitVertical. See :help
+      NERDTreeWinPos.
     - applied a patch from Matan Nassau to add the NERDTreeQuitOnOpen option
-      which closes the tree window after opening a file.
+      which closes the tree window after opening a file. See :help
+      NERDTreeQuitOnOpen.
     - fix to window resizing when opening a file when NERD tree is the only
       window open
 
