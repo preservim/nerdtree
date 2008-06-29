@@ -122,7 +122,8 @@ For example, you could use bookmarks to tag all of your project directories.
 
 If the bookmark table is active (see |NERDTree-B| and
 |NERDTreeShowBookmarks|), it will be rendered above the tree. You can double
-click bookmarks or use the |NERDTree-o| mapping to activate them.
+click bookmarks or use the |NERDTree-o| mapping to activate them. See also,
+|NERDTree-t| and |NERDTree-T|
 
 ------------------------------------------------------------------------------
 2.2.2. Bookmark commands                            *NERDTreeBookmarkCommands*
