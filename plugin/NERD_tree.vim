@@ -2749,8 +2749,8 @@ function! s:BindMappings()
     exec "nnoremap <silent> <buffer> ". g:NERDTreeMapJumpLastChild ." :call <SID>JumpToLastChild()<cr>"
     exec "nnoremap <silent> <buffer> ". g:NERDTreeMapJumpRoot ." :call <SID>JumpToRoot()<cr>"
 
-    exec "nnoremap <silent> <buffer> ". g:NERDTreeMapOpenInTab ." :call <SID>OpenNodeNewTab(0)<cr>"
-    exec "nnoremap <silent> <buffer> ". g:NERDTreeMapOpenInTabSilent ." :call <SID>OpenNodeNewTab(1)<cr>"
+    exec "nnoremap <silent> <buffer> ". g:NERDTreeMapOpenInTab ." :call <SID>OpenInNewTab(0)<cr>"
+    exec "nnoremap <silent> <buffer> ". g:NERDTreeMapOpenInTabSilent ." :call <SID>OpenInNewTab(1)<cr>"
 
     exec "nnoremap <silent> <buffer> ". g:NERDTreeMapOpenExpl ." :call <SID>OpenExplorer()<cr>"
 
@@ -3159,26 +3159,34 @@ function! s:OpenExplorer()
     endif
 endfunction
 
-" FUNCTION: s:OpenNodeNewTab(stayCurrentTab) {{{2
-" Opens the currently selected file from the explorer in a
-" new tab
-"
+" FUNCTION: s:OpenInNewTab(stayCurrentTab) {{{2
+" Opens the selected node or bookmark in a new tab
 " Args:
 " stayCurrentTab: if 1 then vim will stay in the current tab, if 0 then vim
 " will go to the tab where the new file is opened
-function! s:OpenNodeNewTab(stayCurrentTab)
+function! s:OpenInNewTab(stayCurrentTab)
+    let currentTab = tabpagenr()
+
     let treenode = s:GetSelectedNode()
     if treenode != {}
-        let curTabNr = tabpagenr()
         exec "tabedit " . treenode.path.StrForEditCmd()
         if a:stayCurrentTab
-            exec "tabnext " . curTabNr
+            exec "tabnext " . currentTab
         endif
     else
-        call s:Echo("select a node first")
+        let bookmark = s:GetSelectedBookmark()
+        if bookmark != {}
+            if bookmark.path.isDirectory
+                exec "tabnew +NERDTreeFromBookmark\\ " . bookmark.name
+            else
+                exec "tabedit " . bookmark.path.StrForEditCmd()
+            endif
+            if a:stayCurrentTab
+                exec "tabnext " . currentTab
+            endif
+        endif
     endif
 endfunction
-
 
 " FUNCTION: s:OpenNodeRecursively() {{{2
 function! s:OpenNodeRecursively()
