@@ -284,7 +284,7 @@ endfunction
 " Function: oBookmark.Str()   {{{3
 " Get the string that should be rendered in the view for this bookmark
 function! s:oBookmark.Str() dict
-    let pathStrMaxLen = 26 - len(self.name)
+    let pathStrMaxLen = winwidth(s:GetTreeWinNum()) - 5 - len(self.name)
     let pathStr = self.path.StrForOS(0)
     if len(pathStr) > pathStrMaxLen
         let pathStr = '<' . strpart(pathStr, len(pathStr) - pathStrMaxLen)
