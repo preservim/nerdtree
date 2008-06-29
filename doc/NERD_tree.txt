@@ -168,7 +168,7 @@ Key~
 
 o.......Open files, directories and bookmarks....................|NERDTree-o|
 go......Open selected file, but leave cursor in the NERDTree.....|NERDTree-go|
-t.......Open selected node in a new tab..........................|NERDTree-t|
+t.......Open selected node/bookmark in a new tab.................|NERDTree-t|
 T.......Same as 't' but keep the focus on the current tab........|NERDTree-T|
 <tab>...Open selected file in a split window.....................|NERDTree-tab|
 g<tab>..Same as <tab>, but leave the cursor on the NERDTree......|NERDTree-gtab|
@@ -242,6 +242,10 @@ Applies to: files and directories.
 
 Opens the selected file in a new tab. If a directory is selected, a netrw is
 opened in a new tab.
+
+If a bookmark which points to a directory is selected, open a NERD tree for
+that directory in a new tab. If the bookmark points to a file, open that file
+in a new tab.
 
 ------------------------------------------------------------------------------
                                                                   *NERDTree-T*
