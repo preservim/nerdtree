@@ -574,13 +574,8 @@ NERD tree. These options should be set in your vimrc.
 |NERDTreeSortOrder|             Tell the NERD tree how to sort the nodes in
                                 the tree.
 
-|NERDTreeSplitVertical|         Tells the script whether the NERD tree should
-                                be created by splitting the window vertically
-                                or horizontally.
-
 |NERDTreeWinPos|                Tells the script where to put the NERD tree
                                 window.
-
 
 |NERDTreeWinSize|               Sets the window size when the NERD tree is
                                 opened.
@@ -819,29 +814,15 @@ Other examples: >
    backup files will appear last with everything else preceding them.
 
 ------------------------------------------------------------------------------
-                                                       *NERDTreeSplitVertical*
-Values: 0 or 1.
-Default: 1.
-
-This option, along with |NERDTreeWinPos|, is used to determine where the NERD
-tree window appears.
-
-If it is set to 1 then the NERD tree window will appear on either the left or
-right side of the screen (depending on the |NERDTreeWinPos| option).
-
-If it set to 0 then the NERD tree window will appear at the top of the screen.
-
-------------------------------------------------------------------------------
                                                               *NERDTreeWinPos*
-Values: 0 or 1.
-Default: 1.
+Values: "left", "right", "top" or "bottom"
+Default: "left".
 
-This option works in conjunction with the |NERDTreeSplitVertical| option to
-determine where NERD tree window is placed on the screen.
+This option is used to determine where NERD tree window is placed on the
+screen.
 
-If the option is set to 1 then the NERD tree will appear on the left or top of
-the screen (depending on the value of |NERDTreeSplitVertical|). If set to 0,
-the window will appear on the right or bottom of the screen.
+"top" or "bottom", will cause a horizontal split to be created for the tree,
+while "left" and "right" will cause a vertical split.
 
 This option is makes it possible to use two different explorer type
 plugins simultaneously. For example, you could have the taglist plugin on the
