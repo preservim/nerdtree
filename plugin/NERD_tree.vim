@@ -243,7 +243,7 @@ function! s:oBookmark.Delete() dict
     let node = {}
     try
         let node = self.GetNode(1)
-    catch /NERDTree.BookmarkNodeNotFound/
+    catch /NERDTree.BookmarkNotFound/
     endtry
     call remove(s:oBookmark.Bookmarks(), index(s:oBookmark.Bookmarks(), self))
     if !empty(node)
@@ -260,7 +260,7 @@ function! s:oBookmark.GetNode(searchFromAbsoluteRoot) dict
     let searchRoot = a:searchFromAbsoluteRoot ? s:AbsoluteTreeRoot() : t:NERDTreeRoot
     let targetNode = searchRoot.FindNode(self.path)
     if empty(targetNode)
-        throw "NERDTree.BookmarkNodeNotFound no node was found for bookmark: " . self.name
+        throw "NERDTree.BookmarkNotFound no node was found for bookmark: " . self.name
     endif
     return targetNode
 endfunction
@@ -2810,7 +2810,7 @@ endfunction
 function! s:BookmarkToRoot(name)
     try
         let targetNode = s:oBookmark.GetNodeForName(a:name, 1)
-    catch /NERDTree.BookmarkNodeNotFound/
+    catch /NERDTree.BookmarkNotFound/
         let targetNode = s:oTreeFileNode.New(s:oBookmark.BookmarkFor(a:name).path)
     endtry
     call targetNode.MakeRoot()
