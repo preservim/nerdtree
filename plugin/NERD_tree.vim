@@ -1286,11 +1286,11 @@ function! s:oPath.Ignore() dict
     endif
 
     "dont show hidden files unless instructed to
-    if g:NERDTreeShowHidden == 0 && lastPathComponent =~ '^\.'
+    if t:NERDTreeShowHidden == 0 && lastPathComponent =~ '^\.'
         return 1
     endif
 
-    if g:NERDTreeShowFiles == 0 && self.isDirectory == 0
+    if t:NERDTreeShowFiles == 0 && self.isDirectory == 0
         return 1
     endif
 
@@ -1631,6 +1631,9 @@ function! s:InitNerdTree(name)
 
     let t:treeShowHelp = 0
     let t:NERDTreeIgnoreEnabled = 1
+    let t:NERDTreeShowFiles = g:NERDTreeShowFiles
+    let t:NERDTreeShowHidden = g:NERDTreeShowHidden
+    let t:NERDTreeShowBookmarks = g:NERDTreeShowBookmarks
 
     if s:TreeExistsForTab()
         if s:IsTreeOpen()
@@ -1912,10 +1915,10 @@ function! s:DumpHelp()
 
         let @h=@h."\"\n\" ----------------------------\n"
         let @h=@h."\" Tree filtering mappings~\n"
-        let @h=@h."\" ". g:NERDTreeMapToggleHidden .": hidden files (" . (g:NERDTreeShowHidden ? "on" : "off") . ")\n"
+        let @h=@h."\" ". g:NERDTreeMapToggleHidden .": hidden files (" . (t:NERDTreeShowHidden ? "on" : "off") . ")\n"
         let @h=@h."\" ". g:NERDTreeMapToggleFilters .": file filters (" . (t:NERDTreeIgnoreEnabled ? "on" : "off") . ")\n"
-        let @h=@h."\" ". g:NERDTreeMapToggleFiles .": files (" . (g:NERDTreeShowFiles ? "on" : "off") . ")\n"
-        let @h=@h."\" ". g:NERDTreeMapToggleBookmarks .": bookmarks (" . (g:NERDTreeShowBookmarks ? "on" : "off") . ")\n"
+        let @h=@h."\" ". g:NERDTreeMapToggleFiles .": files (" . (t:NERDTreeShowFiles ? "on" : "off") . ")\n"
+        let @h=@h."\" ". g:NERDTreeMapToggleBookmarks .": bookmarks (" . (t:NERDTreeShowBookmarks ? "on" : "off") . ")\n"
 
         let @h=@h."\"\n\" ----------------------------\n"
         let @h=@h."\" Other mappings~\n"
@@ -2430,7 +2433,7 @@ function! s:RenderView()
     call setline(line(".")+1, "")
     call cursor(line(".")+1, col("."))
 
-    if g:NERDTreeShowBookmarks
+    if t:NERDTreeShowBookmarks
         call s:RenderBookmarks()
     endif
 
@@ -3367,14 +3370,14 @@ endfunction
 " FUNCTION: s:ToggleShowBookmarks() {{{2
 " toggles the display of bookmarks
 function! s:ToggleShowBookmarks()
-    let g:NERDTreeShowBookmarks = !g:NERDTreeShowBookmarks
+    let t:NERDTreeShowBookmarks = !t:NERDTreeShowBookmarks
     call s:RenderViewSavingPosition()
     call s:CenterView()
 endfunction
 " FUNCTION: s:ToggleShowFiles() {{{2
 " toggles the display of hidden files
 function! s:ToggleShowFiles()
-    let g:NERDTreeShowFiles = !g:NERDTreeShowFiles
+    let t:NERDTreeShowFiles = !t:NERDTreeShowFiles
     call s:RenderViewSavingPosition()
     call s:CenterView()
 endfunction
@@ -3382,7 +3385,7 @@ endfunction
 " FUNCTION: s:ToggleShowHidden() {{{2
 " toggles the display of hidden files
 function! s:ToggleShowHidden()
-    let g:NERDTreeShowHidden = !g:NERDTreeShowHidden
+    let t:NERDTreeShowHidden = !t:NERDTreeShowHidden
     call s:RenderViewSavingPosition()
     call s:CenterView()
 endfunction
