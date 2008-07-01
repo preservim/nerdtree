@@ -1310,6 +1310,8 @@ function! s:oPath.New(fullpath) dict
 
     call newPath.ReadInfoFromDisk(a:fullpath)
 
+    let newPath.cachedDisplayString = ""
+
     return newPath
 endfunction
 
@@ -1433,25 +1435,27 @@ endfunction
 "Return:
 "a string that can be used in the view to represent this path
 function! s:oPath.StrDisplay() dict
-    let toReturn = self.GetLastPathComponent(1)
+    if self.cachedDisplayString == ""
+        let self.cachedDisplayString = self.GetLastPathComponent(1)
 
-    if self.isExecutable
-        let toReturn = toReturn . '*'
+        if self.isExecutable
+            let self.cachedDisplayString = self.cachedDisplayString . '*'
+        endif
+
+        if !empty(self.BookmarkNames())
+            let self.cachedDisplayString .= ' {' . join(self.BookmarkNames(), ',') . '}'
+        endif
+
+        if self.isSymLink
+            let self.cachedDisplayString .=  ' -> ' . self.symLinkDest
+        endif
+
+        if self.isReadOnly
+            let self.cachedDisplayString .=  ' [RO]'
+        endif
     endif
 
-    if !empty(self.BookmarkNames())
-        let toReturn .= ' {' . join(self.BookmarkNames(), ',') . '}'
-    endif
-
-    if self.isSymLink
-        let toReturn .=  ' -> ' . self.symLinkDest
-    endif
-
-    if self.isReadOnly
-        let toReturn .=  ' [RO]'
-    endif
-
-    return toReturn
+    return self.cachedDisplayString
 endfunction
 
 "FUNCTION: oPath.StrForEditCmd() {{{3
