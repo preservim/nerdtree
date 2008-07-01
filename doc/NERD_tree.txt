@@ -882,6 +882,8 @@ fridge for later ;)
     - applied a patch from Matan Nassau to add the NERDTreeQuitOnOpen option
       which closes the tree window after opening a file. See :help
       NERDTreeQuitOnOpen.
+    - optimised the nerd tree rendering. Now it takes just over 1/3 of the time
+      it previously took to render.
     - fix to window resizing when opening a file when NERD tree is the only
       window open
 

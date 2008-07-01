@@ -247,7 +247,7 @@ function! s:oBookmark.Delete() dict
     endtry
     call remove(s:oBookmark.Bookmarks(), index(s:oBookmark.Bookmarks(), self))
     if !empty(node)
-        call node.path.CacheBookmarks()
+        call node.path.CacheDisplayString()
     endif
 endfunction
 " FUNCTION: oBookmark.GetNode(searchFromAbsoluteRoot) {{{3
@@ -326,12 +326,12 @@ let s:oTreeFileNode = {}
 function! s:oTreeFileNode.Bookmark(name) dict
     try
         let oldMarkedNode = s:oBookmark.GetNodeForName(a:name, 1)
-        call oldMarkedNode.path.UncacheBookmark(a:name)
+        call oldMarkedNode.path.CacheDisplayString()
     catch /NERDTree.Bookmark\(DoesntExist\|NotFound\)/
     endtry
 
     call s:oBookmark.AddBookmark(a:name, self.path)
-    call self.path.CacheBookmarks()
+    call self.path.CacheDisplayString()
     call s:oBookmark.Write()
 endfunction
 "FUNCTION: oTreeFileNode.CacheParent {{{3
@@ -364,7 +364,7 @@ function! s:oTreeFileNode.ClearBookmarks() dict
             call i.Delete()
         end
     endfor
-    call self.path.CacheBookmarks()
+    call self.path.CacheDisplayString()
 endfunction
 "FUNCTION: oTreeFileNode.Copy(dest) {{{3
 function! s:oTreeFileNode.Copy(dest) dict
@@ -991,19 +991,35 @@ let s:oPath = {}
 "FUNCTION: oPath.BookmarkNames() {{{3
 function! s:oPath.BookmarkNames() dict
     if !exists("self.bookmark")
-        call self.CacheBookmarks()
+        call self.CacheDisplayString()
     endif
     return self.bookmarkNames
 endfunction
-"FUNCTION: oPath.CacheBookmarks() {{{3
-function! s:oPath.CacheBookmarks() dict
-    let self.bookmarkNames = []
+"FUNCTION: oPath.CacheDisplayString() {{{3
+function! s:oPath.CacheDisplayString() dict
+    let self.cachedDisplayString = self.GetLastPathComponent(1)
+
+    if self.isExecutable
+        let self.cachedDisplayString = self.cachedDisplayString . '*'
+    endif
+
+    let bookmarkNames = []
     for i in s:oBookmark.Bookmarks()
         if i.path.Equals(self)
-            call add(self.bookmarkNames, i.name)
+            call add(bookmarkNames, i.name)
         endif
     endfor
-    return self.bookmarkNames
+    if !empty(bookmarkNames)
+        let self.cachedDisplayString .= ' {' . join(bookmarkNames) . '}'
+    endif
+
+    if self.isSymLink
+        let self.cachedDisplayString .=  ' -> ' . self.symLinkDest
+    endif
+
+    if self.isReadOnly
+        let self.cachedDisplayString .=  ' [RO]'
+    endif
 endfunction
 "FUNCTION: oPath.ChangeToDir() {{{3
 function! s:oPath.ChangeToDir() dict
@@ -1368,8 +1384,7 @@ endfunction
 "FUNCTION: oPath.Refresh() {{{3
 function! s:oPath.Refresh() dict
     call self.ReadInfoFromDisk(self.StrForOS(0))
-    call self.CacheBookmarks()
-    let self.cachedDisplayString = ""
+    call self.CacheDisplayString()
 endfunction
 
 "FUNCTION: oPath.Rename() {{{3
@@ -1437,23 +1452,7 @@ endfunction
 "a string that can be used in the view to represent this path
 function! s:oPath.StrDisplay() dict
     if self.cachedDisplayString == ""
-        let self.cachedDisplayString = self.GetLastPathComponent(1)
-
-        if self.isExecutable
-            let self.cachedDisplayString = self.cachedDisplayString . '*'
-        endif
-
-        if !empty(self.BookmarkNames())
-            let self.cachedDisplayString .= ' {' . join(self.BookmarkNames(), ',') . '}'
-        endif
-
-        if self.isSymLink
-            let self.cachedDisplayString .=  ' -> ' . self.symLinkDest
-        endif
-
-        if self.isReadOnly
-            let self.cachedDisplayString .=  ' [RO]'
-        endif
+        call self.CacheDisplayString()
     endif
 
     return self.cachedDisplayString
@@ -1522,15 +1521,6 @@ function! s:oPath.StrTrunk() dict
     return self.drive . '/' . join(self.pathSegments[0:-2], '/')
 endfunction
 
-"FUNCTION: oPath.UncacheBookmark(name){{{3
-"remove the given bookmark from this paths cached bookmarks
-function! s:oPath.UncacheBookmark(name) dict
-    let bookmarks = self.BookmarkNames()
-    let i = index(bookmarks, a:name)
-    if i != -1
-        call remove(bookmarks, i)
-    endif
-endfunction
 "FUNCTION: oPath.WinToUnixPath(pathstr){{{3
 "Takes in a windows path and returns the unix equiv
 "
