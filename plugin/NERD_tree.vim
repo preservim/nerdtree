@@ -1369,6 +1369,7 @@ endfunction
 function! s:oPath.Refresh() dict
     call self.ReadInfoFromDisk(self.StrForOS(0))
     call self.CacheBookmarks()
+    let self.cachedDisplayString = ""
 endfunction
 
 "FUNCTION: oPath.Rename() {{{3
