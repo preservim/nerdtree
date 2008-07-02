@@ -889,6 +889,7 @@ fridge for later ;)
       settings for each new NERD tree.
     - fix to window resizing when opening a file when NERD tree is the only
       window open
+    - other fixes
 
 2.11.0
     - changes to the 'o' mapping when opening files:

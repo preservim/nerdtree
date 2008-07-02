@@ -2320,7 +2320,7 @@ function! s:OpenNodeSplit(treenode)
 
     " Open the new window
     try
-        exec("silent " . splitMode." sp " . a:treenode.path.StrForEditCmd())
+        exec(splitMode." sp " . a:treenode.path.StrForEditCmd())
     catch /^Vim\%((\a\+)\)\=:E37/
         call s:PutCursorInTreeWin()
         throw "NERDTree.view.FileOpen exception: ". a:treenode.path.Str(0) ." is already open and modified."
