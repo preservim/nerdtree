@@ -206,8 +206,8 @@ function! s:oBookmark.CacheBookmarks() dict
         let bookmarkStrings = readfile(g:NERDTreeBookmarksFile)
         let invalidBookmarksFound = 0
         for i in bookmarkStrings
-            let name = substitute(i, '^\(\w\{-}\) .*$', '\1', '')
-            let path = substitute(i, '^\w\{-} \(.*\)$', '\1', '')
+            let name = substitute(i, '^\(.\{-}\) .*$', '\1', '')
+            let path = substitute(i, '^.\{-} \(.*\)$', '\1', '')
 
             try
                 let bookmark = s:oBookmark.New(name, s:oPath.New(path))
@@ -277,7 +277,7 @@ endfunction
 " FUNCTION: oBookmark.New(name, path) {{{3
 " Create a new bookmark object with the given name and path object
 function! s:oBookmark.New(name, path) dict
-    if a:name !~ '^[0-9a-zA-Z_]*$'
+    if a:name =~ ' '
         throw "NERDTree.IllegalBookmarkName illegal name:" . a:name
     endif
 
@@ -2801,7 +2801,7 @@ function! s:BookmarkNode(name)
             call currentNode.Bookmark(a:name)
             call s:RenderView()
         catch /NERDTree.IllegalBookmarkName/
-            call s:Echo("bookmark names must be made up of alpha numeric characters and underscores")
+            call s:Echo("bookmark names must not contain spaces")
         endtry
     else
         call s:Echo("select a node first")
