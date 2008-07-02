@@ -132,8 +132,7 @@ Note that the following commands are only available in the NERD tree buffer.
 
 :Bookmark <name>
     Bookmark the current node as <name>. If there is already a <name>
-    bookmark, it is overwritten. <name> must consist of alphanumeric
-    characters and underscores.
+    bookmark, it is overwritten. <name> must not contain spaces.
 
 :BookmarkToRoot <bookmark>
     Make the directory corresponding to <bookmark> the new root. If a treenode
@@ -877,6 +876,8 @@ fridge for later ;)
 
 2.12.0
     - added a UI for bookmarks. See :help NERDTreeBookmarkTable for details.
+    - relax the restrictions on bookmark names, now the only restriction is
+      that they cant contain spaces.
     - combined the NERDTreeWinPos and NERDTreeSplitVertical. See :help
       NERDTreeWinPos.
     - applied a patch from Matan Nassau to add the NERDTreeQuitOnOpen option
