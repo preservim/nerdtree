@@ -211,15 +211,15 @@ function! s:oBookmark.CacheBookmarks() dict
 
             try
                 let bookmark = s:oBookmark.New(name, s:oPath.New(path))
+                call add(bookmarks, bookmark)
             catch /NERDTree.Path.InvalidArguments/
                 let invalidBookmarksFound += 1
             endtry
-            call add(bookmarks, bookmark)
         endfor
         let g:NERDTreeBookmarks = bookmarks
         if invalidBookmarksFound
             call s:Echo(invalidBookmarksFound . " invalid bookmarks were read and discarded")
-            call s:WriteBookmarks()
+            call s:oBookmark.Write()
         endif
     endif
 endfunction
@@ -278,7 +278,7 @@ endfunction
 " Create a new bookmark object with the given name and path object
 function! s:oBookmark.New(name, path) dict
     if a:name !~ '^[0-9a-zA-Z_]*$'
-        throw "NERDTree.IllegalBookmarkName illegal name:" a:name
+        throw "NERDTree.IllegalBookmarkName illegal name:" . a:name
     endif
 
     let newBookmark = copy(self)
@@ -2797,8 +2797,12 @@ endfunction
 function! s:BookmarkNode(name)
     let currentNode = s:GetSelectedNode()
     if currentNode != {}
-        call currentNode.Bookmark(a:name)
-        call s:RenderView()
+        try
+            call currentNode.Bookmark(a:name)
+            call s:RenderView()
+        catch /NERDTree.IllegalBookmarkName/
+            call s:Echo("bookmark names must be made up of alpha numeric characters and underscores")
+        endtry
     else
         call s:Echo("select a node first")
     endif
