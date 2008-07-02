@@ -2944,7 +2944,7 @@ function! s:CopyNode()
 
         let confirmed = 1
         if currentNode.path.CopyingWillOverwrite(newNodePath)
-            echo "\nWarning: copying may overwrite files! Continue? (yN)"
+            call s:Echo("\nWarning: copying may overwrite files! Continue? (yN)")
             let choice = nr2char(getchar())
             let confirmed = choice == 'y'
         endif
