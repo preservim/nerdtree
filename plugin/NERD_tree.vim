@@ -2558,11 +2558,11 @@ function! s:SetupSyntaxHighlighting()
     "highlighting for bookmarks
     syn match treeBookmark # {.*}#hs=s+1
 
-    "highlighting for the bookmarks display
+    "highlighting for the bookmarks table
     syn match treeBookmarksLeader #^>#
-    syn match treeBookmarksHeader #^>-\+Bookmarks-\+# contains=treeBookmarksLeader
-    syn match treeBookmarkName #^>[a-zA-Z1-9_]\{-} #he=e-1 contains=treeBookmarksLeader
-    syn match treeBookmark #^>.*$# contains=treeBookmarksLeader,treeBookmarkName
+    syn match treeBookmarksHeader #^>-\+Bookmarks-\+$# contains=treeBookmarksLeader
+    syn match treeBookmarkName #^>.\{-} #he=e-1 contains=treeBookmarksLeader
+    syn match treeBookmark #^>.*$# contains=treeBookmarksLeader,treeBookmarkName,treeBookmarksHeader
 
     if g:NERDChristmasTree
         hi def link treePart Special
@@ -2578,10 +2578,10 @@ function! s:SetupSyntaxHighlighting()
         hi def link treeClosable Title
     endif
 
-    hi def link treeBookmarksHeader macro
+    hi def link treeBookmarksHeader statement
     hi def link treeBookmarksLeader ignore
     hi def link treeBookmarkName Identifier
-    hi def link treeBookmark Statement
+    hi def link treeBookmark normal
 
     hi def link treeHelp String
     hi def link treeHelpKey Identifier
