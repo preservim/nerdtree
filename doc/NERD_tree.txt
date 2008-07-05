@@ -876,8 +876,10 @@ fridge for later ;)
 
 2.12.0
     - added a UI for bookmarks. See :help NERDTreeBookmarkTable for details.
+      Thanks to Zhang Shuhan for testing and bug reports.
     - relax the restrictions on bookmark names, now the only restriction is
-      that they cant contain spaces.
+      that they cant contain spaces. This allows for e.g. Chinese bookmark
+      names. Thanks to Zhang Shuhan for the suggestion.
     - combined the NERDTreeWinPos and NERDTreeSplitVertical. See :help
       NERDTreeWinPos.
     - applied a patch from Matan Nassau to add the NERDTreeQuitOnOpen option
@@ -1145,7 +1147,8 @@ Thanks to Olivier Yiptong for prompting me to make line numbers in the
 NERD tree window optional.
 
 Thanks to Zhang Shuhan for all of his emails and testing to help improve the
-NERD tree path handling.
+NERD tree path handling. Thanks also for suggesting the bookmarks gui, and for
+testing and making suggestions and bugreports.
 
 Thanks to Cory Echols for sending a patch to add the :NERDTreeClose command and
 set the NERD tree buffers filetype to 'nerdtree'
