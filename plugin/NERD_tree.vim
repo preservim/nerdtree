@@ -1486,6 +1486,18 @@ function! s:oPath.StrForGlob() dict
     endif
     return toReturn
 endfunction
+"FUNCTION: oPath.StrForNERDTreeCmd() {{{3
+"
+"Return: the string for this path that is suitable to be used with the
+":NERDTree command
+function! s:oPath.StrForNERDTreeCmd() dict
+    if s:running_windows
+        return self.StrForOS(0)
+    else
+        return self.Str(1)
+    endif
+
+endfunction
 "FUNCTION: oPath.StrForOS(esc) {{{3
 "
 "Gets the string path for this path object that is appropriate for the OS.
@@ -3201,9 +3213,10 @@ function! s:OpenInNewTab(stayCurrentTab)
 
     let treenode = s:GetSelectedNode()
     if treenode != {}
-        exec "tabedit " . treenode.path.StrForEditCmd()
-        if a:stayCurrentTab
-            exec "tabnext " . currentTab
+        if treenode.path.isDirectory
+            exec "tabnew +NERDTree\\ " . treenode.path.StrForNERDTreeCmd()
+        else
+            exec "tabedit " . treenode.path.StrForEditCmd()
         endif
     else
         let bookmark = s:GetSelectedBookmark()
@@ -3213,10 +3226,10 @@ function! s:OpenInNewTab(stayCurrentTab)
             else
                 exec "tabedit " . bookmark.path.StrForEditCmd()
             endif
-            if a:stayCurrentTab
-                exec "tabnext " . currentTab
-            endif
         endif
+    endif
+    if a:stayCurrentTab
+        exec "tabnext " . currentTab
     endif
 endfunction
 
