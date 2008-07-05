@@ -877,10 +877,10 @@ fridge for later ;)
 2.12.0
     - added a UI for bookmarks. See :help NERDTreeBookmarkTable for details.
       Thanks to Zhang Shuhan for testing and bug reports.
-    - relax the restrictions on bookmark names, now the only restriction is
+    - relaxed the restrictions on bookmark names, now the only restriction is
       that they cant contain spaces. This allows for e.g. Chinese bookmark
       names. Thanks to Zhang Shuhan for the suggestion.
-    - combined the NERDTreeWinPos and NERDTreeSplitVertical. See :help
+    - combined the NERDTreeWinPos and NERDTreeSplitVertical options. See :help
       NERDTreeWinPos.
     - applied a patch from Matan Nassau to add the NERDTreeQuitOnOpen option
       which closes the tree window after opening a file. See :help
