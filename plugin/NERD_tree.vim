@@ -3214,7 +3214,8 @@ function! s:OpenInNewTab(stayCurrentTab)
     let treenode = s:GetSelectedNode()
     if treenode != {}
         if treenode.path.isDirectory
-            exec "tabnew +NERDTree\\ " . treenode.path.StrForNERDTreeCmd()
+            tabnew
+            call s:InitNerdTree(treenode.path.StrForOS(0))
         else
             exec "tabedit " . treenode.path.StrForEditCmd()
         endif
