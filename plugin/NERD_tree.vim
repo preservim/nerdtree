@@ -3223,7 +3223,8 @@ function! s:OpenInNewTab(stayCurrentTab)
         let bookmark = s:GetSelectedBookmark()
         if bookmark != {}
             if bookmark.path.isDirectory
-                exec "tabnew +NERDTreeFromBookmark\\ " . bookmark.name
+                tabnew
+                call s:InitNerdTree(bookmark.name)
             else
                 exec "tabedit " . bookmark.path.StrForEditCmd()
             endif
