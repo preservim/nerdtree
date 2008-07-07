@@ -2368,6 +2368,25 @@ function! s:PromptToDelBuffer(bufnum, msg)
     endif
 endfunction
 
+"FUNCTION: s:PutCursorOnBookmarkTable(){{{2
+"Places the cursor at the top of the bookmarks table
+function! s:PutCursorOnBookmarkTable()
+    if !t:NERDTreeShowBookmarks
+        throw "NERDTree.IllegalOperation exception: cant find bookmark table, bookmarks arent active"
+    endif
+
+    let rootNodeLine = s:FindRootNodeLineNumber()
+
+    let line = 1
+    while getline(line) !~ '^>-\+Bookmarks-\+$'
+        let line = line + 1
+        if line >= rootNodeLine
+            throw "NERDTree.BookmarkTableNotFound exception: didnt find the bookmarks table"
+        endif
+    endwhile
+    call cursor(line, 0)
+endfunction
+
 "FUNCTION: s:PutCursorOnNode(treenode, isJump, recurseUpward){{{2
 "Places the cursor on the line number representing the given node
 "
@@ -3390,7 +3409,12 @@ endfunction
 " toggles the display of bookmarks
 function! s:ToggleShowBookmarks()
     let t:NERDTreeShowBookmarks = !t:NERDTreeShowBookmarks
-    call s:RenderViewSavingPosition()
+    if t:NERDTreeShowBookmarks
+        call s:RenderView()
+        call s:PutCursorOnBookmarkTable()
+    else
+        call s:RenderViewSavingPosition()
+    endif
     call s:CenterView()
 endfunction
 " FUNCTION: s:ToggleShowFiles() {{{2
