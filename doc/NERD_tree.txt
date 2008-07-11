@@ -878,6 +878,8 @@ fridge for later ;)
     - make the t/T on directory nodes open a fresh NERD tree for the selected
       dir in a new tab, rather than a netrw.
     - place the cursor at the top of the bookmarks table when opening it with B
+    - make NERDTreeQuitOnOpen option work with the g<tab> and go mappings,
+      thanks to Maxim Kim for the bug report
 
 2.12.0
     - added a UI for bookmarks. See :help NERDTreeBookmarkTable for details.

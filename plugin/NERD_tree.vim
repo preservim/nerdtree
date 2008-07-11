@@ -1722,13 +1722,6 @@ function! s:CenterView()
         endif
     endif
 endfunction
-"FUNCTION: s:CloseTreeIfOpen() {{{2
-"Closes the NERD tree window if it is open
-function! s:CloseTreeIfOpen()
-   if s:IsTreeOpen()
-      call s:CloseTree()
-   endif
-endfunction
 "FUNCTION: s:CloseTree() {{{2
 "Closes the NERD tree window
 function! s:CloseTree()
@@ -1745,6 +1738,20 @@ function! s:CloseTree()
     endif
 endfunction
 
+"FUNCTION: s:CloseTreeIfOpen() {{{2
+"Closes the NERD tree window if it is open
+function! s:CloseTreeIfOpen()
+   if s:IsTreeOpen()
+      call s:CloseTree()
+   endif
+endfunction
+"FUNCTION: s:CloseTreeIfQuitOnOpen() {{{2
+"Closes the NERD tree window if the close on open option is set
+function! s:CloseTreeIfQuitOnOpen()
+    if g:NERDTreeQuitOnOpen
+        call s:CloseTree()
+    endif
+endfunction
 "FUNCTION: s:CreateTreeWin() {{{2
 "Inits the NERD tree window. ie. opens it, sizes it, sets all the local
 "options etc
@@ -2729,10 +2736,13 @@ function! s:Toggle(dir)
 endfunction
 "SECTION: Interface bindings {{{1
 "============================================================
-"FUNCTION: s:ActivateNode() {{{2
+"FUNCTION: s:ActivateNode(forceKeepWindowOpen) {{{2
 "If the current node is a file, open it in the previous window (or a new one
 "if the previous is modified). If it is a directory then it is opened.
-function! s:ActivateNode()
+"
+"args:
+"forceKeepWindowOpen - dont close the window even if NERDTreeQuitOnOpen is set
+function! s:ActivateNode(forceKeepWindowOpen)
     if getline(".") == s:tree_up_dir_line
         return s:UpDir(0)
     endif
@@ -2745,9 +2755,9 @@ function! s:ActivateNode()
             call s:PutCursorOnNode(treenode, 0, 0)
         else
             call s:OpenFileNode(treenode)
-            if g:NERDTreeQuitOnOpen
-                call s:CloseTree()
-            endif
+            if !a:forceKeepWindowOpen
+                call s:CloseTreeIfQuitOnOpen()
+            end
         endif
     else
         let bookmark = s:GetSelectedBookmark()
@@ -2766,10 +2776,10 @@ function! s:BindMappings()
     " set up mappings and commands for this buffer
     nnoremap <silent> <buffer> <middlerelease> :call <SID>HandleMiddleMouse()<cr>
     nnoremap <silent> <buffer> <leftrelease> <leftrelease>:call <SID>CheckForActivate()<cr>
-    nnoremap <silent> <buffer> <2-leftmouse> :call <SID>ActivateNode()<cr>
+    nnoremap <silent> <buffer> <2-leftmouse> :call <SID>ActivateNode(0)<cr>
 
-    exec "nnoremap <silent> <buffer> ". g:NERDTreeMapActivateNode . " :call <SID>ActivateNode()<cr>"
-    exec "nnoremap <silent> <buffer> ". g:NERDTreeMapOpenSplit ." :call <SID>OpenEntrySplit()<cr>"
+    exec "nnoremap <silent> <buffer> ". g:NERDTreeMapActivateNode . " :call <SID>ActivateNode(0)<cr>"
+    exec "nnoremap <silent> <buffer> ". g:NERDTreeMapOpenSplit ." :call <SID>OpenEntrySplit(0)<cr>"
 
     exec "nnoremap <silent> <buffer> ". g:NERDTreeMapPreview ." :call <SID>PreviewNode(0)<cr>"
     exec "nnoremap <silent> <buffer> ". g:NERDTreeMapPreviewSplit ." :call <SID>PreviewNode(1)<cr>"
@@ -3085,7 +3095,7 @@ function! s:HandleMiddleMouse()
     if curNode.path.isDirectory
         call s:OpenExplorer()
     else
-        call s:OpenEntrySplit()
+        call s:OpenEntrySplit(0)
     endif
 endfunction
 
@@ -3197,15 +3207,18 @@ function! s:OpenBookmark(name)
         call s:OpenFileNode(targetNode)
     endif
 endfunction
-" FUNCTION: s:OpenEntrySplit() {{{2
-" Opens the currently selected file from the explorer in a
-" new window
-function! s:OpenEntrySplit()
+" FUNCTION: s:OpenEntrySplit(forceKeepWindowOpen) {{{2
+"Opens the currently selected file from the explorer in a
+"new window
+"
+"args:
+"forceKeepWindowOpen - dont close the window even if NERDTreeQuitOnOpen is set
+function! s:OpenEntrySplit(forceKeepWindowOpen)
     let treenode = s:GetSelectedNode()
     if treenode != {}
         call s:OpenFileNodeSplit(treenode)
-        if g:NERDTreeQuitOnOpen
-            call s:CloseTree()
+        if !a:forceKeepWindowOpen
+            call s:CloseTreeIfQuitOnOpen()
         endif
     else
         call s:Echo("select a node first")
@@ -3271,16 +3284,10 @@ endfunction
 
 "FUNCTION: s:PreviewNode() {{{2
 function! s:PreviewNode(openNewWin)
-    let treenode = s:GetSelectedNode()
-    if treenode == {} || treenode.path.isDirectory
-        call s:Echo("Select a file node first" )
-        return
-    endif
-
     if a:openNewWin
-        call s:OpenEntrySplit()
+        call s:OpenEntrySplit(1)
     else
-        call s:ActivateNode()
+        call s:ActivateNode(1)
     end
     call s:PutCursorInTreeWin()
 endfunction
