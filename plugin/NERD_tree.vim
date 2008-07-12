@@ -1486,18 +1486,6 @@ function! s:oPath.StrForGlob() dict
     endif
     return toReturn
 endfunction
-"FUNCTION: oPath.StrForNERDTreeCmd() {{{3
-"
-"Return: the string for this path that is suitable to be used with the
-":NERDTree command
-function! s:oPath.StrForNERDTreeCmd() dict
-    if s:running_windows
-        return self.StrForOS(0)
-    else
-        return self.Str(1)
-    endif
-
-endfunction
 "FUNCTION: oPath.StrForOS(esc) {{{3
 "
 "Gets the string path for this path object that is appropriate for the OS.
