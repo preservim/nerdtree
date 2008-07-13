@@ -83,7 +83,6 @@ let s:running_windows = has("win16") || has("win32") || has("win64")
 "Note: the space after the command is important
 if s:running_windows
     call s:InitVariable("g:NERDTreeRemoveDirCmd", 'rmdir /s /q ')
-    call s:InitVariable("g:NERDTreeCopyCmd", 'copy /Y ')
 else
     call s:InitVariable("g:NERDTreeRemoveDirCmd", 'rm -rf ')
     call s:InitVariable("g:NERDTreeCopyCmd", 'cp -r ')
@@ -1159,14 +1158,9 @@ function! s:oPath.Copy(dest) dict
         throw "NERDTree.Path.CopyingNotSupported Exception: Copying is not supported on this OS"
     endif
 
-    "let dest = s:oPath.WinToUnixPath(a:dest)
-    let dest = a:dest
+    let dest = s:oPath.WinToUnixPath(a:dest)
 
-    if s:running_windows
-        let cmd = g:NERDTreeCopyCmd . " " . self.StrForOS(1) . " \"" . dest . '"'
-    else
-        let cmd = g:NERDTreeCopyCmd . " " . self.StrForOS(0) . " " . dest
-    endif
+    let cmd = g:NERDTreeCopyCmd . " " . self.StrForOS(0) . " " . dest
     let success = system(cmd)
     if success != 0
         throw "NERDTree.Path Exception: Could not copy ''". self.StrForOS(0) ."'' to: '" . a:dest . "'"
@@ -3031,7 +3025,7 @@ function! s:CopyNode()
     let newNodePath = input("Copy the current node\n" .
                           \ "==========================================================\n" .
                           \ "Enter the new path to copy the node to:                   \n" .
-                          \ "", currentNode.path.StrForOS(0))
+                          \ "", currentNode.path.Str(0))
 
     if newNodePath != ""
         "strip trailing slash
