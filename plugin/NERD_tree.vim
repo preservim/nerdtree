@@ -2789,6 +2789,17 @@ function! s:Toggle(dir)
         call s:InitNerdTree(a:dir)
     endif
 endfunction
+
+"FUNCTION: s:ValidateBookmark(bookmark) {{{2
+function! s:ValidateBookmark(bookmark)
+    try
+        call a:bookmark.MustExist()
+    catch /NERDTree.BookmarkPointsToInvalidLocation/
+        call s:RenderView()
+        throw v:exception
+    endtry
+endfunction
+
 "SECTION: Interface bindings {{{1
 "============================================================
 "FUNCTION: s:ActivateNode(forceKeepWindowOpen) {{{2
