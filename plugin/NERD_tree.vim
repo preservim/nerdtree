@@ -1202,6 +1202,12 @@ function! s:oPath.Delete() dict
             throw "NERDTree.Path.Deletion Exception: Could not delete file: '" . self.Str(0) . "'"
         endif
     endif
+
+    "delete all bookmarks for this path
+    for i in self.BookmarkNames()
+        let bookmark = s:oBookmark.BookmarkFor(i)
+        call bookmark.Delete()
+    endfor
 endfunction
 
 "FUNCTION: oPath.ExtractDriveLetter(fullpath) {{{3
