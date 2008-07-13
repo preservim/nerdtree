@@ -1716,6 +1716,18 @@ endfunction
 
 " SECTION: View Functions {{{1
 "============================================================
+" FUNCTION: s:BookmarkToRoot(name) {{{2
+" Make the node for the given bookmark the new tree root
+function! s:BookmarkToRoot(name)
+    try
+        let targetNode = s:oBookmark.GetNodeForName(a:name, 1)
+    catch /NERDTree.BookmarkNotFound/
+        let targetNode = s:oTreeFileNode.New(s:oBookmark.BookmarkFor(a:name).path)
+    endtry
+    call targetNode.MakeRoot()
+    call s:RenderView()
+    call s:PutCursorOnNode(targetNode, 0, 0)
+endfunction
 "FUNCTION: s:CenterView() {{{2
 "centers the nerd tree window around the cursor (provided the nerd tree
 "options permit)
@@ -2854,18 +2866,6 @@ function! s:BookmarkNode(name)
     else
         call s:Echo("select a node first")
     endif
-endfunction
-" FUNCTION: s:BookmarkToRoot(name) {{{2
-" Make the node for the given bookmark the new tree root
-function! s:BookmarkToRoot(name)
-    try
-        let targetNode = s:oBookmark.GetNodeForName(a:name, 1)
-    catch /NERDTree.BookmarkNotFound/
-        let targetNode = s:oTreeFileNode.New(s:oBookmark.BookmarkFor(a:name).path)
-    endtry
-    call targetNode.MakeRoot()
-    call s:RenderView()
-    call s:PutCursorOnNode(targetNode, 0, 0)
 endfunction
 "FUNCTION: s:CheckForActivate() {{{2
 "Checks if the click should open the current node, if so then activate() is
