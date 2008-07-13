@@ -990,7 +990,7 @@ endfunction
 let s:oPath = {}
 "FUNCTION: oPath.BookmarkNames() {{{3
 function! s:oPath.BookmarkNames() dict
-    if !exists("self.bookmark")
+    if !exists("self.bookmarkNames")
         call self.CacheDisplayString()
     endif
     return self.bookmarkNames
@@ -1003,14 +1003,14 @@ function! s:oPath.CacheDisplayString() dict
         let self.cachedDisplayString = self.cachedDisplayString . '*'
     endif
 
-    let bookmarkNames = []
+    let self.bookmarkNames = []
     for i in s:oBookmark.Bookmarks()
         if i.path.Equals(self)
-            call add(bookmarkNames, i.name)
+            call add(self.bookmarkNames, i.name)
         endif
     endfor
-    if !empty(bookmarkNames)
-        let self.cachedDisplayString .= ' {' . join(bookmarkNames) . '}'
+    if !empty(self.bookmarkNames)
+        let self.cachedDisplayString .= ' {' . join(self.bookmarkNames) . '}'
     endif
 
     if self.isSymLink
