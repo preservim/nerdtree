@@ -546,6 +546,7 @@ function! s:oTreeFileNode.Rename(newName) dict
 
     if newParent != {}
         call newParent.CreateChild(self.path, 1)
+        call newParent.Refresh()
     endif
 endfunction
 "FUNCTION: oTreeFileNode.StrDisplay() {{{3
