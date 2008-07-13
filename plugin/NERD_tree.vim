@@ -249,6 +249,7 @@ function! s:oBookmark.Delete() dict
     if !empty(node)
         call node.path.CacheDisplayString()
     endif
+    call s:oBookmark.Write()
 endfunction
 " FUNCTION: oBookmark.GetNode(searchFromAbsoluteRoot) {{{3
 " Gets the treenode for this bookmark
@@ -2937,7 +2938,6 @@ function! s:ClearBookmarks(bookmarks)
             call bookmark.Delete()
         endfor
     endif
-    call s:oBookmark.Write()
     call s:RenderView()
 endfunction
 " FUNCTION: s:CloseChildren() {{{2
