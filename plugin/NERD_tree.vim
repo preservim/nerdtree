@@ -178,6 +178,17 @@ function! s:oBookmark.Bookmarks() dict
     endif
     return g:NERDTreeBookmarks
 endfunction
+" Function: oBookmark.BookmarkExistsFor(name)   {{{3
+" class method that returns 1 if a bookmark with the given name is found, 0
+" otherwise
+function! s:oBookmark.BookmarkExistsFor(name) dict
+    try
+        call s:oBookmark.BookmarkFor(a:name)
+        return 1
+    catch /NERDTree.BookmarkNotFound/
+        return 0
+    endtry
+endfunction
 " Function: oBookmark.BookmarkFor(name)   {{{3
 " Class method to get the bookmark that has the given name. {} is return if no
 " bookmark is found
@@ -187,7 +198,7 @@ function! s:oBookmark.BookmarkFor(name) dict
             return i
         endif
     endfor
-    return {}
+    throw "NERDTree.BookmarkNotFound exception: no bookmark found for name: \"". a:name  .'"'
 endfunction
 " Function: oBookmark.BookmarkNames()   {{{3
 " Class method to return an array of all bookmark names
@@ -262,7 +273,7 @@ function! s:oBookmark.GetNode(searchFromAbsoluteRoot) dict
     let searchRoot = a:searchFromAbsoluteRoot ? s:AbsoluteTreeRoot() : t:NERDTreeRoot
     let targetNode = searchRoot.FindNode(self.path)
     if empty(targetNode)
-        throw "NERDTree.BookmarkNotFound no node was found for bookmark: " . self.name
+        throw "NERDTree.BookmarkedNodeNotFound no node was found for bookmark: " . self.name
     endif
     return targetNode
 endfunction
@@ -271,9 +282,6 @@ endfunction
 " treenode for it.
 function! s:oBookmark.GetNodeForName(name, searchFromAbsoluteRoot) dict
     let bookmark = s:oBookmark.BookmarkFor(a:name)
-    if bookmark == {}
-        throw "NERDTree.BookmarkNotFound no node was found for bookmark: " . a:name
-    endif
     return bookmark.GetNode(a:searchFromAbsoluteRoot)
 endfunction
 " FUNCTION: oBookmark.MustExist() {{{3
@@ -1648,7 +1656,7 @@ endfunction
 "name: the name of a bookmark or a directory
 function! s:InitNerdTree(name)
     let path = {}
-    if s:oBookmark.BookmarkFor(a:name) != {}
+    if s:oBookmark.BookmarkExistsFor(a:name)
         let path = s:oBookmark.BookmarkFor(a:name).path
     else
         let dir = a:name == '' ? expand('%:p:h') : a:name
@@ -1742,10 +1750,10 @@ endfunction
 " Make the node for the given bookmark the new tree root
 function! s:BookmarkToRoot(name)
     let bookmark = s:oBookmark.BookmarkFor(a:name)
-    call bookmark.MustExist()
+    call s:ValidateBookmark(bookmark)
     try
         let targetNode = s:oBookmark.GetNodeForName(a:name, 1)
-    catch /NERDTree.BookmarkNotFound/
+    catch /NERDTree.BookmarkedNodeNotFound/
         let targetNode = s:oTreeFileNode.New(s:oBookmark.BookmarkFor(a:name).path)
     endtry
     call targetNode.MakeRoot()
@@ -2166,7 +2174,11 @@ function! s:GetSelectedBookmark()
     let line = getline(".")
     let name = substitute(line, '^>\(.\{-}\) \[.*\]$', '\1', '')
     if name != line
-        return s:oBookmark.BookmarkFor(name)
+        try
+            return s:oBookmark.BookmarkFor(name)
+        catch /NERDTree.BookmarkNotFound/
+            return {}
+        endtry
     endif
 endfunction
 
@@ -3227,7 +3239,7 @@ function! s:OpenBookmark(name)
         let targetNode = s:oBookmark.GetNodeForName(a:name, 0)
         call s:PutCursorOnNode(targetNode, 0, 1)
         redraw!
-    catch /NERDTree.BookmarkNotFound/
+    catch /NERDTree.BookmarkedNodeNotFound/
         call s:Echo("note - target node is not cached")
         let bookmark = s:oBookmark.BookmarkFor(a:name)
         let targetNode = s:oTreeFileNode.New(bookmark.path)
