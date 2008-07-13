@@ -286,6 +286,11 @@ function! s:oBookmark.New(name, path) dict
     let newBookmark.path = a:path
     return newBookmark
 endfunction
+" Function: oBookmark.SetPath(path)   {{{3
+" makes this bookmark point to the given path
+function! s:oBookmark.SetPath(path) dict
+    let self.path = a:path
+endfunction
 " Function: oBookmark.Sort()   {{{3
 " Class method that sorts all bookmarks
 function! s:oBookmark.Sort() dict
@@ -1400,6 +1405,12 @@ function! s:oPath.Rename(newPath) dict
         throw "NERDTree.Path.Rename Exception: Could not rename: '" . self.StrForOS(0) . "'" . 'to:' . a:newPath
     endif
     call self.ReadInfoFromDisk(a:newPath)
+
+    for i in self.BookmarkNames()
+        let b = s:oBookmark.BookmarkFor(i)
+        call b.SetPath(copy(self))
+    endfor
+    call s:oBookmark.Write()
 endfunction
 
 "FUNCTION: oPath.Str(esc) {{{3
