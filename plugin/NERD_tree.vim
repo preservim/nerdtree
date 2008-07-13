@@ -275,6 +275,17 @@ function! s:oBookmark.GetNodeForName(name, searchFromAbsoluteRoot) dict
     endif
     return bookmark.GetNode(a:searchFromAbsoluteRoot)
 endfunction
+" FUNCTION: oBookmark.MustExist() {{{3
+" if this bookmark points to a nonexisting path, delete the bookmark and raise
+" an exception
+function! s:oBookmark.MustExist() dict
+    if !self.path.Exists()
+        call self.Delete()
+        throw "NERDTree.BookmarkPointsToInvalidLocation exception: the bookmark \"".
+            \ self.name ."\" points to a non existing location: \"".
+            \ self.path.StrForOS(0) ."\" and has been deleted"
+    endif
+endfunction
 " FUNCTION: oBookmark.New(name, path) {{{3
 " Create a new bookmark object with the given name and path object
 function! s:oBookmark.New(name, path) dict
@@ -1222,6 +1233,11 @@ function! s:oPath.ExtractDriveLetter(fullpath) dict
     endif
 
 endfunction
+"FUNCTION: oPath.Exists() {{{3
+"return 1 if this path points to a location that is readable or is a directory
+function! s:oPath.Exists() dict
+    return filereadable(self.StrForOS(0)) || isdirectory(self.StrForOS(0))
+endfunction
 "FUNCTION: oPath.GetDir() {{{3
 "
 "Returns this path if it is a directory, else this paths parent.
@@ -1719,6 +1735,8 @@ endfunction
 " FUNCTION: s:BookmarkToRoot(name) {{{2
 " Make the node for the given bookmark the new tree root
 function! s:BookmarkToRoot(name)
+    let bookmark = s:oBookmark.BookmarkFor(a:name)
+    call bookmark.MustExist()
     try
         let targetNode = s:oBookmark.GetNodeForName(a:name, 1)
     catch /NERDTree.BookmarkNotFound/
@@ -2784,6 +2802,7 @@ function! s:ActivateNode(forceKeepWindowOpen)
             if bookmark.path.isDirectory
                 call s:BookmarkToRoot(bookmark.name)
             else
+                call bookmark.MustExist()
                 call s:OpenFileNode(s:oTreeFileNode.New(bookmark.path))
             endif
         endif
