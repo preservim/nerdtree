@@ -45,7 +45,7 @@ call s:InitVariable("g:NERDChristmasTree", 1)
 call s:InitVariable("g:NERDTreeAutoCenter", 1)
 call s:InitVariable("g:NERDTreeAutoCenterThreshold", 3)
 call s:InitVariable("g:NERDTreeCaseSensitiveSort", 0)
-call s:InitVariable("g:NERDTreeChDirMode", 1)
+call s:InitVariable("g:NERDTreeChDirMode", 0)
 if !exists("g:NERDTreeIgnore")
     let g:NERDTreeIgnore = ['\~$']
 endif

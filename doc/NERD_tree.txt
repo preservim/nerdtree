@@ -648,7 +648,7 @@ account. The above nodes would then be sorted like this: >
                                                            *NERDTreeChDirMode*
 
 Values: 0, 1 or 2.
-Default: 1.
+Default: 0.
 
 Use this option to tell the script when (if at all) to change the current
 working directory (CWD) for vim.
@@ -666,11 +666,6 @@ If the option is set to 2 then it behaves the same as if set to 1 except that
 the CWD is changed whenever the tree root is changed. For example, if the CWD
 is /home/marty/foobar and you make the node for /home/marty/foobar/baz the new
 root then the CWD will become /home/marty/foobar/baz.
-
-Authors note: at work i have this option set to 1 because i have a giant ctags
-file in the root dir of my project. This way i can initialise the NERD tree
-with the root dir of my project and always have ctags available to me --- no
-matter where i go with the NERD tree.
 
 ------------------------------------------------------------------------------
                                                  *NERDTreeHighlightCursorline*
