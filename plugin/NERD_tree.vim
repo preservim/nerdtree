@@ -148,7 +148,7 @@ command! -n=1 -complete=customlist,s:CompleteBookmarks NERDTreeFromBookmark call
 "Save the cursor position whenever we close the nerd tree
 exec "autocmd BufWinLeave *". s:NERDTreeWinName ."* :call <SID>SaveScreenState()"
 "cache bookmarks when vim loads
-autocmd VimEnter * call s:oBookmark.CacheBookmarks()
+autocmd VimEnter * call s:oBookmark.CacheBookmarks(0)
 
 "SECTION: Classes {{{1
 "============================================================
@@ -208,12 +208,16 @@ function! s:oBookmark.BookmarkNames() dict
     endfor
     return names
 endfunction
-" FUNCTION: oBookmark.CacheBookmarks() {{{3
+" FUNCTION: oBookmark.CacheBookmarks(silent) {{{3
 " Class method to read all bookmarks from the bookmarks file intialize
 " bookmark objects for each one.
-function! s:oBookmark.CacheBookmarks() dict
+"
+" Args:
+" silent - dont echo an error msg if invalid bookmarks are found
+function! s:oBookmark.CacheBookmarks(silent) dict
     if filereadable(g:NERDTreeBookmarksFile)
-        let bookmarks = []
+        let g:NERDTreeBookmarks = []
+        let g:NERDTreeInvalidBookmarks = []
         let bookmarkStrings = readfile(g:NERDTreeBookmarksFile)
         let invalidBookmarksFound = 0
         for i in bookmarkStrings
@@ -222,15 +226,19 @@ function! s:oBookmark.CacheBookmarks() dict
 
             try
                 let bookmark = s:oBookmark.New(name, s:oPath.New(path))
-                call add(bookmarks, bookmark)
+                call add(g:NERDTreeBookmarks, bookmark)
             catch /NERDTree.Path.InvalidArguments/
+                call add(g:NERDTreeInvalidBookmarks, i)
                 let invalidBookmarksFound += 1
             endtry
         endfor
-        let g:NERDTreeBookmarks = bookmarks
         if invalidBookmarksFound
-            call s:Echo(invalidBookmarksFound . " invalid bookmarks were read and discarded")
             call s:oBookmark.Write()
+            if !a:silent
+                call s:Echo(invalidBookmarksFound .
+                    \ " invalid bookmarks were read. They have been moved to the bottom of ".
+                    \ g:NERDTreeBookmarksFile. " please edit or remove them.")
+            endif
         endif
     endif
 endfunction
@@ -283,15 +291,21 @@ function! s:oBookmark.GetNodeForName(name, searchFromAbsoluteRoot) dict
     let bookmark = s:oBookmark.BookmarkFor(a:name)
     return bookmark.GetNode(a:searchFromAbsoluteRoot)
 endfunction
+" Function: oBookmark.InvalidBookmarks()   {{{3
+" Class method to get all invalid bookmark strings read from the bookmarks
+" file
+function! s:oBookmark.InvalidBookmarks() dict
+    if !exists("g:NERDTreeInvalidBookmarks")
+        let g:NERDTreeInvalidBookmarks = []
+    endif
+    return g:NERDTreeInvalidBookmarks
+endfunction
 " FUNCTION: oBookmark.MustExist() {{{3
-" if this bookmark points to a nonexisting path, delete the bookmark and raise
-" an exception
 function! s:oBookmark.MustExist() dict
     if !self.path.Exists()
-        call self.Delete()
+        call s:oBookmark.CacheBookmarks(1)
         throw "NERDTree.BookmarkPointsToInvalidLocation exception: the bookmark \"".
-            \ self.name ."\" points to a non existing location: \"".
-            \ self.path.StrForOS(0) ."\" and has been deleted"
+            \ self.name ."\" points to a non existing location: \"". self.path.StrForOS(0)
     endif
 endfunction
 " FUNCTION: oBookmark.New(name, path) {{{3
@@ -337,6 +351,9 @@ function! s:oBookmark.Write() dict
     let bookmarkStrings = []
     for i in s:oBookmark.Bookmarks()
         call add(bookmarkStrings, i.name . ' ' . i.path.StrForOS(0))
+    endfor
+    for j in s:oBookmark.InvalidBookmarks()
+        call add(bookmarkStrings, j)
     endfor
     call writefile(bookmarkStrings, g:NERDTreeBookmarksFile)
 endfunction
@@ -1744,15 +1761,16 @@ endfunction
 " Make the node for the given bookmark the new tree root
 function! s:BookmarkToRoot(name)
     let bookmark = s:oBookmark.BookmarkFor(a:name)
-    call s:ValidateBookmark(bookmark)
-    try
-        let targetNode = s:oBookmark.GetNodeForName(a:name, 1)
-    catch /NERDTree.BookmarkedNodeNotFound/
-        let targetNode = s:oTreeFileNode.New(s:oBookmark.BookmarkFor(a:name).path)
-    endtry
-    call targetNode.MakeRoot()
-    call s:RenderView()
-    call s:PutCursorOnNode(targetNode, 0, 0)
+    if s:ValidateBookmark(bookmark)
+        try
+            let targetNode = s:oBookmark.GetNodeForName(a:name, 1)
+        catch /NERDTree.BookmarkedNodeNotFound/
+            let targetNode = s:oTreeFileNode.New(s:oBookmark.BookmarkFor(a:name).path)
+        endtry
+        call targetNode.MakeRoot()
+        call s:RenderView()
+        call s:PutCursorOnNode(targetNode, 0, 0)
+    endif
 endfunction
 "FUNCTION: s:CenterView() {{{2
 "centers the nerd tree window around the cursor (provided the nerd tree
@@ -2788,9 +2806,11 @@ endfunction
 function! s:ValidateBookmark(bookmark)
     try
         call a:bookmark.MustExist()
+        return 1
     catch /NERDTree.BookmarkPointsToInvalidLocation/
         call s:RenderView()
-        throw v:exception
+        echo a:bookmark.name . " now points to an invalid location. It has been moved to the bottom of ".
+            \ g:NERDTreeBookmarksFile . " please edit or remove it"
     endtry
 endfunction
 
@@ -2825,8 +2845,9 @@ function! s:ActivateNode(forceKeepWindowOpen)
             if bookmark.path.isDirectory
                 call s:BookmarkToRoot(bookmark.name)
             else
-                call bookmark.MustExist()
-                call s:OpenFileNode(s:oTreeFileNode.New(bookmark.path))
+                if s:ValidateBookmark(bookmark)
+                    call s:OpenFileNode(s:oTreeFileNode.New(bookmark.path))
+                endif
             endif
         endif
     endif
@@ -2890,7 +2911,7 @@ function! s:BindMappings()
     command! -buffer -complete=customlist,s:CompleteBookmarks -nargs=* ClearBookmarks call <SID>ClearBookmarks('<args>')
     command! -buffer -complete=customlist,s:CompleteBookmarks -nargs=+ BookmarkToRoot call <SID>BookmarkToRoot('<args>')
     command! -buffer -nargs=0 ClearAllBookmarks call s:oBookmark.ClearAll() <bar> call <SID>RenderView()
-    command! -buffer -nargs=0 ReadBookmarks call s:oBookmark.CacheBookmarks() <bar> call <SID>RenderView()
+    command! -buffer -nargs=0 ReadBookmarks call s:oBookmark.CacheBookmarks(0) <bar> call <SID>RenderView()
     command! -buffer -nargs=0 WriteBookmarks call s:oBookmark.Write()
 endfunction
 
