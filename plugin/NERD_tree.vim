@@ -2945,14 +2945,14 @@ function! s:CheckForActivate()
         if currentNode.path.isDirectory
             let reg = '^' . s:tree_markup_reg .'*[~+]$'
             if startToCur =~ reg
-                call s:ActivateNode()
+                call s:ActivateNode(0)
                 return
             endif
         endif
 
         if (g:NERDTreeMouseMode == 2 && currentNode.path.isDirectory) || g:NERDTreeMouseMode == 3
             if char !~ s:tree_markup_reg && startToCur !~ '\/$'
-                call s:ActivateNode()
+                call s:ActivateNode(0)
                 return
             endif
         endif
