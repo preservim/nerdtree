@@ -221,25 +221,29 @@ function! s:oBookmark.CacheBookmarks(silent) dict
         let bookmarkStrings = readfile(g:NERDTreeBookmarksFile)
         let invalidBookmarksFound = 0
         for i in bookmarkStrings
-            let name = substitute(i, '^\(.\{-}\) .*$', '\1', '')
-            let path = substitute(i, '^.\{-} \(.*\)$', '\1', '')
 
-            try
-                let bookmark = s:oBookmark.New(name, s:oPath.New(path))
-                call add(g:NERDTreeBookmarks, bookmark)
-            catch /NERDTree.Path.InvalidArguments/
-                call add(g:NERDTreeInvalidBookmarks, i)
-                let invalidBookmarksFound += 1
-            endtry
+            "ignore blank lines
+            if i != ''
+
+                let name = substitute(i, '^\(.\{-}\) .*$', '\1', '')
+                let path = substitute(i, '^.\{-} \(.*\)$', '\1', '')
+
+                try
+                    let bookmark = s:oBookmark.New(name, s:oPath.New(path))
+                    call add(g:NERDTreeBookmarks, bookmark)
+                catch /NERDTree.Path.InvalidArguments/
+                    call add(g:NERDTreeInvalidBookmarks, i)
+                    let invalidBookmarksFound += 1
+                endtry
+            endif
         endfor
         if invalidBookmarksFound
             call s:oBookmark.Write()
             if !a:silent
-                call s:Echo(invalidBookmarksFound .
-                    \ " invalid bookmarks were read. They have been moved to the bottom of ".
-                    \ g:NERDTreeBookmarksFile. " please edit or remove them.")
+                call s:Echo(invalidBookmarksFound . " invalid bookmarks were read. See :help NERDTreeInvalidBookmarks for info.")
             endif
         endif
+        call s:oBookmark.Sort()
     endif
 endfunction
 " FUNCTION: oBookmark.CompareTo(otherbookmark) {{{3
@@ -352,6 +356,10 @@ function! s:oBookmark.Write() dict
     for i in s:oBookmark.Bookmarks()
         call add(bookmarkStrings, i.name . ' ' . i.path.StrForOS(0))
     endfor
+
+    "add a blank line before the invalid ones
+    call add(bookmarkStrings, "")
+
     for j in s:oBookmark.InvalidBookmarks()
         call add(bookmarkStrings, j)
     endfor
@@ -2809,8 +2817,7 @@ function! s:ValidateBookmark(bookmark)
         return 1
     catch /NERDTree.BookmarkPointsToInvalidLocation/
         call s:RenderView()
-        echo a:bookmark.name . " now points to an invalid location. It has been moved to the bottom of ".
-            \ g:NERDTreeBookmarksFile . " please edit or remove it"
+        call s:Echo(a:bookmark.name . "now points to an invalid location. See :help NERDTreeInvalidBookmarks for info.")
     endtry
 endfunction
 
