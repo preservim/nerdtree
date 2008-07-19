@@ -848,7 +848,7 @@ function! s:oTreeDirNode.InitChildren(silent) dict
                 let path = s:oPath.New(i)
                 call self.CreateChild(path, 0)
             catch /^NERDTree.Path.\(InvalidArguments\|InvalidFiletype\)/
-                let invalidFilesFound = 1
+                let invalidFilesFound += 1
             endtry
         endif
     endfor
@@ -860,7 +860,7 @@ function! s:oTreeDirNode.InitChildren(silent) dict
     endif
 
     if invalidFilesFound
-        call s:EchoWarning("some files could not be loaded into the NERD tree")
+        call s:EchoWarning(invalidFilesFound . " file(s) could not be loaded into the NERD tree")
     endif
     return self.GetChildCount()
 endfunction
