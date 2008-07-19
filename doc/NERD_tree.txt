@@ -890,11 +890,26 @@ fridge for later ;)
 7. Changelog                                               *NERDTreeChangelog*
 
 2.x.x
+    - make NERDTreeChDir option default to 0 (i.e. never change vims current
+      working dir by default)
+    - when moving/deleting nodes with the filesystem menu, mode/delete any
+      associated bookmarks
     - make the t/T on directory nodes open a fresh NERD tree for the selected
       dir in a new tab, rather than a netrw.
     - place the cursor at the top of the bookmarks table when opening it with B
     - make NERDTreeQuitOnOpen option work with the g<tab> and go mappings,
       thanks to Maxim Kim for the bug report
+    - change how invalid bookmarks are handled. Now they are not deleted. If a
+      bookmark is malformed (in the bookmarks file) or points to an
+      invalid/nonexisting location then print an error and place the offending
+      bookmarks at the bottom of the bookmarks file. See :help
+      |NERDTreeInvalidBookmarks| for info. Thanks to Zhang Shuhan for the
+      suggestion and the testing.
+    - fix a bug with the 'o' mapping that occurred when opening a new buffer
+      for a file whose name was a substring of an already open file. Thanks to
+      Charlton Wang for the report.
+    - stop the script from going into an infinite loop when it tries to cache
+      a named pipe. Thanks to Charlton Wang for the report.
 
 2.12.0
     - added a UI for bookmarks. See :help NERDTreeBookmarkTable for details.
@@ -1170,7 +1185,7 @@ NERD tree window optional.
 
 Thanks to Zhang Shuhan for all of his emails and testing to help improve the
 NERD tree path handling. Thanks also for suggesting the bookmarks gui, and for
-testing and making suggestions and bugreports.
+testing and his many suggestions and bugreports about bookmarks.
 
 Thanks to Cory Echols for sending a patch to add the :NERDTreeClose command and
 set the NERD tree buffers filetype to 'nerdtree'
@@ -1182,6 +1197,13 @@ Thanks to Yuan Jiang for suggesting the "o" mapping shouldnt clobber "special"
 windows, like taglist.
 
 Thanks to Matan Nassau for the patch to add the NERDTreeQuitOnOpen option.
+
+Thanks to Maxim Kim for reporting a bug with g<tab> and go mappings when
+NERDTreeQuitOnOpen was set.
+
+Thanks to Charlton Wang for reporting bugs with the 'o' mapping and with
+handling named pipes.
+
 ==============================================================================
 9. License                                                   *NERDTreeLicense*
 
