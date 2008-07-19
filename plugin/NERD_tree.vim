@@ -847,7 +847,7 @@ function! s:oTreeDirNode.InitChildren(silent) dict
             try
                 let path = s:oPath.New(i)
                 call self.CreateChild(path, 0)
-            catch /^NERDTree.Path.InvalidArguments/
+            catch /^NERDTree.Path.\(InvalidArguments\|InvalidFiletype\)/
                 let invalidFilesFound = 1
             endtry
         endif
@@ -1402,7 +1402,12 @@ function! s:oPath.ReadInfoFromDisk(fullpath) dict
 
     let fullpath = s:oPath.WinToUnixPath(a:fullpath)
 
+    if getftype(fullpath) == "fifo"
+        throw "NERDTree.Path.InvalidFiletype Exception: Cant handle FIFO files: " . a:fullpath
+    endif
+
     let self.pathSegments = split(fullpath, '/')
+
 
     let self.isReadOnly = 0
     if isdirectory(a:fullpath)
