@@ -889,7 +889,7 @@ fridge for later ;)
 ==============================================================================
 7. Changelog                                               *NERDTreeChangelog*
 
-2.x.x
+2.13.0
     - make NERDTreeChDir option default to 0 (i.e. never change vims current
       working dir by default)
     - when moving/deleting nodes with the filesystem menu, move/delete any
