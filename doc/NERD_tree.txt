@@ -892,7 +892,7 @@ fridge for later ;)
 2.x.x
     - make NERDTreeChDir option default to 0 (i.e. never change vims current
       working dir by default)
-    - when moving/deleting nodes with the filesystem menu, mode/delete any
+    - when moving/deleting nodes with the filesystem menu, move/delete any
       associated bookmarks
     - make the t/T on directory nodes open a fresh NERD tree for the selected
       dir in a new tab, rather than a netrw.
