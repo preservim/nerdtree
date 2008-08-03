@@ -889,6 +889,9 @@ fridge for later ;)
 ==============================================================================
 7. Changelog                                               *NERDTreeChangelog*
 
+2.x.x
+    - fix a bug where the <c-w>o mapping  would cause the tree window to be
+      incorrectly sized when reopened.
 2.13.0
     - make NERDTreeChDir option default to 0 (i.e. never change vims current
       working dir by default)

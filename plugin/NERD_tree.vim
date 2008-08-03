@@ -146,7 +146,7 @@ command! -n=1 -complete=customlist,s:CompleteBookmarks NERDTreeFromBookmark call
 " SECTION: Auto commands {{{1
 "============================================================
 "Save the cursor position whenever we close the nerd tree
-exec "autocmd BufWinLeave *". s:NERDTreeWinName ."* :call <SID>SaveScreenState()"
+exec "autocmd BufWinLeave *". s:NERDTreeWinName ." call <SID>SaveScreenState()"
 "cache bookmarks when vim loads
 autocmd VimEnter * call s:oBookmark.CacheBookmarks(0)
 
@@ -2621,12 +2621,13 @@ endfunction
 "FUNCTION: s:SaveScreenState() {{{2
 "Saves the current cursor position in the current buffer and the window
 "scroll position
-"
-"Assumes the cursor is in the NERDTree window
 function! s:SaveScreenState()
+    let win = winnr()
+    call s:PutCursorInTreeWin()
     let t:NERDTreeOldPos = getpos(".")
     let t:NERDTreeOldTopLine = line("w0")
     let t:NERDTreeOldWindowSize = s:ShouldSplitVertically() ? winwidth("") : winheight("")
+    exec win . "wincmd w"
 endfunction
 
 "FUNCTION: s:SetupSyntaxHighlighting() {{{2
