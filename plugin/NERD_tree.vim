@@ -267,7 +267,7 @@ function! s:oBookmark.Delete() dict
     let node = {}
     try
         let node = self.GetNode(1)
-    catch /NERDTree.BookmarkNotFound/
+    catch /NERDTree.BookmarkedNodeNotFound/
     endtry
     call remove(s:oBookmark.Bookmarks(), index(s:oBookmark.Bookmarks(), self))
     if !empty(node)
@@ -2207,6 +2207,7 @@ function! s:GetSelectedBookmark()
             return {}
         endtry
     endif
+    return {}
 endfunction
 
 "FUNCTION: s:GetSelectedDir() {{{2
