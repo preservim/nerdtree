@@ -339,7 +339,7 @@ endfunction
 " Function: oBookmark.Str()   {{{3
 " Get the string that should be rendered in the view for this bookmark
 function! s:oBookmark.Str() dict
-    let pathStrMaxLen = winwidth(s:GetTreeWinNum()) - 5 - len(self.name)
+    let pathStrMaxLen = winwidth(s:GetTreeWinNum()) - 4 - len(self.name)
     if &nu
         let pathStrMaxLen = pathStrMaxLen - &numberwidth
     endif
@@ -348,7 +348,7 @@ function! s:oBookmark.Str() dict
     if len(pathStr) > pathStrMaxLen
         let pathStr = '<' . strpart(pathStr, len(pathStr) - pathStrMaxLen)
     endif
-    return '>' . self.name . ' [' . pathStr . ']'
+    return '>' . self.name . ' ' . pathStr
 endfunction
 " Function: oBookmark.Write()   {{{3
 " Class method to write all bookmarks to the bookmarks file
@@ -2199,7 +2199,7 @@ endfunction
 "nodes parent
 function! s:GetSelectedBookmark()
     let line = getline(".")
-    let name = substitute(line, '^>\(.\{-}\) \[.*\]$', '\1', '')
+    let name = substitute(line, '^>\(.\{-}\) .\+$', '\1', '')
     if name != line
         try
             return s:oBookmark.BookmarkFor(name)
