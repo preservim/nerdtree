@@ -2195,8 +2195,7 @@ function! s:GetPath(ln)
 endfunction
 
 "FUNCTION: s:GetSelectedBookmark() {{{2
-"Returns the current node if it is a dir node, or else returns the current
-"nodes parent
+"returns the bookmark the cursor is over in the bookmarks table or {}
 function! s:GetSelectedBookmark()
     let line = getline(".")
     let name = substitute(line, '^>\(.\{-}\) .\+$', '\1', '')
