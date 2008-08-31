@@ -202,6 +202,8 @@ double-click.......same as the |NERDTree-o| map.
 middle-click.......same as |NERDTree-tab| for files, same as
                    |NERDTree-e| for dirs.
 
+D.......Delete the current bookmark .............................|NERDTree-D|
+
 P.......Jump to the root node....................................|NERDTree-P|
 p.......Jump to current nodes parent.............................|NERDTree-p|
 K.......Jump up inside directories at the current tree depth.....|NERDTree-K|
@@ -341,6 +343,14 @@ Map option: NERDTreeMapOpenExpl
 Applies to: files and directories.
 
 Opens a netrw on the selected directory, or the selected file's directory.
+
+------------------------------------------------------------------------------
+                                                                  *NERDTree-D*
+Default key: D
+Map option: NERDTreeMapDeleteBookmark
+Applies to: lines in the bookmarks table
+
+Deletes the currently selected bookmark.
 
 ------------------------------------------------------------------------------
                                                                   *NERDTree-P*

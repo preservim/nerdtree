@@ -95,6 +95,7 @@ call s:InitVariable("g:NERDTreeMapChangeRoot", "C")
 call s:InitVariable("g:NERDTreeMapChdir", "cd")
 call s:InitVariable("g:NERDTreeMapCloseChildren", "X")
 call s:InitVariable("g:NERDTreeMapCloseDir", "x")
+call s:InitVariable("g:NERDTreeMapDeleteBookmark", "D")
 call s:InitVariable("g:NERDTreeMapExecute", "!")
 call s:InitVariable("g:NERDTreeMapFilesystemMenu", "m")
 call s:InitVariable("g:NERDTreeMapHelp", "?")
@@ -1985,6 +1986,7 @@ function! s:DumpHelp()
         let @h=@h."\" ". g:NERDTreeMapActivateNode .": open bookmark\n"
         let @h=@h."\" ". g:NERDTreeMapOpenInTab.": open in new tab\n"
         let @h=@h."\" ". g:NERDTreeMapOpenInTabSilent .": open in new tab silently\n"
+        let @h=@h."\" ". g:NERDTreeMapDeleteBookmark .": delete bookmark\n"
 
         let @h=@h."\"\n\" ----------------------------\n"
         let @h=@h."\" Tree navigation mappings~\n"
@@ -2918,6 +2920,8 @@ function! s:BindMappings()
 
     exec "nnoremap <silent> <buffer> ". g:NERDTreeMapOpenExpl ." :call <SID>OpenExplorer()<cr>"
 
+    exec "nnoremap <silent> <buffer> ". g:NERDTreeMapDeleteBookmark ." :call <SID>DeleteBookmark()<cr>"
+
     command! -buffer -nargs=1 Bookmark :call <SID>BookmarkNode('<args>')
     command! -buffer -complete=customlist,s:CompleteBookmarks -nargs=1 RevealBookmark :call <SID>RevealBookmark('<args>')
     command! -buffer -complete=customlist,s:CompleteBookmarks -nargs=1 OpenBookmark :call <SID>OpenBookmark('<args>')
@@ -3085,6 +3089,31 @@ function! s:CopyNode()
         call s:Echo("Copy aborted.")
     endif
     redraw
+endfunction
+
+" FUNCTION: s:DeleteBookmark() {{{2
+" if the cursor is on a bookmark, prompt to delete
+function! s:DeleteBookmark()
+    let bookmark = s:GetSelectedBookmark()
+    if bookmark == {}
+        call s:Echo("Put the cursor on a bookmark")
+        return
+    endif
+
+    echo  "Are you sure you wish to delete the bookmark:\n\"" . bookmark.name . "\" (yN):"
+
+    if  nr2char(getchar()) == 'y'
+        try
+            call bookmark.Delete()
+            call s:RenderView()
+            redraw
+        catch /^NERDTree/
+            call s:EchoWarning("Could not remove bookmark")
+        endtry
+    else
+        call s:Echo("delete aborted" )
+    endif
+
 endfunction
 
 " FUNCTION: s:DeleteNode() {{{2
