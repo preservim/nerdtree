@@ -665,7 +665,6 @@ endfunction
 "
 "Args:
 "path: a path object
-unlet s:oTreeDirNode.FindNode
 function! s:oTreeDirNode.FindNode(path)
     if a:path.Equals(self.path)
         return self
@@ -870,7 +869,6 @@ endfunction
 "
 "Args:
 "path: a path object representing the full filesystem path to the file/dir that the node represents
-unlet s:oTreeDirNode.New
 function! s:oTreeDirNode.New(path)
     if a:path.isDirectory != 1
         throw "NERDTree.TreeDirNode.InvalidArguments exception. A TreeDirNode object must be instantiated with a directory Path object."
@@ -934,7 +932,6 @@ function! s:oTreeDirNode.OpenRecursively2(forceOpen)
 endfunction
 
 "FUNCTION: oTreeDirNode.Refresh {{{3
-unlet s:oTreeDirNode.Refresh
 function! s:oTreeDirNode.Refresh()
     call self.path.Refresh()
 
