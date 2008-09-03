@@ -920,16 +920,14 @@ function! s:TreeDirNode.openRecursively()
     call self.openRecursively2(1)
 endfunction
 
-"FUNCTION: TreeDirNode.openRecursively2() {{{3
-"Dont call this method from outside this object.
-"
+"FUNCTION: TreeDirNode._openRecursively2() {{{3
 "Opens this all children of this treenode recursively if either:
 "   *they arent filtered by file filters
 "   *a:forceOpen is 1
 "
 "Args:
 "forceOpen: 1 if this node should be opened regardless of file filters
-function! s:TreeDirNode.openRecursively2(forceOpen)
+function! s:TreeDirNode._openRecursively2(forceOpen)
     if self.path.ignore() == 0 || a:forceOpen
         let self.isOpen = 1
         if self.children == []
