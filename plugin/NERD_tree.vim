@@ -733,36 +733,6 @@ function! s:TreeDirNode.getChildCount()
     return len(self.children)
 endfunction
 
-"FUNCTION: TreeDirNode.getChildDirs() {{{3
-"Returns an array of all children of this node that are directories
-"
-"Return:
-"an array of directory treenodes
-function! s:TreeDirNode.getChildDirs()
-    let toReturn = []
-    for i in self.children
-        if i.path.isDirectory
-            call add(toReturn, i)
-        endif
-    endfor
-    return toReturn
-endfunction
-
-"FUNCTION: TreeDirNode.getChildFiles() {{{3
-"Returns an array of all children of this node that are files
-"
-"Return:
-"an array of file treenodes
-function! s:TreeDirNode.getChildFiles()
-    let toReturn = []
-    for i in self.children
-        if i.path.isDirectory == 0
-            call add(toReturn, i)
-        endif
-    endfor
-    return toReturn
-endfunction
-
 "FUNCTION: TreeDirNode.getChild(path) {{{3
 "Returns child node of this node that has the given path or {} if no such node
 "exists.
