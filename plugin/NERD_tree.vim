@@ -989,7 +989,7 @@ function! s:TreeDirNode.refresh()
     endif
 endfunction
 
-"FUNCTION: TreeDirNode.removeChild() {{{3
+"FUNCTION: TreeDirNode.removeChild(treenode) {{{3
 "
 "Removes the given treenode from this nodes set of children
 "
