@@ -282,7 +282,7 @@ endfunction
 " searchFromAbsoluteRoot: specifies whether we should search from the current
 " tree root, or the highest cached node
 function! s:oBookmark.getNode(searchFromAbsoluteRoot)
-    let searchRoot = a:searchFromAbsoluteRoot ? s:AbsoluteTreeRoot() : t:NERDTreeRoot
+    let searchRoot = a:searchFromAbsoluteRoot ? s:oTreeDirNode.AbsoluteTreeRoot() : t:NERDTreeRoot
     let targetNode = searchRoot.findNode(self.path)
     if empty(targetNode)
         throw "NERDTree.BookmarkedNodeNotFound no node was found for bookmark: " . self.name
@@ -612,6 +612,15 @@ endfunction
 "classes.
 "============================================================
 let s:oTreeDirNode = copy(s:oTreeFileNode)
+"FUNCTION: s:oTreeDirNode.AbsoluteTreeRoot(){{{2
+"class method that returns the highest cached ancestor of the current root
+function! s:oTreeDirNode.AbsoluteTreeRoot()
+    let currentNode = t:NERDTreeRoot
+    while currentNode.parent != {}
+        let currentNode = currentNode.parent
+    endwhile
+    return currentNode
+endfunction
 "FUNCTION: oTreeDirNode.addChild(treenode, inOrder) {{{3
 "Adds the given treenode to the list of children for this node
 "
@@ -1614,15 +1623,6 @@ function! s:Abs(num)
     else
         return 0 - a:num
     end
-endfunction
-"FUNCTION: s:AbsoluteTreeRoot(){{{2
-" returns the highest cached ancestor of the current root
-function! s:AbsoluteTreeRoot()
-    let currentNode = t:NERDTreeRoot
-    while currentNode.parent != {}
-        let currentNode = currentNode.parent
-    endwhile
-    return currentNode
 endfunction
 "FUNCTION: s:BufInWindows(bnum){{{2
 "[[STOLEN FROM VTREEEXPLORER.VIM]]
