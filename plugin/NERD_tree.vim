@@ -646,7 +646,7 @@ endfunction
 "classes.
 "============================================================
 let s:oTreeDirNode = copy(s:oTreeFileNode)
-"FUNCTION: s:oTreeDirNode.AbsoluteTreeRoot(){{{2
+"FUNCTION: oTreeDirNode.AbsoluteTreeRoot(){{{3
 "class method that returns the highest cached ancestor of the current root
 function! s:oTreeDirNode.AbsoluteTreeRoot()
     let currentNode = t:NERDTreeRoot
