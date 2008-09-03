@@ -350,6 +350,40 @@ function! s:oBookmark.str()
     endif
     return '>' . self.name . ' ' . pathStr
 endfunction
+" FUNCTION: oBookmark.toRoot() {{{3
+" Make the node for this bookmark the new tree root
+function! s:oBookmark.toRoot()
+    if self.validate()
+        try
+            let targetNode = s:oBookmark.GetNodeForName(self.name, 1)
+        catch /NERDTree.BookmarkedNodeNotFound/
+            let targetNode = s:oTreeFileNode.New(s:oBookmark.BookmarkFor(self.name).path)
+        endtry
+        call targetNode.makeRoot()
+        call s:RenderView()
+        call s:PutCursorOnNode(targetNode, 0, 0)
+    endif
+endfunction
+" FUNCTION: oBookmark.toRoot(name) {{{3
+" Make the node for this bookmark the new tree root
+function! s:oBookmark.ToRoot(name)
+    let bookmark = s:oBookmark.BookmarkFor(a:name)
+    call bookmark.toRoot()
+endfunction
+
+
+"FUNCTION: oBookmark.validate() {{{3
+function! s:oBookmark.validate()
+    if self.path.exists()
+        return 1
+    else
+        call s:oBookmark.CacheBookmarks(1)
+        call s:RenderView()
+        call s:Echo(self.name . "now points to an invalid location. See :help NERDTreeInvalidBookmarks for info.")
+        return 0
+    endif
+endfunction
+
 " Function: oBookmark.Write()   {{{3
 " Class method to write all bookmarks to the bookmarks file
 function! s:oBookmark.Write()
@@ -1757,21 +1791,6 @@ endfunction
 
 " SECTION: View Functions {{{1
 "============================================================
-" FUNCTION: s:BookmarkToRoot(name) {{{2
-" Make the node for the given bookmark the new tree root
-function! s:BookmarkToRoot(name)
-    let bookmark = s:oBookmark.BookmarkFor(a:name)
-    if s:ValidateBookmark(bookmark)
-        try
-            let targetNode = s:oBookmark.GetNodeForName(a:name, 1)
-        catch /NERDTree.BookmarkedNodeNotFound/
-            let targetNode = s:oTreeFileNode.New(s:oBookmark.BookmarkFor(a:name).path)
-        endtry
-        call targetNode.makeRoot()
-        call s:RenderView()
-        call s:PutCursorOnNode(targetNode, 0, 0)
-    endif
-endfunction
 "FUNCTION: s:CenterView() {{{2
 "centers the nerd tree window around the cursor (provided the nerd tree
 "options permit)
@@ -2803,18 +2822,6 @@ function! s:Toggle(dir)
         call s:InitNerdTree(a:dir)
     endif
 endfunction
-
-"FUNCTION: s:ValidateBookmark(bookmark) {{{2
-function! s:ValidateBookmark(bookmark)
-    try
-        call a:bookmark.mustExist()
-        return 1
-    catch /NERDTree.BookmarkPointsToInvalidLocation/
-        call s:RenderView()
-        call s:Echo(a:bookmark.name . "now points to an invalid location. See :help NERDTreeInvalidBookmarks for info.")
-    endtry
-endfunction
-
 "SECTION: Interface bindings {{{1
 "============================================================
 "FUNCTION: s:ActivateNode(forceKeepWindowOpen) {{{2
@@ -2844,9 +2851,9 @@ function! s:ActivateNode(forceKeepWindowOpen)
         let bookmark = s:GetSelectedBookmark()
         if !empty(bookmark)
             if bookmark.path.isDirectory
-                call s:BookmarkToRoot(bookmark.name)
+                call bookmark.toRoot()
             else
-                if s:ValidateBookmark(bookmark)
+                if bookmark.validate()
                     call s:OpenFileNode(s:oTreeFileNode.New(bookmark.path))
                 endif
             endif
@@ -2912,7 +2919,7 @@ function! s:BindMappings()
     command! -buffer -complete=customlist,s:CompleteBookmarks -nargs=1 RevealBookmark :call <SID>RevealBookmark('<args>')
     command! -buffer -complete=customlist,s:CompleteBookmarks -nargs=1 OpenBookmark :call <SID>OpenBookmark('<args>')
     command! -buffer -complete=customlist,s:CompleteBookmarks -nargs=* ClearBookmarks call <SID>ClearBookmarks('<args>')
-    command! -buffer -complete=customlist,s:CompleteBookmarks -nargs=+ BookmarkToRoot call <SID>BookmarkToRoot('<args>')
+    command! -buffer -complete=customlist,s:CompleteBookmarks -nargs=+ BookmarkToRoot call s:oBookmark.ToRoot('<args>')
     command! -buffer -nargs=0 ClearAllBookmarks call s:oBookmark.ClearAll() <bar> call <SID>RenderView()
     command! -buffer -nargs=0 ReadBookmarks call s:oBookmark.CacheBookmarks(0) <bar> call <SID>RenderView()
     command! -buffer -nargs=0 WriteBookmarks call s:oBookmark.Write()
