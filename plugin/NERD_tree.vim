@@ -827,7 +827,7 @@ function! s:TreeDirNode.hasVisibleChildren()
     return self.getChildCount() != 0
 endfunction
 
-"FUNCTION: TreeDirNode.initChildren() {{{3
+"FUNCTION: TreeDirNode._initChildren() {{{3
 "Removes all childen from this node and re-reads them
 "
 "Args:
@@ -835,7 +835,7 @@ endfunction
 "large directories
 "
 "Return: the number of child nodes read
-function! s:TreeDirNode.initChildren(silent)
+function! s:TreeDirNode._initChildren(silent)
     "remove all the current child nodes
     let self.children = []
 
@@ -904,7 +904,7 @@ endfunction
 function! s:TreeDirNode.open()
     let self.isOpen = 1
     if self.children == []
-        return self.initChildren(0)
+        return self._initChildren(0)
     else
         return 0
     endif
@@ -931,7 +931,7 @@ function! s:TreeDirNode._openRecursively2(forceOpen)
     if self.path.ignore() == 0 || a:forceOpen
         let self.isOpen = 1
         if self.children == []
-            call self.initChildren(1)
+            call self._initChildren(1)
         endif
 
         for i in self.children
