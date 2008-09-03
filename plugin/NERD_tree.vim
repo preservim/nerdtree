@@ -1648,7 +1648,7 @@ function! s:BufInWindows(bnum)
     return cnt
 endfunction " >>>
 
-"FUNCTION: CompareBookmarks(first, second) {{{2
+"FUNCTION: s:CompareBookmarks(first, second) {{{2
 "Compares two bookmarks
 function! s:CompareBookmarks(first, second)
     return a:first.compareTo(a:second)
