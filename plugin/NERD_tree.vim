@@ -159,7 +159,7 @@ let s:oBookmark = {}
 " FUNCTION: oBookmark.AddBookmark(name, path) {{{3
 " Class method to add a new bookmark to the list, if a previous bookmark exists
 " with the same name, just update the path for that bookmark
-function! s:oBookmark.AddBookmark(name, path) dict
+function! s:oBookmark.AddBookmark(name, path)
     for i in s:oBookmark.Bookmarks()
         if i.name == a:name
             let i.path = a:path
@@ -172,7 +172,7 @@ endfunction
 " Function: oBookmark.Bookmarks()   {{{3
 " Class method to get all bookmarks. Lazily initializes the bookmarks global
 " variable
-function! s:oBookmark.Bookmarks() dict
+function! s:oBookmark.Bookmarks()
     if !exists("g:NERDTreeBookmarks")
         let g:NERDTreeBookmarks = []
     endif
@@ -181,7 +181,7 @@ endfunction
 " Function: oBookmark.BookmarkExistsFor(name)   {{{3
 " class method that returns 1 if a bookmark with the given name is found, 0
 " otherwise
-function! s:oBookmark.BookmarkExistsFor(name) dict
+function! s:oBookmark.BookmarkExistsFor(name)
     try
         call s:oBookmark.BookmarkFor(a:name)
         return 1
@@ -192,7 +192,7 @@ endfunction
 " Function: oBookmark.BookmarkFor(name)   {{{3
 " Class method to get the bookmark that has the given name. {} is return if no
 " bookmark is found
-function! s:oBookmark.BookmarkFor(name) dict
+function! s:oBookmark.BookmarkFor(name)
     for i in s:oBookmark.Bookmarks()
         if i.name == a:name
             return i
@@ -202,7 +202,7 @@ function! s:oBookmark.BookmarkFor(name) dict
 endfunction
 " Function: oBookmark.BookmarkNames()   {{{3
 " Class method to return an array of all bookmark names
-function! s:oBookmark.BookmarkNames() dict
+function! s:oBookmark.BookmarkNames()
     let names = []
     for i in s:oBookmark.Bookmarks()
         call add(names, i.name)
@@ -215,7 +215,7 @@ endfunction
 "
 " Args:
 " silent - dont echo an error msg if invalid bookmarks are found
-function! s:oBookmark.CacheBookmarks(silent) dict
+function! s:oBookmark.CacheBookmarks(silent)
     if filereadable(g:NERDTreeBookmarksFile)
         let g:NERDTreeBookmarks = []
         let g:NERDTreeInvalidBookmarks = []
@@ -249,12 +249,12 @@ function! s:oBookmark.CacheBookmarks(silent) dict
 endfunction
 " FUNCTION: oBookmark.CompareTo(otherbookmark) {{{3
 " Compare these two bookmarks for sorting purposes
-function! s:oBookmark.CompareTo(otherbookmark) dict
+function! s:oBookmark.CompareTo(otherbookmark)
     return a:otherbookmark.name < self.name
 endfunction
 " FUNCTION: oBookmark.ClearAll() {{{3
 " Class method to delete all bookmarks.
-function! s:oBookmark.ClearAll() dict
+function! s:oBookmark.ClearAll()
     for i in s:oBookmark.Bookmarks()
         call i.Delete()
     endfor
@@ -263,7 +263,7 @@ endfunction
 " FUNCTION: oBookmark.Delete() {{{3
 " Delete this bookmark. If the node for this bookmark is under the current
 " root, then recache bookmarks for its Path object
-function! s:oBookmark.Delete() dict
+function! s:oBookmark.Delete()
     let node = {}
     try
         let node = self.GetNode(1)
@@ -281,7 +281,7 @@ endfunction
 " Args:
 " searchFromAbsoluteRoot: specifies whether we should search from the current
 " tree root, or the highest cached node
-function! s:oBookmark.GetNode(searchFromAbsoluteRoot) dict
+function! s:oBookmark.GetNode(searchFromAbsoluteRoot)
     let searchRoot = a:searchFromAbsoluteRoot ? s:AbsoluteTreeRoot() : t:NERDTreeRoot
     let targetNode = searchRoot.FindNode(self.path)
     if empty(targetNode)
@@ -292,21 +292,21 @@ endfunction
 " FUNCTION: oBookmark.GetNodeForName(name, searchFromAbsoluteRoot) {{{3
 " Class method that finds the bookmark with the given name and returns the
 " treenode for it.
-function! s:oBookmark.GetNodeForName(name, searchFromAbsoluteRoot) dict
+function! s:oBookmark.GetNodeForName(name, searchFromAbsoluteRoot)
     let bookmark = s:oBookmark.BookmarkFor(a:name)
     return bookmark.GetNode(a:searchFromAbsoluteRoot)
 endfunction
 " Function: oBookmark.InvalidBookmarks()   {{{3
 " Class method to get all invalid bookmark strings read from the bookmarks
 " file
-function! s:oBookmark.InvalidBookmarks() dict
+function! s:oBookmark.InvalidBookmarks()
     if !exists("g:NERDTreeInvalidBookmarks")
         let g:NERDTreeInvalidBookmarks = []
     endif
     return g:NERDTreeInvalidBookmarks
 endfunction
 " FUNCTION: oBookmark.MustExist() {{{3
-function! s:oBookmark.MustExist() dict
+function! s:oBookmark.MustExist()
     if !self.path.Exists()
         call s:oBookmark.CacheBookmarks(1)
         throw "NERDTree.BookmarkPointsToInvalidLocation exception: the bookmark \"".
@@ -315,7 +315,7 @@ function! s:oBookmark.MustExist() dict
 endfunction
 " FUNCTION: oBookmark.New(name, path) {{{3
 " Create a new bookmark object with the given name and path object
-function! s:oBookmark.New(name, path) dict
+function! s:oBookmark.New(name, path)
     if a:name =~ ' '
         throw "NERDTree.IllegalBookmarkName illegal name:" . a:name
     endif
@@ -327,18 +327,18 @@ function! s:oBookmark.New(name, path) dict
 endfunction
 " Function: oBookmark.SetPath(path)   {{{3
 " makes this bookmark point to the given path
-function! s:oBookmark.SetPath(path) dict
+function! s:oBookmark.SetPath(path)
     let self.path = a:path
 endfunction
 " Function: oBookmark.Sort()   {{{3
 " Class method that sorts all bookmarks
-function! s:oBookmark.Sort() dict
+function! s:oBookmark.Sort()
     let CompareFunc = function("s:CompareBookmarks")
     call sort(s:oBookmark.Bookmarks(), CompareFunc)
 endfunction
 " Function: oBookmark.Str()   {{{3
 " Get the string that should be rendered in the view for this bookmark
-function! s:oBookmark.Str() dict
+function! s:oBookmark.Str()
     let pathStrMaxLen = winwidth(s:GetTreeWinNum()) - 4 - len(self.name)
     if &nu
         let pathStrMaxLen = pathStrMaxLen - &numberwidth
@@ -352,7 +352,7 @@ function! s:oBookmark.Str() dict
 endfunction
 " Function: oBookmark.Write()   {{{3
 " Class method to write all bookmarks to the bookmarks file
-function! s:oBookmark.Write() dict
+function! s:oBookmark.Write()
     let bookmarkStrings = []
     for i in s:oBookmark.Bookmarks()
         call add(bookmarkStrings, i.name . ' ' . i.path.StrForOS(0))
@@ -374,7 +374,7 @@ endfunction
 let s:oTreeFileNode = {}
 "FUNCTION: oTreeFileNode.Bookmark(name) {{{3
 "bookmark this node with a:name
-function! s:oTreeFileNode.Bookmark(name) dict
+function! s:oTreeFileNode.Bookmark(name)
     try
         let oldMarkedNode = s:oBookmark.GetNodeForName(a:name, 1)
         call oldMarkedNode.path.CacheDisplayString()
@@ -387,7 +387,7 @@ function! s:oTreeFileNode.Bookmark(name) dict
 endfunction
 "FUNCTION: oTreeFileNode.CacheParent {{{3
 "initializes self.parent if it isnt already
-function! s:oTreeFileNode.CacheParent() dict
+function! s:oTreeFileNode.CacheParent()
     if empty(self.parent)
         let parentPath = self.path.GetParent()
         if parentPath.Equals(self.path)
@@ -409,7 +409,7 @@ function! s:CompareNodes(n1, n2)
 endfunction
 
 "FUNCTION: oTreeFileNode.ClearBookmarks() {{{3
-function! s:oTreeFileNode.ClearBookmarks() dict
+function! s:oTreeFileNode.ClearBookmarks()
     for i in s:oBookmark.Bookmarks()
         if i.path.Equals(self.path)
             call i.Delete()
@@ -418,7 +418,7 @@ function! s:oTreeFileNode.ClearBookmarks() dict
     call self.path.CacheDisplayString()
 endfunction
 "FUNCTION: oTreeFileNode.Copy(dest) {{{3
-function! s:oTreeFileNode.Copy(dest) dict
+function! s:oTreeFileNode.Copy(dest)
     call self.path.Copy(a:dest)
     let newPath = s:oPath.New(a:dest)
     let parent = t:NERDTreeRoot.FindNode(newPath.GetParent())
@@ -430,7 +430,7 @@ endfunction
 
 "FUNCTION: oTreeFileNode.Delete {{{3
 "Removes this node from the tree and calls the Delete method for its path obj
-function! s:oTreeFileNode.Delete() dict
+function! s:oTreeFileNode.Delete()
     call self.path.Delete()
     call self.parent.RemoveChild(self)
 endfunction
@@ -445,7 +445,7 @@ endfunction
 "
 "Args:
 "treenode: the other treenode to compare to
-function! s:oTreeFileNode.Equals(treenode) dict
+function! s:oTreeFileNode.Equals(treenode)
     return self.path.Str(1) == a:treenode.path.Str(1)
 endfunction
 
@@ -455,7 +455,7 @@ endfunction
 "
 "Args:
 "path: the path object to compare against
-function! s:oTreeFileNode.FindNode(path) dict
+function! s:oTreeFileNode.FindNode(path)
     if a:path.Equals(self.path)
         return self
     endif
@@ -471,7 +471,7 @@ endfunction
 "
 "Return:
 "a treenode object or {} if no appropriate sibling could be found
-function! s:oTreeFileNode.FindOpenDirSiblingWithChildren(direction) dict
+function! s:oTreeFileNode.FindOpenDirSiblingWithChildren(direction)
     "if we have no parent then we can have no siblings
     if self.parent != {}
         let nextSibling = self.FindSibling(a:direction)
@@ -495,7 +495,7 @@ endfunction
 "
 "Return:
 "a treenode object or {} if no sibling could be found
-function! s:oTreeFileNode.FindSibling(direction) dict
+function! s:oTreeFileNode.FindSibling(direction)
     "if we have no parent then we can have no siblings
     if self.parent != {}
 
@@ -528,14 +528,14 @@ endfunction
 "FUNCTION: oTreeFileNode.IsVisible() {{{3
 "returns 1 if this node should be visible according to the tree filters and
 "hidden file filters (and their on/off status)
-function! s:oTreeFileNode.IsVisible() dict
+function! s:oTreeFileNode.IsVisible()
     return !self.path.Ignore()
 endfunction
 
 
 "FUNCTION: oTreeFileNode.IsRoot() {{{3
 "returns 1 if this node is t:NERDTreeRoot
-function! s:oTreeFileNode.IsRoot() dict
+function! s:oTreeFileNode.IsRoot()
     if !s:TreeExistsForTab()
         throw "NERDTree.TreeFileNode.IsRoot exception: No tree exists for the current tab"
     endif
@@ -544,7 +544,7 @@ endfunction
 
 "FUNCTION: oTreeFileNode.MakeRoot() {{{3
 "Make this node the root of the tree
-function! s:oTreeFileNode.MakeRoot() dict
+function! s:oTreeFileNode.MakeRoot()
     if self.path.isDirectory
         let t:NERDTreeRoot = self
     else
@@ -564,7 +564,7 @@ endfunction
 "
 "Args:
 "path: a path object representing the full filesystem path to the file/dir that the node represents
-function! s:oTreeFileNode.New(path) dict
+function! s:oTreeFileNode.New(path)
     if a:path.isDirectory
         return s:oTreeDirNode.New(a:path)
     else
@@ -577,12 +577,12 @@ function! s:oTreeFileNode.New(path) dict
 endfunction
 
 "FUNCTION: oTreeFileNode.Refresh {{{3
-function! s:oTreeFileNode.Refresh() dict
+function! s:oTreeFileNode.Refresh()
     call self.path.Refresh()
 endfunction
 "FUNCTION: oTreeFileNode.Rename {{{3
 "Calls the rename method for this nodes path obj
-function! s:oTreeFileNode.Rename(newName) dict
+function! s:oTreeFileNode.Rename(newName)
     let newName = substitute(a:newName, '\(\\\|\/\)$', '', '')
     call self.path.Rename(newName)
     call self.parent.RemoveChild(self)
@@ -602,7 +602,7 @@ endfunction
 "
 "Return:
 "a string that can be used in the view to represent this node
-function! s:oTreeFileNode.StrDisplay() dict
+function! s:oTreeFileNode.StrDisplay()
     return self.path.StrDisplay()
 endfunction
 
@@ -618,7 +618,7 @@ let s:oTreeDirNode = copy(s:oTreeFileNode)
 "Args:
 "-treenode: the node to add
 "-inOrder: 1 if the new node should be inserted in sorted order
-function! s:oTreeDirNode.AddChild(treenode, inOrder) dict
+function! s:oTreeDirNode.AddChild(treenode, inOrder)
     call add(self.children, a:treenode)
     let a:treenode.parent = self
 
@@ -629,13 +629,13 @@ endfunction
 
 "FUNCTION: oTreeDirNode.Close {{{3
 "Closes this directory
-function! s:oTreeDirNode.Close() dict
+function! s:oTreeDirNode.Close()
     let self.isOpen = 0
 endfunction
 
 "FUNCTION: oTreeDirNode.CloseChildren {{{3
 "Closes all the child dir nodes of this node
-function! s:oTreeDirNode.CloseChildren() dict
+function! s:oTreeDirNode.CloseChildren()
     for i in self.children
         if i.path.isDirectory
             call i.Close()
@@ -654,7 +654,7 @@ endfunction
 "
 "Returns:
 "the newly created node
-function! s:oTreeDirNode.CreateChild(path, inOrder) dict
+function! s:oTreeDirNode.CreateChild(path, inOrder)
     let newTreeNode = s:oTreeFileNode.New(a:path)
     call self.AddChild(newTreeNode, a:inOrder)
     return newTreeNode
@@ -666,7 +666,7 @@ endfunction
 "Args:
 "path: a path object
 unlet s:oTreeDirNode.FindNode
-function! s:oTreeDirNode.FindNode(path) dict
+function! s:oTreeDirNode.FindNode(path)
     if a:path.Equals(self.path)
         return self
     endif
@@ -687,7 +687,7 @@ endfunction
 
 "FUNCTION: oTreeDirNode.GetChildDirs() {{{3
 "Returns the number of children this node has
-function! s:oTreeDirNode.GetChildCount() dict
+function! s:oTreeDirNode.GetChildCount()
     return len(self.children)
 endfunction
 
@@ -696,7 +696,7 @@ endfunction
 "
 "Return:
 "an array of directory treenodes
-function! s:oTreeDirNode.GetChildDirs() dict
+function! s:oTreeDirNode.GetChildDirs()
     let toReturn = []
     for i in self.children
         if i.path.isDirectory
@@ -711,7 +711,7 @@ endfunction
 "
 "Return:
 "an array of file treenodes
-function! s:oTreeDirNode.GetChildFiles() dict
+function! s:oTreeDirNode.GetChildFiles()
     let toReturn = []
     for i in self.children
         if i.path.isDirectory == 0
@@ -729,7 +729,7 @@ endfunction
 "
 "Args:
 "path: a path object
-function! s:oTreeDirNode.GetChild(path) dict
+function! s:oTreeDirNode.GetChild(path)
     if stridx(a:path.Str(1), self.path.Str(1), 0) == -1
         return {}
     endif
@@ -749,7 +749,7 @@ endfunction
 "indx: the index to get the child from
 "visible: 1 if only the visible children array should be used, 0 if all the
 "children should be searched.
-function! s:oTreeDirNode.GetChildByIndex(indx, visible) dict
+function! s:oTreeDirNode.GetChildByIndex(indx, visible)
     let array_to_search = a:visible? self.GetVisibleChildren() : self.children
     if a:indx > len(array_to_search)
         throw "NERDTree.TreeDirNode.InvalidArguments exception. Index is out of bounds."
@@ -765,7 +765,7 @@ endfunction
 "
 "Args:
 "path: a path object
-function! s:oTreeDirNode.GetChildIndex(path) dict
+function! s:oTreeDirNode.GetChildIndex(path)
     if stridx(a:path.Str(1), self.path.Str(1), 0) == -1
         return -1
     endif
@@ -790,7 +790,7 @@ endfunction
 
 "FUNCTION: oTreeDirNode.GetVisibleChildCount() {{{3
 "Returns the number of visible children this node has
-function! s:oTreeDirNode.GetVisibleChildCount() dict
+function! s:oTreeDirNode.GetVisibleChildCount()
     return len(self.GetVisibleChildren())
 endfunction
 
@@ -799,7 +799,7 @@ endfunction
 "
 "Return:
 "an array of treenodes
-function! s:oTreeDirNode.GetVisibleChildren() dict
+function! s:oTreeDirNode.GetVisibleChildren()
     let toReturn = []
     for i in self.children
         if i.path.Ignore() == 0
@@ -823,7 +823,7 @@ endfunction
 "large directories
 "
 "Return: the number of child nodes read
-function! s:oTreeDirNode.InitChildren(silent) dict
+function! s:oTreeDirNode.InitChildren(silent)
     "remove all the current child nodes
     let self.children = []
 
@@ -871,7 +871,7 @@ endfunction
 "Args:
 "path: a path object representing the full filesystem path to the file/dir that the node represents
 unlet s:oTreeDirNode.New
-function! s:oTreeDirNode.New(path) dict
+function! s:oTreeDirNode.New(path)
     if a:path.isDirectory != 1
         throw "NERDTree.TreeDirNode.InvalidArguments exception. A TreeDirNode object must be instantiated with a directory Path object."
     endif
@@ -890,7 +890,7 @@ endfunction
 "Reads in all this nodes children
 "
 "Return: the number of child nodes read
-function! s:oTreeDirNode.Open() dict
+function! s:oTreeDirNode.Open()
     let self.isOpen = 1
     if self.children == []
         return self.InitChildren(0)
@@ -905,7 +905,7 @@ endfunction
 "
 "This method is actually a wrapper for the OpenRecursively2 method which does
 "the work.
-function! s:oTreeDirNode.OpenRecursively() dict
+function! s:oTreeDirNode.OpenRecursively()
     call self.OpenRecursively2(1)
 endfunction
 
@@ -918,7 +918,7 @@ endfunction
 "
 "Args:
 "forceOpen: 1 if this node should be opened regardless of file filters
-function! s:oTreeDirNode.OpenRecursively2(forceOpen) dict
+function! s:oTreeDirNode.OpenRecursively2(forceOpen)
     if self.path.Ignore() == 0 || a:forceOpen
         let self.isOpen = 1
         if self.children == []
@@ -935,7 +935,7 @@ endfunction
 
 "FUNCTION: oTreeDirNode.Refresh {{{3
 unlet s:oTreeDirNode.Refresh
-function! s:oTreeDirNode.Refresh() dict
+function! s:oTreeDirNode.Refresh()
     call self.path.Refresh()
 
     "if this node was ever opened, refresh its children
@@ -989,7 +989,7 @@ endfunction
 "treenode: the node to remove
 "
 "Throws a NERDTree.TreeDirNode exception if the given treenode is not found
-function! s:oTreeDirNode.RemoveChild(treenode) dict
+function! s:oTreeDirNode.RemoveChild(treenode)
     for i in range(0, self.GetChildCount()-1)
         if self.children[i].Equals(a:treenode)
             call remove(self.children, i)
@@ -1005,14 +1005,14 @@ endfunction
 "Sorts the children of this node according to alphabetical order and the
 "directory priority.
 "
-function! s:oTreeDirNode.SortChildren() dict
+function! s:oTreeDirNode.SortChildren()
     let CompareFunc = function("s:CompareNodes")
     call sort(self.children, CompareFunc)
 endfunction
 
 "FUNCTION: oTreeDirNode.ToggleOpen {{{3
 "Opens this directory if it is closed and vice versa
-function! s:oTreeDirNode.ToggleOpen() dict
+function! s:oTreeDirNode.ToggleOpen()
     if self.isOpen == 1
         call self.Close()
     else
@@ -1027,7 +1027,7 @@ endfunction
 "
 "Arg:
 "newNode: the node to graft into the tree
-function! s:oTreeDirNode.TransplantChild(newNode) dict
+function! s:oTreeDirNode.TransplantChild(newNode)
     for i in range(0, self.GetChildCount()-1)
         if self.children[i].Equals(a:newNode)
             let self.children[i] = a:newNode
@@ -1041,14 +1041,14 @@ endfunction
 "============================================================
 let s:oPath = {}
 "FUNCTION: oPath.BookmarkNames() {{{3
-function! s:oPath.BookmarkNames() dict
+function! s:oPath.BookmarkNames()
     if !exists("self.bookmarkNames")
         call self.CacheDisplayString()
     endif
     return self.bookmarkNames
 endfunction
 "FUNCTION: oPath.CacheDisplayString() {{{3
-function! s:oPath.CacheDisplayString() dict
+function! s:oPath.CacheDisplayString()
     let self.cachedDisplayString = self.GetLastPathComponent(1)
 
     if self.isExecutable
@@ -1074,7 +1074,7 @@ function! s:oPath.CacheDisplayString() dict
     endif
 endfunction
 "FUNCTION: oPath.ChangeToDir() {{{3
-function! s:oPath.ChangeToDir() dict
+function! s:oPath.ChangeToDir()
     let dir = self.StrForCd()
     if self.isDirectory == 0
         let dir = self.GetPathTrunk().StrForCd()
@@ -1089,7 +1089,7 @@ function! s:oPath.ChangeToDir() dict
 endfunction
 
 "FUNCTION: oPath.ChopTrailingSlash(str) {{{3
-function! s:oPath.ChopTrailingSlash(str) dict
+function! s:oPath.ChopTrailingSlash(str)
     if a:str =~ '\/$'
         return substitute(a:str, "\/$", "", "")
     else
@@ -1107,7 +1107,7 @@ endfunction
 "
 "Return:
 "1, -1 or 0
-function! s:oPath.CompareTo(path) dict
+function! s:oPath.CompareTo(path)
     let thisPath = self.GetLastPathComponent(1)
     let thatPath = a:path.GetLastPathComponent(1)
 
@@ -1147,7 +1147,7 @@ endfunction
 "
 "Args:
 "fullpath: the full filesystem path to the file/dir to create
-function! s:oPath.Create(fullpath) dict
+function! s:oPath.Create(fullpath)
     "bail if the a:fullpath already exists
     if isdirectory(a:fullpath) || filereadable(a:fullpath)
         throw "NERDTree.Path.Exists Exception: Directory Exists: '" . a:fullpath . "'"
@@ -1179,7 +1179,7 @@ endfunction
 "
 "Args:
 "dest: the location to copy this dir/file to
-function! s:oPath.Copy(dest) dict
+function! s:oPath.Copy(dest)
     if !s:oPath.CopyingSupported()
         throw "NERDTree.Path.CopyingNotSupported Exception: Copying is not supported on this OS"
     endif
@@ -1196,7 +1196,7 @@ endfunction
 "FUNCTION: oPath.CopyingSupported() {{{3
 "
 "returns 1 if copying is supported for this OS
-function! s:oPath.CopyingSupported() dict
+function! s:oPath.CopyingSupported()
     return exists('g:NERDTreeCopyCmd')
 endfunction
 
@@ -1208,7 +1208,7 @@ endfunction
 "
 "Args:
 "dest: the location this path will be copied to
-function! s:oPath.CopyingWillOverwrite(dest) dict
+function! s:oPath.CopyingWillOverwrite(dest)
     if filereadable(a:dest)
         return 1
     endif
@@ -1227,7 +1227,7 @@ endfunction
 "Deletion of directories is not supported
 "
 "Throws NERDTree.Path.Deletion exceptions
-function! s:oPath.Delete() dict
+function! s:oPath.Delete()
     if self.isDirectory
 
         let cmd = ""
@@ -1259,7 +1259,7 @@ endfunction
 "FUNCTION: oPath.ExtractDriveLetter(fullpath) {{{3
 "
 "If running windows, cache the drive letter for this path
-function! s:oPath.ExtractDriveLetter(fullpath) dict
+function! s:oPath.ExtractDriveLetter(fullpath)
     if s:running_windows
         let self.drive = substitute(a:fullpath, '\(^[a-zA-Z]:\).*', '\1', '')
     else
@@ -1269,7 +1269,7 @@ function! s:oPath.ExtractDriveLetter(fullpath) dict
 endfunction
 "FUNCTION: oPath.Exists() {{{3
 "return 1 if this path points to a location that is readable or is a directory
-function! s:oPath.Exists() dict
+function! s:oPath.Exists()
     return filereadable(self.StrForOS(0)) || isdirectory(self.StrForOS(0))
 endfunction
 "FUNCTION: oPath.GetDir() {{{3
@@ -1278,7 +1278,7 @@ endfunction
 "
 "Return:
 "a Path object
-function! s:oPath.GetDir() dict
+function! s:oPath.GetDir()
     if self.isDirectory
         return self
     else
@@ -1293,7 +1293,7 @@ endfunction
 "
 "Return:
 "a new Path object
-function! s:oPath.GetParent() dict
+function! s:oPath.GetParent()
     let path = '/'. join(self.pathSegments[0:-2], '/')
     return s:oPath.New(path)
 endfunction
@@ -1304,7 +1304,7 @@ endfunction
 "Args:
 "dirSlash: if 1 then a trailing slash will be added to the returned value for
 "directory nodes.
-function! s:oPath.GetLastPathComponent(dirSlash) dict
+function! s:oPath.GetLastPathComponent(dirSlash)
     if empty(self.pathSegments)
         return ''
     endif
@@ -1317,13 +1317,13 @@ endfunction
 
 "FUNCTION: oPath.GetPathTrunk() {{{3
 "Gets the path without the last segment on the end.
-function! s:oPath.GetPathTrunk() dict
+function! s:oPath.GetPathTrunk()
     return s:oPath.New(self.StrTrunk())
 endfunction
 
 "FUNCTION: oPath.GetSortOrderIndex() {{{3
 "returns the index of the pattern in g:NERDTreeSortOrder that this path matches
-function! s:oPath.GetSortOrderIndex() dict
+function! s:oPath.GetSortOrderIndex()
     let i = 0
     while i < len(g:NERDTreeSortOrder)
         if  self.GetLastPathComponent(1) =~ g:NERDTreeSortOrder[i]
@@ -1336,7 +1336,7 @@ endfunction
 
 "FUNCTION: oPath.Ignore() {{{3
 "returns true if this path should be ignored
-function! s:oPath.Ignore() dict
+function! s:oPath.Ignore()
     let lastPathComponent = self.GetLastPathComponent(0)
 
     "filter out the user specified paths to ignore
@@ -1361,7 +1361,7 @@ function! s:oPath.Ignore() dict
 endfunction
 
 "FUNCTION: oPath.JoinPathStrings(...) {{{3
-function! s:oPath.JoinPathStrings(...) dict
+function! s:oPath.JoinPathStrings(...)
     let components = []
     for i in a:000
         let components = extend(components, split(i, '/'))
@@ -1376,7 +1376,7 @@ endfunction
 "
 "Args:
 "path: the other path obj to compare this with
-function! s:oPath.Equals(path) dict
+function! s:oPath.Equals(path)
     return self.Str(0) == a:path.Str(0)
 endfunction
 
@@ -1384,7 +1384,7 @@ endfunction
 "
 "The Constructor for the Path object
 "Throws NERDTree.Path.InvalidArguments exception.
-function! s:oPath.New(fullpath) dict
+function! s:oPath.New(fullpath)
     let newPath = copy(self)
 
     call newPath.ReadInfoFromDisk(a:fullpath)
@@ -1398,7 +1398,7 @@ endfunction
 "
 "
 "Throws NERDTree.Path.InvalidArguments exception.
-function! s:oPath.ReadInfoFromDisk(fullpath) dict
+function! s:oPath.ReadInfoFromDisk(fullpath)
     call self.ExtractDriveLetter(a:fullpath)
 
     let fullpath = s:oPath.WinToUnixPath(a:fullpath)
@@ -1450,7 +1450,7 @@ function! s:oPath.ReadInfoFromDisk(fullpath) dict
 endfunction
 
 "FUNCTION: oPath.Refresh() {{{3
-function! s:oPath.Refresh() dict
+function! s:oPath.Refresh()
     call self.ReadInfoFromDisk(self.StrForOS(0))
     call self.CacheDisplayString()
 endfunction
@@ -1458,7 +1458,7 @@ endfunction
 "FUNCTION: oPath.Rename() {{{3
 "
 "Renames this node on the filesystem
-function! s:oPath.Rename(newPath) dict
+function! s:oPath.Rename(newPath)
     if a:newPath == ''
         throw "NERDTree.Path.InvalidArguments exception. Invalid newPath for renaming = ". a:newPath
     endif
@@ -1482,7 +1482,7 @@ endfunction
 "
 "Args:
 "esc: if 1 then all the tricky chars in the returned string will be escaped
-function! s:oPath.Str(esc) dict
+function! s:oPath.Str(esc)
     let toReturn = '/' . join(self.pathSegments, '/')
     if self.isDirectory && toReturn != '/'
         let toReturn  = toReturn . '/'
@@ -1500,7 +1500,7 @@ endfunction
 "
 "Return:
 "string
-function! s:oPath.StrAbs() dict
+function! s:oPath.StrAbs()
     return resolve(self.Str(1))
 endfunction
 
@@ -1510,7 +1510,7 @@ endfunction
 "
 "Return:
 "a string that can be used in the view to represent this path
-function! s:oPath.StrForCd() dict
+function! s:oPath.StrForCd()
     if s:running_windows
         return self.StrForOS(0)
     else
@@ -1524,7 +1524,7 @@ endfunction
 "
 "Return:
 "a string that can be used in the view to represent this path
-function! s:oPath.StrDisplay() dict
+function! s:oPath.StrDisplay()
     if self.cachedDisplayString == ""
         call self.CacheDisplayString()
     endif
@@ -1536,7 +1536,7 @@ endfunction
 "
 "Return: the string for this path that is suitable to be used with the :edit
 "command
-function! s:oPath.StrForEditCmd() dict
+function! s:oPath.StrForEditCmd()
     if s:running_windows
         return self.StrForOS(0)
     else
@@ -1545,7 +1545,7 @@ function! s:oPath.StrForEditCmd() dict
 
 endfunction
 "FUNCTION: oPath.StrForGlob() {{{3
-function! s:oPath.StrForGlob() dict
+function! s:oPath.StrForGlob()
     let lead = s:os_slash
 
     "if we are running windows then slap a drive letter on the front
@@ -1569,7 +1569,7 @@ endfunction
 "Args:
 "esc: if 1 then all the tricky chars in the returned string will be
 " escaped. If we are running windows then the str is double quoted instead.
-function! s:oPath.StrForOS(esc) dict
+function! s:oPath.StrForOS(esc)
     let lead = s:os_slash
 
     "if we are running windows then slap a drive letter on the front
@@ -1591,7 +1591,7 @@ endfunction
 
 "FUNCTION: oPath.StrTrunk() {{{3
 "Gets the path without the last segment on the end.
-function! s:oPath.StrTrunk() dict
+function! s:oPath.StrTrunk()
     return self.drive . '/' . join(self.pathSegments[0:-2], '/')
 endfunction
 
@@ -1602,7 +1602,7 @@ endfunction
 "
 "Args:
 "pathstr: the windows path to convert
-function! s:oPath.WinToUnixPath(pathstr) dict
+function! s:oPath.WinToUnixPath(pathstr)
     if !s:running_windows
         return a:pathstr
     endif
