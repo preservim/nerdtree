@@ -364,7 +364,7 @@ function! s:Bookmark.toRoot()
         call s:PutCursorOnNode(targetNode, 0, 0)
     endif
 endfunction
-" FUNCTION: Bookmark.toRoot(name) {{{3
+" FUNCTION: Bookmark.ToRoot(name) {{{3
 " Make the node for this bookmark the new tree root
 function! s:Bookmark.ToRoot(name)
     let bookmark = s:Bookmark.BookmarkFor(a:name)
