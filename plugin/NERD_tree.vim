@@ -1649,15 +1649,6 @@ endfunction
 
 " SECTION: General Functions {{{1
 "============================================================
-"FUNCTION: s:Abs(num){{{2
-"returns the absolute value of the input
-function! s:Abs(num)
-    if a:num > 0
-        return a:num
-    else
-        return 0 - a:num
-    end
-endfunction
 "FUNCTION: s:BufInWindows(bnum){{{2
 "[[STOLEN FROM VTREEEXPLORER.VIM]]
 "Determine the number of windows open to this buffer number.
