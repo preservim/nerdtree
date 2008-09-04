@@ -917,7 +917,7 @@ endfunction
 "This method is actually a wrapper for the OpenRecursively2 method which does
 "the work.
 function! s:TreeDirNode.openRecursively()
-    call self.openRecursively2(1)
+    call self._openRecursively2(1)
 endfunction
 
 "FUNCTION: TreeDirNode._openRecursively2() {{{3
@@ -936,7 +936,7 @@ function! s:TreeDirNode._openRecursively2(forceOpen)
 
         for i in self.children
             if i.path.isDirectory == 1
-                call i.openRecursively2(0)
+                call i._openRecursively2(0)
             endif
         endfor
     endif
