@@ -899,9 +899,12 @@ fridge for later ;)
 ==============================================================================
 7. Changelog                                               *NERDTreeChangelog*
 
-2.x.x
+2.14.0
     - fix a bug where the <c-w>o mapping  would cause the tree window to be
       incorrectly sized when reopened.
+    - add keymapping to delete bookmarks from the bookmarks table, see
+      :help NERDTree-D
+    - lots of refactoring
 2.13.0
     - make NERDTreeChDir option default to 0 (i.e. never change vims current
       working dir by default)
