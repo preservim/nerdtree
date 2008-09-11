@@ -1050,10 +1050,10 @@ endfunction
 let s:Path = {}
 "FUNCTION: Path.bookmarkNames() {{{3
 function! s:Path.bookmarkNames()
-    if !exists("self.bookmarkNames")
+    if !exists("self._bookmarkNames")
         call self.cacheDisplayString()
     endif
-    return self.bookmarkNames
+    return self._bookmarkNames
 endfunction
 "FUNCTION: Path.cacheDisplayString() {{{3
 function! s:Path.cacheDisplayString()
@@ -1063,14 +1063,14 @@ function! s:Path.cacheDisplayString()
         let self.cachedDisplayString = self.cachedDisplayString . '*'
     endif
 
-    let self.bookmarkNames = []
+    let self._bookmarkNames = []
     for i in s:Bookmark.Bookmarks()
         if i.path.equals(self)
-            call add(self.bookmarkNames, i.name)
+            call add(self._bookmarkNames, i.name)
         endif
     endfor
-    if !empty(self.bookmarkNames)
-        let self.cachedDisplayString .= ' {' . join(self.bookmarkNames) . '}'
+    if !empty(self._bookmarkNames)
+        let self.cachedDisplayString .= ' {' . join(self._bookmarkNames) . '}'
     endif
 
     if self.isSymLink
