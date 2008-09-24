@@ -824,7 +824,7 @@ endfunction
 "FUNCTION: TreeDirNode.hasVisibleChildren() {{{3
 "returns 1 if this node has any childre, 0 otherwise..
 function! s:TreeDirNode.hasVisibleChildren()
-    return self.getChildCount() != 0
+    return self.getVisibleChildCount() != 0
 endfunction
 
 "FUNCTION: TreeDirNode._initChildren() {{{3
