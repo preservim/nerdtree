@@ -355,7 +355,7 @@ endfunction
 function! s:Bookmark.toRoot()
     if self.validate()
         try
-            let targetNode = s:Bookmark.GetNodeForName(self.name, 1)
+            let targetNode = self.getNode(1)
         catch /NERDTree.BookmarkedNodeNotFound/
             let targetNode = s:TreeFileNode.New(s:Bookmark.BookmarkFor(self.name).path)
         endtry
