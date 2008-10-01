@@ -22,6 +22,11 @@ if v:version < 700
     finish
 endif
 let loaded_nerd_tree = 1
+
+"for line continuation - i.e dont want C in &cpo
+let s:old_cpo = &cpo
+set cpo&vim
+
 "Function: s:initVariable() function {{{2
 "This function is used to initialise a given variable to a given value. The
 "variable is only initialised if it does not exist prior
@@ -1828,9 +1833,6 @@ function! s:createTreeWin()
     endif
 
 
-    " for line continuation
-    let cpo_save1 = &cpo
-    set cpo&vim
 
     call s:bindMappings()
     setfiletype nerdtree
@@ -3526,5 +3528,9 @@ function! s:upDir(keepState)
         call s:putCursorOnNode(oldRoot, 0, 0)
     endif
 endfunction
+
+
+"reset &cpo back to users setting
+let &cpo = s:old_cpo
 
 " vim: set sw=4 sts=4 et fdm=marker:
