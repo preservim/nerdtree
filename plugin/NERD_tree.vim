@@ -10,7 +10,7 @@
 "              See http://sam.zoy.org/wtfpl/COPYING for more details.
 "
 " ============================================================================
-let s:NERD_tree_version = '2.14.0'
+let s:NERD_tree_version = '2.14.1'
 
 " SECTION: Script init stuff {{{1
 "============================================================
