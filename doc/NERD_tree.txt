@@ -901,7 +901,7 @@ fridge for later ;)
 ==============================================================================
 7. Changelog                                               *NERDTreeChangelog*
 
-2.xx.xx
+2.14.1
     - dont clobber &cpo. Thanks to godlygeek for the bug report.
 
 2.14.0
