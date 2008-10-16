@@ -901,6 +901,10 @@ fridge for later ;)
 ==============================================================================
 7. Changelog                                               *NERDTreeChangelog*
 
+2.14.2
+    - compatibility bugfix for older version of vim, thanks to knekk for
+      helping me track it down
+
 2.14.1
     - dont clobber &cpo. Thanks to godlygeek for the bug report.
 
@@ -1226,6 +1230,9 @@ Thanks to Charlton Wang for reporting bugs with the 'o' mapping and with
 handling named pipes.
 
 Chur to godlygeek for reporting a bug where &cpo was getting clobbered.
+
+Cheers to knekk for helping me track down a bug when overwriting dictionary
+keys that only occurred in some versions of vim.
 
 ==============================================================================
 9. License                                                   *NERDTreeLicense*

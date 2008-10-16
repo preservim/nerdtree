@@ -713,6 +713,7 @@ endfunction
 "
 "Args:
 "path: a path object
+unlet s:TreeDirNode.findNode
 function! s:TreeDirNode.findNode(path)
     if a:path.equals(self.path)
         return self
@@ -731,7 +732,6 @@ function! s:TreeDirNode.findNode(path)
     endif
     return {}
 endfunction
-
 "FUNCTION: TreeDirNode.getChildCount() {{{3
 "Returns the number of children this node has
 function! s:TreeDirNode.getChildCount()
@@ -887,6 +887,7 @@ endfunction
 "
 "Args:
 "path: a path object representing the full filesystem path to the file/dir that the node represents
+unlet s:TreeDirNode.New
 function! s:TreeDirNode.New(path)
     if a:path.isDirectory != 1
         throw "NERDTree.TreeDirNode.InvalidArguments exception. A TreeDirNode object must be instantiated with a directory Path object."
@@ -948,6 +949,7 @@ function! s:TreeDirNode._openRecursively2(forceOpen)
 endfunction
 
 "FUNCTION: TreeDirNode.refresh() {{{3
+unlet s:TreeDirNode.refresh
 function! s:TreeDirNode.refresh()
     call self.path.refresh()
 
