@@ -132,14 +132,13 @@ let s:escape_chars =  " \\`\|\"#%&,?()\*^<>"
 let s:NERDTreeWinName = '_NERD_tree_'
 
 let s:tree_wid = 2
-let s:tree_markup_reg = '[ \-+~`|]'
+let s:tree_markup_reg = '^[ `|]*[\-+~]'
 let s:tree_up_dir_line = '.. (up a dir)'
 
 let s:os_slash = '/'
 if s:running_windows
     let s:os_slash = '\'
 endif
-
 
 " SECTION: Commands {{{1
 "============================================================
@@ -2727,7 +2726,7 @@ endfunction
 function! s:stripMarkupFromLine(line, removeLeadingSpaces)
     let line = a:line
     "remove the tree parts and the leading space
-    let line = substitute (line,"^" . s:tree_markup_reg . "*","","")
+    let line = substitute (line, s:tree_markup_reg,"","")
 
     "strip off any read only flag
     let line = substitute (line, ' \[RO\]', "","")
@@ -2906,8 +2905,7 @@ function! s:checkForActivate()
         "if they clicked a dir, check if they clicked on the + or ~ sign
         "beside it
         if currentNode.path.isDirectory
-            let reg = '^' . s:tree_markup_reg .'*[~+]$'
-            if startToCur =~ reg
+            if startToCur =~ s:tree_markup_reg . '$' && char =~ '[+~]'
                 call s:activateNode(0)
                 return
             endif
