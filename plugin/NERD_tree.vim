@@ -133,7 +133,6 @@ let s:NERDTreeWinName = '_NERD_tree_'
 
 let s:tree_wid = 2
 let s:tree_markup_reg = '[ \-+~`|]'
-let s:tree_markup_reg_neg = '[^ \-+~`|]'
 let s:tree_up_dir_line = '.. (up a dir)'
 
 let s:os_slash = '/'
@@ -2063,7 +2062,7 @@ function! s:findNodeLineNumber(treenode)
 
         let curLine = getline(lnum)
 
-        let indent = match(curLine,s:tree_markup_reg_neg) / s:tree_wid
+        let indent = s:indentLevelFor(curLine)
         if indent == curPathComponent
             let curLine = s:stripMarkupFromLine(curLine, 1)
 
@@ -2121,9 +2120,7 @@ function! s:getPath(ln)
         return t:NERDTreeRoot.path.getParent()
     endif
 
-    "get the indent level for the file (i.e. how deep in the tree it is)
-    let indent = match(line, s:tree_markup_reg_neg) / s:tree_wid
-
+    let indent = s:indentLevelFor(line)
 
     "remove the tree parts and the leading space
     let curFile = s:stripMarkupFromLine(line, 0)
@@ -2148,7 +2145,7 @@ function! s:getPath(ln)
             break
         endif
         if curLineStripped =~ '/$'
-            let lpindent = match(curLine,s:tree_markup_reg_neg) / s:tree_wid
+            let lpindent = s:indentLevelFor(curLine)
             if lpindent < indent
                 let indent = indent - 1
 
@@ -2211,12 +2208,14 @@ function! s:getTreeWinNum()
         return -1
     endif
 endfunction
-
+"FUNCTION: s:indentLevelFor(line) {{{2
+function! s:indentLevelFor(line)
+    return match(a:line, '[^ \-+~`|]') / s:tree_wid
+endfunction
 "FUNCTION: s:isTreeOpen() {{{2
 function! s:isTreeOpen()
     return s:getTreeWinNum() != -1
 endfunction
-
 " FUNCTION: s:jumpToChild(direction) {{{2
 " Args:
 " direction: 0 if going to first child, 1 if going to last
