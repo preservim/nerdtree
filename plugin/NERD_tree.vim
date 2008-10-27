@@ -2092,6 +2092,21 @@ function! s:findRootNodeLineNumber()
     return rootLine
 endfunction
 
+"FUNCTION: s:firstNormalWindow(){{{2
+"find the window number of the first normal window
+function! s:firstNormalWindow()
+    let i = 1
+    while i <= winnr("$")
+        let bnum = winbufnr(i)
+        if bnum != -1 && getbufvar(bnum, '&buftype') == ''
+                    \ && !getwinvar(i, '&previewwindow')
+            return i
+        endif
+
+        let i += 1
+    endwhile
+    return -1
+endfunction
 "FUNCTION: s:getPath(ln) {{{2
 "Gets the full path to the node that is rendered on the given line number
 "
@@ -2284,18 +2299,24 @@ function! s:openFileNode(treenode)
     if winnr != -1
         exec winnr . "wincmd w"
 
-    elseif s:shouldSplitToOpen(winnr("#"))
-        call s:openFileNodeSplit(a:treenode)
     else
-        try
-            wincmd p
-            exec ("edit " . a:treenode.path.strForEditCmd())
-        catch /^Vim\%((\a\+)\)\=:E37/
-            call s:putCursorInTreeWin()
-            call s:echo("Cannot open file, it is already open and modified")
-        catch /^Vim\%((\a\+)\)\=:/
-            echo v:exception
-        endtry
+        if s:windowIsUsable(winnr("#")) && s:firstNormalWindow() == -1
+            call s:openFileNodeSplit(a:treenode)
+        else
+            try
+                if s:windowIsUsable(winnr("#"))
+                    exec s:firstNormalWindow() . "wincmd w"
+                else
+                    wincmd p
+                endif
+                exec ("edit " . a:treenode.path.strForEditCmd())
+            catch /^Vim\%((\a\+)\)\=:E37/
+                call s:putCursorInTreeWin()
+                call s:echo("Cannot open file, it is already open and modified")
+            catch /^Vim\%((\a\+)\)\=:/
+                echo v:exception
+            endtry
+        endif
     endif
 endfunction
 
@@ -2680,37 +2701,6 @@ function! s:setupSyntaxHighlighting()
     hi def link NERDTreeCurrentNode Search
 endfunction
 
-"FUNCTION: s:shouldSplitToOpen() {{{2
-"Returns 1 if opening a file from the tree in the given window requires it to
-"be split
-"
-"Args:
-"winnumber: the number of the window in question
-function! s:shouldSplitToOpen(winnumber)
-    "gotta split if theres only one window (i.e. the NERD tree)
-    if winnr("$") == 1
-        return 1
-    endif
-
-    let oldwinnr = winnr()
-    exec a:winnumber . "wincmd p"
-    let specialWindow = getbufvar("%", '&buftype') != '' || getwinvar('%', '&previewwindow')
-    let modified = &modified
-    exec oldwinnr . "wincmd p"
-
-    "if its a special window e.g. quickfix or another explorer plugin then we
-    "have to split
-    if specialWindow
-        return 1
-    endif
-
-    if &hidden
-        return 0
-    endif
-
-    return modified && s:bufInWindows(winbufnr(a:winnumber)) < 2
-endfunction
-
 " Function: s:shouldSplitVertically()   {{{2
 " Returns 1 if g:NERDTreeWinPos is 'left' or 'right'
 function! s:shouldSplitVertically()
@@ -2774,6 +2764,37 @@ function! s:toggle(dir)
         call s:initNerdTree(a:dir)
     endif
 endfunction
+"FUNCTION: s:windowIsUsable() {{{2
+"Returns 1 if opening a file from the tree in the given window requires it to
+"be split
+"
+"Args:
+"winnumber: the number of the window in question
+function! s:windowIsUsable(winnumber)
+    "gotta split if theres only one window (i.e. the NERD tree)
+    if winnr("$") == 1
+        return 1
+    endif
+
+    let oldwinnr = winnr()
+    exec a:winnumber . "wincmd p"
+    let specialWindow = getbufvar("%", '&buftype') != '' || getwinvar('%', '&previewwindow')
+    let modified = &modified
+    exec oldwinnr . "wincmd p"
+
+    "if its a special window e.g. quickfix or another explorer plugin then we
+    "have to split
+    if specialWindow
+        return 1
+    endif
+
+    if &hidden
+        return 0
+    endif
+
+    return modified && s:bufInWindows(winbufnr(a:winnumber)) < 2
+endfunction
+
 "SECTION: Interface bindings {{{1
 "============================================================
 "FUNCTION: s:activateNode(forceKeepWindowOpen) {{{2
