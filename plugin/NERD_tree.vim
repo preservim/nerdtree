@@ -2603,11 +2603,14 @@ endfunction
 "scroll position
 function! s:saveScreenState()
     let win = winnr()
-    call s:putCursorInTreeWin()
-    let t:NERDTreeOldPos = getpos(".")
-    let t:NERDTreeOldTopLine = line("w0")
-    let t:NERDTreeOldWindowSize = s:shouldSplitVertically() ? winwidth("") : winheight("")
-    exec win . "wincmd w"
+    try
+        call s:putCursorInTreeWin()
+        let t:NERDTreeOldPos = getpos(".")
+        let t:NERDTreeOldTopLine = line("w0")
+        let t:NERDTreeOldWindowSize = s:shouldSplitVertically() ? winwidth("") : winheight("")
+        exec win . "wincmd w"
+    catch /NERDTree.view.InvalidOperation/
+    endtry
 endfunction
 
 "FUNCTION: s:setupSyntaxHighlighting() {{{2
