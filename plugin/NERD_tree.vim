@@ -2230,6 +2230,37 @@ endfunction
 function! s:isTreeOpen()
     return s:getTreeWinNum() != -1
 endfunction
+"FUNCTION: s:isWindowUsable(winnumber) {{{2
+"Returns 1 if opening a file from the tree in the given window requires it to
+"be split
+"
+"Args:
+"winnumber: the number of the window in question
+function! s:isWindowUsable(winnumber)
+    "gotta split if theres only one window (i.e. the NERD tree)
+    if winnr("$") == 1
+        return 0
+    endif
+
+    let oldwinnr = winnr()
+    exec a:winnumber . "wincmd p"
+    let specialWindow = getbufvar("%", '&buftype') != '' || getwinvar('%', '&previewwindow')
+    let modified = &modified
+    exec oldwinnr . "wincmd p"
+
+    "if its a special window e.g. quickfix or another explorer plugin then we
+    "have to split
+    if specialWindow
+        return 0
+    endif
+
+    if &hidden
+        return 1
+    endif
+
+    return !modified || s:bufInWindows(winbufnr(a:winnumber)) >= 2
+endfunction
+
 " FUNCTION: s:jumpToChild(direction) {{{2
 " Args:
 " direction: 0 if going to first child, 1 if going to last
@@ -2300,11 +2331,11 @@ function! s:openFileNode(treenode)
         exec winnr . "wincmd w"
 
     else
-        if s:windowIsUsable(winnr("#")) && s:firstNormalWindow() == -1
+        if !s:isWindowUsable(winnr("#")) && s:firstNormalWindow() == -1
             call s:openFileNodeSplit(a:treenode)
         else
             try
-                if s:windowIsUsable(winnr("#"))
+                if !s:isWindowUsable(winnr("#"))
                     exec s:firstNormalWindow() . "wincmd w"
                 else
                     wincmd p
@@ -2767,37 +2798,6 @@ function! s:toggle(dir)
         call s:initNerdTree(a:dir)
     endif
 endfunction
-"FUNCTION: s:windowIsUsable() {{{2
-"Returns 1 if opening a file from the tree in the given window requires it to
-"be split
-"
-"Args:
-"winnumber: the number of the window in question
-function! s:windowIsUsable(winnumber)
-    "gotta split if theres only one window (i.e. the NERD tree)
-    if winnr("$") == 1
-        return 1
-    endif
-
-    let oldwinnr = winnr()
-    exec a:winnumber . "wincmd p"
-    let specialWindow = getbufvar("%", '&buftype') != '' || getwinvar('%', '&previewwindow')
-    let modified = &modified
-    exec oldwinnr . "wincmd p"
-
-    "if its a special window e.g. quickfix or another explorer plugin then we
-    "have to split
-    if specialWindow
-        return 1
-    endif
-
-    if &hidden
-        return 0
-    endif
-
-    return modified && s:bufInWindows(winbufnr(a:winnumber)) < 2
-endfunction
-
 "SECTION: Interface bindings {{{1
 "============================================================
 "FUNCTION: s:activateNode(forceKeepWindowOpen) {{{2
