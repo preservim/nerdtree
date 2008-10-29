@@ -902,8 +902,16 @@ fridge for later ;)
 7. Changelog                                               *NERDTreeChangelog*
 
 2.14.2
-    - compatibility bugfix for older version of vim, thanks to knekk for
-      helping me track it down
+    - when opening a file (with 'o' or double click) dont split the window
+      unless we absolutely have to. This should make the script work better
+      with other explorer plugins. Thanks to Ryan Penn, Simon Peter Nicholls
+      and Michael
+    - fix a bug where directories starting with a '+' char could not be opened.
+      Thanks to Tomasz Chomiuk.
+    - fix a bug where closing vim with :qa with a tree open in another tab
+      would break, thanks to Denis Pokataev.
+    - compatibility bugfix for older versions of vim, thanks to knekk for
+      helping me track it down and to Sean Chou.
 
 2.14.1
     - dont clobber &cpo. Thanks to godlygeek for the bug report.
@@ -1233,6 +1241,18 @@ Chur to godlygeek for reporting a bug where &cpo was getting clobbered.
 
 Cheers to knekk for helping me track down a bug when overwriting dictionary
 keys that only occurred in some versions of vim.
+
+Thanks also to Sean Chou for the bug report about the above bug.
+
+Thanks to Ryan Penn, Simon Peter Nicholls and Michael for pointing out an issue
+where the script was splitting constantly when using the 'o' mapping while
+other explorers were open.
+
+Thanks to Tomasz Chomiuk for the bug report about the script failing when dir
+names began with a +.
+
+Thanks to Denis Pokataev for the bug report about the script failing when
+closing vim with :qa with a tree open in another tab.
 
 ==============================================================================
 9. License                                                   *NERDTreeLicense*
