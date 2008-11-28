@@ -1670,7 +1670,7 @@ function! s:initNerdTree(name)
     else
         let dir = a:name == '' ? getcwd() : a:name
 
-        "hack to get an absolute path is a relative path is given
+        "hack to get an absolute path if a relative path is given
         if dir =~ '^\.'
             let dir = getcwd() . s:os_slash . dir
         endif
