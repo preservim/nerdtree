@@ -1668,8 +1668,9 @@ function! s:initNerdTree(name)
     if s:Bookmark.BookmarkExistsFor(a:name)
         let path = s:Bookmark.BookmarkFor(a:name).path
     else
-        let dir = a:name == '' ? expand('%:p:h') : a:name
+        let dir = a:name == '' ? getcwd() : a:name
         let dir = resolve(dir)
+
         try
             let path = s:Path.New(dir)
         catch /NERDTree.Path.InvalidArguments/
