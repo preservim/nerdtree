@@ -1669,6 +1669,11 @@ function! s:initNerdTree(name)
         let path = s:Bookmark.BookmarkFor(a:name).path
     else
         let dir = a:name == '' ? getcwd() : a:name
+
+        "hack to get an absolute path is a relative path is given
+        if dir =~ '^\.'
+            let dir = getcwd() . s:os_slash . dir
+        endif
         let dir = resolve(dir)
 
         try
