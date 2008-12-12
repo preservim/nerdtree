@@ -901,6 +901,15 @@ fridge for later ;)
 ==============================================================================
 7. Changelog                                               *NERDTreeChangelog*
 
+2.14.3
+    Thanks to tpope for the following:
+    - use relative paths when doing edit commands if possible (useful if you
+      have %f on your statusline for example)
+    - allow relative paths for :NERDTree commands, eg ":NERDTree ../foo"
+    - fix a bug where the script used the directory of the current buffer
+      instead of vims cwd for the :NERDTree command
+    - bugfix for read only node highlighting
+
 2.14.2
     - when opening a file (with 'o' or double click) dont split the window
       unless we absolutely have to. This should make the script work better
@@ -1253,6 +1262,8 @@ names began with a +.
 
 Thanks to Denis Pokataev for the bug report about the script failing when
 closing vim with :qa with a tree open in another tab.
+
+Thanks to tpope for his dope bug reporting.
 
 ==============================================================================
 9. License                                                   *NERDTreeLicense*
