@@ -593,9 +593,10 @@ endfunction
 "FUNCTION: TreeFileNode.isRoot() {{{3
 "returns 1 if this node is b:NERDTreeRoot
 function! s:TreeFileNode.isRoot()
-    if !s:treeExistsForTab()
-        throw "NERDTree.TreeFileNode.IsRoot exception: No tree exists for the current tab"
+    if !s:treeExistsForBuf()
+        throw "NERDTree.NoTreeError: No tree exists for the current buffer"
     endif
+
     return self.equals(b:NERDTreeRoot)
 endfunction
 
@@ -1793,6 +1794,11 @@ function! s:initNerdTreeInPlace(dir)
     endif
 
     call s:renderView()
+endfunction
+" Function: s:treeExistsForBuffer()   {{{2
+" Returns 1 if a nerd tree root exists in the current buffer
+function! s:treeExistsForBuf()
+    return exists("b:NERDTreeRoot")
 endfunction
 " Function: s:treeExistsForTab()   {{{2
 " Returns 1 if a nerd tree root exists in the current tab
