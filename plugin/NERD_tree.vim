@@ -2467,8 +2467,6 @@ endfunction
 "ARGS:
 "treenode: file node to open
 function! s:openNodeSplit(treenode)
-    call s:putCursorInTreeWin()
-
     " Save the user's settings for splitbelow and splitright
     let savesplitbelow=&splitbelow
     let savesplitright=&splitright
