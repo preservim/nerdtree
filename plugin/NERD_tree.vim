@@ -154,6 +154,26 @@ exec "autocmd BufWinLeave *". s:NERDTreeBufName ." call <SID>saveScreenState()"
 "cache bookmarks when vim loads
 autocmd VimEnter * call s:Bookmark.CacheBookmarks(0)
 
+
+augroup NERDTreeNetrwHijack
+    autocmd!
+    autocmd VimEnter * call s:removeNetrw()
+    au BufEnter * call s:checkForBrowse(expand("<amatch>"))
+
+augroup END
+
+function! s:removeNetrw()
+    autocmd! FileExplorer
+endfunction
+
+function! s:checkForBrowse(dir)
+    if !exists("b:NERDTreeProcessed") && a:dir != '' && isdirectory(a:dir)
+        let b:NERDTreeProcessed = 1
+        call s:initNerdTreeInPlace(a:dir)
+    endif
+endfunction
+
+
 "SECTION: Classes {{{1
 "============================================================
 "CLASS: Bookmark {{{2
@@ -1720,10 +1740,60 @@ function! s:initNerdTree(name)
     let b:NERDTreeShowBookmarks = g:NERDTreeShowBookmarks
     let b:NERDTreeRoot = newRoot
 
+    let b:NERDTreeType = "primary"
+
     call s:renderView()
     call s:putCursorOnNode(b:NERDTreeRoot, 0, 0)
 endfunction
 
+"FUNCTION: s:initNerdTreeInPlace(name) {{{2
+function! s:initNerdTreeInPlace(dir)
+    try
+        let path = s:Path.New(a:dir)
+    catch /NERDTree.Path.InvalidArguments/
+        call s:echo("Invalid directory name:" . a:name)
+        return
+    endtry
+    let b:NERDTreeRoot = s:TreeDirNode.New(path)
+    call b:NERDTreeRoot.open()
+
+    "throwaway buffer options
+    setlocal noswapfile
+    setlocal buftype=nofile
+    setlocal bufhidden=delete
+    setlocal nowrap
+    setlocal foldcolumn=0
+    setlocal nobuflisted
+    setlocal nospell
+    if g:NERDTreeShowLineNumbers
+        setlocal nu
+    else
+        setlocal nonu
+    endif
+
+    iabc <buffer>
+
+    if g:NERDTreeHighlightCursorline
+        setlocal cursorline
+    endif
+
+    let b:treeShowHelp = 0
+    let b:NERDTreeIgnoreEnabled = 1
+    let b:NERDTreeShowFiles = g:NERDTreeShowFiles
+    let b:NERDTreeShowHidden = g:NERDTreeShowHidden
+    let b:NERDTreeShowBookmarks = g:NERDTreeShowBookmarks
+
+    let b:NERDTreeType = "secondary"
+
+    call s:bindMappings()
+    setfiletype nerdtree
+    " syntax highlighting
+    if has("syntax") && exists("g:syntax_on") && !has("syntax_items")
+        call s:setupSyntaxHighlighting()
+    endif
+
+    call s:renderView()
+endfunction
 " Function: s:treeExistsForTab()   {{{2
 " Returns 1 if a nerd tree root exists in the current tab
 function! s:treeExistsForTab()
@@ -2342,6 +2412,11 @@ endfunction
 "ARGS:
 "treenode: file node to open
 function! s:openFileNode(treenode)
+    if b:NERDTreeType == "secondary"
+        exec 'edit ' . a:treenode.path.strForEditCmd()
+        return
+    endif
+
     call s:putCursorInTreeWin()
 
     "if the file is already open in this tab then just stick the cursor in it
