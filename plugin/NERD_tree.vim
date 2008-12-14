@@ -148,6 +148,7 @@ command! -n=? -complete=dir NERDTree :call s:initNerdTree('<args>')
 command! -n=? -complete=dir NERDTreeToggle :call s:toggle('<args>')
 command! -n=0 NERDTreeClose :call s:closeTreeIfOpen()
 command! -n=1 -complete=customlist,s:completeBookmarks NERDTreeFromBookmark call s:initNerdTree('<args>')
+command! -n=0 -complete=customlist,s:completeNERDTreeMirrors NERDTreeMirror call s:initNerdTreeMirror()
 " SECTION: Auto commands {{{1
 "============================================================
 augroup NERDTree
@@ -1799,6 +1800,66 @@ function! s:initNerdTreeInPlace(dir)
     endif
 
     call s:renderView()
+endfunction
+" FUNCTION: s:initNerdTreeMirror() {{{2
+function! s:initNerdTreeMirror()
+    let treeBufNames = []
+    for i in range(1, tabpagenr("$"))
+        let nextName = s:tabpagevar(i, 'NERDTreeBufName')
+        if nextName != -1 && (!exists("t:NERDTreeBufName") || nextName != t:NERDTreeBufName)
+            call add(treeBufNames, nextName)
+        endif
+    endfor
+
+    let trees = {}
+    for i in treeBufNames
+        let treeRoot = getbufvar(i, "NERDTreeRoot")
+        let trees[treeRoot.path.strForOS(0)] = i
+    endfor
+
+    let options = insert(keys(trees), 'Select a tree to mirror:', 0)
+    let i = 1
+    while i < len(options)
+        let options[i] = i . ' ' . options[i]
+        let i += 1
+    endwhile
+    let choice = inputlist(options)
+
+    if choice < 1 || choice > len(options)
+        throw "NERDTree.InvalidInput"
+    endif
+
+    let bufferName = trees[keys(trees)[choice-1]]
+
+    if s:treeExistsForTab()
+        if s:isTreeOpen()
+            call s:closeTree()
+        endif
+    endif
+
+    let t:NERDTreeBufName = bufferName
+
+
+    call s:createTreeWin()
+    exec 'buffer ' .  bufferName
+
+endfunction
+" FUNCTION: s:tabpagevar(tabnr, var) {{{2
+function! s:tabpagevar(tabnr, var)
+    let currentTab = tabpagenr()
+    let old_ei = &ei
+    set ei=all
+
+    exec "tabnext " . a:tabnr
+    let v = -1
+    if exists('t:' . a:var)
+        exec 'let v = t:' . a:var
+    endif
+    exec "tabnext " . currentTab
+
+    let &ei = old_ei
+
+    return v
 endfunction
 " Function: s:treeExistsForBuffer()   {{{2
 " Returns 1 if a nerd tree root exists in the current buffer
