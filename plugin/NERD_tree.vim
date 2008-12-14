@@ -1727,7 +1727,7 @@ function! s:initNerdTree(name)
         if s:isTreeOpen()
             call s:closeTree()
         endif
-        unlet b:NERDTreeRoot
+        unlet t:NERDTreeBufName
     endif
 
     let newRoot = s:TreeDirNode.New(path)
