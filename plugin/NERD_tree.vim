@@ -1893,13 +1893,12 @@ endfunction
 "options etc
 function! s:createTreeWin()
     "create the nerd tree window
-    let splitLocation = (g:NERDTreeWinPos == "top" || g:NERDTreeWinPos == "left") ? "topleft " : "botright "
-    let splitMode = s:shouldSplitVertically() ? "vertical " : ""
+    let splitLocation = g:NERDTreeWinPos == "left" ? "topleft " : "botright "
     let splitSize = g:NERDTreeWinSize
     if !exists('t:NERDTreeBufName')
         let t:NERDTreeBufName = localtime() . s:NERDTreeBufName
     endif
-    let cmd = splitLocation . splitMode . splitSize . ' new ' . t:NERDTreeBufName
+    let cmd = splitLocation . 'vertical ' . splitSize . ' new ' . t:NERDTreeBufName
     silent! execute cmd
 
     setlocal winfixwidth
@@ -2474,11 +2473,6 @@ function! s:openNodeSplit(treenode)
     let savesplitbelow=&splitbelow
     let savesplitright=&splitright
 
-    " Figure out how to do the split based on the user's preferences.
-    " We want to split to the (left,right,top,bottom) of the explorer
-    " window, but we want to extract the screen real-estate from the
-    " window next to the explorer if possible.
-    "
     " 'there' will be set to a command to move from the split window
     " back to the explorer window
     "
@@ -2488,17 +2482,10 @@ function! s:openNodeSplit(treenode)
     " 'right' and 'below' will be set to the settings needed for
     " splitbelow and splitright IF the explorer is the only window.
     "
-    if s:shouldSplitVertically()
-        let there= g:NERDTreeWinPos == "left" ? "wincmd h" : "wincmd l"
-        let back = g:NERDTreeWinPos == "left" ? "wincmd l" : "wincmd h"
-        let right= g:NERDTreeWinPos == "left"
-        let below=0
-    else
-        let there= g:NERDTreeWinPos == "top" ? "wincmd k" : "wincmd j"
-        let back = g:NERDTreeWinPos == "top" ? "wincmd j" : "wincmd k"
-        let below= g:NERDTreeWinPos == "top"
-        let right=0
-    endif
+    let there= g:NERDTreeWinPos == "left" ? "wincmd h" : "wincmd l"
+    let back = g:NERDTreeWinPos == "left" ? "wincmd l" : "wincmd h"
+    let right= g:NERDTreeWinPos == "left"
+    let below=0
 
     " Attempt to go to adjacent window
     exec(back)
@@ -2515,13 +2502,7 @@ function! s:openNodeSplit(treenode)
         let &splitbelow=!below
     endif
 
-    " Create a variable to use if splitting vertically
-    let splitMode = ""
-    if (onlyOneWin && s:shouldSplitVertically()) || (!onlyOneWin && !s:shouldSplitVertically())
-        let splitMode = "vertical"
-    endif
-
-    echomsg splitMode
+    let splitMode = onlyOneWin ? "vertical" : ""
 
     " Open the new window
     try
@@ -2712,7 +2693,7 @@ function! s:restoreScreenState()
     if !exists("b:NERDTreeOldTopLine") || !exists("b:NERDTreeOldPos") || !exists("b:NERDTreeOldWindowSize")
         return
     endif
-    exec("silent ". (s:shouldSplitVertically() ? "vertical" : "") ." resize ".b:NERDTreeOldWindowSize)
+    exec("silent vertical resize ".b:NERDTreeOldWindowSize)
 
     let old_scrolloff=&scrolloff
     let &scrolloff=0
@@ -2731,7 +2712,7 @@ function! s:saveScreenState()
         call s:putCursorInTreeWin()
         let b:NERDTreeOldPos = getpos(".")
         let b:NERDTreeOldTopLine = line("w0")
-        let b:NERDTreeOldWindowSize = s:shouldSplitVertically() ? winwidth("") : winheight("")
+        let b:NERDTreeOldWindowSize = winwidth("")
         exec win . "wincmd w"
     catch /NERDTree.view.InvalidOperation/
     endtry
@@ -2828,11 +2809,6 @@ function! s:setupSyntaxHighlighting()
     hi def link NERDTreeCurrentNode Search
 endfunction
 
-" Function: s:shouldSplitVertically()   {{{2
-" Returns 1 if g:NERDTreeWinPos is 'left' or 'right'
-function! s:shouldSplitVertically()
-    return g:NERDTreeWinPos == 'left' || g:NERDTreeWinPos == 'right'
-endfunction
 "FUNCTION: s:stripMarkupFromLine(line, removeLeadingSpaces){{{2
 "returns the given line with all the tree parts stripped off
 "

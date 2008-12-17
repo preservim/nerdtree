@@ -861,14 +861,11 @@ Other examples: >
 
 ------------------------------------------------------------------------------
                                                             *'NERDTreeWinPos'*
-Values: "left", "right", "top" or "bottom"
+Values: "left" or "right"
 Default: "left".
 
 This option is used to determine where NERD tree window is placed on the
 screen.
-
-"top" or "bottom", will cause a horizontal split to be created for the tree,
-while "left" and "right" will cause a vertical split.
 
 This option is makes it possible to use two different explorer type
 plugins simultaneously. For example, you could have the taglist plugin on the
