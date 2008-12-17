@@ -580,6 +580,9 @@ NERD tree. These options should be set in your vimrc.
 |'NERDTreeHighlightCursorline'| Tell the NERD tree whether to highlight the
                                 current cursor line.
 
+|'NERDTreeHijackNetrw'|         Tell the NERD tree whether to replace the netrw
+                                autocommands for exploring local directories.
+
 |'NERDTreeIgnore'|              Tells the NERD tree which files to ignore.
 
 |'NERDTreeBookmarksFile'|       Where the bookmarks are stored.
@@ -704,6 +707,22 @@ Default: 1.
 
 If set to 1, the current cursor line in the NERD tree buffer will be
 highlighted. This is done using the |cursorline| option.
+
+------------------------------------------------------------------------------
+                                                       *'NERDTreeHijackNetrw'*
+Values: 0 or 1.
+Default: 1.
+
+If set to 1, doing a >
+    :edit <some directory>
+<
+will open up a "secondary" NERD tree instead of a netrw in the target window.
+
+Secondary NERD trees behaves slighly different from a regular trees in the
+following respects:
+    1. 'o' will open the selected file in the same window as the tree,
+       replacing it.
+    2. you can have as many secondary tree as you want in the same tab.
 
 ------------------------------------------------------------------------------
                                                             *'NERDTreeIgnore'*
