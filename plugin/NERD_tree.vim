@@ -149,10 +149,12 @@ command! -n=0 NERDTreeClose :call s:closeTreeIfOpen()
 command! -n=1 -complete=customlist,s:completeBookmarks NERDTreeFromBookmark call s:initNerdTree('<args>')
 " SECTION: Auto commands {{{1
 "============================================================
-"Save the cursor position whenever we close the nerd tree
-exec "autocmd BufWinLeave *". s:NERDTreeBufName ." call <SID>saveScreenState()"
-"cache bookmarks when vim loads
-autocmd VimEnter * call s:Bookmark.CacheBookmarks(0)
+augroup NERDTree
+    "Save the cursor position whenever we close the nerd tree
+    exec "autocmd BufWinLeave *". s:NERDTreeBufName ." call <SID>saveScreenState()"
+    "cache bookmarks when vim loads
+    autocmd VimEnter * call s:Bookmark.CacheBookmarks(0)
+augroup END
 
 
 augroup NERDTreeNetrwHijack
