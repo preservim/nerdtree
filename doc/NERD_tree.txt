@@ -190,8 +190,8 @@ o.......Open files, directories and bookmarks....................|NERDTree-o|
 go......Open selected file, but leave cursor in the NERDTree.....|NERDTree-go|
 t.......Open selected node/bookmark in a new tab.................|NERDTree-t|
 T.......Same as 't' but keep the focus on the current tab........|NERDTree-T|
-<tab>...Open selected file in a split window.....................|NERDTree-tab|
-g<tab>..Same as <tab>, but leave the cursor on the NERDTree......|NERDTree-gtab|
+i.......Open selected file in a split window.....................|NERDTree-i|
+gi......Same as i, but leave the cursor on the NERDTree..........|NERDTree-i|
 !.......Execute the current file.................................|NERDTree-!|
 O.......Recursively open the selected directory..................|NERDTree-O|
 x.......Close the current nodes parent...........................|NERDTree-x|
@@ -199,7 +199,7 @@ X.......Recursively close all children of the current node.......|NERDTree-X|
 e.......Open a netrw for the current dir.........................|NERDTree-e|
 
 double-click.......same as the |NERDTree-o| map.
-middle-click.......same as |NERDTree-tab| for files, same as
+middle-click.......same as |NERDTree-i| for files, same as
                    |NERDTree-e| for dirs.
 
 D.......Delete the current bookmark .............................|NERDTree-D|
@@ -278,8 +278,8 @@ Applies to: files and directories.
 The same as |NERDTree-t| except that the focus is kept in the current tab.
 
 ------------------------------------------------------------------------------
-                                                                *NERDTree-tab*
-Default key: <tab>
+                                                                  *NERDTree-i*
+Default key: i
 Map option: NERDTreeMapOpenSplit
 Applies to: files.
 
@@ -287,15 +287,15 @@ Opens the selected file in a new split window and puts the cursor in the new
 window.
 
 ------------------------------------------------------------------------------
-                                                               *NERDTree-gtab*
-Default key: g<tab>
+                                                                 *NERDTree-gi*
+Default key: gi
 Map option: None
 Applies to: files.
 
-The same as |NERDTree-tab| except that the cursor is not moved.
+The same as |NERDTree-i| except that the cursor is not moved.
 
 The key combo for this mapping is always "g" + NERDTreeMapOpenSplit (see
-|NERDTree-tab|).
+|NERDTree-i|).
 
 ------------------------------------------------------------------------------
                                                                   *NERDTree-!*
@@ -779,7 +779,7 @@ Values: 0 or 1.
 Default: 0
 
 If set to 1, the NERD tree window will close after opening a file with the
-|NERDTree-o| or |NERDTree-tab| mappings.
+|NERDTree-o| or |NERDTree-i| mappings.
 
 ------------------------------------------------------------------------------
                                                      *'NERDTreeShowBookmarks'*
