@@ -1817,19 +1817,27 @@ function! s:initNerdTreeMirror()
         let trees[treeRoot.path.strForOS(0)] = i
     endfor
 
-    let options = insert(keys(trees), 'Select a tree to mirror:', 0)
-    let i = 1
-    while i < len(options)
-        let options[i] = i . ' ' . options[i]
-        let i += 1
-    endwhile
-    let choice = inputlist(options)
+    let bufferName = ''
+    if len(keys(trees)) > 1
+        let options = insert(keys(trees), 'Select a tree to mirror:', 0)
+        let i = 1
+        while i < len(options)
+            let options[i] = i . ' ' . options[i]
+            let i += 1
+        endwhile
 
-    if choice < 1 || choice > len(options)
-        throw "NERDTree.InvalidInput"
+        let choice = inputlist(options)
+
+        if choice < 1 || choice > len(options) || choice == ''
+            return
+        endif
+
+        let bufferName = trees[keys(trees)[choice-1]]
+    elseif len(keys(trees)) == 1
+        let bufferName = values(trees)[0]
+    else
+        return s:initNerdTree('')
     endif
-
-    let bufferName = trees[keys(trees)[choice-1]]
 
     if s:treeExistsForTab()
         if s:isTreeOpen()
