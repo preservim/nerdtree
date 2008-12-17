@@ -54,8 +54,9 @@ call s:initVariable("g:NERDTreeChDirMode", 0)
 if !exists("g:NERDTreeIgnore")
     let g:NERDTreeIgnore = ['\~$']
 endif
-call s:initVariable("g:NERDTreeHighlightCursorline", 1)
 call s:initVariable("g:NERDTreeBookmarksFile", expand('$HOME') . '/.NERDTreeBookmarks')
+call s:initVariable("g:NERDTreeHighlightCursorline", 1)
+call s:initVariable("g:NERDTreeHijackNetrw", 1)
 call s:initVariable("g:NERDTreeMouseMode", 1)
 call s:initVariable("g:NERDTreeNotificationThreshold", 100)
 call s:initVariable("g:NERDTreeQuitOnOpen", 0)
@@ -156,25 +157,12 @@ augroup NERDTree
     autocmd VimEnter * call s:Bookmark.CacheBookmarks(0)
 augroup END
 
-
-augroup NERDTreeNetrwHijack
-    autocmd!
-    autocmd VimEnter * call s:removeNetrw()
-    au BufEnter * call s:checkForBrowse(expand("<amatch>"))
-
-augroup END
-
-function! s:removeNetrw()
-    autocmd! FileExplorer
-endfunction
-
-function! s:checkForBrowse(dir)
-    if !exists("b:NERDTreeProcessed") && a:dir != '' && isdirectory(a:dir)
-        let b:NERDTreeProcessed = 1
-        call s:initNerdTreeInPlace(a:dir)
-    endif
-endfunction
-
+if g:NERDTreeHijackNetrw
+    augroup NERDTreeHijackNetrw
+        autocmd VimEnter * autocmd! FileExplorer
+        au BufEnter * call s:checkForBrowse(expand("<amatch>"))
+    augroup END
+endif
 
 "SECTION: Classes {{{1
 "============================================================
@@ -1677,7 +1665,14 @@ function! s:bufInWindows(bnum)
 
     return cnt
 endfunction " >>>
-
+"FUNCTION: s:checkForBrowse(dir) {{{2
+"inits a secondary nerd tree in the current buffer if appropriate
+function! s:checkForBrowse(dir)
+    if !exists("b:NERDTreeProcessed") && a:dir != '' && isdirectory(a:dir)
+        let b:NERDTreeProcessed = 1
+        call s:initNerdTreeInPlace(a:dir)
+    endif
+endfunction
 "FUNCTION: s:compareBookmarks(first, second) {{{2
 "Compares two bookmarks
 function! s:compareBookmarks(first, second)
