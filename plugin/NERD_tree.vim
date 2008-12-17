@@ -2469,6 +2469,12 @@ endfunction
 "ARGS:
 "treenode: file node to open
 function! s:openNodeSplit(treenode)
+
+    if b:NERDTreeType == "secondary"
+        exec "split " . a:treenode.path.strForEditCmd()
+        return
+    endif
+
     " Save the user's settings for splitbelow and splitright
     let savesplitbelow=&splitbelow
     let savesplitright=&splitright
