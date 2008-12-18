@@ -198,7 +198,7 @@ function! s:Bookmark.BookmarkExistsFor(name)
     try
         call s:Bookmark.BookmarkFor(a:name)
         return 1
-    catch /NERDTree.BookmarkNotFound/
+    catch /^NERDTree.BookmarkNotFoundError/
         return 0
     endtry
 endfunction
@@ -211,7 +211,7 @@ function! s:Bookmark.BookmarkFor(name)
             return i
         endif
     endfor
-    throw "NERDTree.BookmarkNotFound exception: no bookmark found for name: \"". a:name  .'"'
+    throw "NERDTree.BookmarkNotFoundError: no bookmark found for name: \"". a:name  .'"'
 endfunction
 " Function: Bookmark.BookmarkNames()   {{{3
 " Class method to return an array of all bookmark names
@@ -245,7 +245,7 @@ function! s:Bookmark.CacheBookmarks(silent)
                 try
                     let bookmark = s:Bookmark.New(name, s:Path.New(path))
                     call add(g:NERDTreeBookmarks, bookmark)
-                catch /NERDTree.Path.InvalidArguments/
+                catch /^NERDTree.InvalidArgumentsError/
                     call add(g:NERDTreeInvalidBookmarks, i)
                     let invalidBookmarksFound += 1
                 endtry
@@ -280,7 +280,7 @@ function! s:Bookmark.delete()
     let node = {}
     try
         let node = self.getNode(1)
-    catch /NERDTree.BookmarkedNodeNotFound/
+    catch /^NERDTree.BookmarkedNodeNotFoundError/
     endtry
     call remove(s:Bookmark.Bookmarks(), index(s:Bookmark.Bookmarks(), self))
     if !empty(node)
@@ -298,7 +298,7 @@ function! s:Bookmark.getNode(searchFromAbsoluteRoot)
     let searchRoot = a:searchFromAbsoluteRoot ? s:TreeDirNode.AbsoluteTreeRoot() : b:NERDTreeRoot
     let targetNode = searchRoot.findNode(self.path)
     if empty(targetNode)
-        throw "NERDTree.BookmarkedNodeNotFound no node was found for bookmark: " . self.name
+        throw "NERDTree.BookmarkedNodeNotFoundError: no node was found for bookmark: " . self.name
     endif
     return targetNode
 endfunction
@@ -322,7 +322,7 @@ endfunction
 function! s:Bookmark.mustExist()
     if !self.path.exists()
         call s:Bookmark.CacheBookmarks(1)
-        throw "NERDTree.BookmarkPointsToInvalidLocation exception: the bookmark \"".
+        throw "NERDTree.BookmarkPointsToInvalidLocationError: the bookmark \"".
             \ self.name ."\" points to a non existing location: \"". self.path.strForOS(0)
     endif
 endfunction
@@ -330,7 +330,7 @@ endfunction
 " Create a new bookmark object with the given name and path object
 function! s:Bookmark.New(name, path)
     if a:name =~ ' '
-        throw "NERDTree.IllegalBookmarkName illegal name:" . a:name
+        throw "NERDTree.IllegalBookmarkNameError: illegal name:" . a:name
     endif
 
     let newBookmark = copy(self)
@@ -369,7 +369,7 @@ function! s:Bookmark.toRoot()
     if self.validate()
         try
             let targetNode = self.getNode(1)
-        catch /NERDTree.BookmarkedNodeNotFound/
+        catch /^NERDTree.BookmarkedNodeNotFoundError/
             let targetNode = s:TreeFileNode.New(s:Bookmark.BookmarkFor(self.name).path)
         endtry
         call targetNode.makeRoot()
@@ -425,7 +425,7 @@ function! s:TreeFileNode.bookmark(name)
     try
         let oldMarkedNode = s:Bookmark.GetNodeForName(a:name, 1)
         call oldMarkedNode.path.cacheDisplayString()
-    catch /NERDTree.Bookmark\(DoesntExist\|NotFound\)/
+    catch /^NERDTree.BookmarkNotFoundError/
     endtry
 
     call s:Bookmark.AddBookmark(a:name, self.path)
@@ -438,7 +438,7 @@ function! s:TreeFileNode.cacheParent()
     if empty(self.parent)
         let parentPath = self.path.getParent()
         if parentPath.equals(self.path)
-            throw "NERDTree.CannotCacheParent exception: already at root"
+            throw "NERDTree.CannotCacheParentError: already at root"
         endif
         let self.parent = s:TreeFileNode.New(parentPath)
     endif
@@ -778,7 +778,7 @@ endfunction
 function! s:TreeDirNode.getChildByIndex(indx, visible)
     let array_to_search = a:visible? self.getVisibleChildren() : self.children
     if a:indx > len(array_to_search)
-        throw "NERDTree.TreeDirNode.InvalidArguments exception. Index is out of bounds."
+        throw "NERDTree.InvalidArgumentsError: Index is out of bounds."
     endif
     return array_to_search[a:indx]
 endfunction
@@ -874,7 +874,7 @@ function! s:TreeDirNode._initChildren(silent)
             try
                 let path = s:Path.New(i)
                 call self.createChild(path, 0)
-            catch /^NERDTree.Path.\(InvalidArguments\|InvalidFiletype\)/
+            catch /^NERDTree.\(InvalidArguments\|InvalidFiletype\)Error/
                 let invalidFilesFound += 1
             endtry
         endif
@@ -899,7 +899,7 @@ endfunction
 unlet s:TreeDirNode.New
 function! s:TreeDirNode.New(path)
     if a:path.isDirectory != 1
-        throw "NERDTree.TreeDirNode.InvalidArguments exception. A TreeDirNode object must be instantiated with a directory Path object."
+        throw "NERDTree.InvalidArgumentsError: A TreeDirNode object must be instantiated with a directory Path object."
     endif
 
     let newTreeNode = copy(self)
@@ -989,7 +989,7 @@ function! s:TreeDirNode.refresh()
                     endif
 
 
-                catch /^NERDTree.InvalidArguments/
+                catch /^NERDTree.InvalidArgumentsError/
                     let invalidFilesFound = 1
                 endtry
             endif
@@ -1012,7 +1012,7 @@ endfunction
 "Args:
 "treenode: the node to remove
 "
-"Throws a NERDTree.TreeDirNode exception if the given treenode is not found
+"Throws a NERDTree.ChildNotFoundError if the given treenode is not found
 function! s:TreeDirNode.removeChild(treenode)
     for i in range(0, self.getChildCount()-1)
         if self.children[i].equals(a:treenode)
@@ -1021,7 +1021,7 @@ function! s:TreeDirNode.removeChild(treenode)
         endif
     endfor
 
-    throw "NERDTree.TreeDirNode exception: child node was not found"
+    throw "NERDTree.ChildNotFoundError: child node was not found"
 endfunction
 
 "FUNCTION: TreeDirNode.sortChildren() {{{3
@@ -1108,7 +1108,7 @@ function! s:Path.changeToDir()
         execute "cd " . dir
         call s:echo("CWD is now: " . getcwd())
     catch
-        throw "NERDTree.Path.Change exception: cannot change to " . dir
+        throw "NERDTree.PathChangeError: cannot change CWD to " . dir
     endtry
 endfunction
 
@@ -1165,7 +1165,7 @@ endfunction
 function! s:Path.Create(fullpath)
     "bail if the a:fullpath already exists
     if isdirectory(a:fullpath) || filereadable(a:fullpath)
-        throw "NERDTree.Path.Exists Exception: Directory Exists: '" . a:fullpath . "'"
+        throw "NERDTree.CreatePathError: Directory Exists: '" . a:fullpath . "'"
     endif
 
     try
@@ -1181,8 +1181,8 @@ function! s:Path.Create(fullpath)
         else
             call writefile([], a:fullpath)
         endif
-    catch /.*/
-        throw "NERDTree.Path Exception: Could not create path: '" . a:fullpath . "'"
+    catch
+        throw "NERDTree.CreatePathError: Could not create path: '" . a:fullpath . "'"
     endtry
 
     return s:Path.New(a:fullpath)
@@ -1196,7 +1196,7 @@ endfunction
 "dest: the location to copy this dir/file to
 function! s:Path.copy(dest)
     if !s:Path.CopyingSupported()
-        throw "NERDTree.Path.CopyingNotSupported Exception: Copying is not supported on this OS"
+        throw "NERDTree.CopyingNotSupportedError: Copying is not supported on this OS"
     endif
 
     let dest = s:Path.WinToUnixPath(a:dest)
@@ -1204,7 +1204,7 @@ function! s:Path.copy(dest)
     let cmd = g:NERDTreeCopyCmd . " " . self.strForOS(0) . " " . dest
     let success = system(cmd)
     if success != 0
-        throw "NERDTree.Path Exception: Could not copy ''". self.strForOS(0) ."'' to: '" . a:dest . "'"
+        throw "NERDTree.CopyError: Could not copy ''". self.strForOS(0) ."'' to: '" . a:dest . "'"
     endif
 endfunction
 
@@ -1255,12 +1255,12 @@ function! s:Path.delete()
         let success = system(cmd)
 
         if v:shell_error != 0
-            throw "NERDTree.Path.Deletion Exception: Could not delete directory: '" . self.strForOS(0) . "'"
+            throw "NERDTree.PathDeletionError: Could not delete directory: '" . self.strForOS(0) . "'"
         endif
     else
         let success = delete(self.strForOS(0))
         if success != 0
-            throw "NERDTree.Path.Deletion Exception: Could not delete file: '" . self.str(0) . "'"
+            throw "NERDTree.PathDeletionError: Could not delete file: '" . self.str(0) . "'"
         endif
     endif
 
@@ -1417,7 +1417,7 @@ function! s:Path.readInfoFromDisk(fullpath)
     let fullpath = s:Path.WinToUnixPath(a:fullpath)
 
     if getftype(fullpath) == "fifo"
-        throw "NERDTree.Path.InvalidFiletype Exception: Cant handle FIFO files: " . a:fullpath
+        throw "NERDTree.InvalidFiletypeError: Cant handle FIFO files: " . a:fullpath
     endif
 
     let self.pathSegments = split(fullpath, '/')
@@ -1430,7 +1430,7 @@ function! s:Path.readInfoFromDisk(fullpath)
         let self.isDirectory = 0
         let self.isReadOnly = filewritable(a:fullpath) == 0
     else
-        throw "NERDTree.Path.InvalidArguments Exception: Invalid path = " . a:fullpath
+        throw "NERDTree.InvalidArgumentsError: Invalid path = " . a:fullpath
     endif
 
     let self.isExecutable = 0
@@ -1473,12 +1473,12 @@ endfunction
 "Renames this node on the filesystem
 function! s:Path.rename(newPath)
     if a:newPath == ''
-        throw "NERDTree.Path.InvalidArguments exception. Invalid newPath for renaming = ". a:newPath
+        throw "NERDTree.InvalidArgumentsError: Invalid newPath for renaming = ". a:newPath
     endif
 
     let success =  rename(self.strForOS(0), a:newPath)
     if success != 0
-        throw "NERDTree.Path.Rename Exception: Could not rename: '" . self.strForOS(0) . "'" . 'to:' . a:newPath
+        throw "NERDTree.PathRenameError: Could not rename: '" . self.strForOS(0) . "'" . 'to:' . a:newPath
     endif
     call self.readInfoFromDisk(a:newPath)
 
@@ -1705,7 +1705,7 @@ function! s:initNerdTree(name)
 
         try
             let path = s:Path.New(dir)
-        catch /NERDTree.Path.InvalidArguments/
+        catch /^NERDTree.InvalidArgumentsError/
             call s:echo("No bookmark or directory found for: " . a:name)
             return
         endtry
@@ -1748,7 +1748,7 @@ endfunction
 function! s:initNerdTreeInPlace(dir)
     try
         let path = s:Path.New(a:dir)
-    catch /NERDTree.Path.InvalidArguments/
+    catch /^NERDTree.InvalidArgumentsError/
         call s:echo("Invalid directory name:" . a:name)
         return
     endtry
@@ -1814,7 +1814,7 @@ endfunction
 "If the cursor is not on a node then an empty dictionary {} is returned.
 function! NERDTreeGetCurrentNode()
     if !s:treeExistsForTab() || !s:isTreeOpen()
-        throw "NERDTree.NoTreeForTab exception: there is no NERD tree open for the current tab"
+        throw "NERDTree.NoTreeForTabError: there is no NERD tree open for the current tab"
     endif
 
     let winnr = winnr()
@@ -1862,7 +1862,7 @@ endfunction
 "Closes the NERD tree window
 function! s:closeTree()
     if !s:isTreeOpen()
-        throw "NERDTree.view.closeTree exception: no NERDTree is open"
+        throw "NERDTree.NoTreeFoundError: no NERDTree is open"
     endif
 
     if winnr("$") != 1
@@ -2272,7 +2272,7 @@ function! s:getSelectedBookmark()
     if name != line
         try
             return s:Bookmark.BookmarkFor(name)
-        catch /NERDTree.BookmarkNotFound/
+        catch /^NERDTree.BookmarkNotFoundError/
             return {}
         endtry
     endif
@@ -2300,7 +2300,7 @@ function! s:getSelectedNode()
             return {}
         endif
         return b:NERDTreeRoot.findNode(path)
-    catch /^NERDTree/
+    catch /NERDTree/
         return {}
     endtry
 endfunction
@@ -2457,7 +2457,7 @@ function! s:openFileNodeSplit(treenode)
     if a:treenode.path.isDirectory == 0
         try
             call s:openNodeSplit(a:treenode)
-        catch /^NERDTree.view.FileOpen/
+        catch /^NERDTree.FileAlreadyOpenAndModifiedError/
             call s:echo("Cannot open file, it is already open and modified" )
         endtry
     endif
@@ -2515,7 +2515,7 @@ function! s:openNodeSplit(treenode)
         exec(splitMode." sp " . a:treenode.path.strForEditCmd())
     catch /^Vim\%((\a\+)\)\=:E37/
         call s:putCursorInTreeWin()
-        throw "NERDTree.view.FileOpen exception: ". a:treenode.path.str(0) ." is already open and modified."
+        throw "NERDTree.FileAlreadyOpenAndModifiedError: ". a:treenode.path.str(0) ." is already open and modified."
     catch /^Vim\%((\a\+)\)\=:/
         "do nothing
     endtry
@@ -2552,7 +2552,7 @@ endfunction
 "Places the cursor at the top of the bookmarks table
 function! s:putCursorOnBookmarkTable()
     if !b:NERDTreeShowBookmarks
-        throw "NERDTree.IllegalOperation exception: cant find bookmark table, bookmarks arent active"
+        throw "NERDTree.IllegalOperationError: cant find bookmark table, bookmarks arent active"
     endif
 
     let rootNodeLine = s:findRootNodeLineNumber()
@@ -2561,7 +2561,7 @@ function! s:putCursorOnBookmarkTable()
     while getline(line) !~ '^>-\+Bookmarks-\+$'
         let line = line + 1
         if line >= rootNodeLine
-            throw "NERDTree.BookmarkTableNotFound exception: didnt find the bookmarks table"
+            throw "NERDTree.BookmarkTableNotFoundError: didnt find the bookmarks table"
         endif
     endwhile
     call cursor(line, 0)
@@ -2599,7 +2599,7 @@ endfunction
 "Places the cursor in the nerd tree window
 function! s:putCursorInTreeWin()
     if !s:isTreeOpen()
-        throw "NERDTree.view.InvalidOperation Exception: No NERD tree window exists"
+        throw "NERDTree.InvalidOperationError: cant put cursor in NERD tree window, no window exists"
     endif
 
     exec s:getTreeWinNum() . "wincmd w"
@@ -2720,7 +2720,7 @@ function! s:saveScreenState()
         let b:NERDTreeOldTopLine = line("w0")
         let b:NERDTreeOldWindowSize = winwidth("")
         exec win . "wincmd w"
-    catch /NERDTree.view.InvalidOperation/
+    catch /^NERDTree.InvalidOperationError/
     endtry
 endfunction
 
@@ -2982,7 +2982,7 @@ function! s:bookmarkNode(name)
         try
             call currentNode.bookmark(a:name)
             call s:renderView()
-        catch /NERDTree.IllegalBookmarkName/
+        catch /^NERDTree.IllegalBookmarkNameError/
             call s:echo("bookmark names must not contain spaces")
         endtry
     else
@@ -3027,7 +3027,7 @@ function! s:chCwd()
 
     try
         call treenode.path.changeToDir()
-    catch /^NERDTree.Path.Change/
+    catch /^NERDTree.PathChangeError/
         call s:echoWarning("could not change cwd")
     endtry
 endfunction
@@ -3348,7 +3348,7 @@ function! s:openBookmark(name)
         let targetNode = s:Bookmark.GetNodeForName(a:name, 0)
         call s:putCursorOnNode(targetNode, 0, 1)
         redraw!
-    catch /NERDTree.BookmarkedNodeNotFound/
+    catch /^NERDTree.BookmarkedNodeNotFoundError/
         call s:echo("note - target node is not cached")
         let bookmark = s:Bookmark.BookmarkFor(a:name)
         let targetNode = s:TreeFileNode.New(bookmark.path)
@@ -3451,7 +3451,7 @@ function! s:revealBookmark(name)
     try
         let targetNode = s:Bookmark.GetNodeForName(a:name, 0)
         call s:putCursorOnNode(targetNode, 0, 1)
-    catch /NERDTree.BookmarkDoesntExist/
+    catch /^NERDTree.BookmarkNotFoundError/
         call s:echo("Bookmark isnt cached under the current root")
     endtry
 endfunction
