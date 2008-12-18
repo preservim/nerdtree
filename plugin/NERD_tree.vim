@@ -2016,8 +2016,14 @@ function! s:dumpHelp()
         let @h=@h."\" ============================\n"
         let @h=@h."\" File node mappings~\n"
         let @h=@h."\" ". (g:NERDTreeMouseMode == 3 ? "single" : "double") ."-click,\n"
-        let @h=@h."\" ". g:NERDTreeMapActivateNode .": open in prev window\n"
-        let @h=@h."\" ". g:NERDTreeMapPreview .": preview\n"
+        if b:NERDTreeType == "primary"
+            let @h=@h."\" ". g:NERDTreeMapActivateNode .": open in prev window\n"
+        else
+            let @h=@h."\" ". g:NERDTreeMapActivateNode .": open in current window\n"
+        endif
+        if b:NERDTreeType == "primary"
+            let @h=@h."\" ". g:NERDTreeMapPreview .": preview\n"
+        endif
         let @h=@h."\" ". g:NERDTreeMapOpenInTab.": open in new tab\n"
         let @h=@h."\" ". g:NERDTreeMapOpenInTabSilent .": open in new tab silently\n"
         let @h=@h."\" middle-click,\n"
