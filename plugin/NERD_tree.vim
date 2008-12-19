@@ -1684,6 +1684,14 @@ endfunction
 function! s:completeBookmarks(A,L,P)
     return filter(s:Bookmark.BookmarkNames(), 'v:val =~ "^' . a:A . '"')
 endfunction
+" FUNCTION: s:exec(cmd) {{{2
+" same as :exec cmd  but eventignore=all is set for the duration
+function! s:exec(cmd)
+    let old_ei = &ei
+    set ei=all
+    exec a:cmd
+    let &ei = old_ei
+endfunction
 "FUNCTION: s:initNerdTree(name) {{{2
 "Initialise the nerd tree for this tab. The tree will start in either the
 "given directory, or the directory associated with the given bookmark
@@ -1825,7 +1833,7 @@ function! NERDTreeGetCurrentNode()
     let treenode = s:getSelectedNode()
 
     if winnr != winnr()
-        wincmd w
+        call s:exec('wincmd w')
     endif
 
     return treenode
@@ -1866,9 +1874,9 @@ function! s:closeTree()
     endif
 
     if winnr("$") != 1
-        execute s:getTreeWinNum() . " wincmd w"
+        call s:exec(s:getTreeWinNum() . " wincmd w")
         close
-        execute "wincmd p"
+        call s:exec("wincmd p")
     else
         :q
     endif
@@ -2340,10 +2348,10 @@ function! s:isWindowUsable(winnumber)
     endif
 
     let oldwinnr = winnr()
-    exec a:winnumber . "wincmd p"
+    call s:exec(a:winnumber . "wincmd p")
     let specialWindow = getbufvar("%", '&buftype') != '' || getwinvar('%', '&previewwindow')
     let modified = &modified
-    exec oldwinnr . "wincmd p"
+    call s:exec(oldwinnr . "wincmd p")
 
     "if its a special window e.g. quickfix or another explorer plugin then we
     "have to split
@@ -2405,9 +2413,9 @@ endfunction
 " opens a netrw window for the given dir treenode
 function! s:openExplorerFor(treenode)
     let oldwin = winnr()
-    wincmd p
+    call s:exec('wincmd p')
     if oldwin == winnr() || (&modified && s:bufInWindows(winbufnr(winnr())) < 2)
-        wincmd p
+        call s:exec('wincmd p')
         call s:openDirNodeSplit(a:treenode)
     else
         exec ("silent edit " . a:treenode.path.strForEditCmd())
@@ -2430,7 +2438,7 @@ function! s:openFileNode(treenode)
     "if the file is already open in this tab then just stick the cursor in it
     let winnr = bufwinnr('^' . a:treenode.path.strForOS(0) . '$')
     if winnr != -1
-        exec winnr . "wincmd w"
+        call s:exec(winnr . "wincmd w")
 
     else
         if !s:isWindowUsable(winnr("#")) && s:firstNormalWindow() == -1
@@ -2438,9 +2446,9 @@ function! s:openFileNode(treenode)
         else
             try
                 if !s:isWindowUsable(winnr("#"))
-                    exec s:firstNormalWindow() . "wincmd w"
+                    call s:exec(s:firstNormalWindow() . "wincmd w")
                 else
-                    wincmd p
+                    call s:exec('wincmd p')
                 endif
                 exec ("edit " . a:treenode.path.strForEditCmd())
             catch /^Vim\%((\a\+)\)\=:E37/
@@ -2500,7 +2508,7 @@ function! s:openNodeSplit(treenode)
     let below=0
 
     " Attempt to go to adjacent window
-    exec(back)
+    call s:exec(back)
 
     let onlyOneWin = (winnr() == s:getTreeWinNum())
 
@@ -2529,9 +2537,9 @@ function! s:openNodeSplit(treenode)
     "resize the tree window if no other window was open before
     if onlyOneWin
         let size = exists("b:NERDTreeOldWindowSize") ? b:NERDTreeOldWindowSize : g:NERDTreeWinSize
-        exec(there)
+        call s:exec(there)
         exec("silent ". splitMode ." resize ". size)
-        wincmd p
+        call s:exec('wincmd p')
     endif
 
     " Restore splitmode settings
@@ -2608,7 +2616,7 @@ function! s:putCursorInTreeWin()
         throw "NERDTree.InvalidOperationError: cant put cursor in NERD tree window, no window exists"
     endif
 
-    exec s:getTreeWinNum() . "wincmd w"
+    call s:exec(s:getTreeWinNum() . "wincmd w")
 endfunction
 
 "FUNCTION: s:renderBookmarks {{{2
@@ -2725,7 +2733,7 @@ function! s:saveScreenState()
         let b:NERDTreeOldPos = getpos(".")
         let b:NERDTreeOldTopLine = line("w0")
         let b:NERDTreeOldWindowSize = winwidth("")
-        exec win . "wincmd w"
+        call s:exec(win . "wincmd w")
     catch /^NERDTree.InvalidOperationError/
     endtry
 endfunction
@@ -3448,7 +3456,7 @@ function! s:previewNode(openNewWin)
     else
         call s:activateNode(1)
     end
-    exec bufwinnr(currentBuf) . "wincmd w"
+    call s:exec(bufwinnr(currentBuf) . "wincmd w")
 endfunction
 
 " FUNCTION: s:revealBookmark(name) {{{2
