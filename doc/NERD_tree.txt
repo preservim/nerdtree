@@ -31,7 +31,7 @@ CONTENTS                                                   *NERDTree-contents*
     3.Options.................................|NERDTreeOptions|
         3.1 Option summary....................|NERDTreeOptionSummary|
         3.2 Option details....................|NERDTreeOptionDetails|
-    4.Public functions........................|NERDTreePublicFunctions|
+    4.Hacking the NERD tree...................|NERDTreeHacking|
     5.TODO list...............................|NERDTreeTodo|
     6.The Author..............................|NERDTreeAuthor|
     7.Changelog...............................|NERDTreeChangelog|
@@ -879,8 +879,9 @@ Default: 31.
 This option is used to change the size of the NERD tree when it is loaded.
 
 ==============================================================================
-                                                     *NERDTreePublicFunctions*
-5. Public functions      ~
+4. Hacking the NERD tree                                     *NERDTreeHacking*
+
+Public functions ~
 
 The script provides 2 public functions for your hacking pleasure. Their
 signatures are: >
@@ -895,8 +896,26 @@ style OO. To see the functions that each class provides you can read look at
 the code.
 
 Use the node objects to manipulate the structure of the tree. Use the path
-objects to access the data the tree represents and to make changes to the
-filesystem.
+objects to access the files/directories the tree nodes represent.
+
+The NERD tree filetype ~
+
+NERD tree buffers have a filetype of "nerdtree". You can use this to hack the
+NERD tree via autocommands (on |FileType|) or via an ftplugin.
+
+For example, putting this code in ~/.vim/ftplugin/nerdtree.vim would override
+the o mapping, making it open the selected node in a new gvim instance. >
+
+    nnoremap <silent> <buffer> o :call <sid>openInNewVimInstance()<cr>
+    function! s:openInNewVimInstance()
+        let p = NERDTreeGetCurrentPath()
+        if p != {}
+            silent exec "!gvim " . p.strForOS(1) . "&"
+        endif
+    endfunction
+<
+This way you can add new mappings or :commands or override any existing
+mapping.
 
 ==============================================================================
 5. TODO list                                                    *NERDTreeTodo*
