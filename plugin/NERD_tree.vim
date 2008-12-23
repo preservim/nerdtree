@@ -130,7 +130,7 @@ call s:initVariable("g:NERDTreeMapUpdirKeepOpen", "U")
 
 "SECTION: Script level variable declaration{{{2
 let s:escape_chars =  " \\`\|\"#%&,?()\*^<>"
-let s:NERDTreeBufName = '_NERD_tree_'
+let s:NERDTreeBufName = 'NERD_tree_'
 
 let s:tree_wid = 2
 let s:tree_markup_reg = '^[ `|]*[\-+~]'
@@ -140,6 +140,9 @@ let s:os_slash = '/'
 if s:running_windows
     let s:os_slash = '\'
 endif
+
+"the number to add to the nerd tree buffer name to make the buf name unique
+let s:next_buffer_number = 1
 
 " SECTION: Commands {{{1
 "============================================================
@@ -1980,7 +1983,8 @@ function! s:createTreeWin()
     let splitLocation = g:NERDTreeWinPos == "left" ? "topleft " : "botright "
     let splitSize = g:NERDTreeWinSize
     if !exists('t:NERDTreeBufName')
-        let t:NERDTreeBufName = localtime() . s:NERDTreeBufName
+        let t:NERDTreeBufName = s:NERDTreeBufName . s:next_buffer_number
+        let s:next_buffer_number += 1
     endif
     let cmd = splitLocation . 'vertical ' . splitSize . ' new ' . t:NERDTreeBufName
     silent! execute cmd
