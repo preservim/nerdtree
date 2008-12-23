@@ -1803,6 +1803,8 @@ function! s:initNerdTreeInPlace(dir)
 endfunction
 " FUNCTION: s:initNerdTreeMirror() {{{2
 function! s:initNerdTreeMirror()
+
+    "get the names off all the nerd tree buffers
     let treeBufNames = []
     for i in range(1, tabpagenr("$"))
         let nextName = s:tabpagevar(i, 'NERDTreeBufName')
@@ -1810,47 +1812,41 @@ function! s:initNerdTreeMirror()
             call add(treeBufNames, nextName)
         endif
     endfor
+    let treeBufNames = s:unique(treeBufNames)
 
-    let trees = {}
-    for i in treeBufNames
-        let treeRoot = getbufvar(i, "NERDTreeRoot")
-        let trees[treeRoot.path.strForOS(0)] = i
-    endfor
+    "map the option names (that the user will be prompted with) to the nerd
+    "tree buffer names
+    let options = {}
+    let i = 0
+    while i < len(treeBufNames)
+        let bufName = treeBufNames[i]
+        let treeRoot = getbufvar(bufName, "NERDTreeRoot")
+        let options[i+1 . '. ' . treeRoot.path.strForOS(0) . '  (buf name: ' . bufName . ')'] = bufName
+        let i = i + 1
+    endwhile
 
+    "work out which tree to mirror, if there is more than 1 then ask the user
     let bufferName = ''
-    if len(keys(trees)) > 1
-        let options = insert(keys(trees), 'Select a tree to mirror:', 0)
-        let i = 1
-        while i < len(options)
-            let options[i] = i . ' ' . options[i]
-            let i += 1
-        endwhile
-
-        let choice = inputlist(options)
-
+    if len(keys(options)) > 1
+        let choice = inputlist(sort(keys(options)))
         if choice < 1 || choice > len(options) || choice == ''
             return
         endif
-
-        let bufferName = trees[keys(trees)[choice-1]]
-    elseif len(keys(trees)) == 1
-        let bufferName = values(trees)[0]
+        let bufferName = options[keys(options)[choice-1]]
+    elseif len(keys(options)) == 1
+        let bufferName = values(options)[0]
     else
-        return s:initNerdTree('')
+        call s:echo("No trees to mirror")
+        return
     endif
 
-    if s:treeExistsForTab()
-        if s:isTreeOpen()
-            call s:closeTree()
-        endif
+    if s:treeExistsForTab() && s:isTreeOpen()
+        call s:closeTree()
     endif
 
     let t:NERDTreeBufName = bufferName
-
-
     call s:createTreeWin()
     exec 'buffer ' .  bufferName
-
 endfunction
 " FUNCTION: s:tabpagevar(tabnr, var) {{{2
 function! s:tabpagevar(tabnr, var)
@@ -1878,6 +1874,17 @@ endfunction
 " Returns 1 if a nerd tree root exists in the current tab
 function! s:treeExistsForTab()
     return exists("t:NERDTreeBufName")
+endfunction
+" Function: s:unique(list)   {{{2
+" returns a:list without duplicates
+function! s:unique(list)
+  let uniqlist = []
+  for elem in a:list
+    if index(uniqlist, elem) == -1
+      let uniqlist += [elem]
+    endif
+  endfor
+  return uniqlist
 endfunction
 " SECTION: Public Functions {{{1
 "============================================================
