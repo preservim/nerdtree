@@ -1566,6 +1566,10 @@ function! s:Path.strForEditCmd()
     if stridx(p, cwd) == 0
         let p = strpart(p, strlen(cwd)+1)
     endif
+    
+    if p == ''
+        let p = '.'
+    endif
 
     return p
 
