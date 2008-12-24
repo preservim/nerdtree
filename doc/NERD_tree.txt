@@ -117,7 +117,7 @@ The following features and functionality are provided by the NERD tree:
     If only one other NERD tree exists, that tree is automatically mirrored. If
     more than one exists, the script will ask which tree to mirror.
 
-:NERDTreeClose
+:NERDTreeClose                                                *:NERDTreeClose*
     Close the NERD tree in this tab.
 
 ------------------------------------------------------------------------------
