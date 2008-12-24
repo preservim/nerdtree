@@ -1831,10 +1831,13 @@ function! s:initNerdTreeMirror()
     "work out which tree to mirror, if there is more than 1 then ask the user
     let bufferName = ''
     if len(keys(options)) > 1
-        let choice = inputlist(sort(keys(options)))
+        let choices = ["Choose a tree to mirror"]
+        let choices = extend(choices, sort(keys(options)))
+        let choice = inputlist(choices)
         if choice < 1 || choice > len(options) || choice == ''
             return
         endif
+
         let bufferName = options[keys(options)[choice-1]]
     elseif len(keys(options)) == 1
         let bufferName = values(options)[0]
