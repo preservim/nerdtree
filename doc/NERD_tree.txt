@@ -109,6 +109,14 @@ The following features and functionality are provided by the NERD tree:
     again.  If no NERD tree exists for this tab then this command acts the
     same as the |:NERDTree| command.
 
+:NERDTreeMirror                                              *:NERDTreeMirror*
+    Shares an existing NERD tree, from another tab, in the current tab.
+    Changes made to one tree are reflected in both as they are actually the
+    same buffer.
+
+    If only one other NERD tree exists, that tree is automatically mirrored. If
+    more than one exists, the script will ask which tree to mirror.
+
 :NERDTreeClose
     Close the NERD tree in this tab.
 
