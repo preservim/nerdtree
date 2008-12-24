@@ -208,7 +208,7 @@ gi......Same as i, but leave the cursor on the NERDTree..........|NERDTree-i|
 O.......Recursively open the selected directory..................|NERDTree-O|
 x.......Close the current nodes parent...........................|NERDTree-x|
 X.......Recursively close all children of the current node.......|NERDTree-X|
-e.......Open a netrw for the current dir.........................|NERDTree-e|
+e.......Edit the current dif.....................................|NERDTree-e|
 
 double-click.......same as the |NERDTree-o| map.
 middle-click.......same as |NERDTree-i| for files, same as
@@ -354,7 +354,9 @@ Default key: e
 Map option: NERDTreeMapOpenExpl
 Applies to: files and directories.
 
-Opens a netrw on the selected directory, or the selected file's directory.
+|:edit|s the selected directory, or the selected file's directory. This could
+result in a NERD tree or a netrw being opened, depending on
+|'NERDTreeHijackNetrw'|.
 
 ------------------------------------------------------------------------------
                                                                   *NERDTree-D*
