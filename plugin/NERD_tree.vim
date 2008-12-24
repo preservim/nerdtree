@@ -3533,7 +3533,7 @@ endfunction
 
 "FUNCTION: s:previewNode() {{{2
 function! s:previewNode(openNewWin)
-    let currentBuf = bufnr(".")
+    let currentBuf = bufnr("")
     if a:openNewWin
         call s:openEntrySplit(1)
     else
