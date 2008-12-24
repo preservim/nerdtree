@@ -65,7 +65,7 @@ The following features and functionality are provided by the NERD tree:
         * ...
     * Directories and files can be bookmarked.
     * Most NERD tree navigation can also be done with the mouse
-    * Dynamic customisation of tree content
+    * Filtering of tree content (can be toggled at runtime)
         * custom file filters to prevent e.g. vim backup files being displayed
         * optional displaying of hidden files (. files)
         * files can be "turned off" so that only directories are displayed
@@ -81,9 +81,13 @@ The following features and functionality are provided by the NERD tree:
           session, the directory nodes will be opened/closed as you left them
     * The script remembers the cursor position and window position in the NERD
       tree so you can toggle it off (or just close the tree window) and then
-      reopen it (with NERDTreeToggle) the NERD tree window will appear EXACTLY
+      reopen it (with NERDTreeToggle) the NERD tree window will appear exactly
       as you left it
-    * You can have a separate NERD tree for each tab
+    * You can have a separate NERD tree for each tab, share trees across tabs,
+      or a mix of both.
+    * By default the script overrides the default file browser (netw), so if
+      you :edit a directory a (slighly modified) NERD tree will appear in the
+      current window
 
 ==============================================================================
 2. Functionality provided                              *NERDTreeFunctionality*
