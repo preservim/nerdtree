@@ -231,7 +231,7 @@ R.......Recursively refresh the current root.....................|NERDTree-R|
 m.......Display the filesystem menu..............................|NERDTree-m|
 cd......Change the CWD to the dir of the selected node...........|NERDTree-cd|
 
-H.......Toggle whether hidden files displayed....................|NERDTree-H|
+I.......Toggle whether hidden files displayed....................|NERDTree-I|
 f.......Toggle whether the file filters are used.................|NERDTree-f|
 F.......Toggle whether files are displayed.......................|NERDTree-F|
 B.......Toggle whether the bookmark table is displayed...........|NERDTree-B|
@@ -477,13 +477,12 @@ Applies to: files and directories.
 Display the filesystem menu. See |NERDTreeFilesysMenu| for details.
 
 ------------------------------------------------------------------------------
-                                                                  *NERDTree-H*
-Default key: H
+                                                                  *NERDTree-I*
+Default key: I
 Map option: NERDTreeMapToggleHidden
 Applies to: no restrictions.
 
-Toggles whether hidden files are displayed. Hidden files are any
-file/directory that starts with a "."
+Toggles whether hidden files (i.e. "dot files") are displayed.
 
 ------------------------------------------------------------------------------
                                                                   *NERDTree-f*
@@ -823,7 +822,7 @@ Values: 0 or 1.
 Default: 0.
 
 This option tells vim whether to display hidden files by default. This option
-can be dynamically toggled, per tree, with the |NERDTree-H| mapping.  Use one
+can be dynamically toggled, per tree, with the |NERDTree-I| mapping.  Use one
 of the follow lines to set this option: >
     let NERDTreeShowHidden=0
     let NERDTreeShowHidden=1

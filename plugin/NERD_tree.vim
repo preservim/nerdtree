@@ -124,7 +124,7 @@ call s:initVariable("g:NERDTreeMapRefreshRoot", "R")
 call s:initVariable("g:NERDTreeMapToggleBookmarks", "B")
 call s:initVariable("g:NERDTreeMapToggleFiles", "F")
 call s:initVariable("g:NERDTreeMapToggleFilters", "f")
-call s:initVariable("g:NERDTreeMapToggleHidden", "H")
+call s:initVariable("g:NERDTreeMapToggleHidden", "I")
 call s:initVariable("g:NERDTreeMapUpdir", "u")
 call s:initVariable("g:NERDTreeMapUpdirKeepOpen", "U")
 
