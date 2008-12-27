@@ -949,6 +949,15 @@ fridge for later ;)
 ==============================================================================
 7. Changelog                                               *NERDTreeChangelog*
 
+3.0.0
+    - hijack netrw so that doing an :edit <directory>  will put a NERD tree in
+      the window rather than a netrw browser. See :help 'NERDTreeHijackNetrw'
+    - allow sharing of trees across tabs, see :help :NERDTreeMirror
+    - remove "top" and "bottom" as valid settings for NERDTreeWinPos
+    - change the '<tab>' mapping to 'i'
+    - change the 'H' mapping to 'I'
+    - lots of refactoring
+
 2.14.3
     Thanks to tpope for the following:
     - use relative paths when doing edit commands if possible (useful if you
