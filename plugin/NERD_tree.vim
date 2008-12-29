@@ -2135,8 +2135,7 @@ function! s:dumpHelp()
         let @h=@h."\" ". g:NERDTreeMapCloseChildren .": close all child nodes of\n"
         let @h=@h."\"    current node recursively\n"
         let @h=@h."\" middle-click,\n"
-        let @h=@h."\" ". g:NERDTreeMapOpenExpl.": Open netrw for selected\n"
-        let @h=@h."\"    node\n"
+        let @h=@h."\" ". g:NERDTreeMapOpenExpl.": explore selected dir\n"
 
         let @h=@h."\"\n\" ----------------------------\n"
         let @h=@h."\" Bookmark table mappings~\n"
