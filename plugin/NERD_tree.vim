@@ -378,7 +378,7 @@ function! s:Bookmark.toRoot()
         endtry
         call targetNode.makeRoot()
         call s:renderView()
-        call s:putCursorOnNode(targetNode, 0, 0)
+        call targetNode.putCursorHere(0, 0)
     endif
 endfunction
 " FUNCTION: Bookmark.ToRoot(name) {{{3
@@ -750,6 +750,33 @@ function! s:TreeFileNode.openSplit()
     " Restore splitmode settings
     let &splitbelow=savesplitbelow
     let &splitright=savesplitright
+endfunction
+
+"FUNCTION: TreeFileNode.putCursorHere(isJump, recurseUpward){{{3
+"Places the cursor on the line number this node is rendered on
+"
+"Args:
+"isJump: 1 if this cursor movement should be counted as a jump by vim
+"recurseUpward: try to put the cursor on the parent if the this node isnt
+"visible
+function! s:TreeFileNode.putCursorHere(isJump, recurseUpward)
+    let ln = self.getLineNum()
+    if ln != -1
+        if a:isJump
+            mark '
+        endif
+        call cursor(ln, col("."))
+    else
+        if a:recurseUpward
+            let node = self
+            while node != {} && node.getLineNum() == -1
+                let node = node.parent
+                call node.open()
+            endwhile
+            call s:renderView()
+            call node.putCursorHere(a:isJump, 0)
+        endif
+    endif
 endfunction
 
 "FUNCTION: TreeFileNode.refresh() {{{3
@@ -1894,7 +1921,7 @@ function! s:initNerdTree(name)
     let b:NERDTreeType = "primary"
 
     call s:renderView()
-    call s:putCursorOnNode(b:NERDTreeRoot, 0, 0)
+    call b:NERDTreeRoot.putCursorHere(0, 0)
 endfunction
 
 "FUNCTION: s:initNerdTreeInPlace(name) {{{2
@@ -2631,34 +2658,6 @@ function! s:putCursorOnBookmarkTable()
     call cursor(line, 0)
 endfunction
 
-"FUNCTION: s:putCursorOnNode(treenode, isJump, recurseUpward){{{2
-"Places the cursor on the line number representing the given node
-"
-"Args:
-"treenode: the node to put the cursor on
-"isJump: 1 if this cursor movement should be counted as a jump by vim
-"recurseUpward: try to put the cursor on the parent if the this node isnt
-"visible
-function! s:putCursorOnNode(treenode, isJump, recurseUpward)
-    let ln = a:treenode.getLineNum()
-    if ln != -1
-        if a:isJump
-            mark '
-        endif
-        call cursor(ln, col("."))
-    else
-        if a:recurseUpward
-            let node = a:treenode
-            while node.getLineNum() == -1 && node != {}
-                let node = node.parent
-                call node.open()
-            endwhile
-            call s:renderView()
-            call s:putCursorOnNode(a:treenode, a:isJump, 0)
-        endif
-    endif
-endfunction
-
 "FUNCTION: s:putCursorInTreeWin(){{{2
 "Places the cursor in the nerd tree window
 function! s:putCursorInTreeWin()
@@ -2750,7 +2749,7 @@ function! s:renderViewSavingPosition()
     call s:renderView()
 
     if currentNode != {}
-        call s:putCursorOnNode(currentNode, 0, 0)
+        call currentNode.putCursorHere(0, 0)
     endif
 endfunction
 "FUNCTION: s:restoreScreenState() {{{2
@@ -2953,7 +2952,7 @@ function! s:activateNode(forceKeepWindowOpen)
         if treenode.path.isDirectory
             call treenode.toggleOpen()
             call s:renderView()
-            call s:putCursorOnNode(treenode, 0, 0)
+            call treenode.putCursorHere(0, 0)
         else
             call s:openFileNode(treenode)
             if !a:forceKeepWindowOpen
@@ -3107,7 +3106,7 @@ function! s:chRoot()
 
     call treenode.makeRoot()
     call s:renderView()
-    call s:putCursorOnNode(b:NERDTreeRoot, 0, 0)
+    call b:NERDTreeRoot.putCursorHere(0, 0)
 endfunction
 
 " FUNCTION: s:clearBookmarks(bookmarks) {{{2
@@ -3136,7 +3135,7 @@ function! s:closeChildren()
 
     call currentNode.closeChildren()
     call s:renderView()
-    call s:putCursorOnNode(currentNode, 0, 0)
+    call currentNode.putCursorHere(0, 0)
 endfunction
 " FUNCTION: s:closeCurrentDir() {{{2
 " closes the parent dir of the current node
@@ -3153,7 +3152,7 @@ function! s:closeCurrentDir()
     else
         call treenode.parent.close()
         call s:renderView()
-        call s:putCursorOnNode(treenode.parent, 0, 0)
+        call treenode.parent.putCursorHere(0, 0)
     endif
 endfunction
 
@@ -3185,7 +3184,7 @@ function! s:copyNode()
             try
                 let newNode = currentNode.copy(newNodePath)
                 call s:renderView()
-                call s:putCursorOnNode(newNode, 0, 0)
+                call newNode.putCursorHere(0, 0)
             catch /^NERDTree/
                 call s:echoWarning("Could not copy node")
             endtry
@@ -3343,7 +3342,7 @@ function! s:insertNewNode()
         if parentNode.isOpen || !empty(parentNode.children)
             call parentNode.addChild(newTreeNode, 1)
             call s:renderView()
-            call s:putCursorOnNode(newTreeNode, 1, 0)
+            call newTreeNode.putCursorHere(1, 0)
         endif
     catch /^NERDTree/
         call s:echoWarning("Node Not Created.")
@@ -3368,7 +3367,7 @@ function! s:jumpToParent()
     let currentNode = s:getSelectedNode()
     if !empty(currentNode)
         if !empty(currentNode.parent)
-            call s:putCursorOnNode(currentNode.parent, 1, 0)
+            call currentNode.parent.putCursorHere(1, 0)
             call s:centerView()
         else
             call s:echo("cannot jump to parent")
@@ -3381,7 +3380,7 @@ endfunction
 " FUNCTION: s:jumpToRoot() {{{2
 " moves the cursor to the root node
 function! s:jumpToRoot()
-    call s:putCursorOnNode(b:NERDTreeRoot, 1, 0)
+    call b:NERDTreeRoot.putCursorHere(1, 0)
     call s:centerView()
 endfunction
 
@@ -3397,7 +3396,7 @@ function! s:jumpToSibling(forward)
         let sibling = currentNode.findSibling(a:forward)
 
         if !empty(sibling)
-            call s:putCursorOnNode(sibling, 1, 0)
+            call sibling.putCursorHere(1, 0)
             call s:centerView()
         endif
     else
@@ -3410,7 +3409,7 @@ endfunction
 function! s:openBookmark(name)
     try
         let targetNode = s:Bookmark.GetNodeForName(a:name, 0)
-        call s:putCursorOnNode(targetNode, 0, 1)
+        call targetNode.putCursorHere(0, 1)
         redraw!
     catch /^NERDTree.BookmarkedNodeNotFoundError/
         call s:echo("note - target node is not cached")
@@ -3514,7 +3513,7 @@ endfunction
 function! s:revealBookmark(name)
     try
         let targetNode = s:Bookmark.GetNodeForName(a:name, 0)
-        call s:putCursorOnNode(targetNode, 0, 1)
+        call targetNode.putCursorHere(0, 1)
     catch /^NERDTree.BookmarkNotFoundError/
         call s:echo("Bookmark isnt cached under the current root")
     endtry
@@ -3577,7 +3576,7 @@ function! s:renameCurrent()
             call s:promptToDelBuffer(bufnum, prompt)
         endif
 
-        call s:putCursorOnNode(curNode, 1, 0)
+        call curNode.putCursorHere(1, 0)
 
         redraw
     catch /^NERDTree/
@@ -3686,7 +3685,7 @@ function! s:upDir(keepState)
         endif
 
         call s:renderView()
-        call s:putCursorOnNode(oldRoot, 0, 0)
+        call oldRoot.putCursorHere(0, 0)
     endif
 endfunction
 
