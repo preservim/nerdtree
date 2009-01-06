@@ -685,6 +685,45 @@ function! s:TreeFileNode.New(path)
     endif
 endfunction
 
+"FUNCTION: TreeFileNode.open() {{{3
+"Open the file represented by the given node in the current window, splitting
+"the window if needed
+"
+"ARGS:
+"treenode: file node to open
+function! s:TreeFileNode.open()
+    if b:NERDTreeType == "secondary"
+        exec 'edit ' . self.path.strForEditCmd()
+        return
+    endif
+
+    call s:putCursorInTreeWin()
+
+    "if the file is already open in this tab then just stick the cursor in it
+    let winnr = bufwinnr('^' . self.path.strForOS(0) . '$')
+    if winnr != -1
+        call s:exec(winnr . "wincmd w")
+
+    else
+        if !s:isWindowUsable(winnr("#")) && s:firstNormalWindow() == -1
+            call self.openSplit()
+        else
+            try
+                if !s:isWindowUsable(winnr("#"))
+                    call s:exec(s:firstNormalWindow() . "wincmd w")
+                else
+                    call s:exec('wincmd p')
+                endif
+                exec ("edit " . self.path.strForEditCmd())
+            catch /^Vim\%((\a\+)\)\=:E37/
+                call s:putCursorInTreeWin()
+                throw "NERDTree.FileAlreadyOpenAndModifiedError: ". self.path.str(0) ." is already open and modified."
+            catch /^Vim\%((\a\+)\)\=:/
+                echo v:exception
+            endtry
+        endif
+    endif
+endfunction
 "FUNCTION: TreeFileNode.openSplit() {{{3
 "Open this node in a new window
 function! s:TreeFileNode.openSplit()
@@ -2579,51 +2618,12 @@ function! s:jumpToChild(direction)
         endif
     endif
 
-    call s:putCursorOnNode(targetNode, 1, 0)
+    call targetNode.putCursorHere(1, 0)
 
     call s:centerView()
 endfunction
 
 
-"FUNCTION: s:openFileNode(treenode) {{{2
-"Open the file represented by the given node in the current window, splitting
-"the window if needed
-"
-"ARGS:
-"treenode: file node to open
-function! s:openFileNode(treenode)
-    if b:NERDTreeType == "secondary"
-        exec 'edit ' . a:treenode.path.strForEditCmd()
-        return
-    endif
-
-    call s:putCursorInTreeWin()
-
-    "if the file is already open in this tab then just stick the cursor in it
-    let winnr = bufwinnr('^' . a:treenode.path.strForOS(0) . '$')
-    if winnr != -1
-        call s:exec(winnr . "wincmd w")
-
-    else
-        if !s:isWindowUsable(winnr("#")) && s:firstNormalWindow() == -1
-            call a:treenode.openSplit()
-        else
-            try
-                if !s:isWindowUsable(winnr("#"))
-                    call s:exec(s:firstNormalWindow() . "wincmd w")
-                else
-                    call s:exec('wincmd p')
-                endif
-                exec ("edit " . a:treenode.path.strForEditCmd())
-            catch /^Vim\%((\a\+)\)\=:E37/
-                call s:putCursorInTreeWin()
-                call s:echo("Cannot open file, it is already open and modified")
-            catch /^Vim\%((\a\+)\)\=:/
-                echo v:exception
-            endtry
-        endif
-    endif
-endfunction
 "FUNCTION: s:promptToDelBuffer(bufnum, msg){{{2
 "prints out the given msg and, if the user responds by pushing 'y' then the
 "buffer with the given bufnum is deleted
@@ -2954,7 +2954,7 @@ function! s:activateNode(forceKeepWindowOpen)
             call s:renderView()
             call treenode.putCursorHere(0, 0)
         else
-            call s:openFileNode(treenode)
+            call treenode.open()
             if !a:forceKeepWindowOpen
                 call s:closeTreeIfQuitOnOpen()
             end
@@ -2966,7 +2966,7 @@ function! s:activateNode(forceKeepWindowOpen)
                 call bookmark.toRoot()
             else
                 if bookmark.validate()
-                    call s:openFileNode(s:TreeFileNode.New(bookmark.path))
+                    call (s:TreeFileNode.New(bookmark.path)).open()
                 endif
             endif
         endif
@@ -3419,7 +3419,7 @@ function! s:openBookmark(name)
     if targetNode.path.isDirectory
         call targetNode.openExplorer()
     else
-        call s:openFileNode(targetNode)
+        call targetNode.open()
     endif
 endfunction
 " FUNCTION: s:openEntrySplit(forceKeepWindowOpen) {{{2
