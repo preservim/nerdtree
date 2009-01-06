@@ -576,14 +576,71 @@ function! s:TreeFileNode.findSibling(direction)
     return {}
 endfunction
 
+"FUNCTION: TreeFileNode.getLineNum(){{{3
+"returns the line number this node is rendered on, or -1 if it isnt rendered
+function! s:TreeFileNode.getLineNum()
+    "if the node is the root then return the root line no.
+    if self.isRoot()
+        return s:TreeFileNode.GetRootLineNum()
+    endif
+
+    let totalLines = line("$")
+
+    "the path components we have matched so far
+    let pathcomponents = [substitute(b:NERDTreeRoot.path.str(0), '/ *$', '', '')]
+    "the index of the component we are searching for
+    let curPathComponent = 1
+
+    let fullpath = self.path.str(0)
+
+
+    let lnum = s:TreeFileNode.GetRootLineNum()
+    while lnum > 0
+        let lnum = lnum + 1
+        "have we reached the bottom of the tree?
+        if lnum == totalLines+1
+            return -1
+        endif
+
+        let curLine = getline(lnum)
+
+        let indent = s:indentLevelFor(curLine)
+        if indent == curPathComponent
+            let curLine = s:stripMarkupFromLine(curLine, 1)
+
+            let curPath =  join(pathcomponents, '/') . '/' . curLine
+            if stridx(fullpath, curPath, 0) == 0
+                if fullpath == curPath || strpart(fullpath, len(curPath)-1,1) == '/'
+                    let curLine = substitute(curLine, '/ *$', '', '')
+                    call add(pathcomponents, curLine)
+                    let curPathComponent = curPathComponent + 1
+
+                    if fullpath == curPath
+                        return lnum
+                    endif
+                endif
+            endif
+        endif
+    endwhile
+    return -1
+endfunction
+
+"FUNCTION: TreeFileNode.GetRootLineNum(){{{3
+"gets the line number of the root node
+function! s:TreeFileNode.GetRootLineNum()
+    let rootLine = 1
+    while getline(rootLine) !~ '^/'
+        let rootLine = rootLine + 1
+    endwhile
+    return rootLine
+endfunction
+
 "FUNCTION: TreeFileNode.isVisible() {{{3
 "returns 1 if this node should be visible according to the tree filters and
 "hidden file filters (and their on/off status)
 function! s:TreeFileNode.isVisible()
     return !self.path.ignore()
 endfunction
-
-
 "FUNCTION: TreeFileNode.isRoot() {{{3
 "returns 1 if this node is b:NERDTreeRoot
 function! s:TreeFileNode.isRoot()
@@ -2221,68 +2278,6 @@ function! s:echoError(msg)
     call s:echo(a:msg)
     echohl normal
 endfunction
-"FUNCTION: s:findNodeLineNumber(treenode){{{2
-"Finds the line number for the given tree node
-"
-"Args:
-"treenode: the node to find the line no. for
-function! s:findNodeLineNumber(treenode)
-    "if the node is the root then return the root line no.
-    if a:treenode.isRoot()
-        return s:findRootNodeLineNumber()
-    endif
-
-    let totalLines = line("$")
-
-    "the path components we have matched so far
-    let pathcomponents = [substitute(b:NERDTreeRoot.path.str(0), '/ *$', '', '')]
-    "the index of the component we are searching for
-    let curPathComponent = 1
-
-    let fullpath = a:treenode.path.str(0)
-
-
-    let lnum = s:findRootNodeLineNumber()
-    while lnum > 0
-        let lnum = lnum + 1
-        "have we reached the bottom of the tree?
-        if lnum == totalLines+1
-            return -1
-        endif
-
-        let curLine = getline(lnum)
-
-        let indent = s:indentLevelFor(curLine)
-        if indent == curPathComponent
-            let curLine = s:stripMarkupFromLine(curLine, 1)
-
-            let curPath =  join(pathcomponents, '/') . '/' . curLine
-            if stridx(fullpath, curPath, 0) == 0
-                if fullpath == curPath || strpart(fullpath, len(curPath)-1,1) == '/'
-                    let curLine = substitute(curLine, '/ *$', '', '')
-                    call add(pathcomponents, curLine)
-                    let curPathComponent = curPathComponent + 1
-
-                    if fullpath == curPath
-                        return lnum
-                    endif
-                endif
-            endif
-        endif
-    endwhile
-    return -1
-endfunction
-
-"FUNCTION: s:findRootNodeLineNumber(){{{2
-"Finds the line number of the root node
-function! s:findRootNodeLineNumber()
-    let rootLine = 1
-    while getline(rootLine) !~ '^/'
-        let rootLine = rootLine + 1
-    endwhile
-    return rootLine
-endfunction
-
 "FUNCTION: s:firstNormalWindow(){{{2
 "find the window number of the first normal window
 function! s:firstNormalWindow()
@@ -2655,7 +2650,7 @@ function! s:putCursorOnBookmarkTable()
         throw "NERDTree.IllegalOperationError: cant find bookmark table, bookmarks arent active"
     endif
 
-    let rootNodeLine = s:findRootNodeLineNumber()
+    let rootNodeLine = s:TreeFileNode.GetRootLineNum()
 
     let line = 1
     while getline(line) !~ '^>-\+Bookmarks-\+$'
@@ -2676,7 +2671,7 @@ endfunction
 "recurseUpward: try to put the cursor on the parent if the this node isnt
 "visible
 function! s:putCursorOnNode(treenode, isJump, recurseUpward)
-    let ln = s:findNodeLineNumber(a:treenode)
+    let ln = a:treenode.getLineNum()
     if ln != -1
         if a:isJump
             mark '
@@ -2685,7 +2680,7 @@ function! s:putCursorOnNode(treenode, isJump, recurseUpward)
     else
         if a:recurseUpward
             let node = a:treenode
-            while s:findNodeLineNumber(node) == -1 && node != {}
+            while node.getLineNum() == -1 && node != {}
                 let node = node.parent
                 call node.open()
             endwhile
