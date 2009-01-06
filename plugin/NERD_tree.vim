@@ -1053,6 +1053,19 @@ function! s:TreeDirNode.open()
     endif
 endfunction
 
+" FUNCTION: TreeDirNode.openExplorer() {{{3
+" opens an explorer window for this node in the previous window (could be a
+" nerd tree or a netrw)
+function! s:TreeDirNode.openExplorer()
+    let oldwin = winnr()
+    call s:exec('wincmd p')
+    if oldwin == winnr() || (&modified && s:bufInWindows(winbufnr(winnr())) < 2)
+        call s:exec('wincmd p')
+        call self.openSplit()
+    else
+        exec ("silent edit " . self.path.strForEditCmd())
+    endif
+endfunction
 "FUNCTION: TreeDirNode.openRecursively() {{{3
 "Opens this treenode and all of its children whose paths arent 'ignored'
 "because of the file filters.
@@ -2545,30 +2558,6 @@ function! s:jumpToChild(direction)
 endfunction
 
 
-"FUNCTION: s:openDirNodeSplit(treenode) {{{2
-"Open the file represented by the given node in a new window.
-"No action is taken for file nodes
-"
-"ARGS:
-"treenode: file node to open
-function! s:openDirNodeSplit(treenode)
-    if a:treenode.path.isDirectory == 1
-        call a:treenode.openSplit()
-    endif
-endfunction
-
-" FUNCTION: s:openExplorerFor(treenode) {{{2
-" opens a netrw window for the given dir treenode
-function! s:openExplorerFor(treenode)
-    let oldwin = winnr()
-    call s:exec('wincmd p')
-    if oldwin == winnr() || (&modified && s:bufInWindows(winbufnr(winnr())) < 2)
-        call s:exec('wincmd p')
-        call s:openDirNodeSplit(a:treenode)
-    else
-        exec ("silent edit " . a:treenode.path.strForEditCmd())
-    endif
-endfunction
 "FUNCTION: s:openFileNode(treenode) {{{2
 "Open the file represented by the given node in the current window, splitting
 "the window if needed
@@ -3429,7 +3418,7 @@ function! s:openBookmark(name)
         let targetNode = s:TreeFileNode.New(bookmark.path)
     endtry
     if targetNode.path.isDirectory
-        call s:openExplorerFor(targetNode)
+        call targetNode.openExplorer()
     else
         call s:openFileNode(targetNode)
     endif
@@ -3456,7 +3445,7 @@ endfunction
 function! s:openExplorer()
     let treenode = s:getSelectedDir()
     if treenode != {}
-        call s:openExplorerFor(treenode)
+        call treenode.openExplorer()
     else
         call s:echo("select a node first")
     endif
