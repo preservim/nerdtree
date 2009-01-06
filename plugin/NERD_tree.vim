@@ -486,6 +486,83 @@ function! s:TreeFileNode.delete()
     call self.parent.removeChild(self)
 endfunction
 
+"FUNCTION: TreeFileNode.renderToString {{{3
+"returns a string representation for this tree to be rendered in the view
+function! s:TreeFileNode.renderToString()
+    return self._renderToString(0, 0, [], self.getChildCount() == 1)
+endfunction
+
+
+"Args:
+"depth: the current depth in the tree for this call
+"drawText: 1 if we should actually draw the line for this node (if 0 then the
+"child nodes are rendered only)
+"vertMap: a binary array that indicates whether a vertical bar should be draw
+"for each depth in the tree
+"isLastChild:true if this curNode is the last child of its parent
+function! s:TreeFileNode._renderToString(depth, drawText, vertMap, isLastChild)
+    let output = ""
+    if a:drawText == 1
+
+        let treeParts = ''
+
+        "get all the leading spaces and vertical tree parts for this line
+        if a:depth > 1
+            for j in a:vertMap[0:-2]
+                if j == 1
+                    let treeParts = treeParts . '| '
+                else
+                    let treeParts = treeParts . '  '
+                endif
+            endfor
+        endif
+
+        "get the last vertical tree part for this line which will be different
+        "if this node is the last child of its parent
+        if a:isLastChild
+            let treeParts = treeParts . '`'
+        else
+            let treeParts = treeParts . '|'
+        endif
+
+
+        "smack the appropriate dir/file symbol on the line before the file/dir
+        "name itself
+        if self.path.isDirectory
+            if self.isOpen
+                let treeParts = treeParts . '~'
+            else
+                let treeParts = treeParts . '+'
+            endif
+        else
+            let treeParts = treeParts . '-'
+        endif
+        let line = treeParts . self.strDisplay()
+
+        let output = output . line . "\n"
+    endif
+
+    "if the node is an open dir, draw its children
+    if self.path.isDirectory == 1 && self.isOpen == 1
+
+        let childNodesToDraw = self.getVisibleChildren()
+        if len(childNodesToDraw) > 0
+
+            "draw all the nodes children except the last
+            let lastIndx = len(childNodesToDraw)-1
+            if lastIndx > 0
+                for i in childNodesToDraw[0:lastIndx-1]
+                    let output = output . i._renderToString(a:depth + 1, 1, add(copy(a:vertMap), 1), 0)
+                endfor
+            endif
+
+            "draw the last child, indicating that it IS the last
+            let output = output . childNodesToDraw[lastIndx]._renderToString(a:depth + 1, 1, add(copy(a:vertMap), 0), 1)
+        endif
+    endif
+
+    return output
+endfunction
 "FUNCTION: TreeFileNode.equals(treenode) {{{3
 "
 "Compares this treenode to the input treenode and returns 1 if they are the
@@ -2231,80 +2308,6 @@ function! s:createTreeWin()
     endif
 endfunction
 
-"FUNCTION: s:drawTree {{{2
-"Draws the given node recursively
-"
-"Args:
-"curNode: the node that is being rendered with this call
-"depth: the current depth in the tree for this call
-"drawText: 1 if we should actually draw the line for this node (if 0 then the
-"child nodes are rendered only)
-"vertMap: a binary array that indicates whether a vertical bar should be draw
-"for each depth in the tree
-"isLastChild:true if this curNode is the last child of its parent
-function! s:drawTree(curNode, depth, drawText, vertMap, isLastChild)
-    if a:drawText == 1
-
-        let treeParts = ''
-
-        "get all the leading spaces and vertical tree parts for this line
-        if a:depth > 1
-            for j in a:vertMap[0:-2]
-                if j == 1
-                    let treeParts = treeParts . '| '
-                else
-                    let treeParts = treeParts . '  '
-                endif
-            endfor
-        endif
-
-        "get the last vertical tree part for this line which will be different
-        "if this node is the last child of its parent
-        if a:isLastChild
-            let treeParts = treeParts . '`'
-        else
-            let treeParts = treeParts . '|'
-        endif
-
-
-        "smack the appropriate dir/file symbol on the line before the file/dir
-        "name itself
-        if a:curNode.path.isDirectory
-            if a:curNode.isOpen
-                let treeParts = treeParts . '~'
-            else
-                let treeParts = treeParts . '+'
-            endif
-        else
-            let treeParts = treeParts . '-'
-        endif
-        let line = treeParts . a:curNode.strDisplay()
-
-        call setline(line(".")+1, line)
-        call cursor(line(".")+1, col("."))
-    endif
-
-    "if the node is an open dir, draw its children
-    if a:curNode.path.isDirectory == 1 && a:curNode.isOpen == 1
-
-        let childNodesToDraw = a:curNode.getVisibleChildren()
-        if len(childNodesToDraw) > 0
-
-            "draw all the nodes children except the last
-            let lastIndx = len(childNodesToDraw)-1
-            if lastIndx > 0
-                for i in childNodesToDraw[0:lastIndx-1]
-                    call s:drawTree(i, a:depth + 1, 1, add(copy(a:vertMap), 1), 0)
-                endfor
-            endif
-
-            "draw the last child, indicating that it IS the last
-            call s:drawTree(childNodesToDraw[lastIndx], a:depth + 1, 1, add(copy(a:vertMap), 0), 1)
-        endif
-    endif
-endfunction
-
-
 "FUNCTION: s:dumpHelp  {{{2
 "prints out the quick help
 function! s:dumpHelp()
@@ -2683,10 +2686,7 @@ function! s:renderBookmarks()
     call cursor(line(".")+1, col("."))
 endfunction
 "FUNCTION: s:renderView {{{2
-"The entry function for rendering the tree. Renders the root then calls
-"s:drawTree to draw the children of the root
-"
-"Args:
+"The entry function for rendering the tree
 function! s:renderView()
     setlocal modifiable
 
@@ -2718,7 +2718,10 @@ function! s:renderView()
     call cursor(line(".")+1, col("."))
 
     "draw the tree
-    call s:drawTree(b:NERDTreeRoot, 0, 0, [], b:NERDTreeRoot.getChildCount() == 1)
+    let old_o = @o
+    let @o = b:NERDTreeRoot.renderToString()
+    silent put o
+    let @o = old_o
 
     "delete the blank line at the top of the buffer
     silent 1,1delete _
