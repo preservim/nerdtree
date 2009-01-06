@@ -685,6 +685,73 @@ function! s:TreeFileNode.New(path)
     endif
 endfunction
 
+"FUNCTION: TreeFileNode.openSplit() {{{3
+"Open this node in a new window
+function! s:TreeFileNode.openSplit()
+
+    if b:NERDTreeType == "secondary"
+        exec "split " . self.path.strForEditCmd()
+        return
+    endif
+
+    " Save the user's settings for splitbelow and splitright
+    let savesplitbelow=&splitbelow
+    let savesplitright=&splitright
+
+    " 'there' will be set to a command to move from the split window
+    " back to the explorer window
+    "
+    " 'back' will be set to a command to move from the explorer window
+    " back to the newly split window
+    "
+    " 'right' and 'below' will be set to the settings needed for
+    " splitbelow and splitright IF the explorer is the only window.
+    "
+    let there= g:NERDTreeWinPos == "left" ? "wincmd h" : "wincmd l"
+    let back = g:NERDTreeWinPos == "left" ? "wincmd l" : "wincmd h"
+    let right= g:NERDTreeWinPos == "left"
+    let below=0
+
+    " Attempt to go to adjacent window
+    call s:exec(back)
+
+    let onlyOneWin = (winnr() == s:getTreeWinNum())
+
+    " If no adjacent window, set splitright and splitbelow appropriately
+    if onlyOneWin
+        let &splitright=right
+        let &splitbelow=below
+    else
+        " found adjacent window - invert split direction
+        let &splitright=!right
+        let &splitbelow=!below
+    endif
+
+    let splitMode = onlyOneWin ? "vertical" : ""
+
+    " Open the new window
+    try
+        exec(splitMode." sp " . self.path.strForEditCmd())
+    catch /^Vim\%((\a\+)\)\=:E37/
+        call s:putCursorInTreeWin()
+        throw "NERDTree.FileAlreadyOpenAndModifiedError: ". self.path.str(0) ." is already open and modified."
+    catch /^Vim\%((\a\+)\)\=:/
+        "do nothing
+    endtry
+
+    "resize the tree window if no other window was open before
+    if onlyOneWin
+        let size = exists("b:NERDTreeOldWindowSize") ? b:NERDTreeOldWindowSize : g:NERDTreeWinSize
+        call s:exec(there)
+        exec("silent ". splitMode ." resize ". size)
+        call s:exec('wincmd p')
+    endif
+
+    " Restore splitmode settings
+    let &splitbelow=savesplitbelow
+    let &splitright=savesplitright
+endfunction
+
 "FUNCTION: TreeFileNode.refresh() {{{3
 function! s:TreeFileNode.refresh()
     call self.path.refresh()
@@ -2486,7 +2553,7 @@ endfunction
 "treenode: file node to open
 function! s:openDirNodeSplit(treenode)
     if a:treenode.path.isDirectory == 1
-        call s:openNodeSplit(a:treenode)
+        call a:treenode.openSplit()
     endif
 endfunction
 
@@ -2523,7 +2590,7 @@ function! s:openFileNode(treenode)
 
     else
         if !s:isWindowUsable(winnr("#")) && s:firstNormalWindow() == -1
-            call s:openFileNodeSplit(a:treenode)
+            call a:treenode.openSplit()
         else
             try
                 if !s:isWindowUsable(winnr("#"))
@@ -2541,93 +2608,6 @@ function! s:openFileNode(treenode)
         endif
     endif
 endfunction
-
-"FUNCTION: s:openFileNodeSplit(treenode) {{{2
-"Open the file represented by the given node in a new window.
-"No action is taken for dir nodes
-"
-"ARGS:
-"treenode: file node to open
-function! s:openFileNodeSplit(treenode)
-    if a:treenode.path.isDirectory == 0
-        try
-            call s:openNodeSplit(a:treenode)
-        catch /^NERDTree.FileAlreadyOpenAndModifiedError/
-            call s:echo("Cannot open file, it is already open and modified" )
-        endtry
-    endif
-endfunction
-
-"FUNCTION: s:openNodeSplit(treenode) {{{2
-"Open the file/dir represented by the given node in a new window
-"
-"ARGS:
-"treenode: file node to open
-function! s:openNodeSplit(treenode)
-
-    if b:NERDTreeType == "secondary"
-        exec "split " . a:treenode.path.strForEditCmd()
-        return
-    endif
-
-    " Save the user's settings for splitbelow and splitright
-    let savesplitbelow=&splitbelow
-    let savesplitright=&splitright
-
-    " 'there' will be set to a command to move from the split window
-    " back to the explorer window
-    "
-    " 'back' will be set to a command to move from the explorer window
-    " back to the newly split window
-    "
-    " 'right' and 'below' will be set to the settings needed for
-    " splitbelow and splitright IF the explorer is the only window.
-    "
-    let there= g:NERDTreeWinPos == "left" ? "wincmd h" : "wincmd l"
-    let back = g:NERDTreeWinPos == "left" ? "wincmd l" : "wincmd h"
-    let right= g:NERDTreeWinPos == "left"
-    let below=0
-
-    " Attempt to go to adjacent window
-    call s:exec(back)
-
-    let onlyOneWin = (winnr() == s:getTreeWinNum())
-
-    " If no adjacent window, set splitright and splitbelow appropriately
-    if onlyOneWin
-        let &splitright=right
-        let &splitbelow=below
-    else
-        " found adjacent window - invert split direction
-        let &splitright=!right
-        let &splitbelow=!below
-    endif
-
-    let splitMode = onlyOneWin ? "vertical" : ""
-
-    " Open the new window
-    try
-        exec(splitMode." sp " . a:treenode.path.strForEditCmd())
-    catch /^Vim\%((\a\+)\)\=:E37/
-        call s:putCursorInTreeWin()
-        throw "NERDTree.FileAlreadyOpenAndModifiedError: ". a:treenode.path.str(0) ." is already open and modified."
-    catch /^Vim\%((\a\+)\)\=:/
-        "do nothing
-    endtry
-
-    "resize the tree window if no other window was open before
-    if onlyOneWin
-        let size = exists("b:NERDTreeOldWindowSize") ? b:NERDTreeOldWindowSize : g:NERDTreeWinSize
-        call s:exec(there)
-        exec("silent ". splitMode ." resize ". size)
-        call s:exec('wincmd p')
-    endif
-
-    " Restore splitmode settings
-    let &splitbelow=savesplitbelow
-    let &splitright=savesplitright
-endfunction
-
 "FUNCTION: s:promptToDelBuffer(bufnum, msg){{{2
 "prints out the given msg and, if the user responds by pushing 'y' then the
 "buffer with the given bufnum is deleted
@@ -3463,7 +3443,7 @@ endfunction
 function! s:openEntrySplit(forceKeepWindowOpen)
     let treenode = s:getSelectedNode()
     if treenode != {}
-        call s:openFileNodeSplit(treenode)
+        call treenode.openSplit()
         if !a:forceKeepWindowOpen
             call s:closeTreeIfQuitOnOpen()
         endif
