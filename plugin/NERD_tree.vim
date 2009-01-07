@@ -712,6 +712,19 @@ function! s:TreeFileNode.GetRootLineNum()
     return rootLine
 endfunction
 
+"FUNCTION: TreeFileNode.GetSelected() {{{3
+"gets the treenode that the cursor is currently over
+function! s:TreeFileNode.GetSelected()
+    try
+        let path = s:getPath(line("."))
+        if path == {}
+            return {}
+        endif
+        return b:NERDTreeRoot.findNode(path)
+    catch /NERDTree/
+        return {}
+    endtry
+endfunction
 "FUNCTION: TreeFileNode.isVisible() {{{3
 "returns 1 if this node should be visible according to the tree filters and
 "hidden file filters (and their on/off status)
@@ -1085,6 +1098,19 @@ function! s:TreeDirNode.getChildIndex(path)
     return -1
 endfunction
 
+"FUNCTION: TreeDirNode.GetSelected() {{{3
+"Returns the current node if it is a dir node, or else returns the current
+"nodes parent
+unlet s:TreeDirNode.GetSelected
+function! s:TreeDirNode.GetSelected()
+    let currentDir = s:TreeFileNode.GetSelected()
+    if currentDir != {} && !currentDir.isRoot()
+        if currentDir.path.isDirectory == 0
+            let currentDir = currentDir.parent
+        endif
+    endif
+    return currentDir
+endfunction
 "FUNCTION: TreeDirNode.getVisibleChildCount() {{{3
 "Returns the number of visible children this node has
 function! s:TreeDirNode.getVisibleChildCount()
@@ -2196,7 +2222,7 @@ function! NERDTreeGetCurrentNode()
         call s:putCursorInTreeWin()
     endif
 
-    let treenode = s:getSelectedNode()
+    let treenode = s:TreeFileNode.GetSelected()
 
     if winnr != winnr()
         call s:exec('wincmd w')
@@ -2523,31 +2549,6 @@ function! s:getSelectedBookmark()
     return {}
 endfunction
 
-"FUNCTION: s:getSelectedDir() {{{2
-"Returns the current node if it is a dir node, or else returns the current
-"nodes parent
-function! s:getSelectedDir()
-    let currentDir = s:getSelectedNode()
-    if currentDir != {} && !currentDir.isRoot()
-        if currentDir.path.isDirectory == 0
-            let currentDir = currentDir.parent
-        endif
-    endif
-    return currentDir
-endfunction
-"FUNCTION: s:getSelectedNode() {{{2
-"gets the treenode that the cursor is currently over
-function! s:getSelectedNode()
-    try
-        let path = s:getPath(line("."))
-        if path == {}
-            return {}
-        endif
-        return b:NERDTreeRoot.findNode(path)
-    catch /NERDTree/
-        return {}
-    endtry
-endfunction
 "FUNCTION: s:getTreeWinNum() {{{2
 "gets the nerd tree window number for this tab
 function! s:getTreeWinNum()
@@ -2600,7 +2601,7 @@ endfunction
 " Args:
 " direction: 0 if going to first child, 1 if going to last
 function! s:jumpToChild(direction)
-    let currentNode = s:getSelectedNode()
+    let currentNode = s:TreeFileNode.GetSelected()
     if currentNode == {} || currentNode.isRoot()
         call s:echo("cannot jump to " . (a:direction ? "last" : "first") .  " child")
         return
@@ -2741,7 +2742,7 @@ endfunction
 "Renders the tree and ensures the cursor stays on the current node or the
 "current nodes parent if it is no longer available upon re-rendering
 function! s:renderViewSavingPosition()
-    let currentNode = s:getSelectedNode()
+    let currentNode = s:TreeFileNode.GetSelected()
 
     "go up the tree till we find a node that will be visible or till we run
     "out of nodes
@@ -2950,7 +2951,7 @@ function! s:activateNode(forceKeepWindowOpen)
         return s:upDir(0)
     endif
 
-    let treenode = s:getSelectedNode()
+    let treenode = s:TreeFileNode.GetSelected()
     if treenode != {}
         if treenode.path.isDirectory
             call treenode.toggleOpen()
@@ -3043,7 +3044,7 @@ endfunction
 " FUNCTION: s:bookmarkNode(name) {{{2
 " Associate the current node with the given name
 function! s:bookmarkNode(name)
-    let currentNode = s:getSelectedNode()
+    let currentNode = s:TreeFileNode.GetSelected()
     if currentNode != {}
         try
             call currentNode.bookmark(a:name)
@@ -3060,7 +3061,7 @@ endfunction
 "called (directories are automatically opened if the symbol beside them is
 "clicked)
 function! s:checkForActivate()
-    let currentNode = s:getSelectedNode()
+    let currentNode = s:TreeFileNode.GetSelected()
     if currentNode != {}
         let startToCur = strpart(getline(line(".")), 0, col("."))
         let char = strpart(startToCur, strlen(startToCur)-1, 1)
@@ -3085,7 +3086,7 @@ endfunction
 
 " FUNCTION: s:chCwd() {{{2
 function! s:chCwd()
-    let treenode = s:getSelectedNode()
+    let treenode = s:TreeFileNode.GetSelected()
     if treenode == {}
         call s:echo("Select a node first")
         return
@@ -3101,7 +3102,7 @@ endfunction
 " FUNCTION: s:chRoot() {{{2
 " changes the current root to the selected one
 function! s:chRoot()
-    let treenode = s:getSelectedNode()
+    let treenode = s:TreeFileNode.GetSelected()
     if treenode == {}
         call s:echo("Select a node first")
         return
@@ -3115,7 +3116,7 @@ endfunction
 " FUNCTION: s:clearBookmarks(bookmarks) {{{2
 function! s:clearBookmarks(bookmarks)
     if a:bookmarks == ''
-        let currentNode = s:getSelectedNode()
+        let currentNode = s:TreeFileNode.GetSelected()
         if currentNode != {}
             call currentNode.clearBoomarks()
         endif
@@ -3143,7 +3144,7 @@ endfunction
 " FUNCTION: s:closeCurrentDir() {{{2
 " closes the parent dir of the current node
 function! s:closeCurrentDir()
-    let treenode = s:getSelectedNode()
+    let treenode = s:TreeFileNode.GetSelected()
     if treenode == {}
         call s:echo("Select a node first")
         return
@@ -3161,7 +3162,7 @@ endfunction
 
 " FUNCTION: s:copyNode() {{{2
 function! s:copyNode()
-    let currentNode = s:getSelectedNode()
+    let currentNode = s:TreeFileNode.GetSelected()
     if currentNode == {}
         call s:echo("Put the cursor on a file node first")
         return
@@ -3227,7 +3228,7 @@ endfunction
 " if the current node is a file, pops up a dialog giving the user the option
 " to delete it
 function! s:deleteNode()
-    let currentNode = s:getSelectedNode()
+    let currentNode = s:TreeFileNode.GetSelected()
     if currentNode == {}
         call s:echo("Put the cursor on a file node first")
         return
@@ -3284,7 +3285,7 @@ endfunction
 
 " FUNCTION: s:executeNode() {{{2
 function! s:executeNode()
-    let treenode = s:getSelectedNode()
+    let treenode = s:TreeFileNode.GetSelected()
     if treenode == {} || treenode.path.isDirectory
         call s:echo("Select an executable file node first" )
     else
@@ -3304,7 +3305,7 @@ endfunction
 
 " FUNCTION: s:handleMiddleMouse() {{{2
 function! s:handleMiddleMouse()
-    let curNode = s:getSelectedNode()
+    let curNode = s:TreeFileNode.GetSelected()
     if curNode == {}
         call s:echo("Put the cursor on a node first" )
         return
@@ -3367,7 +3368,7 @@ endfunction
 " FUNCTION: s:jumpToParent() {{{2
 " moves the cursor to the parent of the current node
 function! s:jumpToParent()
-    let currentNode = s:getSelectedNode()
+    let currentNode = s:TreeFileNode.GetSelected()
     if !empty(currentNode)
         if !empty(currentNode.parent)
             call currentNode.parent.putCursorHere(1, 0)
@@ -3394,7 +3395,7 @@ endfunction
 " forward: 1 if the cursor should move to the next sibling, 0 if it should
 " move back to the previous sibling
 function! s:jumpToSibling(forward)
-    let currentNode = s:getSelectedNode()
+    let currentNode = s:TreeFileNode.GetSelected()
     if !empty(currentNode)
         let sibling = currentNode.findSibling(a:forward)
 
@@ -3432,7 +3433,7 @@ endfunction
 "args:
 "forceKeepWindowOpen - dont close the window even if NERDTreeQuitOnOpen is set
 function! s:openEntrySplit(forceKeepWindowOpen)
-    let treenode = s:getSelectedNode()
+    let treenode = s:TreeFileNode.GetSelected()
     if treenode != {}
         call treenode.openSplit()
         if !a:forceKeepWindowOpen
@@ -3461,7 +3462,7 @@ endfunction
 function! s:openInNewTab(stayCurrentTab)
     let currentTab = tabpagenr()
 
-    let treenode = s:getSelectedNode()
+    let treenode = s:TreeFileNode.GetSelected()
     if treenode != {}
         if treenode.path.isDirectory
             tabnew
@@ -3487,7 +3488,7 @@ endfunction
 
 " FUNCTION: s:openNodeRecursively() {{{2
 function! s:openNodeRecursively()
-    let treenode = s:getSelectedNode()
+    let treenode = s:TreeFileNode.GetSelected()
     if treenode == {} || treenode.path.isDirectory == 0
         call s:echo("Select a directory node first" )
     else
@@ -3550,7 +3551,7 @@ endfunction
 " FUNCTION: s:renameCurrent() {{{2
 " allows the user to rename the current node
 function! s:renameCurrent()
-    let curNode = s:getSelectedNode()
+    let curNode = s:TreeFileNode.GetSelected()
     if curNode == {}
         call s:echo("Put the cursor on a node first" )
         return
@@ -3589,7 +3590,7 @@ endfunction
 
 " FUNCTION: s:showFileSystemMenu() {{{2
 function! s:showFileSystemMenu()
-    let curNode = s:getSelectedNode()
+    let curNode = s:TreeFileNode.GetSelected()
     if curNode == {}
         call s:echo("Put the cursor on a node first" )
         return
