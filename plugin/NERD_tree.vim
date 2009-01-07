@@ -844,7 +844,7 @@ function! s:TreeFileNode.openSplit()
     " Attempt to go to adjacent window
     call s:exec(back)
 
-    let onlyOneWin = (winnr() == s:getTreeWinNum())
+    let onlyOneWin = (winnr("$") == 1)
 
     " If no adjacent window, set splitright and splitbelow appropriately
     if onlyOneWin
@@ -880,7 +880,21 @@ function! s:TreeFileNode.openSplit()
     let &splitbelow=savesplitbelow
     let &splitright=savesplitright
 endfunction
+"FUNCTION: TreeFileNode.openVSplit() {{{3
+"Open this node in a new vertical window
+function! s:TreeFileNode.openVSplit()
+    let winwidth = winwidth(".")
+    if winnr("$")==1
+        let winwidth = g:NERDTreeWinSize
+    endif
 
+    exec "vsplit " . self.path.strForEditCmd()
+
+    "resize the nerd tree back to the original size
+    call s:exec("wincmd p")
+    exec("silent vertical resize ". winwidth)
+    call s:exec('wincmd p')
+endfunction
 "FUNCTION: TreeFileNode.putCursorHere(isJump, recurseUpward){{{3
 "Places the cursor on the line number this node is rendered on
 "
@@ -3022,10 +3036,14 @@ function! s:bindMappings()
     nnoremap <silent> <buffer> <2-leftmouse> :call <SID>activateNode(0)<cr>
 
     exec "nnoremap <silent> <buffer> ". g:NERDTreeMapActivateNode . " :call <SID>activateNode(0)<cr>"
-    exec "nnoremap <silent> <buffer> ". g:NERDTreeMapOpenSplit ." :call <SID>openEntrySplit(0)<cr>"
+    exec "nnoremap <silent> <buffer> ". g:NERDTreeMapOpenSplit ." :call <SID>openEntrySplit(0,0)<cr>"
+
+    exec "nnoremap <silent> <buffer> ". "s" ." :call <SID>openEntrySplit(1,0)<cr>"
+    exec "nnoremap <silent> <buffer> ". "gs" ." :call <SID>previewNode(2)<cr>"
 
     exec "nnoremap <silent> <buffer> ". g:NERDTreeMapPreview ." :call <SID>previewNode(0)<cr>"
     exec "nnoremap <silent> <buffer> ". g:NERDTreeMapPreviewSplit ." :call <SID>previewNode(1)<cr>"
+
 
 
     exec "nnoremap <silent> <buffer> ". g:NERDTreeMapExecute ." :call <SID>executeNode()<cr>"
@@ -3363,7 +3381,7 @@ function! s:handleMiddleMouse()
     if curNode.path.isDirectory
         call s:openExplorer()
     else
-        call s:openEntrySplit(0)
+        call s:openEntrySplit(0,0)
     endif
 endfunction
 
@@ -3475,16 +3493,20 @@ function! s:openBookmark(name)
         call targetNode.open()
     endif
 endfunction
-" FUNCTION: s:openEntrySplit(forceKeepWindowOpen) {{{2
+" FUNCTION: s:openEntrySplit(vertical, forceKeepWindowOpen) {{{2
 "Opens the currently selected file from the explorer in a
 "new window
 "
 "args:
 "forceKeepWindowOpen - dont close the window even if NERDTreeQuitOnOpen is set
-function! s:openEntrySplit(forceKeepWindowOpen)
+function! s:openEntrySplit(vertical, forceKeepWindowOpen)
     let treenode = s:TreeFileNode.GetSelected()
     if treenode != {}
-        call treenode.openSplit()
+        if a:vertical
+            call treenode.openVSplit()
+        else
+            call treenode.openSplit()
+        endif
         if !a:forceKeepWindowOpen
             call s:closeTreeIfQuitOnOpen()
         endif
@@ -3551,10 +3573,13 @@ function! s:openNodeRecursively()
 endfunction
 
 "FUNCTION: s:previewNode() {{{2
+"Args:
+"   openNewWin: if 0, use the previous window, if 1 open in new split, if 2
+"               open in a vsplit
 function! s:previewNode(openNewWin)
     let currentBuf = bufnr("")
-    if a:openNewWin
-        call s:openEntrySplit(1)
+    if a:openNewWin > 0
+        call s:openEntrySplit(a:openNewWin == 2,1)
     else
         call s:activateNode(1)
     end
