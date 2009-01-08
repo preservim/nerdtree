@@ -21,22 +21,21 @@ CONTENTS                                                   *NERDTree-contents*
 
     1.Intro...................................|NERDTree|
     2.Functionality provided..................|NERDTreeFunctionality|
-        2.1 Global commands...................|NERDTreeGlobalCommands|
-        2.2 Bookmarks.........................|NERDTreeBookmarks|
-            2.2.1 The bookmark table..........|NERDTreeBookmarkTable|
-            2.2.2 Bookmark commands...........|NERDTreeBookmarkCommands|
-            2.2.3 Invalid bookmarks...........|NERDTreeInvalidBookmarks|
-        2.3 NERD tree mappings................|NERDTreeMappings|
-        2.4 The filesystem menu...............|NERDTreeFilesysMenu|
+        2.1.Global commands...................|NERDTreeGlobalCommands|
+        2.2.Bookmarks.........................|NERDTreeBookmarks|
+            2.2.1.The bookmark table..........|NERDTreeBookmarkTable|
+            2.2.2.Bookmark commands...........|NERDTreeBookmarkCommands|
+            2.2.3.Invalid bookmarks...........|NERDTreeInvalidBookmarks|
+        2.3.NERD tree mappings................|NERDTreeMappings|
+        2.4.The filesystem menu...............|NERDTreeFilesysMenu|
     3.Options.................................|NERDTreeOptions|
-        3.1 Option summary....................|NERDTreeOptionSummary|
-        3.2 Option details....................|NERDTreeOptionDetails|
+        3.1.Option summary....................|NERDTreeOptionSummary|
+        3.2.Option details....................|NERDTreeOptionDetails|
     4.Hacking the NERD tree...................|NERDTreeHacking|
-    5.TODO list...............................|NERDTreeTodo|
-    6.The Author..............................|NERDTreeAuthor|
-    7.Changelog...............................|NERDTreeChangelog|
-    8.Credits.................................|NERDTreeCredits|
-    9.License.................................|NERDTreeLicense|
+    5.About...................................|NERDTreeAbout|
+    6.Changelog...............................|NERDTreeChangelog|
+    7.Credits.................................|NERDTreeCredits|
+    8.License.................................|NERDTreeLicense|
 
 ==============================================================================
 1. Intro                                                            *NERDTree*
@@ -931,12 +930,7 @@ This way you can add new mappings or :commands or override any existing
 mapping.
 
 ==============================================================================
-5. TODO list                                                    *NERDTreeTodo*
-
-Window manager integration?
-
-==============================================================================
-6. The Author                                                 *NERDTreeAuthor*
+5. About                                                       *NERDTreeAbout*
 
 The author of the NERD tree is a terrible terrible monster called Martyzilla
 who gobbles up small children with milk and sugar for breakfast.
@@ -946,8 +940,15 @@ you, so feel free to send him suggestions and/or comments about this plugin.
 Don't be shy --- the worst he can do is slaughter you and stuff you in the
 fridge for later ;)
 
+The latest stable versions can be found at
+    http://www.vim.org/scripts/script.php?script_id=1658
+
+The latest dev versions are on github
+    http://github.com/scrooloose/nerdtree
+
+
 ==============================================================================
-7. Changelog                                               *NERDTreeChangelog*
+6. Changelog                                               *NERDTreeChangelog*
 
 3.0.1
     - fix a bug where :NERDTreeToggle was broken unless 'hidden was set
@@ -961,276 +962,8 @@ fridge for later ;)
     - change the 'H' mapping to 'I'
     - lots of refactoring
 
-2.14.3
-    Thanks to tpope for the following:
-    - use relative paths when doing edit commands if possible (useful if you
-      have %f on your statusline for example)
-    - allow relative paths for :NERDTree commands, eg ":NERDTree ../foo"
-    - fix a bug where the script used the directory of the current buffer
-      instead of vims cwd for the :NERDTree command
-    - bugfix for read only node highlighting
-
-2.14.2
-    - when opening a file (with 'o' or double click) dont split the window
-      unless we absolutely have to. This should make the script work better
-      with other explorer plugins. Thanks to Ryan Penn, Simon Peter Nicholls
-      and Michael
-    - fix a bug where directories starting with a '+' char could not be opened.
-      Thanks to Tomasz Chomiuk.
-    - fix a bug where closing vim with :qa with a tree open in another tab
-      would break, thanks to Denis Pokataev.
-    - compatibility bugfix for older versions of vim, thanks to knekk for
-      helping me track it down and to Sean Chou.
-
-2.14.1
-    - dont clobber &cpo. Thanks to godlygeek for the bug report.
-
-2.14.0
-    - fix a bug where the <c-w>o mapping  would cause the tree window to be
-      incorrectly sized when reopened.
-    - add keymapping to delete bookmarks from the bookmarks table, see
-      :help NERDTree-D
-    - lots of refactoring
-2.13.0
-    - make NERDTreeChDir option default to 0 (i.e. never change vims current
-      working dir by default)
-    - when moving/deleting nodes with the filesystem menu, move/delete any
-      associated bookmarks
-    - make the t/T on directory nodes open a fresh NERD tree for the selected
-      dir in a new tab, rather than a netrw.
-    - place the cursor at the top of the bookmarks table when opening it with B
-    - make NERDTreeQuitOnOpen option work with the g<tab> and go mappings,
-      thanks to Maxim Kim for the bug report
-    - change how invalid bookmarks are handled. Now they are not deleted. If a
-      bookmark is malformed (in the bookmarks file) or points to an
-      invalid/nonexisting location then print an error and place the offending
-      bookmarks at the bottom of the bookmarks file. See :help
-      |NERDTreeInvalidBookmarks| for info. Thanks to Zhang Shuhan for the
-      suggestion and the testing.
-    - fix a bug with the 'o' mapping that occurred when opening a new buffer
-      for a file whose name was a substring of an already open file. Thanks to
-      Charlton Wang for the report.
-    - stop the script from going into an infinite loop when it tries to cache
-      a named pipe. Thanks to Charlton Wang for the report.
-
-2.12.0
-    - added a UI for bookmarks. See :help NERDTreeBookmarkTable for details.
-      Thanks to Zhang Shuhan for testing and bug reports.
-    - relaxed the restrictions on bookmark names, now the only restriction is
-      that they cant contain spaces. This allows for e.g. Chinese bookmark
-      names. Thanks to Zhang Shuhan for the suggestion.
-    - combined the NERDTreeWinPos and NERDTreeSplitVertical options. See :help
-      NERDTreeWinPos.
-    - applied a patch from Matan Nassau to add the NERDTreeQuitOnOpen option
-      which closes the tree window after opening a file. See :help
-      NERDTreeQuitOnOpen.
-    - optimised the nerd tree rendering. Now it takes just over 1/3 of the
-      time it previously took to render.
-    - now the tree filter mappings toggle the filters "per tree" rather than
-      globally. The global filter variables are used to set the initial filter
-      settings for each new NERD tree.
-    - fix to window resizing when opening a file when NERD tree is the only
-      window open
-    - other fixes
-
-2.11.0
-    - changes to the 'o' mapping when opening files:
-      - dont clobber "special" windows (eg taglist/quickfix/etc). This should
-        make the NERD tree play nicer with other explorer plugins. Thanks to
-        Yuan Jiang for the suggestion.
-      - if the file is already open in the current tab, just move the cursor
-        to that window
-    - highlight executable files, made some slight changes to other
-      highlighting
-    - if the user resizes the tree window, keep that new size. Dont reset to
-      the default during the <tab> mapping, or :NERDTreeToggle command. Only
-      reset the size if a fresh tree is started with :NERDTree.
-    - remove the "magic" functionality from the <c-j>/<c-k> mappings (it was
-      more confusing than helpful)
-    - other minor fixes
-
-2.10.0
-    - added bookmarks, see :help NERDTreeBookmarkCommands for details. Thanks
-      to Piotr Czachur for all his testing and suggestions.
-    - fixed screen jumping bug with when &scrolloff != 0
-    - fixed some bugs with copying nodes
-    - other random fixes
-    - change license to wtfpl
-
-2.9.0
-
-    - path handling improvements, thanks to Zhang Shuhan for heaps of
-      testing/bug reports
-        * improved how paths are stored, now the script will no longer get
-          confused about drives on MF Windows
-        * made the script way better at handling paths with strange characters
-          in them (eg '$@; etc)
-    - applied a patch from Cory Echols
-        * add the command :NERDTreeClose to close the tree for the current tab
-        * set the filetype for the NERD tree buffer to "nerdtree"
-
-2.8.0
-    - added an option to enable/disable line numbers in the NERD tree window,
-      thanks to Olivier Yiptong for the email.
-
-2.7.1
-    - Changed the keys for the filesystem menu to be mnemonic rather than
-      arbitrary integers
-    - Documented the copying functionality in the filesystem menu
-
-2.7.0
-    - Bug fix: Now when you have the tree on the right and you open it with
-      multiple windows stacked, it will take up the full height of the vim
-      window.
-    - Now line numbers always turned off in the tree by default
-    - Implemented copying of nodes (via the filesystem menu) for *nix/macosx
-    - took the help doc out of the script and repackaged the whole thing as a
-      zip
-
-2.6.2
-    - Now when you try to open a file node into a window that is modified, the
-      window is not split if the &hidden option is set. Thanks to  Niels Aan
-      de Brugh for this suggestion.
-
-2.6.1
-    - Fixed a major bug with the <tab> mapping. Thanks to Zhang Weiwu for
-      emailing me.
-
-2.6.0
-    - Extended the behaviour of <c-j/k>. Now if the cursor is on a file node
-      and you use <c-j/k> the cursor will jump to its PARENTS next/previous
-      sibling. Go :help NERDTree-c-j and :help NERDTree-c-k for info.
-    - Extended the behaviour of the J/K mappings. Now if the cursor is on the
-      last child of a node and you push J/K it will jump down to the last
-      child of the next/prev of its parents siblings that is open and has
-      children.  Go :help NERDTree-J and :help NERDTree-K for info.
-    - The goal of these changes is to make tree navigation faster.
-    - Reorganised the help page a bit.
-    - Removed the E mapping.
-    - bugfixes
-
-2.5.0
-    - Added an option to enforce case sensitivity when sorting tree nodes.
-      Read :help NERDTreeCaseSensitiveSort for details.  (thanks to Michael
-      Madsen for emailing me about this). Case sensitivity defaults to off.
-    - Made the script echo a "please wait" style message when opening large
-      directories. Thanks to AOYAMA Shotaro for this suggestion.
-    - Added 2 public functions that can be used to retrieve the treenode and
-      path that the cursor is on. Read :help NERDTreePublicFunctions for
-      details (thanks again to AOYAMA Shotaro for the idea :).
-    - added 2 new mappings for file nodes: "g<tab>" and "go". These are the
-      same as the "<tab>" and "o" maps except that the cursor stays in the
-      NERDTree. Note: these maps are slaved to the o and <tab> mappings, so if
-      eg you remap "<tab>" to "i" then the "g<tab>" map will also be changed
-      to "gi".
-    - Renamed many of the help tags to be simpler.
-    - Simplified the ascii "graphics" for the filesystem menu
-    - Fixed bugs.
-    - Probably created bugs.
-    - Refactoring.
-
-2.4.0
-    - Added the P mapping to jump to the tree root.
-    - Added window centering functionality that can be triggered when doing
-      using any of the tree nav mappings. Essentially, if the cursor comes
-      within a certain distance of the top/bottom of the window then a zz is
-      done in the window. Two related options were added: NERDTreeAutoCenter
-      to turn this functionality on/off, and NERDTreeAutoCenterThreshold to
-      control how close the cursor has to be to the window edge to trigger the
-      centering.
-
-2.3.0
-    - Tree navigation changes:
-      - Added J and K mappings to jump to last/first child of the current dir.
-        Options to customise these mappings have also been added.
-      - Remapped the jump to next/prev sibling commands to be <C-j> and <C-k>
-        by default.
-      These changes should hopefully make tree navigation mappings easier to
-      remember and use as the j and k keys are simply reused 3 times (twice
-      with modifier keys).
-
-    - Made it so that, when any of the tree filters are toggled, the cursor
-      stays with the selected node (or goes to its parent/grandparent/... if
-      that node is no longer visible)
-    - Fixed an error in the doc for the mouse mode option.
-    - Made the quickhelp correctly display the current single/double click
-      mappings for opening nodes as specified by the NERDTreeMouseMode option.
-    - Fixed a bug where the script was spazzing after prompting you to delete
-      a modified buffer when using the filesystem menu.
-    - Refactoring
-2.2.3
-    - Refactored the :echo output from the script.
-    - Fixed some minor typos in the doc.
-    - Made some minor changes to the output of the 'Tree filtering mappings'
-      part of the quickhelp
-
-2.2.2
-    - More bugfixes... doh.
-
-2.2.1
-    - Bug fix that was causing an exception when closing the nerd tree. Thanks
-      to Tim carey-smith and Yu Jun for pointing this out.
-
-2.2.0
-    - Now 'cursorline' is set in the NERD tree buffer by default. See :help
-      NERDTreeHighlightCursorline for how to disable it.
-
-2.1.2
-    - Stopped the script from clobbering the 1,2,3 .. 9 registers.
-    - Made it "silent!"ly delete buffers when renaming/deleting file nodes.
-    - Minor correction to the doc
-    - Fixed a bug when refreshing that was occurring when the node you
-      refreshed had been deleted externally.
-    - Fixed a bug that was occurring when you open a file that is already open
-      and modified.
-
-2.1.1
-    - Added a bit more info about the buffers you are prompted to delete when
-      renaming/deleting nodes from the filesystem menu that are already loaded
-      into buffers.
-    - Refactoring and bugfixes
-
-2.1.0
-    - Finally removed the blank line that always appears at the top of the
-      NERDTree buffer
-    - Added NERDTreeMouseMode option. If set to 1, then a double click is
-      required to activate all nodes, if set to 2 then a single click will
-      activate directory nodes, if set to 3 then a single click will activate
-      all nodes.
-    - Now if you delete a file node and have it open in a buffer you are given
-      the option to delete that buffer as well. Similarly if you rename a file
-      you are given the option to delete any buffers containing the old file
-      (if any exist)
-    - When you rename or create a node, the cursor is now put on the new node,
-      this makes it easy immediately edit  the new file.
-    - Fixed a bug with the ! mapping that was occurring on windows with paths
-      containing spaces.
-    - Made all the mappings customisable. See |NERD_tree-mappings| for
-      details. A side effect is that a lot of the "double mappings" have
-      disappeared. E.g 'o' is now the key that is used to activate a node,
-      <CR> is no longer mapped to the same.
-    - Made the script echo warnings in some places rather than standard echos
-    - Insane amounts of refactoring all over the place.
-
-2.0.0
-    - Added two new NERDChristmasTree decorations. First person to spot them
-      and email me gets a free copy of the NERDTree.
-    - Made it so that when you jump around the tree (with the p, s and S
-      mappings) it is counted as a jump by vim. This means if you, eg, push
-      'p' one too many times then you can go `` or ctrl-o.
-    - Added a new option called NERDTreeSortOrder which takes an array of
-      regexs and is used to determine the order that the treenodes are listed
-      in. Go :help NERDTreeSortOrder for details.
-    - Removed the NERDTreeSortDirs option because it is consumed by
-      NERDTreeSortOrder
-    - Added the 'i' mapping which is the same as <tab> but requires less
-      effort to reach.
-    - Added the ! mapping which is  used to execute file in the tree (after it
-      prompts you for arguments etc)
-
-
 ==============================================================================
-8. Credits                                                   *NERDTreeCredits*
+7. Credits                                                   *NERDTreeCredits*
 
 Thanks to Tim Carey-Smith for testing/using the NERD tree from the first
 pre-beta version, for his many suggestions and for his constant stream of bug
@@ -1326,7 +1059,7 @@ closing vim with :qa with a tree open in another tab.
 Thanks to tpope for his dope bug reporting.
 
 ==============================================================================
-9. License                                                   *NERDTreeLicense*
+8. License                                                   *NERDTreeLicense*
 
 The NERD tree is released under the wtfpl.
 See http://sam.zoy.org/wtfpl/COPYING.
