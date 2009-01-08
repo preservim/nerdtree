@@ -952,6 +952,7 @@ The latest dev versions are on github
 
 3.0.1
     - fix a bug where :NERDTreeToggle was broken unless 'hidden was set
+    - more insane refactoring and doc updates
 
 3.0.0
     - hijack netrw so that doing an :edit <directory>  will put a NERD tree in
