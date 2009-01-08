@@ -116,8 +116,10 @@ call s:initVariable("g:NERDTreeMapOpenInTab", "t")
 call s:initVariable("g:NERDTreeMapOpenInTabSilent", "T")
 call s:initVariable("g:NERDTreeMapOpenRecursively", "O")
 call s:initVariable("g:NERDTreeMapOpenSplit", "i")
+call s:initVariable("g:NERDTreeMapOpenVSplit", "s")
 call s:initVariable("g:NERDTreeMapPreview", "g" . NERDTreeMapActivateNode)
 call s:initVariable("g:NERDTreeMapPreviewSplit", "g" . NERDTreeMapOpenSplit)
+call s:initVariable("g:NERDTreeMapPreviewVSplit", "g" . NERDTreeMapOpenVSplit)
 call s:initVariable("g:NERDTreeMapQuit", "q")
 call s:initVariable("g:NERDTreeMapRefresh", "r")
 call s:initVariable("g:NERDTreeMapRefreshRoot", "R")
@@ -3038,13 +3040,11 @@ function! s:bindMappings()
     exec "nnoremap <silent> <buffer> ". g:NERDTreeMapActivateNode . " :call <SID>activateNode(0)<cr>"
     exec "nnoremap <silent> <buffer> ". g:NERDTreeMapOpenSplit ." :call <SID>openEntrySplit(0,0)<cr>"
 
-    exec "nnoremap <silent> <buffer> ". "s" ." :call <SID>openEntrySplit(1,0)<cr>"
-    exec "nnoremap <silent> <buffer> ". "gs" ." :call <SID>previewNode(2)<cr>"
-
     exec "nnoremap <silent> <buffer> ". g:NERDTreeMapPreview ." :call <SID>previewNode(0)<cr>"
     exec "nnoremap <silent> <buffer> ". g:NERDTreeMapPreviewSplit ." :call <SID>previewNode(1)<cr>"
 
-
+    exec "nnoremap <silent> <buffer> ". g:NERDTreeMapOpenVSplit ." :call <SID>openEntrySplit(1,0)<cr>"
+    exec "nnoremap <silent> <buffer> ". g:NERDTreeMapPreviewVSplit ." :call <SID>previewNode(2)<cr>"
 
     exec "nnoremap <silent> <buffer> ". g:NERDTreeMapExecute ." :call <SID>executeNode()<cr>"
 
