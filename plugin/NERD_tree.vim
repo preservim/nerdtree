@@ -2931,6 +2931,9 @@ function! s:toggle(dir)
         if !s:isTreeOpen()
             call s:createTreeWin()
             call s:restoreScreenState()
+            if !&hidden
+                call s:renderView()
+            endif
         else
             call s:closeTree()
         endif

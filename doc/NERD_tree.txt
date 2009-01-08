@@ -949,6 +949,9 @@ fridge for later ;)
 ==============================================================================
 7. Changelog                                               *NERDTreeChangelog*
 
+3.0.1
+    - fix a bug where :NERDTreeToggle was broken unless 'hidden was set
+
 3.0.0
     - hijack netrw so that doing an :edit <directory>  will put a NERD tree in
       the window rather than a netrw browser. See :help 'NERDTreeHijackNetrw'
