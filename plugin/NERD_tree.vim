@@ -2406,6 +2406,8 @@ function! s:dumpHelp()
         let @h=@h."\" middle-click,\n"
         let @h=@h."\" ". g:NERDTreeMapOpenSplit .": open split\n"
         let @h=@h."\" ". g:NERDTreeMapPreviewSplit .": preview split\n"
+        let @h=@h."\" ". g:NERDTreeMapOpenVSplit .": open vsplit\n"
+        let @h=@h."\" ". g:NERDTreeMapPreviewVSplit .": preview vsplit\n"
         let @h=@h."\" ". g:NERDTreeMapExecute.": Execute file\n"
 
         let @h=@h."\"\n\" ----------------------------\n"
