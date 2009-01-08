@@ -3134,7 +3134,7 @@ endfunction
 " FUNCTION: s:closeChildren() {{{2
 " closes all childnodes of the current node
 function! s:closeChildren()
-    let currentNode = s:getSelectedDir()
+    let currentNode = s:TreeDirNode.GetSelected()
     if currentNode == {}
         call s:echo("Select a node first")
         return
@@ -3325,7 +3325,7 @@ endfunction
 " FUNCTION: s:insertNewNode() {{{2
 " Adds a new node to the filesystem and then into the tree
 function! s:insertNewNode()
-    let curDirNode = s:getSelectedDir()
+    let curDirNode = s:TreeDirNode.GetSelected()
     if curDirNode == {}
         call s:echo("Put the cursor on a node first" )
         return
@@ -3449,7 +3449,7 @@ endfunction
 
 " FUNCTION: s:openExplorer() {{{2
 function! s:openExplorer()
-    let treenode = s:getSelectedDir()
+    let treenode = s:TreeDirNode.GetSelected()
     if treenode != {}
         call treenode.openExplorer()
     else
@@ -3539,7 +3539,7 @@ endfunction
 " FUNCTION: s:refreshCurrent() {{{2
 " refreshes the root for the current node
 function! s:refreshCurrent()
-    let treenode = s:getSelectedDir()
+    let treenode = s:TreeDirNode.GetSelected()
     if treenode == {}
         call s:echo("Refresh failed. Select a node first")
         return
