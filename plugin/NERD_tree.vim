@@ -2074,9 +2074,16 @@ function! s:initNerdTreeInPlace(dir)
         return
     endtry
 
+
+    let previousBuf = expand("#")
+
     "we need a unique name for each secondary tree buffer to ensure they are
     "all independent
     exec "silent edit " . s:nextBufferName()
+
+    if previousBuf !~ s:NERDTreeBufName . '.*'
+        let b:NERDTreePreviousBuf = previousBuf
+    endif
 
     let b:NERDTreeRoot = s:TreeDirNode.New(path)
     call b:NERDTreeRoot.open()
@@ -3178,10 +3185,14 @@ endfunction
 " FUNCTION: s:closeTreeWindow() {{{2
 " close the tree window
 function! s:closeTreeWindow()
-    if b:NERDTreeType == "secondary"
-        buffer #
+    if b:NERDTreeType == "secondary" && exists("b:NERDTreePreviousBuf")
+        exec "buffer " . b:NERDTreePreviousBuf
     else
-        wincmd c
+        if winnr("$") > 1
+            wincmd c
+        else
+            call s:echo("Cannot close last window")
+        endif
     endif
 endfunction
 " FUNCTION: s:copyNode() {{{2
