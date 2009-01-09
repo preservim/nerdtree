@@ -2163,6 +2163,9 @@ function! s:initNerdTreeMirror()
     let t:NERDTreeBufName = bufferName
     call s:createTreeWin()
     exec 'buffer ' .  bufferName
+    if !&hidden
+        call s:renderView()
+    endif
 endfunction
 " FUNCTION: s:tabpagevar(tabnr, var) {{{2
 function! s:tabpagevar(tabnr, var)
