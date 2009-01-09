@@ -951,10 +951,13 @@ The latest dev versions are on github
 6. Changelog                                               *NERDTreeChangelog*
 
 3.0.1
+    Bugfixes:
     - fix a bug where :NERDTreeToggle was broken unless 'hidden was set
     - fix a bug with :NERDTreeMirror when 'hidden wasnt set
     - make the q mapping work with secondary (:e <dir>  style) nerd trees
-    - more insane refactoring and doc updates
+    - ensure buffer names for secondary nerd trees are unique, this fixes a
+      number of small bugs
+    More insane refactoring.
 
 3.0.0
     - hijack netrw so that doing an :edit <directory>  will put a NERD tree in
