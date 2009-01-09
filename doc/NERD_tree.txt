@@ -952,6 +952,7 @@ The latest dev versions are on github
 
 3.0.1
     - fix a bug where :NERDTreeToggle was broken unless 'hidden was set
+    - make the q mapping work with secondary (:e <dir>  style) nerd trees
     - more insane refactoring and doc updates
 
 3.0.0

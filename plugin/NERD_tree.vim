@@ -3004,7 +3004,7 @@ function! s:bindMappings()
 
     exec "nnoremap <silent> <buffer> ". g:NERDTreeMapChdir ." :call <SID>chCwd()<cr>"
 
-    exec "nnoremap <silent> <buffer> ". g:NERDTreeMapQuit ." :NERDTreeToggle<cr>"
+    exec "nnoremap <silent> <buffer> ". g:NERDTreeMapQuit ." :call <SID>closeTreeWindow()<cr>"
 
     exec "nnoremap <silent> <buffer> ". g:NERDTreeMapRefreshRoot ." :call <SID>refreshRoot()<cr>"
     exec "nnoremap <silent> <buffer> ". g:NERDTreeMapRefresh ." :call <SID>refreshCurrent()<cr>"
@@ -3162,7 +3162,15 @@ function! s:closeCurrentDir()
         call treenode.parent.putCursorHere(0, 0)
     endif
 endfunction
-
+" FUNCTION: s:closeTreeWindow() {{{2
+" close the tree window
+function! s:closeTreeWindow()
+    if b:NERDTreeType == "secondary"
+        buffer #
+    else
+        wincmd c
+    endif
+endfunction
 " FUNCTION: s:copyNode() {{{2
 function! s:copyNode()
     let currentNode = s:TreeFileNode.GetSelected()
