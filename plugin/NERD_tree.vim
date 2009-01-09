@@ -2310,8 +2310,7 @@ function! s:createTreeWin()
     let splitLocation = g:NERDTreeWinPos == "left" ? "topleft " : "botright "
     let splitSize = g:NERDTreeWinSize
     if !exists('t:NERDTreeBufName')
-        let t:NERDTreeBufName = s:NERDTreeBufName . s:next_buffer_number
-        let s:next_buffer_number += 1
+        let t:NERDTreeBufName = s:nextBufferName()
     endif
     let cmd = splitLocation . 'vertical ' . splitSize . ' new ' . t:NERDTreeBufName
     silent! execute cmd
