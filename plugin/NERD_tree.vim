@@ -1982,8 +1982,7 @@ endfunction " >>>
 "FUNCTION: s:checkForBrowse(dir) {{{2
 "inits a secondary nerd tree in the current buffer if appropriate
 function! s:checkForBrowse(dir)
-    if !exists("b:NERDTreeProcessed") && a:dir != '' && isdirectory(a:dir)
-        let b:NERDTreeProcessed = 1
+    if a:dir != '' && isdirectory(a:dir)
         call s:initNerdTreeInPlace(a:dir)
     endif
 endfunction
@@ -2066,7 +2065,7 @@ function! s:initNerdTree(name)
     call b:NERDTreeRoot.putCursorHere(0, 0)
 endfunction
 
-"FUNCTION: s:initNerdTreeInPlace(name) {{{2
+"FUNCTION: s:initNerdTreeInPlace(dir) {{{2
 function! s:initNerdTreeInPlace(dir)
     try
         let path = s:Path.New(a:dir)
@@ -2074,6 +2073,11 @@ function! s:initNerdTreeInPlace(dir)
         call s:echo("Invalid directory name:" . a:name)
         return
     endtry
+
+    "we need a unique name for each secondary tree buffer to ensure they are
+    "all independent
+    exec "silent edit " . s:nextBufferName()
+
     let b:NERDTreeRoot = s:TreeDirNode.New(path)
     call b:NERDTreeRoot.open()
 
@@ -2166,6 +2170,13 @@ function! s:initNerdTreeMirror()
     if !&hidden
         call s:renderView()
     endif
+endfunction
+" FUNCTION: s:nextBufferName() {{{2
+" returns the buffer name for the next nerd tree
+function! s:nextBufferName()
+    let name = s:NERDTreeBufName . s:next_buffer_number
+    let s:next_buffer_number += 1
+    return name
 endfunction
 " FUNCTION: s:tabpagevar(tabnr, var) {{{2
 function! s:tabpagevar(tabnr, var)
