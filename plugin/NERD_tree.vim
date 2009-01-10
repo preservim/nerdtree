@@ -2074,6 +2074,8 @@ function! s:initNerdTreeInPlace(dir)
         return
     endtry
 
+    "we want the directory buffer to disappear when we do the :edit below
+    setlocal bufhidden=wipe
 
     let previousBuf = expand("#")
 
@@ -2081,9 +2083,7 @@ function! s:initNerdTreeInPlace(dir)
     "all independent
     exec "silent edit " . s:nextBufferName()
 
-    if previousBuf !~ s:NERDTreeBufName . '.*'
-        let b:NERDTreePreviousBuf = previousBuf
-    endif
+    let b:NERDTreePreviousBuf = bufnr(previousBuf)
 
     let b:NERDTreeRoot = s:TreeDirNode.New(path)
     call b:NERDTreeRoot.open()
@@ -2091,7 +2091,7 @@ function! s:initNerdTreeInPlace(dir)
     "throwaway buffer options
     setlocal noswapfile
     setlocal buftype=nofile
-    setlocal bufhidden=delete
+    setlocal bufhidden=hide
     setlocal nowrap
     setlocal foldcolumn=0
     setlocal nobuflisted
@@ -3185,7 +3185,7 @@ endfunction
 " FUNCTION: s:closeTreeWindow() {{{2
 " close the tree window
 function! s:closeTreeWindow()
-    if b:NERDTreeType == "secondary" && exists("b:NERDTreePreviousBuf")
+    if b:NERDTreeType == "secondary" && b:NERDTreePreviousBuf != -1
         exec "buffer " . b:NERDTreePreviousBuf
     else
         if winnr("$") > 1
