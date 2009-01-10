@@ -1375,6 +1375,22 @@ endfunction
 "CLASS: Path {{{2
 "============================================================
 let s:Path = {}
+"FUNCTION: Path.AbsolutePathFor(str) {{{3
+function! s:Path.AbsolutePathFor(str)
+    let prependCWD = 0
+    if s:running_windows
+        let prependCWD = a:str !~ '^.:\(\\\|\/\)'
+    else
+        let prependCWD = a:str !~ '^/'
+    endif
+
+    let toReturn = a:str
+    if prependCWD
+        let toReturn = getcwd() . s:os_slash . a:str
+    endif
+
+    return toReturn
+endfunction
 "FUNCTION: Path.bookmarkNames() {{{3
 function! s:Path.bookmarkNames()
     if !exists("self._bookmarkNames")
@@ -1705,13 +1721,11 @@ function! s:Path.equals(path)
 endfunction
 
 "FUNCTION: Path.New() {{{3
-"
 "The Constructor for the Path object
-"Throws NERDTree.Path.InvalidArguments exception.
-function! s:Path.New(fullpath)
+function! s:Path.New(path)
     let newPath = copy(self)
 
-    call newPath.readInfoFromDisk(a:fullpath)
+    call newPath.readInfoFromDisk(s:Path.AbsolutePathFor(a:path))
 
     let newPath.cachedDisplayString = ""
 
@@ -1732,7 +1746,6 @@ function! s:Path.readInfoFromDisk(fullpath)
     endif
 
     let self.pathSegments = split(fullpath, '/')
-
 
     let self.isReadOnly = 0
     if isdirectory(a:fullpath)
