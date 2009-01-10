@@ -1213,6 +1213,7 @@ endfunction
 "Reads in all this nodes children
 "
 "Return: the number of child nodes read
+unlet s:TreeDirNode.open
 function! s:TreeDirNode.open()
     let self.isOpen = 1
     if self.children == []
