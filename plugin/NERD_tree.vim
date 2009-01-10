@@ -890,7 +890,8 @@ function! s:TreeFileNode.openVSplit()
         let winwidth = g:NERDTreeWinSize
     endif
 
-    exec "vsplit " . self.path.strForEditCmd()
+    let splitLocation = g:NERDTreeWinPos == "left" ? "rightbelow " : "leftabove "
+    exec splitLocation . "vertical new " . self.path.strForEditCmd()
 
     "resize the nerd tree back to the original size
     call s:exec("wincmd p")
