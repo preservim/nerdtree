@@ -952,11 +952,14 @@ The latest dev versions are on github
 
 3.0.1
     Bugfixes:
-    - fix a bug where :NERDTreeToggle was broken unless 'hidden was set
-    - fix a bug with :NERDTreeMirror when 'hidden wasnt set
-    - make the q mapping work with secondary (:e <dir>  style) nerd trees
-    - ensure buffer names for secondary nerd trees are unique, this fixes a
-      number of small bugs
+    - fix bugs with :NERDTreeToggle and :NERDTreeMirror when 'hidden
+      was not set
+    - fix a bug where :NERDTree <path> would fail if <path> was relative and
+      didnt start with a ./ or ../  Thanks to James Kanze.
+    - make the q mapping work with secondary (:e <dir>  style) trees,
+      thanks to jamessan
+    - fix a bunch of small bugs with secondary trees
+
     More insane refactoring.
 
 3.0.0
@@ -971,98 +974,42 @@ The latest dev versions are on github
 ==============================================================================
 7. Credits                                                   *NERDTreeCredits*
 
-Thanks to Tim Carey-Smith for testing/using the NERD tree from the first
-pre-beta version, for his many suggestions and for his constant stream of bug
-complaints.
+Thanks to the following people for testing, bug reports, ideas etc. Without
+you I probably would have got bored of the hacking the NERD tree and
+just downloaded pr0n instead.
 
-Thanks to Vigil for trying it out before the first release :) and suggesting
-that mappings to open files in new tabs should be implemented.
-
-Thanks to Nick Brettell for testing, fixing my spelling and suggesting i put a
-    .. (up a directory)
-line in the gui.
-
-Thanks to Thomas Scott Urban - the author of the vtreeexplorer plugin - whose
-gui code i borrowed from.
-
-Thanks to Terrance Cohen for pointing out a bug where the script was changing
-vims CWD all over the show.
-
-Thanks to Yegappan Lakshmanan (author of Taglist and other orgasmically
-wonderful plugins) for telling me how to fix a bug that was causing vim to go
-into visual mode everytime you double clicked a node :)
-
-Thanks to Jason Mills for sending me a fix that allows windows paths to use
-forward slashes as well as backward.
-
-Thanks to Michael Geddes (frogonwheels on #vim at freenode) for giving me some
-tips about syntax highlighting when i was doing highlighting for the
-quickhelp.
-
-Thanks to Yu Jun for emailing me about a bug that was occurring when closing
-the tree.
-
-Thanks to Michael Madsen for emailing me about making case sensitivity
-optional when sorting nodes.
-
-Thanks to AOYAMA Shotaro for suggesting that i echo a "please wait" message
-when opening large directories.
-
-Thanks to Michael Madsen for requesting the NERDTreeCaseSensitiveSort option.
-
-Thanks to AOYAMA Shotaro for suggesting that a "please wait" style message be
-echoed when opening large directories. Also, thanks for the suggestion of
-having public functions in the script to access the internal data :D
-
-Thanks to Zhang Weiwu for emailing me about a bug with the the <tab> mapping
-in 2.6.0
-
-Thanks to  Niels Aan de Brugh for the suggestion that the script now split the
-window if you try to open a file in a window containing a modified buffer when
-the &hidden option is set.
-
-Thanks to Olivier Yiptong for prompting me to make line numbers in the
-NERD tree window optional.
-
-Thanks to Zhang Shuhan for all of his emails and testing to help improve the
-NERD tree path handling. Thanks also for suggesting the bookmarks gui, and for
-testing and his many suggestions and bugreports about bookmarks.
-
-Thanks to Cory Echols for sending a patch to add the :NERDTreeClose command and
-set the NERD tree buffers filetype to 'nerdtree'
-
-Thanks to Piotr Czachur for all his suggestions and testing for the bookmarks
-feature.
-
-Thanks to Yuan Jiang for suggesting the "o" mapping shouldnt clobber "special"
-windows, like taglist.
-
-Thanks to Matan Nassau for the patch to add the NERDTreeQuitOnOpen option.
-
-Thanks to Maxim Kim for reporting a bug with g<tab> and go mappings when
-NERDTreeQuitOnOpen was set.
-
-Thanks to Charlton Wang for reporting bugs with the 'o' mapping and with
-handling named pipes.
-
-Chur to godlygeek for reporting a bug where &cpo was getting clobbered.
-
-Cheers to knekk for helping me track down a bug when overwriting dictionary
-keys that only occurred in some versions of vim.
-
-Thanks also to Sean Chou for the bug report about the above bug.
-
-Thanks to Ryan Penn, Simon Peter Nicholls and Michael for pointing out an issue
-where the script was splitting constantly when using the 'o' mapping while
-other explorers were open.
-
-Thanks to Tomasz Chomiuk for the bug report about the script failing when dir
-names began with a +.
-
-Thanks to Denis Pokataev for the bug report about the script failing when
-closing vim with :qa with a tree open in another tab.
-
-Thanks to tpope for his dope bug reporting.
+    Tim Carey-Smith (halorgium)
+    Vigil
+    Nick Brettell
+    Thomas Scott Urban
+    Terrance Cohen
+    Yegappan Lakshmanan
+    Jason Mills
+    Michael Geddes (frogonwheels)
+    Yu Jun
+    Michael Madsen
+    AOYAMA Shotaro
+    Zhang Weiwu
+    Niels Aan de Brugh
+    Olivier Yiptong
+    Zhang Shuhan
+    Cory Echols
+    Piotr Czachur
+    Yuan Jiang
+    Matan Nassau
+    Maxim Kim
+    Charlton Wang
+    Matt Wozniski (godlygeek)
+    knekk
+    Sean Chou
+    Ryan Penn
+    Simon Peter Nicholls
+    Michael Foobar
+    Tomasz Chomiuk
+    Denis Pokataev
+    Tim Pope (tpope)
+    James Kanze
+    James Vega (jamessan)
 
 ==============================================================================
 8. License                                                   *NERDTreeLicense*
