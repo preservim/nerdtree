@@ -789,8 +789,6 @@ function! s:TreeFileNode.open()
         return
     endif
 
-    call s:putCursorInTreeWin()
-
     "if the file is already open in this tab then just stick the cursor in it
     let winnr = bufwinnr('^' . self.path.strForOS(0) . '$')
     if winnr != -1
