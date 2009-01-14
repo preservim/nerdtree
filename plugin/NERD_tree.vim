@@ -883,6 +883,11 @@ endfunction
 "FUNCTION: TreeFileNode.openVSplit() {{{3
 "Open this node in a new vertical window
 function! s:TreeFileNode.openVSplit()
+    if b:NERDTreeType == "secondary"
+        exec "vnew " . self.path.strForEditCmd()
+        return
+    endif
+
     let winwidth = winwidth(".")
     if winnr("$")==1
         let winwidth = g:NERDTreeWinSize
