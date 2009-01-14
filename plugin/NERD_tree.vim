@@ -888,11 +888,11 @@ function! s:TreeFileNode.openVSplit()
         let winwidth = g:NERDTreeWinSize
     endif
 
-    let splitLocation = g:NERDTreeWinPos == "left" ? "rightbelow " : "leftabove "
-    exec splitLocation . "vertical new " . self.path.strForEditCmd()
+    call s:exec("wincmd p")
+    exec "vnew " . self.path.strForEditCmd()
 
     "resize the nerd tree back to the original size
-    call s:exec("wincmd p")
+    call s:putCursorInTreeWin()
     exec("silent vertical resize ". winwidth)
     call s:exec('wincmd p')
 endfunction
