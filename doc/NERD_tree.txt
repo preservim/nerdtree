@@ -203,6 +203,8 @@ t.......Open selected node/bookmark in a new tab.................|NERDTree-t|
 T.......Same as 't' but keep the focus on the current tab........|NERDTree-T|
 i.......Open selected file in a split window.....................|NERDTree-i|
 gi......Same as i, but leave the cursor on the NERDTree..........|NERDTree-gi|
+s.......Open selected file in a new vsplit.......................|NERDTree-s|
+gs......Same as s, but leave the cursor on the NERDTree..........|NERDTree-gs|
 !.......Execute the current file.................................|NERDTree-!|
 O.......Recursively open the selected directory..................|NERDTree-O|
 x.......Close the current nodes parent...........................|NERDTree-x|
@@ -307,6 +309,26 @@ The same as |NERDTree-i| except that the cursor is not moved.
 
 The key combo for this mapping is always "g" + NERDTreeMapOpenSplit (see
 |NERDTree-i|).
+
+------------------------------------------------------------------------------
+                                                                  *NERDTree-s*
+Default key: s
+Map option: NERDTreeMapOpenVSplit
+Applies to: files.
+
+Opens the selected file in a new vertically split window and puts the cursor in
+the new window.
+
+------------------------------------------------------------------------------
+                                                                 *NERDTree-gs*
+Default key: gs
+Map option: None
+Applies to: files.
+
+The same as |NERDTree-s| except that the cursor is not moved.
+
+The key combo for this mapping is always "g" + NERDTreeMapOpenVSplit (see
+|NERDTree-s|).
 
 ------------------------------------------------------------------------------
                                                                   *NERDTree-!*
