@@ -641,6 +641,8 @@ NERD tree. These options should be set in your vimrc.
 |'NERDTreeSortOrder'|           Tell the NERD tree how to sort the nodes in
                                 the tree.
 
+|'NERDTreeStatusline'|          Set a statusline for NERD tree windows.
+
 |'NERDTreeWinPos'|              Tells the script where to put the NERD tree
                                 window.
 
@@ -892,6 +894,20 @@ Other examples: >
 2. Everything will simply appear in alphabetical order.
 3. Dirs will appear first, then ruby and php. Swap files, bak files and vim
    backup files will appear last with everything else preceding them.
+
+------------------------------------------------------------------------------
+                                                        *'NERDTreeStatusline'*
+Values: Any valid statusline setting.
+Default: %{b:NERDTreeRoot.path.strForOS(0)}
+
+Tells the script what to use as the |'statusline'| setting for NERD tree
+windows.
+
+Note that the statusline is set using |:let-&| not |:set| so escaping spaces
+isn't necessary.
+
+Setting this option to -1 will will deactivate it so that your global
+statusline setting is used instead.
 
 ------------------------------------------------------------------------------
                                                             *'NERDTreeWinPos'*

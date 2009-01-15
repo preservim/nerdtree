@@ -79,6 +79,7 @@ endif
 "once here
 let s:NERDTreeSortStarIndex = index(g:NERDTreeSortOrder, '*')
 
+call s:initVariable("g:NERDTreeStatusline", "%{b:NERDTreeRoot.path.strForOS(0)}")
 call s:initVariable("g:NERDTreeWinPos", "left")
 call s:initVariable("g:NERDTreeWinSize", 31)
 
@@ -2142,6 +2143,8 @@ function! s:initNerdTreeInPlace(dir)
         setlocal cursorline
     endif
 
+    call s:setupStatusline()
+
     let b:treeShowHelp = 0
     let b:NERDTreeIgnoreEnabled = 1
     let b:NERDTreeShowFiles = g:NERDTreeShowFiles
@@ -2378,7 +2381,7 @@ function! s:createTreeWin()
         setlocal cursorline
     endif
 
-
+    call s:setupStatusline()
 
     call s:bindMappings()
     setfiletype nerdtree
@@ -2847,6 +2850,12 @@ function! s:saveScreenState()
     endtry
 endfunction
 
+"FUNCTION: s:setupStatusline() {{{2
+function! s:setupStatusline()
+    if g:NERDTreeStatusline != -1
+        let &l:statusline = g:NERDTreeStatusline
+    endif
+endfunction
 "FUNCTION: s:setupSyntaxHighlighting() {{{2
 function! s:setupSyntaxHighlighting()
     "treeFlags are syntax items that should be invisible, but give clues as to
