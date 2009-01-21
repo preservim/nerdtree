@@ -3774,7 +3774,10 @@ function! s:upDir(keepState)
             let b:NERDTreeRoot = newRoot
         else
             let b:NERDTreeRoot = b:NERDTreeRoot.parent
+        endif
 
+        if g:NERDTreeChDirMode == 2
+            exec 'cd ' . b:NERDTreeRoot.path.strForCd()
         endif
 
         call s:renderView()
