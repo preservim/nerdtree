@@ -167,7 +167,7 @@ augroup END
 if g:NERDTreeHijackNetrw
     augroup NERDTreeHijackNetrw
         autocmd VimEnter * silent! autocmd! FileExplorer
-        au BufEnter * call s:checkForBrowse(expand("<amatch>"))
+        au BufEnter,VimEnter * call s:checkForBrowse(expand("<amatch>"))
     augroup END
 endif
 
