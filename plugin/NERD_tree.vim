@@ -1903,9 +1903,11 @@ function! s:Path.strForEditCmd()
         let cwd = tolower(getcwd())
     endif
 
+    let cwd = cwd . s:os_slash
+
     "return a relative path if we can
     if stridx(p, cwd) == 0
-        let p = strpart(p, strlen(cwd)+1)
+        let p = strpart(p, strlen(cwd))
     endif
 
     if p == ''
