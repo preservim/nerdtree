@@ -2353,18 +2353,20 @@ function! s:createTreeWin()
     "create the nerd tree window
     let splitLocation = g:NERDTreeWinPos == "left" ? "topleft " : "botright "
     let splitSize = g:NERDTreeWinSize
+    silent! exec splitLocation . 'vertical ' . splitSize . ' new'
+
     if !exists('t:NERDTreeBufName')
         let t:NERDTreeBufName = s:nextBufferName()
+        silent! exec "edit " . t:NERDTreeBufName
+    else
+        silent! exec "buffer " . t:NERDTreeBufName
     endif
-    let cmd = splitLocation . 'vertical ' . splitSize . ' new ' . t:NERDTreeBufName
-    silent! execute cmd
 
     setlocal winfixwidth
 
     "throwaway buffer options
     setlocal noswapfile
     setlocal buftype=nofile
-    "setlocal bufhidden=delete
     setlocal nowrap
     setlocal foldcolumn=0
     setlocal nobuflisted
