@@ -988,6 +988,24 @@ The latest dev versions are on github
 ==============================================================================
 6. Changelog                                               *NERDTreeChangelog*
 
+3.1.0
+    New features:
+    - add mappings to open files in a vsplit, see :help NERDTree-s and :help
+      NERDTree-gs
+    - make the statusline for the nerd tree window default to something
+      hopefully more useful. See :help 'NERDTreeStatusline'
+    Bugfixes:
+    - make the hijack netrw functionality work when vim is started with "vim
+      <some dir>" (thanks to Alf Mikula for the patch).
+    - fix a bug where the CWD wasnt being changed for some operations even when
+      NERDTreeChDirMode==2 (thanks to Lucas S. Buchala)
+    - add -bar to all the nerd tree :commands so they can chain with other
+      :commands (thanks to tpope)
+    - fix bugs when ignorecase was set (thanks to nach)
+    - fix a bug with the relative path code (thanks to nach)
+    - fix a bug where doing a :cd would cause :NERDTreeToggle to fail (thanks nach)
+
+
 3.0.1
     Bugfixes:
     - fix bugs with :NERDTreeToggle and :NERDTreeMirror when 'hidden
@@ -1048,6 +1066,9 @@ just downloaded pr0n instead.
     Tim Pope (tpope)
     James Kanze
     James Vega (jamessan)
+    Frederic Chanal (nach)
+    Alf Mikula
+    Lucas S. Buchala
 
 ==============================================================================
 8. License                                                   *NERDTreeLicense*
