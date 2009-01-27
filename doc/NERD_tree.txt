@@ -917,9 +917,9 @@ Default: "left".
 This option is used to determine where NERD tree window is placed on the
 screen.
 
-This option is makes it possible to use two different explorer type
-plugins simultaneously. For example, you could have the taglist plugin on the
-left of the window and the NERD tree on the right.
+This option makes it possible to use two different explorer plugins
+simultaneously. For example, you could have the taglist plugin on the left of
+the window and the NERD tree on the right.
 
 ------------------------------------------------------------------------------
                                                            *'NERDTreeWinSize'*
