@@ -3042,7 +3042,8 @@ function! s:activateNode(forceKeepWindowOpen)
                 call bookmark.toRoot()
             else
                 if bookmark.validate()
-                    call (s:TreeFileNode.New(bookmark.path)).open()
+                    let n = s:TreeFileNode.New(bookmark.path)
+                    call n.open()
                 endif
             endif
         endif
