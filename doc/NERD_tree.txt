@@ -211,6 +211,7 @@ x.......Close the current nodes parent...........................|NERDTree-x|
 X.......Recursively close all children of the current node.......|NERDTree-X|
 e.......Edit the current dif.....................................|NERDTree-e|
 
+<CR>...............same as |NERDTree-o|.
 double-click.......same as the |NERDTree-o| map.
 middle-click.......same as |NERDTree-i| for files, same as
                    |NERDTree-e| for dirs.
