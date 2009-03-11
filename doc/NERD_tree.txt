@@ -989,6 +989,10 @@ The latest dev versions are on github
 ==============================================================================
 6. Changelog                                               *NERDTreeChangelog*
 
+3.x.x
+    - fix a bug where a non-listed no-name buffer was getting created every
+      time the tree windows was created, thanks to Derek Wyatt for the patch
+
 3.1.0
     New features:
     - add mappings to open files in a vsplit, see :help NERDTree-s and :help
