@@ -2355,7 +2355,7 @@ function! s:createTreeWin()
     "create the nerd tree window
     let splitLocation = g:NERDTreeWinPos ==# "left" ? "topleft " : "botright "
     let splitSize = g:NERDTreeWinSize
-    silent! exec splitLocation . 'vertical ' . splitSize . ' new'
+    silent! exec splitLocation . 'vertical ' . splitSize . ' split'
 
     if !exists('t:NERDTreeBufName')
         let t:NERDTreeBufName = s:nextBufferName()
