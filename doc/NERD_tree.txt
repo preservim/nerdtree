@@ -222,8 +222,8 @@ P.......Jump to the root node....................................|NERDTree-P|
 p.......Jump to current nodes parent.............................|NERDTree-p|
 K.......Jump up inside directories at the current tree depth.....|NERDTree-K|
 J.......Jump down inside directories at the current tree depth...|NERDTree-J|
-<C-j>...Jump down to the next sibling of the current directory...|NERDTree-c-j|
-<C-k>...Jump up to the previous sibling of the current directory.|NERDTree-c-k|
+<C-J>...Jump down to the next sibling of the current directory...|NERDTree-C-J|
+<C-K>...Jump up to the previous sibling of the current directory.|NERDTree-C-K|
 
 C.......Change the tree root to the selected dir.................|NERDTree-C|
 u.......Move the tree root up one directory......................|NERDTree-u|
@@ -431,16 +431,16 @@ If the cursor is already on the last node then do the following:
     * go to the last child of that node
 
 ------------------------------------------------------------------------------
-                                                                *NERDTree-c-j*
-Default key: <C-j>
+                                                                *NERDTree-C-J*
+Default key: <C-J>
 Map option: NERDTreeMapJumpNextSibling
 Applies to: files and directories.
 
 Jump to the next sibling of the selected node.
 
 ------------------------------------------------------------------------------
-                                                                *NERDTree-c-k*
-Default key: <C-k>
+                                                                *NERDTree-C-K*
+Default key: <C-K>
 Map option: NERDTreeMapJumpPrevSibling
 Applies to: files and directories.
 
@@ -680,7 +680,7 @@ If set to 1, the NERD tree window will center around the cursor if it moves to
 within |'NERDTreeAutoCenterThreshold'| lines of the top/bottom of the window.
 
 This is ONLY done in response to tree navigation mappings,
-i.e. |NERDTree-J| |NERDTree-K| |NERDTree-C-J| |NERDTree-c-K| |NERDTree-p|
+i.e. |NERDTree-J| |NERDTree-K| |NERDTree-C-J| |NERDTree-C-K| |NERDTree-p|
 |NERDTree-P|
 
 The centering is done with a |zz| operation.
@@ -743,7 +743,7 @@ Values: 0 or 1.
 Default: 1.
 
 If set to 1, the current cursor line in the NERD tree buffer will be
-highlighted. This is done using the |cursorline| option.
+highlighted. This is done using the |'cursorline'| option.
 
 ------------------------------------------------------------------------------
                                                        *'NERDTreeHijackNetrw'*
