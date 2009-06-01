@@ -796,12 +796,12 @@ function! s:TreeFileNode.open()
         call s:exec(winnr . "wincmd w")
 
     else
-        if !s:isWindowUsable(winnr("#")) && s:firstNormalWindow() ==# -1
+        if !s:isWindowUsable(winnr("#")) && s:firstUsableWindow() ==# -1
             call self.openSplit()
         else
             try
                 if !s:isWindowUsable(winnr("#"))
-                    call s:exec(s:firstNormalWindow() . "wincmd w")
+                    call s:exec(s:firstUsableWindow() . "wincmd w")
                 else
                     call s:exec('wincmd p')
                 endif
@@ -2517,14 +2517,15 @@ function! s:echoError(msg)
     call s:echo(a:msg)
     echohl normal
 endfunction
-"FUNCTION: s:firstNormalWindow(){{{2
+"FUNCTION: s:firstUsableWindow(){{{2
 "find the window number of the first normal window
-function! s:firstNormalWindow()
+function! s:firstUsableWindow()
     let i = 1
     while i <= winnr("$")
         let bnum = winbufnr(i)
         if bnum != -1 && getbufvar(bnum, '&buftype') ==# ''
                     \ && !getwinvar(i, '&previewwindow')
+                    \ && (!getbufvar(bnum, '&modified') || &hidden)
             return i
         endif
 
