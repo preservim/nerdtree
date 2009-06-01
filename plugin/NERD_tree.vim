@@ -2632,8 +2632,8 @@ function! s:isTreeOpen()
     return s:getTreeWinNum() != -1
 endfunction
 "FUNCTION: s:isWindowUsable(winnumber) {{{2
-"Returns 1 if opening a file from the tree in the given window requires it to
-"be split
+"Returns 0 if opening a file from the tree in the given window requires it to
+"be split, 1 otherwise
 "
 "Args:
 "winnumber: the number of the window in question
