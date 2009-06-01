@@ -499,6 +499,14 @@ Applies to: files and directories.
 Display the filesystem menu. See |NERDTreeFilesysMenu| for details.
 
 ------------------------------------------------------------------------------
+                                                                 *NERDTree-cd*
+Default key: cd
+Map option: NERDTreeMapChdir
+Applies to: files and directories.
+
+Change vims current working directory to that of the selected node.
+
+------------------------------------------------------------------------------
                                                                   *NERDTree-I*
 Default key: I
 Map option: NERDTreeMapToggleHidden
