@@ -999,7 +999,12 @@ The latest dev versions are on github
 
 3.x.x
     - fix a bug where a non-listed no-name buffer was getting created every
-      time the tree windows was created, thanks to Derek Wyatt for the patch
+      time the tree windows was created, thanks to Derek Wyatt and owen1
+    - make <CR> behave the same as the 'o' mapping
+    - some helptag fixes in the doc, thanks strull
+    - fix a bug when using :set nohidden and opening a file where the previous
+      buf was modified. Thanks iElectric
+    - other minor fixes
 
 3.1.0
     New features:
