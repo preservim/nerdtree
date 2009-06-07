@@ -997,7 +997,7 @@ The latest dev versions are on github
 ==============================================================================
 6. Changelog                                               *NERDTreeChangelog*
 
-3.x.x
+3.1.1
     - fix a bug where a non-listed no-name buffer was getting created every
       time the tree windows was created, thanks to Derek Wyatt and owen1
     - make <CR> behave the same as the 'o' mapping
