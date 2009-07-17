@@ -2344,7 +2344,7 @@ endfunction
 "FUNCTION: s:closeTreeIfQuitOnOpen() {{{2
 "Closes the NERD tree window if the close on open option is set
 function! s:closeTreeIfQuitOnOpen()
-    if g:NERDTreeQuitOnOpen
+    if g:NERDTreeQuitOnOpen && s:isTreeOpen()
         call s:closeTree()
     endif
 endfunction
