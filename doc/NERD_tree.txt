@@ -1000,6 +1000,8 @@ The latest dev versions are on github
 Next release:
     - fix a bug where secondary nerd trees (netrw hijacked trees) and
       NERDTreeQuitOnOpen didnt play nicely, thanks to Curtis Harvey.
+    - fix a bug where the script ignored directories whose name ended in a dot,
+      thanks to Aggelos Orfanakos for the patch.
 
 3.1.1
     - fix a bug where a non-listed no-name buffer was getting created every

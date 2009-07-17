@@ -1186,7 +1186,7 @@ function! s:TreeDirNode._initChildren(silent)
         "filter out the .. and . directories
         "Note: we must match .. AND ../ cos sometimes the globpath returns
         "../ for path with strange chars (eg $)
-        if i !~ '\.\.\/\?$' && i !~ '\.\/\?$'
+        if i !~ '^\.\.\/\?$' && i !~ '^\.\/\?$'
 
             "put the next file in a new node and attach it
             try
