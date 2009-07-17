@@ -176,6 +176,17 @@ endif
 "CLASS: Bookmark {{{2
 "============================================================
 let s:Bookmark = {}
+" FUNCTION: Bookmark.activate() {{{3
+function! s:Bookmark.activate()
+    if self.path.isDirectory
+        call self.toRoot()
+    else
+        if self.validate()
+            let n = s:TreeFileNode.New(self.path)
+            call n.open()
+        endif
+    endif
+endfunction
 " FUNCTION: Bookmark.AddBookmark(name, path) {{{3
 " Class method to add a new bookmark to the list, if a previous bookmark exists
 " with the same name, just update the path for that bookmark
@@ -426,6 +437,13 @@ endfunction
 "classes.
 "============================================================
 let s:TreeFileNode = {}
+"FUNCTION: TreeFileNode.activate(forceKeepWinOpen) {{{3
+function! s:TreeFileNode.activate(forceKeepWinOpen)
+    call self.open()
+    if !a:forceKeepWinOpen
+        call s:closeTreeIfQuitOnOpen()
+    end
+endfunction
 "FUNCTION: TreeFileNode.bookmark(name) {{{3
 "bookmark this node with a:name
 function! s:TreeFileNode.bookmark(name)
@@ -973,6 +991,13 @@ function! s:TreeDirNode.AbsoluteTreeRoot()
         let currentNode = currentNode.parent
     endwhile
     return currentNode
+endfunction
+"FUNCTION: TreeDirNode.activate(forceKeepWinOpen) {{{3
+unlet s:TreeDirNode.activate
+function! s:TreeDirNode.activate(forceKeepWinOpen)
+    call self.toggleOpen()
+    call s:renderView()
+    call self.putCursorHere(0, 0)
 endfunction
 "FUNCTION: TreeDirNode.addChild(treenode, inOrder) {{{3
 "Adds the given treenode to the list of children for this node
@@ -3028,27 +3053,11 @@ function! s:activateNode(forceKeepWindowOpen)
 
     let treenode = s:TreeFileNode.GetSelected()
     if treenode != {}
-        if treenode.path.isDirectory
-            call treenode.toggleOpen()
-            call s:renderView()
-            call treenode.putCursorHere(0, 0)
-        else
-            call treenode.open()
-            if !a:forceKeepWindowOpen
-                call s:closeTreeIfQuitOnOpen()
-            end
-        endif
+        call treenode.activate(a:forceKeepWindowOpen)
     else
         let bookmark = s:getSelectedBookmark()
         if !empty(bookmark)
-            if bookmark.path.isDirectory
-                call bookmark.toRoot()
-            else
-                if bookmark.validate()
-                    let n = s:TreeFileNode.New(bookmark.path)
-                    call n.open()
-                endif
-            endif
+            call bookmark.activate()
         endif
     endif
 endfunction
