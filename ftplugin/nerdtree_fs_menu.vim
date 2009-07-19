@@ -15,7 +15,12 @@ if exists("g:loaded_nerdtree_fs_menu")
 endif
 let g:loaded_nerdtree_fs_menu = 1
 
-call NERDTreeAddMenuItem('(f)ilesystem menu', 'f', 'NERDTreeShowFilesystemMenu')
+call NERDTreeAddMenuItem('(a)dd a childnode', 'a', 'NERDTreeAddNode')
+call NERDTreeAddMenuItem('(m)ove the curent node', 'm', 'NERDTreeMoveNode')
+call NERDTreeAddMenuItem('(d)elete the curent node', 'd', 'NERDTreeDeleteNode')
+if g:NERDTreePath.CopyingSupported()
+    call NERDTreeAddMenuItem('(c)copy the current node', 'c', 'NERDTreeCopyNode')
+endif
 
 "FUNCTION: s:echo(msg){{{1
 function! s:echo(msg)
@@ -45,37 +50,8 @@ function! s:promptToDelBuffer(bufnum, msg)
     endif
 endfunction
 
-"FUNCTION: NERDTreeShowFilesystemMenu(){{{1
-function! NERDTreeShowFilesystemMenu()
-    let prompt = "NERDTree Filesystem Menu\n" .
-       \ "==========================================================\n".
-       \ "Select the desired operation:                             \n" .
-       \ " (a)dd a childnode\n".
-       \ " (m)ove the current node\n".
-       \ " (d)elete the current node\n"
-    if g:NERDTreePath.CopyingSupported()
-        let prompt = prompt . " (c)opy the current node\n\n"
-    else
-        let prompt = prompt . " \n"
-    endif
-
-    echo prompt
-
-    let choice = nr2char(getchar())
-
-    if choice ==? "a"
-        call s:create()
-    elseif choice ==? "m"
-        call s:move()
-    elseif choice ==? "d"
-        call s:delete()
-    elseif choice ==? "c" && g:NERDTreePath.CopyingSupported()
-        call s:copy()
-    endif
-endfunction
-
-"FUNCTION: s:create(){{{1
-function! s:create()
+"FUNCTION: NERDTreeAddNode(){{{1
+function! NERDTreeAddNode()
     let curDirNode = g:NERDTreeDirNode.GetSelected()
 
     let newNodeName = input("Add a childnode\n".
@@ -103,8 +79,8 @@ function! s:create()
     endtry
 endfunction
 
-"FUNCTION: s:move(){{{1
-function! s:move()
+"FUNCTION: NERDTreeMoveNode(){{{1
+function! NERDTreeMoveNode()
     let curNode = g:NERDTreeFileNode.GetSelected()
     if curNode ==# {}
         call s:echo("Put the cursor on a node first" )
@@ -142,8 +118,8 @@ function! s:move()
     endtry
 endfunction
 
-" FUNCTION: s:delete() {{{1
-function! s:delete()
+" FUNCTION: NERDTreeDeleteNode() {{{1
+function! NERDTreeDeleteNode()
     let currentNode = g:NERDTreeFileNode.GetSelected()
     if currentNode ==# {}
         call s:echo("Put the cursor on a node first")
@@ -191,8 +167,8 @@ function! s:delete()
 
 endfunction
 
-" FUNCTION: s:copy() {{{1
-function! s:copy()
+" FUNCTION: NERDTreeCopyNode() {{{1
+function! NERDTreeCopyNode()
     let currentNode = g:NERDTreeFileNode.GetSelected()
     if currentNode ==# {}
         call s:echo("Put the cursor on a file node first")
