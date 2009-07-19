@@ -1256,7 +1256,7 @@ function! s:TreeDirNode._initChildren(silent)
         "filter out the .. and . directories
         "Note: we must match .. AND ../ cos sometimes the globpath returns
         "../ for path with strange chars (eg $)
-        if i !~ '^\.\.\/\?$' && i !~ '^\.\/\?$'
+        if i !~ '\/\.\.\/\?$' && i !~ '\/\.\/\?$'
 
             "put the next file in a new node and attach it
             try
@@ -1373,7 +1373,10 @@ function! s:TreeDirNode.refresh()
         let filesStr = globpath(dir.strForGlob(), '*') . "\n" . globpath(dir.strForGlob(), '.*')
         let files = split(filesStr, "\n")
         for i in files
-            if i !~ '\.\.$' && i !~ '\.$'
+            "filter out the .. and . directories
+            "Note: we must match .. AND ../ cos sometimes the globpath returns
+            "../ for path with strange chars (eg $)
+            if i !~ '\/\.\.\/\?$' && i !~ '\/\.\/\?$'
 
                 try
                     "create a new path and see if it exists in this nodes children
