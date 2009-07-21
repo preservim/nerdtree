@@ -15,11 +15,11 @@ if exists("g:loaded_nerdtree_fs_menu")
 endif
 let g:loaded_nerdtree_fs_menu = 1
 
-call NERDTreeAddMenuItem('(a)dd a childnode', 'a', 'NERDTreeAddNode')
-call NERDTreeAddMenuItem('(m)ove the curent node', 'm', 'NERDTreeMoveNode')
-call NERDTreeAddMenuItem('(d)elete the curent node', 'd', 'NERDTreeDeleteNode')
+call NERDTreeAddMenuItem({'text': '(a)dd a childnode', 'shortcut': 'a', 'callback': 'NERDTreeAddNode'})
+call NERDTreeAddMenuItem({'text': '(m)ove the curent node', 'shortcut': 'm', 'callback': 'NERDTreeMoveNode'})
+call NERDTreeAddMenuItem({'text': '(d)elete the curent node', 'shortcut': 'd', 'callback': 'NERDTreeDeleteNode'})
 if g:NERDTreePath.CopyingSupported()
-    call NERDTreeAddMenuItem('(c)copy the current node', 'c', 'NERDTreeCopyNode')
+    call NERDTreeAddMenuItem({'text': '(c)copy the current node', 'shortcut': 'c', 'callback': 'NERDTreeCopyNode'})
 endif
 
 "FUNCTION: s:echo(msg){{{1
