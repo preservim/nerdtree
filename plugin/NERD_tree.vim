@@ -429,7 +429,6 @@ endfunction
 "CLASS: MenuCallback {{{2
 "============================================================
 let s:MenuCallback = {}
-
 "FUNCTION: MenuCallback.All() {{{3
 function! s:MenuCallback.All()
     if !exists("s:menuCallbacks")
@@ -438,14 +437,56 @@ function! s:MenuCallback.All()
     return s:menuCallbacks
 endfunction
 
-"FUNCTION: MenuCallback.Create(text, shortcut, callback) {{{3
-function! s:MenuCallback.Create(text, shortcut, callback)
+"FUNCTION: MenuCallback.AllEnabledCallbacks() {{{3
+function! s:MenuCallback.AllEnabledCallbacks()
+    let toReturn = []
+    for i in s:MenuCallback.All()
+        if i.enabled()
+            call add(toReturn, i)
+        endif
+    endfor
+    return toReturn
+endfunction
+
+"FUNCTION: MenuCallback.FindByShortcut(shortcut) {{{3
+function! s:MenuCallback.FindByShortcut(shortcut)
+    for i in s:MenuCallback.All()
+        if i.shortcut ==# a:shortcut
+            return i
+        endif
+    endfor
+    return {}
+endfunction
+
+"FUNCTION: MenuCallback.Create(options) {{{3
+function! s:MenuCallback.Create(options)
     let newCallback = {}
     let newCallback = copy(self)
-    let newCallback.text = a:text
-    let newCallback.shortcut = a:shortcut
-    let newCallback.callback = a:callback
+
+    let shortcut = a:options['shortcut']
+    let callback = a:options['callback']
+
+
+    let newCallback.text = a:options['text']
+    let newCallback.shortcut = a:options['shortcut']
+    let newCallback.callback = a:options['callback']
+    if has_key(a:options, 'check_to_enable_callback')
+        let newCallback.check_to_enable_callback = a:options['check_to_enable_callback']
+    endif
     call add(s:MenuCallback.All(), newCallback)
+endfunction
+
+"FUNCTION: MenuCallback.enabled() {{{3
+function! s:MenuCallback.enabled()
+    if has_key(self, "check_to_enable_callback")
+        return {self.check_to_enable_callback}()
+    endif
+    return 1
+endfunction
+
+"FUNCTION: MenuCallback.execute() {{{3
+function! s:MenuCallback.execute()
+    call {self.callback}()
 endfunction
 
 "FUNCTION: MenuCallback.ShowMenu() {{{3
@@ -459,22 +500,19 @@ function! s:MenuCallback.ShowMenu()
     let prompt = "NERDTree Menu\n" .
        \ "==========================================================\n"
 
-    for i in s:MenuCallback.All()
+    for i in s:MenuCallback.AllEnabledCallbacks()
         let prompt .= i.text . "\n"
     endfor
 
     echo prompt
 
-    let choice = nr2char(getchar())
+    let callback = s:MenuCallback.FindByShortcut(nr2char(getchar()))
+    if !empty(callback) && callback.enabled()
+        redraw
+        call callback.execute()
+    endif
 
-    for i in s:MenuCallback.All()
-        if choice ==# i.shortcut
-            exec "call " . i.callback . "()"
-            return
-        endif
-    endfor
 endfunction
-
 
 "CLASS: TreeFileNode {{{2
 "This class is the parent of the TreeDirNode class and constitures the
@@ -2388,8 +2426,8 @@ function! NERDTreeGetCurrentPath()
     endif
 endfunction
 
-function! NERDTreeAddMenuItem(text, shortcut, callback)
-    call s:MenuCallback.Create(a:text, a:shortcut, a:callback)
+function! NERDTreeAddMenuItem(options)
+    call s:MenuCallback.Create(a:options)
 endfunction
 
 function! NERDTreeRender()
