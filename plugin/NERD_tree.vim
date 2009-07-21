@@ -470,16 +470,16 @@ function! s:MenuItem.Create(options)
     let newMenuItem.text = a:options['text']
     let newMenuItem.shortcut = a:options['shortcut']
     let newMenuItem.callback = a:options['callback']
-    if has_key(a:options, 'check_to_enable_callback')
-        let newMenuItem.check_to_enable_callback = a:options['check_to_enable_callback']
+    if has_key(a:options, 'isActiveCallback')
+        let newMenuItem.isActiveCallback = a:options['isActiveCallback']
     endif
     call add(s:MenuItem.All(), newMenuItem)
 endfunction
 
 "FUNCTION: MenuItem.enabled() {{{3
 function! s:MenuItem.enabled()
-    if has_key(self, "check_to_enable_callback")
-        return {self.check_to_enable_callback}()
+    if has_key(self, "isActiveCallback")
+        return {self.isActiveCallback}()
     endif
     return 1
 endfunction

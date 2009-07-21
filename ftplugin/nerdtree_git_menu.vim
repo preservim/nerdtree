@@ -24,7 +24,7 @@ let g:loaded_nerdtree_git_menu = 1
 call NERDTreeAddMenuItem({
             \ 'text': '(g)it menu',
             \ 'shortcut': 'g',
-            \ 'check_to_enable_callback': 'NERDTreeGitMenuEnabled',
+            \ 'isActiveCallback': 'NERDTreeGitMenuEnabled',
             \ 'callback': 'NERDTreeGitMenu' })
 
 function! NERDTreeGitMenuEnabled()
