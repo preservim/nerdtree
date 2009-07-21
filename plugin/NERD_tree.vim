@@ -426,21 +426,21 @@ function! s:Bookmark.Write()
     endfor
     call writefile(bookmarkStrings, g:NERDTreeBookmarksFile)
 endfunction
-"CLASS: MenuCallback {{{2
+"CLASS: MenuItem {{{2
 "============================================================
-let s:MenuCallback = {}
-"FUNCTION: MenuCallback.All() {{{3
-function! s:MenuCallback.All()
-    if !exists("s:menuCallbacks")
-        let s:menuCallbacks = []
+let s:MenuItem = {}
+"FUNCTION: MenuItem.All() {{{3
+function! s:MenuItem.All()
+    if !exists("s:menuItems")
+        let s:menuItems = []
     endif
-    return s:menuCallbacks
+    return s:menuItems
 endfunction
 
-"FUNCTION: MenuCallback.AllEnabledCallbacks() {{{3
-function! s:MenuCallback.AllEnabledCallbacks()
+"FUNCTION: MenuItem.AllEnabled() {{{3
+function! s:MenuItem.AllEnabled()
     let toReturn = []
-    for i in s:MenuCallback.All()
+    for i in s:MenuItem.All()
         if i.enabled()
             call add(toReturn, i)
         endif
@@ -448,9 +448,9 @@ function! s:MenuCallback.AllEnabledCallbacks()
     return toReturn
 endfunction
 
-"FUNCTION: MenuCallback.FindByShortcut(shortcut) {{{3
-function! s:MenuCallback.FindByShortcut(shortcut)
-    for i in s:MenuCallback.All()
+"FUNCTION: MenuItem.FindByShortcut(shortcut) {{{3
+function! s:MenuItem.FindByShortcut(shortcut)
+    for i in s:MenuItem.All()
         if i.shortcut ==# a:shortcut
             return i
         endif
@@ -458,39 +458,39 @@ function! s:MenuCallback.FindByShortcut(shortcut)
     return {}
 endfunction
 
-"FUNCTION: MenuCallback.Create(options) {{{3
-function! s:MenuCallback.Create(options)
-    let newCallback = {}
-    let newCallback = copy(self)
+"FUNCTION: MenuItem.Create(options) {{{3
+function! s:MenuItem.Create(options)
+    let newMenuItem = {}
+    let newMenuItem = copy(self)
 
     let shortcut = a:options['shortcut']
     let callback = a:options['callback']
 
 
-    let newCallback.text = a:options['text']
-    let newCallback.shortcut = a:options['shortcut']
-    let newCallback.callback = a:options['callback']
+    let newMenuItem.text = a:options['text']
+    let newMenuItem.shortcut = a:options['shortcut']
+    let newMenuItem.callback = a:options['callback']
     if has_key(a:options, 'check_to_enable_callback')
-        let newCallback.check_to_enable_callback = a:options['check_to_enable_callback']
+        let newMenuItem.check_to_enable_callback = a:options['check_to_enable_callback']
     endif
-    call add(s:MenuCallback.All(), newCallback)
+    call add(s:MenuItem.All(), newMenuItem)
 endfunction
 
-"FUNCTION: MenuCallback.enabled() {{{3
-function! s:MenuCallback.enabled()
+"FUNCTION: MenuItem.enabled() {{{3
+function! s:MenuItem.enabled()
     if has_key(self, "check_to_enable_callback")
         return {self.check_to_enable_callback}()
     endif
     return 1
 endfunction
 
-"FUNCTION: MenuCallback.execute() {{{3
-function! s:MenuCallback.execute()
+"FUNCTION: MenuItem.execute() {{{3
+function! s:MenuItem.execute()
     call {self.callback}()
 endfunction
 
-"FUNCTION: MenuCallback.ShowMenu() {{{3
-function! s:MenuCallback.ShowMenu()
+"FUNCTION: MenuItem.ShowMenu() {{{3
+function! s:MenuItem.ShowMenu()
     let curNode = s:TreeFileNode.GetSelected()
     if curNode ==# {}
         call s:echo("Put the cursor on a node first" )
@@ -500,16 +500,16 @@ function! s:MenuCallback.ShowMenu()
     let prompt = "NERDTree Menu\n" .
        \ "==========================================================\n"
 
-    for i in s:MenuCallback.AllEnabledCallbacks()
+    for i in s:MenuItem.AllEnabled()
         let prompt .= i.text . "\n"
     endfor
 
     echo prompt
 
-    let callback = s:MenuCallback.FindByShortcut(nr2char(getchar()))
-    if !empty(callback) && callback.enabled()
+    let menuItem = s:MenuItem.FindByShortcut(nr2char(getchar()))
+    if !empty(menuItem) && menuItem.enabled()
         redraw
-        call callback.execute()
+        call menuItem.execute()
     endif
 
 endfunction
@@ -2427,7 +2427,7 @@ function! NERDTreeGetCurrentPath()
 endfunction
 
 function! NERDTreeAddMenuItem(options)
-    call s:MenuCallback.Create(a:options)
+    call s:MenuItem.Create(a:options)
 endfunction
 
 function! NERDTreeRender()
@@ -3639,7 +3639,7 @@ function! s:refreshCurrent()
 endfunction
 " FUNCTION: s:showMenu() {{{2
 function! s:showMenu()
-    call s:MenuCallback.ShowMenu()
+    call s:MenuItem.ShowMenu()
 endfunction
 
 " FUNCTION: s:toggleIgnoreFilter() {{{2
