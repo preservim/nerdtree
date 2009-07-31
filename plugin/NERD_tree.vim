@@ -2183,7 +2183,7 @@ function! s:initNerdTreeInPlace(dir)
     call s:bindMappings()
     setfiletype nerdtree
     " syntax highlighting
-    if has("syntax") && exists("g:syntax_on") && !has("syntax_items")
+    if has("syntax") && exists("g:syntax_on")
         call s:setupSyntaxHighlighting()
     endif
 
@@ -2416,7 +2416,7 @@ function! s:createTreeWin()
     call s:bindMappings()
     setfiletype nerdtree
     " syntax highlighting
-    if has("syntax") && exists("g:syntax_on") && !has("syntax_items")
+    if has("syntax") && exists("g:syntax_on")
         call s:setupSyntaxHighlighting()
     endif
 endfunction
