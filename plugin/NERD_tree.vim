@@ -128,6 +128,7 @@ call s:initVariable("g:NERDTreeMapToggleBookmarks", "B")
 call s:initVariable("g:NERDTreeMapToggleFiles", "F")
 call s:initVariable("g:NERDTreeMapToggleFilters", "f")
 call s:initVariable("g:NERDTreeMapToggleHidden", "I")
+call s:initVariable("g:NERDTreeMapToggleZoom", "A")
 call s:initVariable("g:NERDTreeMapUpdir", "u")
 call s:initVariable("g:NERDTreeMapUpdirKeepOpen", "U")
 
@@ -2605,6 +2606,8 @@ function! s:dumpHelp()
         let @h=@h."\"\n\" ----------------------------\n"
         let @h=@h."\" Other mappings~\n"
         let @h=@h."\" ". g:NERDTreeMapQuit .": Close the NERDTree window\n"
+        let @h=@h."\" ". g:NERDTreeMapToggleZoom .": Zoom (maximize-minimize)\n"
+        let @h=@h."\"    the NERDTree window\n"
         let @h=@h."\" ". g:NERDTreeMapHelp .": toggle help\n"
         let @h=@h."\"\n\" ----------------------------\n"
         let @h=@h."\" Bookmark commands~\n"
@@ -3201,6 +3204,7 @@ function! s:bindMappings()
     exec "nnoremap <silent> <buffer> ". g:NERDTreeMapRefresh ." :call <SID>refreshCurrent()<cr>"
 
     exec "nnoremap <silent> <buffer> ". g:NERDTreeMapHelp ." :call <SID>displayHelp()<cr>"
+    exec "nnoremap <silent> <buffer> ". g:NERDTreeMapToggleZoom ." :call <SID>toggleZoom()<cr>"
     exec "nnoremap <silent> <buffer> ". g:NERDTreeMapToggleHidden ." :call <SID>toggleShowHidden()<cr>"
     exec "nnoremap <silent> <buffer> ". g:NERDTreeMapToggleFilters ." :call <SID>toggleIgnoreFilter()<cr>"
     exec "nnoremap <silent> <buffer> ". g:NERDTreeMapToggleFiles ." :call <SID>toggleShowFiles()<cr>"
@@ -3676,6 +3680,19 @@ function! s:toggleShowHidden()
     let b:NERDTreeShowHidden = !b:NERDTreeShowHidden
     call s:renderViewSavingPosition()
     call s:centerView()
+endfunction
+
+" FUNCTION: s:toggleZoom() {{2
+" zoom (maximize/minimize) the NERDTree window
+function! s:toggleZoom()
+    if exists("b:NERDTreeZoomed") && b:NERDTreeZoomed
+        let size = exists("b:NERDTreeOldWindowSize") ? b:NERDTreeOldWindowSize : g:NERDTreeWinSize
+        exec "silent vertical resize ". size
+        let b:NERDTreeZoomed = 0
+    else
+        exec "vertical resize"
+        let b:NERDTreeZoomed = 1
+    endif
 endfunction
 
 "FUNCTION: s:upDir(keepState) {{{2
