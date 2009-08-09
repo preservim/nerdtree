@@ -1012,7 +1012,7 @@ Next release:
     - fix a bug where the script ignored directories whose name ended in a dot,
       thanks to Aggelos Orfanakos for the patch.
     - added a mapping to maximize/restore the size of nerd tree window, thanks
-      to Guillaume Duranceau for the patch. See :help NERDTree-z for details.
+      to Guillaume Duranceau for the patch. See :help NERDTree-A for details.
 
 3.1.1
     - fix a bug where a non-listed no-name buffer was getting created every
