@@ -458,6 +458,7 @@ function! s:KeyMap.Create(options)
     let newKeyMap = {}
     let newKeyMap = copy(self)
     let newKeyMap.key = a:options['key']
+    let newKeyMap.quickhelpText = a:options['quickhelpText']
     let newKeyMap.callback = a:options['callback']
     call add(s:KeyMap.All(), newKeyMap)
 endfunction
@@ -2578,6 +2579,15 @@ function! s:dumpHelp()
         let @h=@h."\" ". g:NERDTreeMapToggleFilters .": file filters (" . (b:NERDTreeIgnoreEnabled ? "on" : "off") . ")\n"
         let @h=@h."\" ". g:NERDTreeMapToggleFiles .": files (" . (b:NERDTreeShowFiles ? "on" : "off") . ")\n"
         let @h=@h."\" ". g:NERDTreeMapToggleBookmarks .": bookmarks (" . (b:NERDTreeShowBookmarks ? "on" : "off") . ")\n"
+
+        "add quickhelp entries for each custom key map
+        if len(s:KeyMap.All())
+            let @h=@h."\"\n\" ----------------------------\n"
+            let @h=@h."\" Custom mappings~\n"
+            for i in s:KeyMap.All()
+                let @h=@h."\" ". i.key .": ". i.quickhelpText ."\n"
+            endfor
+        endif
 
         let @h=@h."\"\n\" ----------------------------\n"
         let @h=@h."\" Other mappings~\n"
