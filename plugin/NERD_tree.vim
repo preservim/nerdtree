@@ -2001,9 +2001,6 @@ endfunction
 "FUNCTION: Path.strForCd() {{{3
 "
 " returns a string that can be used with :cd
-"
-"Return:
-"a string that can be used in the view to represent this path
 function! s:Path.strForCd()
     if s:running_windows
         return self.strForOS(0)
@@ -2015,9 +2012,6 @@ endfunction
 "
 "Returns a string that specifies how the path should be represented as a
 "string
-"
-"Return:
-"a string that can be used in the view to represent this path
 function! s:Path.strDisplay()
     if self.cachedDisplayString ==# ""
         call self.cacheDisplayString()
