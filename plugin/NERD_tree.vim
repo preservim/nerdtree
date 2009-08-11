@@ -2004,16 +2004,6 @@ function! s:Path.str(esc)
     return toReturn
 endfunction
 
-"FUNCTION: Path.strAbs() {{{3
-"
-"Returns a string representing this path with all the symlinks resolved
-"
-"Return:
-"string
-function! s:Path.strAbs()
-    return resolve(self.str(1))
-endfunction
-
 "FUNCTION: Path.strForCd() {{{3
 "
 " returns a string that can be used with :cd
