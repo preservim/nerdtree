@@ -1077,7 +1077,7 @@ function! s:TreeFileNode.rename(newName)
     call self.path.rename(newName)
     call self.parent.removeChild(self)
 
-    let parentPath = self.path.getPathTrunk()
+    let parentPath = self.path.getParent()
     let newParent = b:NERDTreeRoot.findNode(parentPath)
 
     if newParent != {}
@@ -1596,7 +1596,7 @@ endfunction
 function! s:Path.changeToDir()
     let dir = self.strForCd()
     if self.isDirectory ==# 0
-        let dir = self.getPathTrunk().strForCd()
+        let dir = self.getParent().strForCd()
     endif
 
     try
@@ -1815,12 +1815,6 @@ function! s:Path.getLastPathComponent(dirSlash)
         let toReturn = toReturn . '/'
     endif
     return toReturn
-endfunction
-
-"FUNCTION: Path.getPathTrunk() {{{3
-"Gets the path without the last segment on the end.
-function! s:Path.getPathTrunk()
-    return s:Path.New(self.strTrunk())
 endfunction
 
 "FUNCTION: Path.getSortOrderIndex() {{{3
@@ -3702,7 +3696,7 @@ function! s:upDir(keepState)
         let oldRoot = b:NERDTreeRoot
 
         if empty(b:NERDTreeRoot.parent)
-            let path = b:NERDTreeRoot.path.getPathTrunk()
+            let path = b:NERDTreeRoot.path.getParent()
             let newRoot = s:TreeDirNode.New(path)
             call newRoot.open()
             call newRoot.transplantChild(b:NERDTreeRoot)
