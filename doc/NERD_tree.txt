@@ -949,41 +949,7 @@ This option is used to change the size of the NERD tree when it is loaded.
 ==============================================================================
 4. Hacking the NERD tree                                     *NERDTreeHacking*
 
-Public functions ~
-
-The script provides 2 public functions for your hacking pleasure. Their
-signatures are: >
-    function! NERDTreeGetCurrentNode()
-    function! NERDTreeGetCurrentPath()
-<
-The first returns the node object that the cursor is currently on, while the
-second returns the corresponding path object.
-
-This is probably a good time to mention that the script implements prototype
-style OO. To see the functions that each class provides you can read look at
-the code.
-
-Use the node objects to manipulate the structure of the tree. Use the path
-objects to access the files/directories the tree nodes represent.
-
-The NERD tree filetype ~
-
-NERD tree buffers have a filetype of "nerdtree". You can use this to hack the
-NERD tree via autocommands (on |FileType|) or via an ftplugin.
-
-For example, putting this code in ~/.vim/ftplugin/nerdtree.vim would override
-the o mapping, making it open the selected node in a new gvim instance. >
-
-    nnoremap <silent> <buffer> o :call <sid>openInNewVimInstance()<cr>
-    function! s:openInNewVimInstance()
-        let p = NERDTreeGetCurrentPath()
-        if p != {}
-            silent exec "!gvim " . p.strForOS(1) . "&"
-        endif
-    endfunction
-<
-This way you can add new mappings or :commands or override any existing
-mapping.
+TODO: fill in when new api is complete
 
 ==============================================================================
 5. About                                                       *NERDTreeAbout*

@@ -2421,46 +2421,6 @@ let g:NERDTreeDirNode = s:TreeDirNode
 let g:NERDTreeFileNode = s:TreeFileNode
 let g:NERDTreeBookmark = s:Bookmark
 
-
-"Returns the node that the cursor is currently on.
-"
-"If the cursor is not in the NERDTree window, it is temporarily put there.
-"
-"If no NERD tree window exists for the current tab, a NERDTree.NoTreeForTab
-"exception is thrown.
-"
-"If the cursor is not on a node then an empty dictionary {} is returned.
-function! NERDTreeGetCurrentNode()
-    if !s:treeExistsForTab() || !s:isTreeOpen()
-        throw "NERDTree.NoTreeForTabError: there is no NERD tree open for the current tab"
-    endif
-
-    let winnr = winnr()
-    if winnr != s:getTreeWinNum()
-        call s:putCursorInTreeWin()
-    endif
-
-    let treenode = s:TreeFileNode.GetSelected()
-
-    if winnr != winnr()
-        call s:exec('wincmd w')
-    endif
-
-    return treenode
-endfunction
-
-"Returns the path object for the current node.
-"
-"Subject to the same conditions as NERDTreeGetCurrentNode
-function! NERDTreeGetCurrentPath()
-    let node = NERDTreeGetCurrentNode()
-    if node != {}
-        return node.path
-    else
-        return {}
-    endif
-endfunction
-
 function! NERDTreeAddMenuItem(options)
     call s:MenuItem.Create(a:options)
 endfunction
