@@ -1739,13 +1739,7 @@ endfunction
 function! s:Path.delete()
     if self.isDirectory
 
-        let cmd = ""
-        if s:running_windows
-            "if we are runnnig windows then put quotes around the pathstring
-            let cmd = g:NERDTreeRemoveDirCmd . self.strForOS(1)
-        else
-            let cmd = g:NERDTreeRemoveDirCmd . self.strForOS(1)
-        endif
+        let cmd = g:NERDTreeRemoveDirCmd . self.strForOS(1)
         let success = system(cmd)
 
         if v:shell_error != 0
