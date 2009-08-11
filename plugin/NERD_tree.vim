@@ -430,6 +430,37 @@ function! s:Bookmark.Write()
     endfor
     call writefile(bookmarkStrings, g:NERDTreeBookmarksFile)
 endfunction
+"CLASS: KeyMap {{{2
+"============================================================
+let s:KeyMap = {}
+"FUNCTION: KeyMap.All() {{{3
+function! s:KeyMap.All()
+    if !exists("s:keyMaps")
+        let s:keyMaps = []
+    endif
+    return s:keyMaps
+endfunction
+
+"FUNCTION: KeyMap.BindAll() {{{3
+function! s:KeyMap.BindAll()
+    for i in s:KeyMap.All()
+        call i.bind()
+    endfor
+endfunction
+
+"FUNCTION: KeyMap.bind() {{{3
+function! s:KeyMap.bind()
+    exec "nnoremap <silent> <buffer> ". self.key ." :call ". self.callback ."()<cr>"
+endfunction
+
+"FUNCTION: KeyMap.Create(options) {{{3
+function! s:KeyMap.Create(options)
+    let newKeyMap = {}
+    let newKeyMap = copy(self)
+    let newKeyMap.key = a:options['key']
+    let newKeyMap.callback = a:options['callback']
+    call add(s:KeyMap.All(), newKeyMap)
+endfunction
 "CLASS: MenuItem {{{2
 "============================================================
 let s:MenuItem = {}
@@ -2434,6 +2465,10 @@ function! NERDTreeAddMenuItem(options)
     call s:MenuItem.Create(a:options)
 endfunction
 
+function! NERDTreeAddKeyMap(options)
+    call s:KeyMap.Create(a:options)
+endfunction
+
 function! NERDTreeRender()
     call s:renderView()
 endfunction
@@ -3231,6 +3266,9 @@ function! s:bindMappings()
     exec "nnoremap <silent> <buffer> ". g:NERDTreeMapOpenExpl ." :call <SID>openExplorer()<cr>"
 
     exec "nnoremap <silent> <buffer> ". g:NERDTreeMapDeleteBookmark ." :call <SID>deleteBookmark()<cr>"
+
+    "bind all the user custom maps
+    call s:KeyMap.BindAll()
 
     command! -buffer -nargs=1 Bookmark :call <SID>bookmarkNode('<args>')
     command! -buffer -complete=customlist,s:completeBookmarks -nargs=1 RevealBookmark :call <SID>revealBookmark('<args>')
