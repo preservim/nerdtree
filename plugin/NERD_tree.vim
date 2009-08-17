@@ -462,6 +462,120 @@ function! s:KeyMap.Create(options)
     let newKeyMap.callback = a:options['callback']
     call add(s:KeyMap.All(), newKeyMap)
 endfunction
+"CLASS: MenuController {{{2
+"============================================================
+let s:MenuController = {}
+"FUNCTION: MenuController.New(menuItems) {{{3
+function! s:MenuController.New(menuItems)
+    let newMenuController =  copy(self)
+    let newMenuController.menuItems = a:menuItems
+    return newMenuController
+endfunction
+
+"FUNCTION: MenuController.showMenu() {{{3
+function! s:MenuController.showMenu()
+    let curNode = s:TreeFileNode.GetSelected()
+    if curNode ==# {}
+        call s:echo("Put the cursor on a node first" )
+        return
+    endif
+
+    call self._saveOptions()
+    let self.selection = 0
+
+    let key = ''
+    while key != "\r"
+        let prompt = ''
+        let prompt .= "NERDTree Menu. Use j/k/enter and the shortcuts indicated\n"
+        let prompt .= "==========================================================\n"
+
+        for i in range(0, len(self.menuItems)-1)
+            if self.selection == i
+                let prompt .= "> "
+            else
+                let prompt .= "  "
+            endif
+
+            let prompt .= self.menuItems[i].text . "\n"
+        endfor
+
+        if has("gui_running")
+            redraw!
+        else
+            redraw
+        endif
+
+        echo prompt
+
+        let key = nr2char(getchar())
+        if self._handleKeypress(key) == -1
+            call self._restoreOptions()
+            return
+        endif
+    endwhile
+
+    call self._restoreOptions()
+
+    let chosen = self.menuItems[self.selection]
+    call chosen.execute()
+
+endfunction
+
+"FUNCTION: MenuController._handleKeypress(key) {{{3
+function! s:MenuController._handleKeypress(key)
+    if a:key == 'j'
+        if self.selection < len(self.menuItems)-1
+            let self.selection += 1
+        else
+            let self.selection = 0
+        endif
+    elseif a:key == 'k'
+        if self.selection > 0
+            let self.selection -= 1
+        else
+            let self.selection = len(self.menuItems)-1
+        endif
+    elseif a:key == nr2char(27) "escape
+        return -1
+    else
+        let index = self._nextIndexFor(a:key)
+        if index != -1
+            let self.selection = index
+        endif
+    endif
+endfunction
+
+"FUNCTION: MenuController._nextIndexFor(shortcut) {{{3
+function! s:MenuController._nextIndexFor(shortcut)
+    for i in range(self.selection+1, len(self.menuItems)-1)
+        if self.menuItems[i].shortcut == a:shortcut
+            return i
+        endif
+    endfor
+
+    for i in range(0, self.selection)
+        if self.menuItems[i].shortcut == a:shortcut
+            return i
+        endif
+    endfor
+
+    return -1
+endfunction
+
+"FUNCTION: MenuController._saveOptions() {{{3
+function! s:MenuController._saveOptions()
+    let self._oldLazyredraw = &lazyredraw
+    let self._oldCmdheight = &cmdheight
+    set lazyredraw
+    let &cmdheight = len(self.menuItems) + 2 + has("gui_running")
+endfunction
+
+"FUNCTION: MenuController._restoreOptions() {{{3
+function! s:MenuController._restoreOptions()
+    let &cmdheight = self._oldCmdheight
+    let &lazyredraw = self._oldLazyredraw
+endfunction
+
 "CLASS: MenuItem {{{2
 "============================================================
 let s:MenuItem = {}
@@ -484,37 +598,49 @@ function! s:MenuItem.AllEnabled()
     return toReturn
 endfunction
 
-"FUNCTION: MenuItem.FindByShortcut(shortcut) {{{3
-function! s:MenuItem.FindByShortcut(shortcut)
-    for i in s:MenuItem.All()
-        if i.shortcut ==# a:shortcut
-            return i
-        endif
-    endfor
-    return {}
-endfunction
-
 "FUNCTION: MenuItem.Create(options) {{{3
 function! s:MenuItem.Create(options)
-    let newMenuItem = {}
     let newMenuItem = copy(self)
-
-    let shortcut = a:options['shortcut']
-    let callback = a:options['callback']
-
 
     let newMenuItem.text = a:options['text']
     let newMenuItem.shortcut = a:options['shortcut']
     let newMenuItem.callback = a:options['callback']
+    let newMenuItem.children = []
+
+    let newMenuItem.isActiveCallback = -1
     if has_key(a:options, 'isActiveCallback')
         let newMenuItem.isActiveCallback = a:options['isActiveCallback']
     endif
+
+    if has_key(a:options, 'parent')
+        call add(a:options['parent'].children, newMenuItem)
+    else
+        call add(s:MenuItem.All(), newMenuItem)
+    endif
+
+    return newMenuItem
+endfunction
+
+"FUNCTION: MenuItem.CreateSeparator(options) {{{3
+function! s:MenuItem.CreateSeparator(options)
+    let newMenuItem = copy(self)
+    let newMenuItem.text = "--------------------"
+
+    let newMenuItem.shortcut = -1
+    let newMenuItem.callback = -1
+    let newMenuItem.children = []
+
+    let newMenuItem.isActiveCallback = -1
+    if has_key(a:options, 'isActiveCallback')
+        let newMenuItem.isActiveCallback = a:options['isActiveCallback']
+    endif
+
     call add(s:MenuItem.All(), newMenuItem)
 endfunction
 
 "FUNCTION: MenuItem.enabled() {{{3
 function! s:MenuItem.enabled()
-    if has_key(self, "isActiveCallback")
+    if self.isActiveCallback != -1
         return {self.isActiveCallback}()
     endif
     return 1
@@ -522,32 +648,14 @@ endfunction
 
 "FUNCTION: MenuItem.execute() {{{3
 function! s:MenuItem.execute()
-    call {self.callback}()
-endfunction
-
-"FUNCTION: MenuItem.ShowMenu() {{{3
-function! s:MenuItem.ShowMenu()
-    let curNode = s:TreeFileNode.GetSelected()
-    if curNode ==# {}
-        call s:echo("Put the cursor on a node first" )
-        return
+    if len(self.children)
+        let mc = s:MenuController.New(self.children)
+        call mc.showMenu()
+    else
+        if self.callback != -1
+            call {self.callback}()
+        endif
     endif
-
-    let prompt = "NERDTree Menu\n" .
-       \ "==========================================================\n"
-
-    for i in s:MenuItem.AllEnabled()
-        let prompt .= i.text . "\n"
-    endfor
-
-    echo prompt
-
-    let menuItem = s:MenuItem.FindByShortcut(nr2char(getchar()))
-    if !empty(menuItem) && menuItem.enabled()
-        redraw
-        call menuItem.execute()
-    endif
-
 endfunction
 
 "CLASS: TreeFileNode {{{2
@@ -2395,7 +2503,12 @@ let g:NERDTreeFileNode = s:TreeFileNode
 let g:NERDTreeBookmark = s:Bookmark
 
 function! NERDTreeAddMenuItem(options)
-    call s:MenuItem.Create(a:options)
+    return s:MenuItem.Create(a:options)
+endfunction
+
+function! NERDTreeAddMenuSeparator(...)
+    let opts = a:0 ? a:1 : {}
+    return s:MenuItem.CreateSeparator(opts)
 endfunction
 
 function! NERDTreeAddKeyMap(options)
@@ -3626,7 +3739,8 @@ function! s:refreshCurrent()
 endfunction
 " FUNCTION: s:showMenu() {{{2
 function! s:showMenu()
-    call s:MenuItem.ShowMenu()
+    let mc = s:MenuController.New(s:MenuItem.AllEnabled())
+    call mc.showMenu()
 endfunction
 
 " FUNCTION: s:toggleIgnoreFilter() {{{2
