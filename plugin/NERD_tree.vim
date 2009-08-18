@@ -474,75 +474,91 @@ endfunction
 
 "FUNCTION: MenuController.showMenu() {{{3
 function! s:MenuController.showMenu()
-    let curNode = s:TreeFileNode.GetSelected()
-    if curNode ==# {}
-        call s:echo("Put the cursor on a node first" )
-        return
-    endif
-
     call self._saveOptions()
-    let self.selection = 0
 
-    let key = ''
-    while key != "\r"
-        let prompt = ''
-        let prompt .= "NERDTree Menu. Use j/k/enter and the shortcuts indicated\n"
-        let prompt .= "==========================================================\n"
+    try
+        let self.selection = 0
 
-        for i in range(0, len(self.menuItems)-1)
-            if self.selection == i
-                let prompt .= "> "
-            else
-                let prompt .= "  "
-            endif
+        let done = 0
+        while !done
+            call self._redraw()
+            echo self._prompt()
+            let key = nr2char(getchar())
+            let done = self._handleKeypress(key)
+        endwhile
 
-            let prompt .= self.menuItems[i].text . "\n"
-        endfor
-
-        if has("gui_running")
-            redraw!
-        else
-            redraw
+        if self.selection != -1
+            let m = self._current()
+            call m.execute()
         endif
 
-        echo prompt
-
-        let key = nr2char(getchar())
-        if self._handleKeypress(key) == -1
-            call self._restoreOptions()
-            return
-        endif
-    endwhile
-
-    call self._restoreOptions()
-
-    let chosen = self.menuItems[self.selection]
-    call chosen.execute()
+    finally
+        call self._restoreOptions()
+    endtry
 
 endfunction
 
+"FUNCTION: MenuController._prompt() {{{3
+function! s:MenuController._prompt()
+    let toReturn = ''
+    let toReturn .= "NERDTree Menu. Use j/k/enter and the shortcuts indicated\n"
+    let toReturn .= "==========================================================\n"
+
+    for i in range(0, len(self.menuItems)-1)
+        if self.selection == i
+            let toReturn .= "> "
+        else
+            let toReturn .= "  "
+        endif
+
+        let toReturn .= self.menuItems[i].text . "\n"
+    endfor
+
+    return toReturn
+endfunction
+
+"FUNCTION: MenuController._current(key) {{{3
+function! s:MenuController._current()
+    return self.menuItems[self.selection]
+endfunction
+
 "FUNCTION: MenuController._handleKeypress(key) {{{3
+"changes the selection (if appropriate) and returns 1 if the user has made
+"their choice, 0 otherwise
 function! s:MenuController._handleKeypress(key)
     if a:key == 'j'
-        if self.selection < len(self.menuItems)-1
-            let self.selection += 1
-        else
-            let self.selection = 0
-        endif
+        call self._cursorDown()
     elseif a:key == 'k'
-        if self.selection > 0
-            let self.selection -= 1
-        else
-            let self.selection = len(self.menuItems)-1
-        endif
+        call self._cursorUp()
     elseif a:key == nr2char(27) "escape
-        return -1
+        let self.selection = -1
+        return 1
+    elseif a:key == "\r" || a:key == "\n" "enter and ctrl-j
+        return 1
     else
         let index = self._nextIndexFor(a:key)
         if index != -1
             let self.selection = index
+            if len(self._allIndexesFor(a:key)) == 1
+                return 1
+            endif
         endif
     endif
+
+    return 0
+endfunction
+
+"FUNCTION: MenuController._allIndexesFor(shortcut) {{{3
+function! s:MenuController._allIndexesFor(shortcut)
+    let toReturn = []
+
+    for i in range(0, len(self.menuItems)-1)
+        if self.menuItems[i].shortcut == a:shortcut
+            call add(toReturn, i)
+        endif
+    endfor
+
+    return toReturn
 endfunction
 
 "FUNCTION: MenuController._nextIndexFor(shortcut) {{{3
@@ -562,18 +578,70 @@ function! s:MenuController._nextIndexFor(shortcut)
     return -1
 endfunction
 
+"FUNCTION: MenuController._redraw() {{{3
+function! s:MenuController._redraw()
+    if has("gui_running")
+        redraw!
+    else
+        redraw
+    endif
+endfunction
+
+"FUNCTION: MenuController._setCmdheight() {{{3
+function! s:MenuController._setCmdheight()
+    if has("gui_running")
+        let &cmdheight = len(self.menuItems) + 3
+    else
+        let &cmdheight = len(self.menuItems) + 2
+    endif
+endfunction
+
 "FUNCTION: MenuController._saveOptions() {{{3
 function! s:MenuController._saveOptions()
     let self._oldLazyredraw = &lazyredraw
     let self._oldCmdheight = &cmdheight
     set lazyredraw
-    let &cmdheight = len(self.menuItems) + 2 + has("gui_running")
+    call self._setCmdheight()
 endfunction
 
 "FUNCTION: MenuController._restoreOptions() {{{3
 function! s:MenuController._restoreOptions()
     let &cmdheight = self._oldCmdheight
     let &lazyredraw = self._oldLazyredraw
+endfunction
+
+"FUNCTION: MenuController._cursorDown() {{{3
+"move the cursor to the next menu item, skipping separators
+function! s:MenuController._cursorDown()
+    let done = 0
+    while !done
+        if self.selection < len(self.menuItems)-1
+            let self.selection += 1
+        else
+            let self.selection = 0
+        endif
+
+        if !self._current().isSeparator()
+            let done = 1
+        endif
+    endwhile
+endfunction
+
+"FUNCTION: MenuController._cursorUp() {{{3
+"move the cursor to the previous menu item, skipping separators
+function! s:MenuController._cursorUp()
+    let done = 0
+    while !done
+        if self.selection > 0
+            let self.selection -= 1
+        else
+            let self.selection = len(self.menuItems)-1
+        endif
+
+        if !self._current().isSeparator()
+            let done = 1
+        endif
+    endwhile
 endfunction
 
 "CLASS: MenuItem {{{2
@@ -656,6 +724,11 @@ function! s:MenuItem.execute()
             call {self.callback}()
         endif
     endif
+endfunction
+
+"FUNCTION: MenuItem.isSeparator() {{{3
+function! s:MenuItem.isSeparator()
+    return self.callback == -1
 endfunction
 
 "CLASS: TreeFileNode {{{2
@@ -3739,6 +3812,12 @@ function! s:refreshCurrent()
 endfunction
 " FUNCTION: s:showMenu() {{{2
 function! s:showMenu()
+    let curNode = s:TreeFileNode.GetSelected()
+    if curNode ==# {}
+        call s:echo("Put the cursor on a node first" )
+        return
+    endif
+
     let mc = s:MenuController.New(s:MenuItem.AllEnabled())
     call mc.showMenu()
 endfunction
