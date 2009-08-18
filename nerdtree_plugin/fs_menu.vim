@@ -66,7 +66,7 @@ function! NERDTreeAddNode()
 
     try
         let newPath = g:NERDTreePath.Create(newNodeName)
-        let parentNode = b:NERDTreeRoot.findNode(newPath.getPathTrunk())
+        let parentNode = b:NERDTreeRoot.findNode(newPath.getParent())
 
         let newTreeNode = g:NERDTreeFileNode.New(newPath)
         if parentNode.isOpen || !empty(parentNode.children)
