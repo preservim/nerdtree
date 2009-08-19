@@ -691,19 +691,12 @@ endfunction
 
 "FUNCTION: MenuItem.CreateSeparator(options) {{{3
 function! s:MenuItem.CreateSeparator(options)
-    let newMenuItem = copy(self)
-    let newMenuItem.text = "--------------------"
+    let standard_options = { 'text': '--------------------',
+                \ 'shortcut': -1,
+                \ 'callback': -1 }
+    let options = extend(a:options, standard_options, "force")
 
-    let newMenuItem.shortcut = -1
-    let newMenuItem.callback = -1
-    let newMenuItem.children = []
-
-    let newMenuItem.isActiveCallback = -1
-    if has_key(a:options, 'isActiveCallback')
-        let newMenuItem.isActiveCallback = a:options['isActiveCallback']
-    endif
-
-    call add(s:MenuItem.All(), newMenuItem)
+    return s:MenuItem.Create(options)
 endfunction
 
 "FUNCTION: MenuItem.enabled() {{{3
