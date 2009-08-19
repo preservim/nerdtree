@@ -68,46 +68,50 @@ function! NERDTreeGitMove()
     let node = g:NERDTreeFileNode.GetSelected()
     let path = node.path
     let p = path.strForOS(1)
-    call s:promptCommand('mv ', p . ' ' . p, 'file')
+
+    let newPath = input("==========================================================\n" .
+                          \ "Enter the new path for the file:                          \n" .
+                          \ "", node.path.strForOS(0))
+    if newPath ==# ''
+        call s:echo("git mv aborted.")
+        return
+    endif
+
+    call s:execGitCmd('mv ' . p . ' ' . newPath)
 endfunction
 
 function! NERDTreeGitAdd()
     let node = g:NERDTreeFileNode.GetSelected()
     let path = node.path
-    call s:promptCommand('add ', path.strForOS(1), 'file')
+    call s:execGitCmd('add ' . path.strForOS(1))
 endfunction
 
 function! NERDTreeGitRemove()
     let node = g:NERDTreeFileNode.GetSelected()
     let path = node.path
-    call s:promptCommand('rm ', path.strForOS(1), 'file')
+    call s:execGitCmd('rm ' . path.strForOS(1))
 endfunction
 
 function! NERDTreeGitCheckout()
     let node = g:NERDTreeFileNode.GetSelected()
     let path = node.path
-    call s:promptCommand('checkout ', path.strForOS(1), 'file')
+    call s:execGitCmd('checkout ' . path.strForOS(1))
 endfunction
 
-function! s:promptCommand(sub_command, cmd_tail_default, complete)
-    let extra_options  = ' --git-dir=' . s:GitRepoPath()
-    let extra_options .= ' --work-tree=' . b:NERDTreeRoot.path.str(0) . ' '
-    let base = "git" . extra_options . a:sub_command
+function! s:execGitCmd(sub_cmd)
+    let extra_options  = '--git-dir=' . s:GitRepoPath() . ' '
+    let extra_options .= '--work-tree=' . b:NERDTreeRoot.path.str(0)
+    let cmd = "git" . ' ' . extra_options . ' ' . a:sub_cmd
 
-    let node = g:NERDTreeFileNode.GetSelected()
-
-    let cmd_tail = input(":!" . base,  a:cmd_tail_default, a:complete)
-    if cmd_tail != ''
-        let output = system(base . cmd_tail)
-        redraw!
-        if v:shell_error == 0
+    let output = system(cmd)
+    redraw!
+    if v:shell_error == 0
+        let node = g:NERDTreeFileNode.GetSelected()
+        if !node.isRoot()
             call node.parent.refresh()
             call NERDTreeRender()
-        else
-            echo output
         endif
     else
-        redraw
-        echo "Aborted"
+        echomsg output
     endif
 endfunction
