@@ -486,18 +486,15 @@ function! s:MenuController.showMenu()
             let key = nr2char(getchar())
             let done = self._handleKeypress(key)
         endwhile
-
-        if self.selection != -1
-            let m = self._current()
-            call m.execute()
-        endif
-
     finally
         call self._restoreOptions()
     endtry
 
+    if self.selection != -1
+        let m = self._current()
+        call m.execute()
+    endif
 endfunction
-
 "FUNCTION: MenuController._prompt() {{{3
 function! s:MenuController._prompt()
     let toReturn = ''
