@@ -16,7 +16,7 @@ endif
 let g:loaded_nerdtree_exec_menuitem = 1
 
 call NERDTreeAddMenuItem({
-            \ 'text': '(!) - Execute file',
+            \ 'text': '(!)Execute file',
             \ 'shortcut': '!',
             \ 'callback': 'NERDTreeExecFile',
             \ 'isActiveCallback': 'NERDTreeExecFileActive' })
@@ -28,7 +28,8 @@ endfunction
 
 function! NERDTreeExecFile()
     let treenode = g:NERDTreeFileNode.GetSelected()
-    echo "Complete the command to execute (add arguments etc): \n\n"
+    echo "==========================================================\n"
+    echo "Complete the command to execute (add arguments etc):\n"
     let cmd = treenode.path.strForOS(1)
     let cmd = input(':!', cmd . ' ')
 
