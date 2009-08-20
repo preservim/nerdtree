@@ -466,6 +466,7 @@ endfunction
 "============================================================
 let s:MenuController = {}
 "FUNCTION: MenuController.New(menuItems) {{{3
+"create a new menu controller that operates on the given menu items
 function! s:MenuController.New(menuItems)
     let newMenuController =  copy(self)
     let newMenuController.menuItems = a:menuItems
@@ -473,6 +474,8 @@ function! s:MenuController.New(menuItems)
 endfunction
 
 "FUNCTION: MenuController.showMenu() {{{3
+"start the main loop of the menu and get the user to choose/execute a menu
+"item
 function! s:MenuController.showMenu()
     call self._saveOptions()
 
@@ -495,7 +498,9 @@ function! s:MenuController.showMenu()
         call m.execute()
     endif
 endfunction
+
 "FUNCTION: MenuController._prompt() {{{3
+"get the prompt that should be displayed to the user
 function! s:MenuController._prompt()
     let toReturn = ''
     let toReturn .= "NERDTree Menu. Use j/k/enter and the shortcuts indicated\n"
@@ -515,12 +520,13 @@ function! s:MenuController._prompt()
 endfunction
 
 "FUNCTION: MenuController._current(key) {{{3
+"get the MenuItem that is curently selected
 function! s:MenuController._current()
     return self.menuItems[self.selection]
 endfunction
 
 "FUNCTION: MenuController._handleKeypress(key) {{{3
-"changes the selection (if appropriate) and returns 1 if the user has made
+"change the selection (if appropriate) and return 1 if the user has made
 "their choice, 0 otherwise
 function! s:MenuController._handleKeypress(key)
     if a:key == 'j'
@@ -546,6 +552,7 @@ function! s:MenuController._handleKeypress(key)
 endfunction
 
 "FUNCTION: MenuController._allIndexesFor(shortcut) {{{3
+"get indexes to all menu items with the given shortcut
 function! s:MenuController._allIndexesFor(shortcut)
     let toReturn = []
 
@@ -559,6 +566,8 @@ function! s:MenuController._allIndexesFor(shortcut)
 endfunction
 
 "FUNCTION: MenuController._nextIndexFor(shortcut) {{{3
+"get the index to the next menu item with the given shortcut, starts from the
+"current cursor location and wraps around to the top again if need be
 function! s:MenuController._nextIndexFor(shortcut)
     for i in range(self.selection+1, len(self.menuItems)-1)
         if self.menuItems[i].shortcut == a:shortcut
@@ -576,6 +585,8 @@ function! s:MenuController._nextIndexFor(shortcut)
 endfunction
 
 "FUNCTION: MenuController._redraw() {{{3
+"wrapper for :redraw[!]. Exists mainly to encapsulate a hack where gtk2 gvim
+"doesnt redraw properly without the !
 function! s:MenuController._redraw()
     if has("gui_running")
         redraw!
@@ -585,6 +596,8 @@ function! s:MenuController._redraw()
 endfunction
 
 "FUNCTION: MenuController._setCmdheight() {{{3
+"sets &cmdheight to whatever is needed to display the menu. The gtk2 gvim
+"spazzes out if we dont have an extra line
 function! s:MenuController._setCmdheight()
     if has("gui_running")
         let &cmdheight = len(self.menuItems) + 3
@@ -594,6 +607,8 @@ function! s:MenuController._setCmdheight()
 endfunction
 
 "FUNCTION: MenuController._saveOptions() {{{3
+"set any vim options that are required to make the menu work (saving their old
+"values)
 function! s:MenuController._saveOptions()
     let self._oldLazyredraw = &lazyredraw
     let self._oldCmdheight = &cmdheight
@@ -602,6 +617,7 @@ function! s:MenuController._saveOptions()
 endfunction
 
 "FUNCTION: MenuController._restoreOptions() {{{3
+"restore the options we saved in _saveOptions()
 function! s:MenuController._restoreOptions()
     let &cmdheight = self._oldCmdheight
     let &lazyredraw = self._oldLazyredraw
@@ -645,6 +661,7 @@ endfunction
 "============================================================
 let s:MenuItem = {}
 "FUNCTION: MenuItem.All() {{{3
+"get all top level menu items
 function! s:MenuItem.All()
     if !exists("s:menuItems")
         let s:menuItems = []
@@ -653,6 +670,7 @@ function! s:MenuItem.All()
 endfunction
 
 "FUNCTION: MenuItem.AllEnabled() {{{3
+"get all top level menu items that are currently enabled
 function! s:MenuItem.AllEnabled()
     let toReturn = []
     for i in s:MenuItem.All()
@@ -664,6 +682,7 @@ function! s:MenuItem.AllEnabled()
 endfunction
 
 "FUNCTION: MenuItem.Create(options) {{{3
+"make a new menu item and add it to the global list
 function! s:MenuItem.Create(options)
     let newMenuItem = copy(self)
 
@@ -687,6 +706,7 @@ function! s:MenuItem.Create(options)
 endfunction
 
 "FUNCTION: MenuItem.CreateSeparator(options) {{{3
+"make a new separator menu item and add it to the global list
 function! s:MenuItem.CreateSeparator(options)
     let standard_options = { 'text': '--------------------',
                 \ 'shortcut': -1,
@@ -697,6 +717,10 @@ function! s:MenuItem.CreateSeparator(options)
 endfunction
 
 "FUNCTION: MenuItem.enabled() {{{3
+"return 1 if this menu item should be displayed
+"
+"delegates off to the isActiveCallback, and defaults to 1 if no callback was
+"specified
 function! s:MenuItem.enabled()
     if self.isActiveCallback != -1
         return {self.isActiveCallback}()
@@ -705,6 +729,9 @@ function! s:MenuItem.enabled()
 endfunction
 
 "FUNCTION: MenuItem.execute() {{{3
+"perform the action behind this menu item, if this menuitem has children then
+"display a new menu for them, otherwise deletegate off to the menuitem's
+"callback
 function! s:MenuItem.execute()
     if len(self.children)
         let mc = s:MenuController.New(self.children)
@@ -717,6 +744,7 @@ function! s:MenuItem.execute()
 endfunction
 
 "FUNCTION: MenuItem.isSeparator() {{{3
+"return 1 if this menuitem is a separator
 function! s:MenuItem.isSeparator()
     return self.callback == -1
 endfunction
