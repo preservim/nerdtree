@@ -612,7 +612,7 @@ endfunction
 function! s:MenuController._saveOptions()
     let self._oldLazyredraw = &lazyredraw
     let self._oldCmdheight = &cmdheight
-    set lazyredraw
+    set nolazyredraw
     call self._setCmdheight()
 endfunction
 
