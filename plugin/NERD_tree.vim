@@ -688,12 +688,16 @@ function! s:MenuItem.Create(options)
 
     let newMenuItem.text = a:options['text']
     let newMenuItem.shortcut = a:options['shortcut']
-    let newMenuItem.callback = a:options['callback']
     let newMenuItem.children = []
 
     let newMenuItem.isActiveCallback = -1
     if has_key(a:options, 'isActiveCallback')
         let newMenuItem.isActiveCallback = a:options['isActiveCallback']
+    endif
+
+    let newMenuItem.callback = -1
+    if has_key(a:options, 'callback')
+        let newMenuItem.callback = a:options['callback']
     endif
 
     if has_key(a:options, 'parent')
@@ -711,6 +715,15 @@ function! s:MenuItem.CreateSeparator(options)
     let standard_options = { 'text': '--------------------',
                 \ 'shortcut': -1,
                 \ 'callback': -1 }
+    let options = extend(a:options, standard_options, "force")
+
+    return s:MenuItem.Create(options)
+endfunction
+
+"FUNCTION: MenuItem.CreateSubmenu(options) {{{3
+"make a new submenu and add it to global list
+function! s:MenuItem.CreateSubmenu(options)
+    let standard_options = { 'callback': -1 }
     let options = extend(a:options, standard_options, "force")
 
     return s:MenuItem.Create(options)
@@ -746,7 +759,13 @@ endfunction
 "FUNCTION: MenuItem.isSeparator() {{{3
 "return 1 if this menuitem is a separator
 function! s:MenuItem.isSeparator()
-    return self.callback == -1
+    return self.callback == -1 && self.children == []
+endfunction
+
+"FUNCTION: MenuItem.isSubmenu() {{{3
+"return 1 if this menuitem is a submenu
+function! s:MenuItem.isSubmenu()
+    return self.callback == -1 && !empty(self.children)
 endfunction
 
 "CLASS: TreeFileNode {{{2
@@ -2594,12 +2613,16 @@ let g:NERDTreeFileNode = s:TreeFileNode
 let g:NERDTreeBookmark = s:Bookmark
 
 function! NERDTreeAddMenuItem(options)
-    return s:MenuItem.Create(a:options)
+    call s:MenuItem.Create(a:options)
 endfunction
 
 function! NERDTreeAddMenuSeparator(...)
     let opts = a:0 ? a:1 : {}
-    return s:MenuItem.CreateSeparator(opts)
+    call s:MenuItem.CreateSeparator(opts)
+endfunction
+
+function! NERDTreeAddSubmenu(options)
+    return s:MenuItem.Create(a:options)
 endfunction
 
 function! NERDTreeAddKeyMap(options)
