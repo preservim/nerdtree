@@ -31,7 +31,9 @@ CONTENTS                                                   *NERDTree-contents*
     3.Options.................................|NERDTreeOptions|
         3.1.Option summary....................|NERDTreeOptionSummary|
         3.2.Option details....................|NERDTreeOptionDetails|
-    4.Hacking the NERD tree...................|NERDTreeHacking|
+    4.The NERD tree API.......................|NERDTreeAPI|
+        4.1.Key map API.......................|NERDTreeKeymapAPI|
+        4.2.Menu API..........................|NERDTreeMenuAPI|
     5.About...................................|NERDTreeAbout|
     6.Changelog...............................|NERDTreeChangelog|
     7.Credits.................................|NERDTreeCredits|
@@ -947,9 +949,123 @@ Default: 31.
 This option is used to change the size of the NERD tree when it is loaded.
 
 ==============================================================================
-4. Hacking the NERD tree                                     *NERDTreeHacking*
+4. Hacking the NERD tree                                         *NERDTreeAPI*
 
-TODO: fill in when new api is complete
+The NERD tree script allows you to add custom key mappings and menu items via a
+set of API calls. Any such scripts should be placed in ~/.vim/nerdtree_plugin/
+(*nix) or ~/vimfiles/nerdtree_plugin (windows).
+
+NERDTreeRender()                                            *NERDTreeRender()*
+
+------------------------------------------------------------------------------
+4.1. Key map API                                           *NERDTreeKeymapAPI*
+
+NERDTreeAddKeyMap({options})                             *NERDTreeAddKeyMap()*
+    Adds a new keymapping for all NERD tree buffers.
+    {options} must be a dictionary, and must contain the following keys:
+    "key" - the shortcut key for the new mapping
+    "callback" - the function the new mapping will be bound to
+    "quickhelpText" - the text that will appear in the quickhelp (see
+    |NERDTree-?|)
+
+    Example: >
+        call NERDTreeAddKeyMap({
+               \ 'key': 'b',
+               \ 'callback': 'NERDTreeEchoCurrentNode',
+               \ 'quickhelpText': 'echo full path of current node' })
+
+        function! NERDTreeEchoCurrentNode()
+            let n = g:NERDTreeFileNode.GetSelected()
+            if n != {}
+                echomsg 'Current node: ' . n.path.str(0)
+            endif
+        endfunction
+<
+    This code should sit in a file like ~/.vim/nerdtree_plugin/mymapping.vim.
+    It adds a (rather useless) mapping on 'b' which echos the full path to the
+    current node.
+
+------------------------------------------------------------------------------
+4.2. Menu API                                                *NERDTreeMenuAPI*
+
+NERDTreeAddSubmenu({options})                           *NERDTreeAddSubmenu()*
+    Creates and returns a new submenu.
+
+    {options} must be a dictionary and must contain the following keys:
+    "text" - the text of the submenu that the user will see
+    "shortcut" - a shortcut key for the submenu (need not be unique)
+
+    The following keys are optional:
+    "isActiveCallback" - a function that will be called to determine whether
+    this submenu item will be displayed or not. The callback function must return
+    0 or 1.
+    "parent" - the parent submenu of the new submenu (returned from a previous
+    invocation of NERDTreeAddSubmenu()). If this key is left out then the new
+    submenu will sit under the top level menu.
+
+    See below for an example.
+
+NERDTreeAddMenuItem({options})                         *NERDTreeAddMenuItem()*
+    Adds a new menu item to the NERD tree menu (see |NERDTreeMenu|).
+
+    {options} must be a dictionary and must contain the
+    following keys:
+    "text" - the text of the menu item which the user will see
+    "shortcut" - a shortcut key for the menu item (need not be unique)
+    "callback" - the function that will be called when the user activates the
+    menu item.
+
+    The following keys are optional:
+    "isActiveCallback" - a function that will be called to determine whether
+    this menu item will be displayed or not. The callback function must return
+    0 or 1.
+    "parent" - if a menu item belongs under a submenu then a parent key must be
+    specified. This value for this key will be the object that
+    was returned when the submenu was created with |NERDTreeAddSubmenu()|.
+
+    See below for an example.
+
+NERDTreeAddMenuSeparator([{options}])             *NERDTreeAddMenuSeparator()*
+    Adds a menu separator (a row of dashes).
+
+    {options} is an optional dictionary that may contain the following keys:
+    "isActiveCallback" - see description in |NERDTreeAddMenuItem()|.
+
+Below is an example of the menu API in action. >
+    call NERDTreeAddMenuSeparator()
+
+    call NERDTreeAddMenuItem({
+                \ 'text': 'a (t)op level menu item',
+                \ 'shortcut': 't',
+                \ 'callback': 'SomeFunction' })
+
+    let submenu = NERDTreeAddSubmenu({
+                \ 'text': 'a (s)ub menu',
+                \ 'shortcut': 's' })
+
+    call NERDTreeAddMenuItem({
+                \ 'text': '(n)ested item 1',
+                \ 'shortcut': 'n',
+                \ 'callback': 'SomeFunction',
+                \ 'parent': submenu })
+
+    call NERDTreeAddMenuItem({
+                \ 'text': '(n)ested item 2',
+                \ 'shortcut': 'n',
+                \ 'callback': 'SomeFunction',
+                \ 'parent': submenu })
+<
+This will create the following menu: >
+  --------------------
+  a (t)op level menu item
+  a (s)ub menu
+<
+Where selecting "a (s)ub menu" will lead to a second menu: >
+  (n)ested item 1
+  (n)ested item 2
+<
+When any of the 3 concrete menu items are selected the function "SomeFunction"
+will be called.
 
 ==============================================================================
 5. About                                                       *NERDTreeAbout*
