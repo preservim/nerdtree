@@ -160,7 +160,7 @@ augroup NERDTree
     autocmd VimEnter * call s:Bookmark.CacheBookmarks(0)
 
     "load all nerdtree plugins after vim starts
-    autocmd VimEnter * runtime! nerdtree_plugin/*.vim
+    autocmd VimEnter * runtime! nerdtree_plugin/**/*.vim
 augroup END
 
 if g:NERDTreeHijackNetrw
