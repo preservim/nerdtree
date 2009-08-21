@@ -922,13 +922,15 @@ Default: 31.
 This option is used to change the size of the NERD tree when it is loaded.
 
 ==============================================================================
-4. Hacking the NERD tree                                         *NERDTreeAPI*
+4. The NERD tree API                                             *NERDTreeAPI*
 
 The NERD tree script allows you to add custom key mappings and menu items via a
 set of API calls. Any such scripts should be placed in ~/.vim/nerdtree_plugin/
 (*nix) or ~/vimfiles/nerdtree_plugin (windows).
 
 NERDTreeRender()                                            *NERDTreeRender()*
+    Re-renders the NERD tree buffer. Useful if you change the state of the
+    tree and you want to it to be reflected in the UI.
 
 ------------------------------------------------------------------------------
 4.1. Key map API                                           *NERDTreeKeymapAPI*
