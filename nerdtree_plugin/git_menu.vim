@@ -22,11 +22,10 @@ endif
 let g:loaded_nerdtree_git_menu = 1
 
 call NERDTreeAddMenuSeparator({'isActiveCallback': 'NERDTreeGitMenuEnabled'})
-let s:menu = NERDTreeAddMenuItem({
+let s:menu = NERDTreeAddSubmenu({
             \ 'text': '(g)it menu',
             \ 'shortcut': 'g',
-            \ 'isActiveCallback': 'NERDTreeGitMenuEnabled',
-            \ 'callback': 'NERDTreeGitMenu' })
+            \ 'isActiveCallback': 'NERDTreeGitMenuEnabled' })
 
 call NERDTreeAddMenuItem({
             \ 'text': 'git (a)dd',
