@@ -1,5 +1,5 @@
 " ============================================================================
-" File:        nerdtree_fs_menu.vim
+" File:        fs_menu.vim
 " Description: plugin for the NERD Tree that provides a file system menu
 " Maintainer:  Martin Grenfell <martin_grenfell at msn dot com>
 " Last Change: 17 July, 2009

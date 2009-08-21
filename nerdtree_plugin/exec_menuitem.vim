@@ -1,5 +1,5 @@
 " ============================================================================
-" File:        nerdtree_fs_menu.vim
+" File:        exec_menuitem.vim
 " Description: plugin for NERD Tree that provides an execute file menu item
 " Maintainer:  Martin Grenfell <martin_grenfell at msn dot com>
 " Last Change: 22 July, 2009
