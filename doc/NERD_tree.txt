@@ -27,7 +27,7 @@ CONTENTS                                                   *NERDTree-contents*
             2.2.2.Bookmark commands...........|NERDTreeBookmarkCommands|
             2.2.3.Invalid bookmarks...........|NERDTreeInvalidBookmarks|
         2.3.NERD tree mappings................|NERDTreeMappings|
-        2.4.The filesystem menu...............|NERDTreeFilesysMenu|
+        2.4.The NERDT tree menu...............|NERDTreeMenu|
     3.Options.................................|NERDTreeOptions|
         3.1.Option summary....................|NERDTreeOptionSummary|
         3.2.Option details....................|NERDTreeOptionDetails|
@@ -70,9 +70,6 @@ The following features and functionality are provided by the NERD tree:
         * custom file filters to prevent e.g. vim backup files being displayed
         * optional displaying of hidden files (. files)
         * files can be "turned off" so that only directories are displayed
-    * A textual filesystem menu is provided which allows you to
-      create/delete/move file and directory nodes as well as copy (for
-      supported OSs)
     * The position and size of the NERD tree window can be customised
     * The order in which the nodes in the tree are listed can be customised.
     * A model of your filesystem is created/maintained as you explore it. This
@@ -89,6 +86,12 @@ The following features and functionality are provided by the NERD tree:
     * By default the script overrides the default file browser (netw), so if
       you :edit a directory a (slighly modified) NERD tree will appear in the
       current window
+    * A programmable menu system is provided (simulates right clicking on a
+      node)
+        * one default menu plugin is provided to perform basic filesytem
+          operations (create/delete/move/copy files/directories)
+    * There's an API for adding your own keymappings
+
 
 ==============================================================================
 2. Functionality provided                              *NERDTreeFunctionality*
@@ -232,7 +235,7 @@ u.......Move the tree root up one directory......................|NERDTree-u|
 U.......Same as 'u' except the old root node is left open........|NERDTree-U|
 r.......Recursively refresh the current directory................|NERDTree-r|
 R.......Recursively refresh the current root.....................|NERDTree-R|
-m.......Display the filesystem menu..............................|NERDTree-m|
+m.......Display the NERD tree menu...............................|NERDTree-m|
 cd......Change the CWD to the dir of the selected node...........|NERDTree-cd|
 
 I.......Toggle whether hidden files displayed....................|NERDTree-I|
@@ -496,10 +499,10 @@ Recursively refresh the tree root.
 ------------------------------------------------------------------------------
                                                                   *NERDTree-m*
 Default key: m
-Map option: NERDTreeMapFilesystemMenu
+Map option: NERDTreeMapMenu
 Applies to: files and directories.
 
-Display the filesystem menu. See |NERDTreeFilesysMenu| for details.
+Display the NERD tree menu. See |NERDTreeMenu| for details.
 
 ------------------------------------------------------------------------------
                                                                  *NERDTree-cd*
@@ -566,44 +569,14 @@ Applies to: no restrictions.
 Toggles whether the quickhelp is displayed.
 
 ------------------------------------------------------------------------------
-2.3. The filesystem menu                                 *NERDTreeFilesysMenu*
+2.3. The NERD tree menu                                         *NERDTreeMenu*
 
-The purpose of the filesystem menu is to allow you to perform basic filesystem
-operations quickly from the NERD tree rather than the console.
+The NERD tree has a menu that can be programmed via the an API (see
+|NERDTreeMenuAPI|). The idea is to simulate the "right click" menus that most
+file explorers have.
 
-The filesystem menu can be accessed with 'm' mapping and has four supported
-operations: >
-    1. Adding nodes.
-    2. Move nodes.
-    3. Deleting nodes.
-    3. Copying nodes.
-<
-1. Adding nodes:
-To add a node move the cursor onto (or anywhere inside) the directory you wish
-to create the new node inside. Select the 'add node' option from the
-filesystem menu and type a filename. If the filename you type ends with a '/'
-character then a directory will be created. Once the operation is completed,
-the cursor is placed on the new node.
-
-2. Move nodes:
-To move/rename a node, put the cursor on it and select the 'move' option from
-the filesystem menu.  Enter the new location for the node and it will be
-moved.  If the old file is open in a buffer, you will be asked if you wish to
-delete that buffer. Once the operation is complete the cursor will be placed
-on the renamed node.
-
-3. Deleting nodes:
-To delete a node put the cursor on it and select the 'delete' option from the
-filesystem menu. After confirmation the node will be deleted. If a file is
-deleted but still exists as a buffer you will be given the option to delete
-that buffer.
-
-4. Copying nodes:
-To copy a node put the cursor on it and select the 'copy' option from the
-filesystem menu. Enter the new location and you're done. Note: copying is
-currently only supported for *nix operating systems. If someone knows a
-one line copying command for windows that doesnt require user confirmation
-then id be grateful if you'd email me.
+The script comes with one default menu plugin that adds some basic filesystem
+operations to the menu for creating/deleting/moving/copying files and dirs.
 
 ==============================================================================
 3. Customisation                                             *NERDTreeOptions*
