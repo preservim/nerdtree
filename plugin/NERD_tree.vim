@@ -844,83 +844,17 @@ function! s:TreeFileNode.delete()
     call self.parent.removeChild(self)
 endfunction
 
-"FUNCTION: TreeFileNode.renderToString {{{3
-"returns a string representation for this tree to be rendered in the view
-function! s:TreeFileNode.renderToString()
-    return self._renderToString(0, 0, [], self.getChildCount() ==# 1)
+"FUNCTION: TreeFileNode.displayString() {{{3
+"
+"Returns a string that specifies how the node should be represented as a
+"string
+"
+"Return:
+"a string that can be used in the view to represent this node
+function! s:TreeFileNode.displayString()
+    return self.path.displayString()
 endfunction
 
-
-"Args:
-"depth: the current depth in the tree for this call
-"drawText: 1 if we should actually draw the line for this node (if 0 then the
-"child nodes are rendered only)
-"vertMap: a binary array that indicates whether a vertical bar should be draw
-"for each depth in the tree
-"isLastChild:true if this curNode is the last child of its parent
-function! s:TreeFileNode._renderToString(depth, drawText, vertMap, isLastChild)
-    let output = ""
-    if a:drawText ==# 1
-
-        let treeParts = ''
-
-        "get all the leading spaces and vertical tree parts for this line
-        if a:depth > 1
-            for j in a:vertMap[0:-2]
-                if j ==# 1
-                    let treeParts = treeParts . '| '
-                else
-                    let treeParts = treeParts . '  '
-                endif
-            endfor
-        endif
-
-        "get the last vertical tree part for this line which will be different
-        "if this node is the last child of its parent
-        if a:isLastChild
-            let treeParts = treeParts . '`'
-        else
-            let treeParts = treeParts . '|'
-        endif
-
-
-        "smack the appropriate dir/file symbol on the line before the file/dir
-        "name itself
-        if self.path.isDirectory
-            if self.isOpen
-                let treeParts = treeParts . '~'
-            else
-                let treeParts = treeParts . '+'
-            endif
-        else
-            let treeParts = treeParts . '-'
-        endif
-        let line = treeParts . self.strDisplay()
-
-        let output = output . line . "\n"
-    endif
-
-    "if the node is an open dir, draw its children
-    if self.path.isDirectory ==# 1 && self.isOpen ==# 1
-
-        let childNodesToDraw = self.getVisibleChildren()
-        if len(childNodesToDraw) > 0
-
-            "draw all the nodes children except the last
-            let lastIndx = len(childNodesToDraw)-1
-            if lastIndx > 0
-                for i in childNodesToDraw[0:lastIndx-1]
-                    let output = output . i._renderToString(a:depth + 1, 1, add(copy(a:vertMap), 1), 0)
-                endfor
-            endif
-
-            "draw the last child, indicating that it IS the last
-            let output = output . childNodesToDraw[lastIndx]._renderToString(a:depth + 1, 1, add(copy(a:vertMap), 0), 1)
-        endif
-    endif
-
-    return output
-endfunction
 "FUNCTION: TreeFileNode.equals(treenode) {{{3
 "
 "Compares this treenode to the input treenode and returns 1 if they are the
@@ -1303,17 +1237,83 @@ function! s:TreeFileNode.rename(newName)
         call newParent.refresh()
     endif
 endfunction
-"FUNCTION: TreeFileNode.strDisplay() {{{3
-"
-"Returns a string that specifies how the node should be represented as a
-"string
-"
-"Return:
-"a string that can be used in the view to represent this node
-function! s:TreeFileNode.strDisplay()
-    return self.path.strDisplay()
+"FUNCTION: TreeFileNode.renderToString {{{3
+"returns a string representation for this tree to be rendered in the view
+function! s:TreeFileNode.renderToString()
+    return self._renderToString(0, 0, [], self.getChildCount() ==# 1)
 endfunction
 
+
+"Args:
+"depth: the current depth in the tree for this call
+"drawText: 1 if we should actually draw the line for this node (if 0 then the
+"child nodes are rendered only)
+"vertMap: a binary array that indicates whether a vertical bar should be draw
+"for each depth in the tree
+"isLastChild:true if this curNode is the last child of its parent
+function! s:TreeFileNode._renderToString(depth, drawText, vertMap, isLastChild)
+    let output = ""
+    if a:drawText ==# 1
+
+        let treeParts = ''
+
+        "get all the leading spaces and vertical tree parts for this line
+        if a:depth > 1
+            for j in a:vertMap[0:-2]
+                if j ==# 1
+                    let treeParts = treeParts . '| '
+                else
+                    let treeParts = treeParts . '  '
+                endif
+            endfor
+        endif
+
+        "get the last vertical tree part for this line which will be different
+        "if this node is the last child of its parent
+        if a:isLastChild
+            let treeParts = treeParts . '`'
+        else
+            let treeParts = treeParts . '|'
+        endif
+
+
+        "smack the appropriate dir/file symbol on the line before the file/dir
+        "name itself
+        if self.path.isDirectory
+            if self.isOpen
+                let treeParts = treeParts . '~'
+            else
+                let treeParts = treeParts . '+'
+            endif
+        else
+            let treeParts = treeParts . '-'
+        endif
+        let line = treeParts . self.displayString()
+
+        let output = output . line . "\n"
+    endif
+
+    "if the node is an open dir, draw its children
+    if self.path.isDirectory ==# 1 && self.isOpen ==# 1
+
+        let childNodesToDraw = self.getVisibleChildren()
+        if len(childNodesToDraw) > 0
+
+            "draw all the nodes children except the last
+            let lastIndx = len(childNodesToDraw)-1
+            if lastIndx > 0
+                for i in childNodesToDraw[0:lastIndx-1]
+                    let output = output . i._renderToString(a:depth + 1, 1, add(copy(a:vertMap), 1), 0)
+                endfor
+            endif
+
+            "draw the last child, indicating that it IS the last
+            let output = output . childNodesToDraw[lastIndx]._renderToString(a:depth + 1, 1, add(copy(a:vertMap), 0), 1)
+        endif
+    endif
+
+    return output
+endfunction
 "CLASS: TreeDirNode {{{2
 "This class is a child of the TreeFileNode class and constitutes the
 "'Composite' part of the composite design pattern between the treenode
@@ -1978,6 +1978,17 @@ function! s:Path.delete()
     endfor
 endfunction
 
+"FUNCTION: Path.displayString() {{{3
+"
+"Returns a string that specifies how the path should be represented as a
+"string
+function! s:Path.displayString()
+    if self.cachedDisplayString ==# ""
+        call self.cacheDisplayString()
+    endif
+
+    return self.cachedDisplayString
+endfunction
 "FUNCTION: Path.extractDriveLetter(fullpath) {{{3
 "
 "If running windows, cache the drive letter for this path
@@ -2214,18 +2225,6 @@ function! s:Path.strForCd()
         return self.strForOS(1)
     endif
 endfunction
-"FUNCTION: Path.strDisplay() {{{3
-"
-"Returns a string that specifies how the path should be represented as a
-"string
-function! s:Path.strDisplay()
-    if self.cachedDisplayString ==# ""
-        call self.cacheDisplayString()
-    endif
-
-    return self.cachedDisplayString
-endfunction
-
 "FUNCTION: Path.strForEditCmd() {{{3
 "
 "Return: the string for this path that is suitable to be used with the :edit
