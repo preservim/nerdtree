@@ -60,7 +60,7 @@ function! NERDTreeGitMenuEnabled()
 endfunction
 
 function! s:GitRepoPath()
-    return b:NERDTreeRoot.path.str(0) . ".git"
+    return b:NERDTreeRoot.path.str() . ".git"
 endfunction
 
 function! NERDTreeGitMove()
@@ -99,7 +99,7 @@ endfunction
 
 function! s:execGitCmd(sub_cmd)
     let extra_options  = '--git-dir=' . s:GitRepoPath() . ' '
-    let extra_options .= '--work-tree=' . b:NERDTreeRoot.path.str(0)
+    let extra_options .= '--work-tree=' . b:NERDTreeRoot.path.str()
     let cmd = "git" . ' ' . extra_options . ' ' . a:sub_cmd
 
     let output = system(cmd)

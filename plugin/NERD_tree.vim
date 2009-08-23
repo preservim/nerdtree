@@ -932,7 +932,7 @@ endfunction
 "Args:
 "treenode: the other treenode to compare to
 function! s:TreeFileNode.equals(treenode)
-    return self.path.str(1) ==# a:treenode.path.str(1)
+    return self.path.str() ==# a:treenode.path.str()
 endfunction
 
 "FUNCTION: TreeFileNode.findNode(path) {{{3
@@ -1022,11 +1022,11 @@ function! s:TreeFileNode.getLineNum()
     let totalLines = line("$")
 
     "the path components we have matched so far
-    let pathcomponents = [substitute(b:NERDTreeRoot.path.str(0), '/ *$', '', '')]
+    let pathcomponents = [substitute(b:NERDTreeRoot.path.str(), '/ *$', '', '')]
     "the index of the component we are searching for
     let curPathComponent = 1
 
-    let fullpath = self.path.str(0)
+    let fullpath = self.path.str()
 
 
     let lnum = s:TreeFileNode.GetRootLineNum()
@@ -1163,7 +1163,7 @@ function! s:TreeFileNode.open()
                 exec ("edit " . self.path.strForEditCmd())
             catch /^Vim\%((\a\+)\)\=:E37/
                 call s:putCursorInTreeWin()
-                throw "NERDTree.FileAlreadyOpenAndModifiedError: ". self.path.str(0) ." is already open and modified."
+                throw "NERDTree.FileAlreadyOpenAndModifiedError: ". self.path.str() ." is already open and modified."
             catch /^Vim\%((\a\+)\)\=:/
                 echo v:exception
             endtry
@@ -1219,7 +1219,7 @@ function! s:TreeFileNode.openSplit()
         exec(splitMode." sp " . self.path.strForEditCmd())
     catch /^Vim\%((\a\+)\)\=:E37/
         call s:putCursorInTreeWin()
-        throw "NERDTree.FileAlreadyOpenAndModifiedError: ". self.path.str(0) ." is already open and modified."
+        throw "NERDTree.FileAlreadyOpenAndModifiedError: ". self.path.str() ." is already open and modified."
     catch /^Vim\%((\a\+)\)\=:/
         "do nothing
     endtry
@@ -1394,7 +1394,7 @@ function! s:TreeDirNode.findNode(path)
     if a:path.equals(self.path)
         return self
     endif
-    if stridx(a:path.str(1), self.path.str(1), 0) ==# -1
+    if stridx(a:path.str(), self.path.str(), 0) ==# -1
         return {}
     endif
 
@@ -1423,7 +1423,7 @@ endfunction
 "Args:
 "path: a path object
 function! s:TreeDirNode.getChild(path)
-    if stridx(a:path.str(1), self.path.str(1), 0) ==# -1
+    if stridx(a:path.str(), self.path.str(), 0) ==# -1
         return {}
     endif
 
@@ -1459,7 +1459,7 @@ endfunction
 "Args:
 "path: a path object
 function! s:TreeDirNode.getChildIndex(path)
-    if stridx(a:path.str(1), self.path.str(1), 0) ==# -1
+    if stridx(a:path.str(), self.path.str(), 0) ==# -1
         return -1
     endif
 
@@ -1967,7 +1967,7 @@ function! s:Path.delete()
     else
         let success = delete(self.strForOS(0))
         if success != 0
-            throw "NERDTree.PathDeletionError: Could not delete file: '" . self.str(0) . "'"
+            throw "NERDTree.PathDeletionError: Could not delete file: '" . self.str() . "'"
         endif
     endif
 
@@ -2091,7 +2091,7 @@ endfunction
 "Args:
 "path: the other path obj to compare this with
 function! s:Path.equals(path)
-    return self.str(0) ==# a:path.str(0)
+    return self.str() ==# a:path.str()
 endfunction
 
 "FUNCTION: Path.New() {{{3
@@ -2196,17 +2196,10 @@ endfunction
 "FUNCTION: Path.str(esc) {{{3
 "
 "Gets the actual string path that this obj represents.
-"
-"Args:
-"esc: if 1 then all the tricky chars in the returned string will be escaped
-function! s:Path.str(esc)
+function! s:Path.str()
     let toReturn = '/' . join(self.pathSegments, '/')
     if self.isDirectory && toReturn != '/'
         let toReturn  = toReturn . '/'
-    endif
-
-    if a:esc
-        let toReturn = escape(toReturn, s:escape_chars)
     endif
     return toReturn
 endfunction
@@ -2238,7 +2231,7 @@ endfunction
 "Return: the string for this path that is suitable to be used with the :edit
 "command
 function! s:Path.strForEditCmd()
-    let p = self.str(1)
+    let p = self.str()
     let cwd = getcwd()
 
     if s:running_windows
@@ -3122,7 +3115,7 @@ function! s:renderView()
     call cursor(line(".")+1, col("."))
 
     "draw the header line
-    call setline(line(".")+1, b:NERDTreeRoot.path.str(0))
+    call setline(line(".")+1, b:NERDTreeRoot.path.str())
     call cursor(line(".")+1, col("."))
 
     "draw the tree
@@ -3919,7 +3912,7 @@ endfunction
 "keepState: 1 if the current root should be left open when the tree is
 "re-rendered
 function! s:upDir(keepState)
-    let cwd = b:NERDTreeRoot.path.str(0)
+    let cwd = b:NERDTreeRoot.path.str()
     if cwd ==# "/" || cwd =~ '^[^/]..$'
         call s:echo("already at top dir")
     else
