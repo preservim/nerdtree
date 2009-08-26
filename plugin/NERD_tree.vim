@@ -3605,26 +3605,6 @@ function! s:displayHelp()
     call s:centerView()
 endfunction
 
-" FUNCTION: s:executeNode() {{{2
-function! s:executeNode()
-    let treenode = s:TreeFileNode.GetSelected()
-    if treenode ==# {} || treenode.path.isDirectory
-        call s:echo("Select an executable file node first" )
-    else
-        echo "NERDTree executor\n" .
-           \ "==========================================================\n".
-           \ "Complete the command to execute (add arguments etc): \n\n"
-        let cmd = treenode.path.strForOS(1)
-        let cmd = input(':!', cmd . ' ')
-
-        if cmd != ''
-            exec ':!' . cmd
-        else
-            call s:echo("command aborted")
-        endif
-    endif
-endfunction
-
 " FUNCTION: s:handleMiddleMouse() {{{2
 function! s:handleMiddleMouse()
     let curNode = s:TreeFileNode.GetSelected()
