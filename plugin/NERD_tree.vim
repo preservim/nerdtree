@@ -79,7 +79,9 @@ endif
 "once here
 let s:NERDTreeSortStarIndex = index(g:NERDTreeSortOrder, '*')
 
-call s:initVariable("g:NERDTreeStatusline", "%{b:NERDTreeRoot.path.strForOS(0)}")
+if !exists('g:NERDTreeStatusline')
+    let g:NERDTreeStatusline = "%{b:NERDTreeRoot.path._strForOS()}"
+endif
 call s:initVariable("g:NERDTreeWinPos", "left")
 call s:initVariable("g:NERDTreeWinSize", 31)
 
@@ -340,7 +342,7 @@ function! s:Bookmark.mustExist()
     if !self.path.exists()
         call s:Bookmark.CacheBookmarks(1)
         throw "NERDTree.BookmarkPointsToInvalidLocationError: the bookmark \"".
-            \ self.name ."\" points to a non existing location: \"". self.path.strForOS(0)
+            \ self.name ."\" points to a non existing location: \"". self.path.str({'format': 'OS'})
     endif
 endfunction
 " FUNCTION: Bookmark.New(name, path) {{{3
@@ -374,7 +376,7 @@ function! s:Bookmark.str()
         let pathStrMaxLen = pathStrMaxLen - &numberwidth
     endif
 
-    let pathStr = self.path.strForOS(0)
+    let pathStr = self.path.str({'format': 'OS'})
     if len(pathStr) > pathStrMaxLen
         let pathStr = '<' . strpart(pathStr, len(pathStr) - pathStrMaxLen)
     endif
@@ -419,7 +421,7 @@ endfunction
 function! s:Bookmark.Write()
     let bookmarkStrings = []
     for i in s:Bookmark.Bookmarks()
-        call add(bookmarkStrings, i.name . ' ' . i.path.strForOS(0))
+        call add(bookmarkStrings, i.name . ' ' . i.path.str({'format': 'OS'}))
     endfor
 
     "add a blank line before the invalid ones
@@ -1047,7 +1049,7 @@ function! s:TreeFileNode.makeRoot()
 
     "change dir to the dir of the new root if instructed to
     if g:NERDTreeChDirMode ==# 2
-        exec "cd " . b:NERDTreeRoot.path.strForEditCmd()
+        exec "cd " . b:NERDTreeRoot.path.str({'format': 'EditCmd'})
     endif
 endfunction
 "FUNCTION: TreeFileNode.New(path) {{{3
@@ -1075,12 +1077,12 @@ endfunction
 "treenode: file node to open
 function! s:TreeFileNode.open()
     if b:NERDTreeType ==# "secondary"
-        exec 'edit ' . self.path.strForEditCmd()
+        exec 'edit ' . self.path.str({'format': 'EditCmd'})
         return
     endif
 
     "if the file is already open in this tab then just stick the cursor in it
-    let winnr = bufwinnr('^' . self.path.strForOS(0) . '$')
+    let winnr = bufwinnr('^' . self.path.str({'format': 'OS'}) . '$')
     if winnr != -1
         call s:exec(winnr . "wincmd w")
 
@@ -1094,7 +1096,7 @@ function! s:TreeFileNode.open()
                 else
                     call s:exec('wincmd p')
                 endif
-                exec ("edit " . self.path.strForEditCmd())
+                exec ("edit " . self.path.str({'format': 'EditCmd'}))
             catch /^Vim\%((\a\+)\)\=:E37/
                 call s:putCursorInTreeWin()
                 throw "NERDTree.FileAlreadyOpenAndModifiedError: ". self.path.str() ." is already open and modified."
@@ -1109,7 +1111,7 @@ endfunction
 function! s:TreeFileNode.openSplit()
 
     if b:NERDTreeType ==# "secondary"
-        exec "split " . self.path.strForEditCmd()
+        exec "split " . self.path.str({'format': 'EditCmd'})
         return
     endif
 
@@ -1150,7 +1152,7 @@ function! s:TreeFileNode.openSplit()
 
     " Open the new window
     try
-        exec(splitMode." sp " . self.path.strForEditCmd())
+        exec(splitMode." sp " . self.path.str({'format': 'EditCmd'}))
     catch /^Vim\%((\a\+)\)\=:E37/
         call s:putCursorInTreeWin()
         throw "NERDTree.FileAlreadyOpenAndModifiedError: ". self.path.str() ." is already open and modified."
@@ -1174,7 +1176,7 @@ endfunction
 "Open this node in a new vertical window
 function! s:TreeFileNode.openVSplit()
     if b:NERDTreeType ==# "secondary"
-        exec "vnew " . self.path.strForEditCmd()
+        exec "vnew " . self.path.str({'format': 'EditCmd'})
         return
     endif
 
@@ -1184,7 +1186,7 @@ function! s:TreeFileNode.openVSplit()
     endif
 
     call s:exec("wincmd p")
-    exec "vnew " . self.path.strForEditCmd()
+    exec "vnew " . self.path.str({'format': 'EditCmd'})
 
     "resize the nerd tree back to the original size
     call s:putCursorInTreeWin()
@@ -1535,7 +1537,8 @@ function! s:TreeDirNode._initChildren(silent)
 
     "get an array of all the files in the nodes dir
     let dir = self.path
-    let filesStr = globpath(dir.strForGlob(), '*') . "\n" . globpath(dir.strForGlob(), '.*')
+    let globDir = dir.str({'format': 'Glob'})
+    let filesStr = globpath(globDir, '*') . "\n" . globpath(globDir, '.*')
     let files = split(filesStr, "\n")
 
     if !a:silent && len(files) > g:NERDTreeNotificationThreshold
@@ -1616,7 +1619,7 @@ function! s:TreeDirNode.openExplorer()
         call s:exec('wincmd p')
         call self.openSplit()
     else
-        exec ("silent edit " . self.path.strForEditCmd())
+        exec ("silent edit " . self.path.str({'format': 'EditCmd'}))
     endif
 endfunction
 "FUNCTION: TreeDirNode.openRecursively() {{{3
@@ -1662,7 +1665,8 @@ function! s:TreeDirNode.refresh()
         let newChildNodes = []
         let invalidFilesFound = 0
         let dir = self.path
-        let filesStr = globpath(dir.strForGlob(), '*') . "\n" . globpath(dir.strForGlob(), '.*')
+        let globDir = dir.str({'format': 'Glob'})
+        let filesStr = globpath(globDir, '*') . "\n" . globpath(globDir, '.*')
         let files = split(filesStr, "\n")
         for i in files
             "filter out the .. and . directories
@@ -1914,10 +1918,10 @@ function! s:Path.copy(dest)
 
     let dest = s:Path.WinToUnixPath(a:dest)
 
-    let cmd = g:NERDTreeCopyCmd . " " . self.strForOS(0) . " " . dest
+    let cmd = g:NERDTreeCopyCmd . " " . self.str({'format': 'OS'}) . " " . dest
     let success = system(cmd)
     if success != 0
-        throw "NERDTree.CopyError: Could not copy ''". self.strForOS(0) ."'' to: '" . a:dest . "'"
+        throw "NERDTree.CopyError: Could not copy ''". self.str({'format': 'OS'}) ."'' to: '" . a:dest . "'"
     endif
 endfunction
 
@@ -1958,14 +1962,14 @@ endfunction
 function! s:Path.delete()
     if self.isDirectory
 
-        let cmd = g:NERDTreeRemoveDirCmd . self.strForOS(1)
+        let cmd = g:NERDTreeRemoveDirCmd . self.str({'format': 'OS', 'escape': 1})
         let success = system(cmd)
 
         if v:shell_error != 0
-            throw "NERDTree.PathDeletionError: Could not delete directory: '" . self.strForOS(0) . "'"
+            throw "NERDTree.PathDeletionError: Could not delete directory: '" . self.str({'format': 'OS'}) . "'"
         endif
     else
-        let success = delete(self.strForOS(0))
+        let success = delete(self.str({'format': 'OS'}))
         if success != 0
             throw "NERDTree.PathDeletionError: Could not delete file: '" . self.str() . "'"
         endif
@@ -2003,7 +2007,8 @@ endfunction
 "FUNCTION: Path.exists() {{{3
 "return 1 if this path points to a location that is readable or is a directory
 function! s:Path.exists()
-    return filereadable(self.strForOS(0)) || isdirectory(self.strForOS(0))
+    let p = self.str({'format': 'OS'})
+    return filereadable(p) || isdirectory(p)
 endfunction
 "FUNCTION: Path.getDir() {{{3
 "
@@ -2179,7 +2184,7 @@ endfunction
 
 "FUNCTION: Path.refresh() {{{3
 function! s:Path.refresh()
-    call self.readInfoFromDisk(self.strForOS(0))
+    call self.readInfoFromDisk(self.str({'format': 'OS'}))
     call self.cacheDisplayString()
 endfunction
 
@@ -2191,9 +2196,9 @@ function! s:Path.rename(newPath)
         throw "NERDTree.InvalidArgumentsError: Invalid newPath for renaming = ". a:newPath
     endif
 
-    let success =  rename(self.strForOS(0), a:newPath)
+    let success =  rename(self.str({'format': 'OS'}), a:newPath)
     if success != 0
-        throw "NERDTree.PathRenameError: Could not rename: '" . self.strForOS(0) . "'" . 'to:' . a:newPath
+        throw "NERDTree.PathRenameError: Could not rename: '" . self.str({'format': 'OS'}) . "'" . 'to:' . a:newPath
     endif
     call self.readInfoFromDisk(a:newPath)
 
@@ -2204,10 +2209,33 @@ function! s:Path.rename(newPath)
     call s:Bookmark.Write()
 endfunction
 
-"FUNCTION: Path.str(esc) {{{3
+"FUNCTION: Path.str() {{{3
 "
 "Gets the actual string path that this obj represents.
-function! s:Path.str()
+function! s:Path.str(...)
+    let options = a:0 ? a:1 : {}
+    let toReturn = ""
+
+    if has_key(options, 'format')
+        let format = options['format']
+        if has_key(self, '_strFor' . format)
+            exec 'let toReturn = self._strFor' . format . '()'
+        else
+            raise 'NERDTree.UnknownFormatError: unknown format "'. format .'"'
+        endif
+    else
+        let toReturn = self._str()
+    endif
+
+    if has_key(options, 'escape') && options['escape']
+        let toReturn = shellescape(toReturn)
+    endif
+
+    return toReturn
+endfunction
+
+"FUNCTION: Path._str() {{{3
+function! s:Path._str()
     let toReturn = '/' . join(self.pathSegments, '/')
     if self.isDirectory && toReturn != '/'
         let toReturn  = toReturn . '/'
@@ -2215,26 +2243,26 @@ function! s:Path.str()
     return toReturn
 endfunction
 
-"FUNCTION: Path.strForCd() {{{3
+"FUNCTION: Path._strForCd() {{{3
 "
 " returns a string that can be used with :cd
-function! s:Path.strForCd()
+function! s:Path._strForCd()
     if s:running_windows
-        return self.strForOS(0)
+        return self.str({'format': 'OS'})
     else
-        return self.strForOS(1)
+        return self.str({'format': 'OS', 'escape': 1})
     endif
 endfunction
-"FUNCTION: Path.strForEditCmd() {{{3
+"FUNCTION: Path._strForEditCmd() {{{3
 "
 "Return: the string for this path that is suitable to be used with the :edit
 "command
-function! s:Path.strForEditCmd()
+function! s:Path._strForEditCmd()
     let p = self.str()
     let cwd = getcwd()
 
     if s:running_windows
-        let p = tolower(self.strForOS(0))
+        let p = tolower(self.str({'format': 'OS'}))
         let cwd = tolower(getcwd())
     endif
 
@@ -2252,8 +2280,8 @@ function! s:Path.strForEditCmd()
     return p
 
 endfunction
-"FUNCTION: Path.strForGlob() {{{3
-function! s:Path.strForGlob()
+"FUNCTION: Path._strForGlob() {{{3
+function! s:Path._strForGlob()
     let lead = s:Path.Slash()
 
     "if we are running windows then slap a drive letter on the front
@@ -2268,16 +2296,12 @@ function! s:Path.strForGlob()
     endif
     return toReturn
 endfunction
-"FUNCTION: Path.strForOS(esc) {{{3
+"FUNCTION: Path._strForOS() {{{3
 "
 "Gets the string path for this path object that is appropriate for the OS.
 "EG, in windows c:\foo\bar
 "    in *nix  /foo/bar
-"
-"Args:
-"esc: if 1 then all the tricky chars in the returned string will be
-" escaped. If we are running windows then the str is double quoted instead.
-function! s:Path.strForOS(esc)
+function! s:Path._strForOS()
     let lead = s:Path.Slash()
 
     "if we are running windows then slap a drive letter on the front
@@ -2285,16 +2309,7 @@ function! s:Path.strForOS(esc)
         let lead = self.drive . '\'
     endif
 
-    let toReturn = lead . join(self.pathSegments, s:Path.Slash())
-
-    if a:esc
-        if s:running_windows
-            let toReturn = '"' .  toReturn . '"'
-        else
-            let toReturn = escape(toReturn, s:escape_chars)
-        endif
-    endif
-    return toReturn
+    return lead . join(self.pathSegments, s:Path.Slash())
 endfunction
 
 "FUNCTION: Path.strTrunk() {{{3
@@ -2519,7 +2534,7 @@ function! s:initNerdTreeMirror()
     while i < len(treeBufNames)
         let bufName = treeBufNames[i]
         let treeRoot = getbufvar(bufName, "NERDTreeRoot")
-        let options[i+1 . '. ' . treeRoot.path.strForOS(0) . '  (buf name: ' . bufName . ')'] = bufName
+        let options[i+1 . '. ' . treeRoot.path.str({'format': 'OS'}) . '  (buf name: ' . bufName . ')'] = bufName
         let i = i + 1
     endwhile
 
@@ -3738,9 +3753,9 @@ function! s:openInNewTab(stayCurrentTab)
     if treenode != {}
         if treenode.path.isDirectory
             tabnew
-            call s:initNerdTree(treenode.path.strForOS(0))
+            call s:initNerdTree(treenode.path.str({'format': 'OS'}))
         else
-            exec "tabedit " . treenode.path.strForEditCmd()
+            exec "tabedit " . treenode.path.str({'format': 'EditCmd'})
         endif
     else
         let bookmark = s:getSelectedBookmark()
@@ -3749,7 +3764,7 @@ function! s:openInNewTab(stayCurrentTab)
                 tabnew
                 call s:initNerdTree(bookmark.name)
             else
-                exec "tabedit " . bookmark.path.strForEditCmd()
+                exec "tabedit " . bookmark.path.str({'format': 'EditCmd'})
             endif
         endif
     endif
