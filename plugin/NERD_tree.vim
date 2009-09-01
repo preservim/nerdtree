@@ -487,7 +487,7 @@ function! s:MenuController.showMenu()
         let done = 0
         while !done
             redraw!
-            echo self._prompt()
+            call self._echoPrompt()
             let key = nr2char(getchar())
             let done = self._handleKeypress(key)
         endwhile
@@ -501,24 +501,20 @@ function! s:MenuController.showMenu()
     endif
 endfunction
 
-"FUNCTION: MenuController._prompt() {{{3
-"get the prompt that should be displayed to the user
-function! s:MenuController._prompt()
-    let toReturn = ''
-    let toReturn .= "NERDTree Menu. Use j/k/enter and the shortcuts indicated\n"
-    let toReturn .= "==========================================================\n"
+"FUNCTION: MenuController._echoPrompt() {{{3
+function! s:MenuController._echoPrompt()
+    echo "NERDTree Menu. Use j/k/enter and the shortcuts indicated"
+    echo "=========================================================="
 
     for i in range(0, len(self.menuItems)-1)
         if self.selection == i
-            let toReturn .= "> "
+            echohl todo
+            echo "> " . self.menuItems[i].text
+            echohl normal
         else
-            let toReturn .= "  "
+            echo "  " . self.menuItems[i].text
         endif
-
-        let toReturn .= self.menuItems[i].text . "\n"
     endfor
-
-    return toReturn
 endfunction
 
 "FUNCTION: MenuController._current(key) {{{3
