@@ -1029,7 +1029,7 @@ function! s:TreeFileNode.makeRoot()
 
     "change dir to the dir of the new root if instructed to
     if g:NERDTreeChDirMode ==# 2
-        exec "cd " . b:NERDTreeRoot.path.str({'format': 'EditCmd'})
+        exec "cd " . b:NERDTreeRoot.path.str({'format': 'Edit'})
     endif
 endfunction
 "FUNCTION: TreeFileNode.New(path) {{{3
@@ -1057,7 +1057,7 @@ endfunction
 "treenode: file node to open
 function! s:TreeFileNode.open()
     if b:NERDTreeType ==# "secondary"
-        exec 'edit ' . self.path.str({'format': 'EditCmd'})
+        exec 'edit ' . self.path.str({'format': 'Edit'})
         return
     endif
 
@@ -1076,7 +1076,7 @@ function! s:TreeFileNode.open()
                 else
                     call s:exec('wincmd p')
                 endif
-                exec ("edit " . self.path.str({'format': 'EditCmd'}))
+                exec ("edit " . self.path.str({'format': 'Edit'}))
             catch /^Vim\%((\a\+)\)\=:E37/
                 call s:putCursorInTreeWin()
                 throw "NERDTree.FileAlreadyOpenAndModifiedError: ". self.path.str() ." is already open and modified."
@@ -1091,7 +1091,7 @@ endfunction
 function! s:TreeFileNode.openSplit()
 
     if b:NERDTreeType ==# "secondary"
-        exec "split " . self.path.str({'format': 'EditCmd'})
+        exec "split " . self.path.str({'format': 'Edit'})
         return
     endif
 
@@ -1132,7 +1132,7 @@ function! s:TreeFileNode.openSplit()
 
     " Open the new window
     try
-        exec(splitMode." sp " . self.path.str({'format': 'EditCmd'}))
+        exec(splitMode." sp " . self.path.str({'format': 'Edit'}))
     catch /^Vim\%((\a\+)\)\=:E37/
         call s:putCursorInTreeWin()
         throw "NERDTree.FileAlreadyOpenAndModifiedError: ". self.path.str() ." is already open and modified."
@@ -1156,7 +1156,7 @@ endfunction
 "Open this node in a new vertical window
 function! s:TreeFileNode.openVSplit()
     if b:NERDTreeType ==# "secondary"
-        exec "vnew " . self.path.str({'format': 'EditCmd'})
+        exec "vnew " . self.path.str({'format': 'Edit'})
         return
     endif
 
@@ -1166,7 +1166,7 @@ function! s:TreeFileNode.openVSplit()
     endif
 
     call s:exec("wincmd p")
-    exec "vnew " . self.path.str({'format': 'EditCmd'})
+    exec "vnew " . self.path.str({'format': 'Edit'})
 
     "resize the nerd tree back to the original size
     call s:putCursorInTreeWin()
@@ -1599,7 +1599,7 @@ function! s:TreeDirNode.openExplorer()
         call s:exec('wincmd p')
         call self.openSplit()
     else
-        exec ("silent edit " . self.path.str({'format': 'EditCmd'}))
+        exec ("silent edit " . self.path.str({'format': 'Edit'}))
     endif
 endfunction
 "FUNCTION: TreeDirNode.openRecursively() {{{3
@@ -2233,11 +2233,11 @@ function! s:Path._strForCd()
         return self.str({'format': 'OS', 'escape': 1})
     endif
 endfunction
-"FUNCTION: Path._strForEditCmd() {{{3
+"FUNCTION: Path._strForEdit() {{{3
 "
 "Return: the string for this path that is suitable to be used with the :edit
 "command
-function! s:Path._strForEditCmd()
+function! s:Path._strForEdit()
     let p = self.str()
     let cwd = getcwd()
 
@@ -3735,7 +3735,7 @@ function! s:openInNewTab(stayCurrentTab)
             tabnew
             call s:initNerdTree(treenode.path.str({'format': 'OS'}))
         else
-            exec "tabedit " . treenode.path.str({'format': 'EditCmd'})
+            exec "tabedit " . treenode.path.str({'format': 'Edit'})
         endif
     else
         let bookmark = s:getSelectedBookmark()
@@ -3744,7 +3744,7 @@ function! s:openInNewTab(stayCurrentTab)
                 tabnew
                 call s:initNerdTree(bookmark.name)
             else
-                exec "tabedit " . bookmark.path.str({'format': 'EditCmd'})
+                exec "tabedit " . bookmark.path.str({'format': 'Edit'})
             endif
         endif
     endif
