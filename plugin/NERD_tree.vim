@@ -486,7 +486,7 @@ function! s:MenuController.showMenu()
 
         let done = 0
         while !done
-            call self._redraw()
+            redraw!
             echo self._prompt()
             let key = nr2char(getchar())
             let done = self._handleKeypress(key)
@@ -586,26 +586,10 @@ function! s:MenuController._nextIndexFor(shortcut)
     return -1
 endfunction
 
-"FUNCTION: MenuController._redraw() {{{3
-"wrapper for :redraw[!]. Exists mainly to encapsulate a hack where gtk2 gvim
-"doesnt redraw properly without the !
-function! s:MenuController._redraw()
-    if has("gui_running")
-        redraw!
-    else
-        redraw
-    endif
-endfunction
-
 "FUNCTION: MenuController._setCmdheight() {{{3
-"sets &cmdheight to whatever is needed to display the menu. The gtk2 gvim
-"spazzes out if we dont have an extra line
+"sets &cmdheight to whatever is needed to display the menu
 function! s:MenuController._setCmdheight()
-    if has("gui_running")
-        let &cmdheight = len(self.menuItems) + 3
-    else
-        let &cmdheight = len(self.menuItems) + 2
-    endif
+    let &cmdheight = len(self.menuItems) + 3
 endfunction
 
 "FUNCTION: MenuController._saveOptions() {{{3
