@@ -2191,7 +2191,24 @@ endfunction
 
 "FUNCTION: Path.str() {{{3
 "
-"Gets the actual string path that this obj represents.
+"Returns a string representation of this Path
+"
+"Takes an optional dictionary param to specify how the output should be
+"formatted.
+"
+"The dict may have the following keys:
+"  'format'
+"  'escape'
+"
+"The 'format' key may have a value of:
+"  'Cd' - a string to be used with the :cd command
+"  'Edit' - a string to be used with :e :sp :new :tabedit etc
+"  'OS' - a string to be used with shell commands
+"
+"If not specified, a generic unix style path string will be returned
+"
+"The 'escape' key, if specified will cause the output to be escaped with
+"shellescape()
 function! s:Path.str(...)
     let options = a:0 ? a:1 : {}
     let toReturn = ""
