@@ -3546,7 +3546,7 @@ function! s:closeCurrentDir()
     endif
 
     let parent = treenode.parent
-    if parent.isRoot()
+    if parent ==# {} || parent.isRoot()
         call s:echo("cannot close tree root")
     else
         call treenode.parent.close()
