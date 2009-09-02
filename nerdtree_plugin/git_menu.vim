@@ -1,5 +1,5 @@
 " ============================================================================
-" File:        nerdtree_git_menu.vim
+" File:        git_menu.vim
 " Description: plugin for the NERD Tree that provides a git menu
 " Maintainer:  Martin Grenfell <martin_grenfell at msn dot com>
 " Last Change: 20 July, 2009
