@@ -66,11 +66,11 @@ endfunction
 function! NERDTreeGitMove()
     let node = g:NERDTreeFileNode.GetSelected()
     let path = node.path
-    let p = path.str({'format': 'OS', 'escape': 1})
+    let p = path.str({'escape': 1})
 
     let newPath = input("==========================================================\n" .
                           \ "Enter the new path for the file:                          \n" .
-                          \ "", node.path.str({'format': 'OS'}))
+                          \ "", node.path.str())
     if newPath ==# ''
         call s:echo("git mv aborted.")
         return
@@ -82,19 +82,19 @@ endfunction
 function! NERDTreeGitAdd()
     let node = g:NERDTreeFileNode.GetSelected()
     let path = node.path
-    call s:execGitCmd('add ' . path.str({'format': 'OS', 'escape': 1}))
+    call s:execGitCmd('add ' . path.str({'escape': 1}))
 endfunction
 
 function! NERDTreeGitRemove()
     let node = g:NERDTreeFileNode.GetSelected()
     let path = node.path
-    call s:execGitCmd('rm ' . path.str({'format': 'OS', 'escape': 1}))
+    call s:execGitCmd('rm ' . path.str({'escape': 1}))
 endfunction
 
 function! NERDTreeGitCheckout()
     let node = g:NERDTreeFileNode.GetSelected()
     let path = node.path
-    call s:execGitCmd('checkout ' . path.str({'format': 'OS', 'escape': 1}))
+    call s:execGitCmd('checkout ' . path.str({'escape': 1}))
 endfunction
 
 function! s:execGitCmd(sub_cmd)

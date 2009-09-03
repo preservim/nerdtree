@@ -30,7 +30,7 @@ function! NERDTreeExecFile()
     let treenode = g:NERDTreeFileNode.GetSelected()
     echo "==========================================================\n"
     echo "Complete the command to execute (add arguments etc):\n"
-    let cmd = treenode.path.str({'format': 'OS', 'escape': 1})
+    let cmd = treenode.path.str({'escape': 1})
     let cmd = input(':!', cmd . ' ')
 
     if cmd != ''

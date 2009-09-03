@@ -80,7 +80,7 @@ endif
 let s:NERDTreeSortStarIndex = index(g:NERDTreeSortOrder, '*')
 
 if !exists('g:NERDTreeStatusline')
-    let g:NERDTreeStatusline = "%{b:NERDTreeRoot.path._strForOS()}"
+    let g:NERDTreeStatusline = "%{b:NERDTreeRoot.path.str()}"
 endif
 call s:initVariable("g:NERDTreeWinPos", "left")
 call s:initVariable("g:NERDTreeWinSize", 31)
@@ -342,7 +342,7 @@ function! s:Bookmark.mustExist()
     if !self.path.exists()
         call s:Bookmark.CacheBookmarks(1)
         throw "NERDTree.BookmarkPointsToInvalidLocationError: the bookmark \"".
-            \ self.name ."\" points to a non existing location: \"". self.path.str({'format': 'OS'})
+            \ self.name ."\" points to a non existing location: \"". self.path.str()
     endif
 endfunction
 " FUNCTION: Bookmark.New(name, path) {{{3
@@ -376,7 +376,7 @@ function! s:Bookmark.str()
         let pathStrMaxLen = pathStrMaxLen - &numberwidth
     endif
 
-    let pathStr = self.path.str({'format': 'OS'})
+    let pathStr = self.path.str({'format': 'UI'})
     if len(pathStr) > pathStrMaxLen
         let pathStr = '<' . strpart(pathStr, len(pathStr) - pathStrMaxLen)
     endif
@@ -421,7 +421,7 @@ endfunction
 function! s:Bookmark.Write()
     let bookmarkStrings = []
     for i in s:Bookmark.Bookmarks()
-        call add(bookmarkStrings, i.name . ' ' . i.path.str({'format': 'OS'}))
+        call add(bookmarkStrings, i.name . ' ' . i.path.str())
     endfor
 
     "add a blank line before the invalid ones
@@ -938,11 +938,11 @@ function! s:TreeFileNode.getLineNum()
     let totalLines = line("$")
 
     "the path components we have matched so far
-    let pathcomponents = [substitute(b:NERDTreeRoot.path.str(), '/ *$', '', '')]
+    let pathcomponents = [substitute(b:NERDTreeRoot.path.str({'format': 'UI'}), '/ *$', '', '')]
     "the index of the component we are searching for
     let curPathComponent = 1
 
-    let fullpath = self.path.str()
+    let fullpath = self.path.str({'format': 'UI'})
 
 
     let lnum = s:TreeFileNode.GetRootLineNum()
@@ -1062,7 +1062,7 @@ function! s:TreeFileNode.open()
     endif
 
     "if the file is already open in this tab then just stick the cursor in it
-    let winnr = bufwinnr('^' . self.path.str({'format': 'OS'}) . '$')
+    let winnr = bufwinnr('^' . self.path.str() . '$')
     if winnr != -1
         call s:exec(winnr . "wincmd w")
 
@@ -1898,10 +1898,10 @@ function! s:Path.copy(dest)
 
     let dest = s:Path.WinToUnixPath(a:dest)
 
-    let cmd = g:NERDTreeCopyCmd . " " . self.str({'format': 'OS'}) . " " . dest
+    let cmd = g:NERDTreeCopyCmd . " " . self.str() . " " . dest
     let success = system(cmd)
     if success != 0
-        throw "NERDTree.CopyError: Could not copy ''". self.str({'format': 'OS'}) ."'' to: '" . a:dest . "'"
+        throw "NERDTree.CopyError: Could not copy ''". self.str() ."'' to: '" . a:dest . "'"
     endif
 endfunction
 
@@ -1942,14 +1942,14 @@ endfunction
 function! s:Path.delete()
     if self.isDirectory
 
-        let cmd = g:NERDTreeRemoveDirCmd . self.str({'format': 'OS', 'escape': 1})
+        let cmd = g:NERDTreeRemoveDirCmd . self.str('escape': 1})
         let success = system(cmd)
 
         if v:shell_error != 0
-            throw "NERDTree.PathDeletionError: Could not delete directory: '" . self.str({'format': 'OS'}) . "'"
+            throw "NERDTree.PathDeletionError: Could not delete directory: '" . self.str() . "'"
         endif
     else
-        let success = delete(self.str({'format': 'OS'}))
+        let success = delete(self.str())
         if success != 0
             throw "NERDTree.PathDeletionError: Could not delete file: '" . self.str() . "'"
         endif
@@ -1987,7 +1987,7 @@ endfunction
 "FUNCTION: Path.exists() {{{3
 "return 1 if this path points to a location that is readable or is a directory
 function! s:Path.exists()
-    let p = self.str({'format': 'OS'})
+    let p = self.str()
     return filereadable(p) || isdirectory(p)
 endfunction
 "FUNCTION: Path.getDir() {{{3
@@ -2164,7 +2164,7 @@ endfunction
 
 "FUNCTION: Path.refresh() {{{3
 function! s:Path.refresh()
-    call self.readInfoFromDisk(self.str({'format': 'OS'}))
+    call self.readInfoFromDisk(self.str())
     call self.cacheDisplayString()
 endfunction
 
@@ -2176,9 +2176,9 @@ function! s:Path.rename(newPath)
         throw "NERDTree.InvalidArgumentsError: Invalid newPath for renaming = ". a:newPath
     endif
 
-    let success =  rename(self.str({'format': 'OS'}), a:newPath)
+    let success =  rename(self.str(), a:newPath)
     if success != 0
-        throw "NERDTree.PathRenameError: Could not rename: '" . self.str({'format': 'OS'}) . "'" . 'to:' . a:newPath
+        throw "NERDTree.PathRenameError: Could not rename: '" . self.str() . "'" . 'to:' . a:newPath
     endif
     call self.readInfoFromDisk(a:newPath)
 
@@ -2203,7 +2203,7 @@ endfunction
 "The 'format' key may have a value of:
 "  'Cd' - a string to be used with the :cd command
 "  'Edit' - a string to be used with :e :sp :new :tabedit etc
-"  'OS' - a string to be used with shell commands
+"  'UI' - a string used in the NERD tree UI
 "
 "If not specified, a generic unix style path string will be returned
 "
@@ -2231,8 +2231,8 @@ function! s:Path.str(...)
     return toReturn
 endfunction
 
-"FUNCTION: Path._str() {{{3
-function! s:Path._str()
+"FUNCTION: Path._strForUI() {{{3
+function! s:Path._strForUI()
     let toReturn = '/' . join(self.pathSegments, '/')
     if self.isDirectory && toReturn != '/'
         let toReturn  = toReturn . '/'
@@ -2245,9 +2245,9 @@ endfunction
 " returns a string that can be used with :cd
 function! s:Path._strForCd()
     if s:running_windows
-        return self.str({'format': 'OS'})
+        return self.str()
     else
-        return self.str({'format': 'OS', 'escape': 1})
+        return self.str({'escape': 1})
     endif
 endfunction
 "FUNCTION: Path._strForEdit() {{{3
@@ -2255,11 +2255,11 @@ endfunction
 "Return: the string for this path that is suitable to be used with the :edit
 "command
 function! s:Path._strForEdit()
-    let p = self.str()
+    let p = self.str({'format': 'UI'})
     let cwd = getcwd()
 
     if s:running_windows
-        let p = tolower(self.str({'format': 'OS'}))
+        let p = tolower(self.str())
         let cwd = tolower(getcwd())
     endif
 
@@ -2293,12 +2293,12 @@ function! s:Path._strForGlob()
     endif
     return toReturn
 endfunction
-"FUNCTION: Path._strForOS() {{{3
+"FUNCTION: Path._str() {{{3
 "
 "Gets the string path for this path object that is appropriate for the OS.
 "EG, in windows c:\foo\bar
 "    in *nix  /foo/bar
-function! s:Path._strForOS()
+function! s:Path._str()
     let lead = s:Path.Slash()
 
     "if we are running windows then slap a drive letter on the front
@@ -2531,7 +2531,7 @@ function! s:initNerdTreeMirror()
     while i < len(treeBufNames)
         let bufName = treeBufNames[i]
         let treeRoot = getbufvar(bufName, "NERDTreeRoot")
-        let options[i+1 . '. ' . treeRoot.path.str({'format': 'OS'}) . '  (buf name: ' . bufName . ')'] = bufName
+        let options[i+1 . '. ' . treeRoot.path.str() . '  (buf name: ' . bufName . ')'] = bufName
         let i = i + 1
     endwhile
 
@@ -3126,7 +3126,7 @@ function! s:renderView()
     call cursor(line(".")+1, col("."))
 
     "draw the header line
-    call setline(line(".")+1, b:NERDTreeRoot.path.str())
+    call setline(line(".")+1, b:NERDTreeRoot.path.str({'format': 'UI'}))
     call cursor(line(".")+1, col("."))
 
     "draw the tree
@@ -3750,7 +3750,7 @@ function! s:openInNewTab(stayCurrentTab)
     if treenode != {}
         if treenode.path.isDirectory
             tabnew
-            call s:initNerdTree(treenode.path.str({'format': 'OS'}))
+            call s:initNerdTree(treenode.path.str())
         else
             exec "tabedit " . treenode.path.str({'format': 'Edit'})
         endif
@@ -3903,7 +3903,7 @@ endfunction
 "keepState: 1 if the current root should be left open when the tree is
 "re-rendered
 function! s:upDir(keepState)
-    let cwd = b:NERDTreeRoot.path.str()
+    let cwd = b:NERDTreeRoot.path.str({'format': 'UI'})
     if cwd ==# "/" || cwd =~ '^[^/]..$'
         call s:echo("already at top dir")
     else
