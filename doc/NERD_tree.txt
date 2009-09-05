@@ -575,8 +575,10 @@ The NERD tree has a menu that can be programmed via the an API (see
 |NERDTreeMenuAPI|). The idea is to simulate the "right click" menus that most
 file explorers have.
 
-The script comes with one default menu plugin that adds some basic filesystem
-operations to the menu for creating/deleting/moving/copying files and dirs.
+The script comes with two default menu plugins: exec_menuitem.vim and
+fs_menu.vim. fs_menu.vim adds some basic filesystem operations to the menu for
+creating/deleting/moving/copying files and dirs. exec_menuitem.vim provides a
+menu item to execute executable files.
 
 ==============================================================================
 3. Customisation                                             *NERDTreeOptions*
@@ -927,6 +929,22 @@ This option is used to change the size of the NERD tree when it is loaded.
 The NERD tree script allows you to add custom key mappings and menu items via a
 set of API calls. Any such scripts should be placed in ~/.vim/nerdtree_plugin/
 (*nix) or ~/vimfiles/nerdtree_plugin (windows).
+
+The script exposes some prototype objects that can be used to manipulate the
+tree and/or get information from it: >
+    g:NERDTreePath
+    g:NERDTreeDirNode
+    g:NERDTreeFileNode
+    g:NERDTreeBookmark
+<
+See the code/comments in NERD_tree.vim to find how to use these objects. The
+following code conventions are used:
+    * class members start with a capital letter
+    * instance members start with a lower case letter
+    * private members start with an underscore
+
+See this blog post for more details:
+ http://got-ravings.blogspot.com/2008/09/vim-pr0n-prototype-based-objects.html
 
 ------------------------------------------------------------------------------
 4.1. Key map API                                           *NERDTreeKeymapAPI*
