@@ -122,13 +122,13 @@ function! NERDTreeDeleteNode()
         let choice =input("Delete the current node\n" .
                          \ "==========================================================\n" .
                          \ "STOP! To delete this entire directory, type 'yes'\n" .
-                         \ "" . currentNode.path.strForOS(0) . ": ")
+                         \ "" . currentNode.path.str() . ": ")
         let confirmed = choice ==# 'yes'
     else
         echo "Delete the current node\n" .
            \ "==========================================================\n".
            \ "Are you sure you wish to delete the node:\n" .
-           \ "" . currentNode.path.strForOS(0) . " (yN):"
+           \ "" . currentNode.path.str() . " (yN):"
         let choice = nr2char(getchar())
         let confirmed = choice ==# 'y'
     endif
