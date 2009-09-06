@@ -571,6 +571,8 @@ fs_menu.vim. fs_menu.vim adds some basic filesystem operations to the menu for
 creating/deleting/moving/copying files and dirs. exec_menuitem.vim provides a
 menu item to execute executable files.
 
+Related tags: |NERDTree-m| |NERDTreeApi|
+
 ==============================================================================
 3. Customisation                                             *NERDTreeOptions*
 
@@ -917,9 +919,9 @@ This option is used to change the size of the NERD tree when it is loaded.
 ==============================================================================
 4. The NERD tree API                                             *NERDTreeAPI*
 
-The NERD tree script allows you to add custom key mappings and menu items via a
-set of API calls. Any such scripts should be placed in ~/.vim/nerdtree_plugin/
-(*nix) or ~/vimfiles/nerdtree_plugin (windows).
+The NERD tree script allows you to add custom key mappings and menu items via
+a set of API calls. Any scripts that use this API should be placed in
+~/.vim/nerdtree_plugin/ (*nix) or ~/vimfiles/nerdtree_plugin (windows).
 
 The script exposes some prototype objects that can be used to manipulate the
 tree and/or get information from it: >
@@ -943,7 +945,7 @@ See this blog post for more details:
 NERDTreeAddKeyMap({options})                             *NERDTreeAddKeyMap()*
     Adds a new keymapping for all NERD tree buffers.
     {options} must be a dictionary, and must contain the following keys:
-    "key" - the shortcut key for the new mapping
+    "key" - the trigger key for the new mapping
     "callback" - the function the new mapping will be bound to
     "quickhelpText" - the text that will appear in the quickhelp (see
     |NERDTree-?|)
