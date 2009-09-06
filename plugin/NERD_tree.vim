@@ -470,7 +470,11 @@ let s:MenuController = {}
 "create a new menu controller that operates on the given menu items
 function! s:MenuController.New(menuItems)
     let newMenuController =  copy(self)
-    let newMenuController.menuItems = a:menuItems
+    if a:menuItems[0].isSeparator()
+        let newMenuController.menuItems = a:menuItems[1:-1]
+    else
+        let newMenuController.menuItems = a:menuItems
+    endif
     return newMenuController
 endfunction
 
