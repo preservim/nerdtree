@@ -210,7 +210,6 @@ i.......Open selected file in a split window.....................|NERDTree-i|
 gi......Same as i, but leave the cursor on the NERDTree..........|NERDTree-gi|
 s.......Open selected file in a new vsplit.......................|NERDTree-s|
 gs......Same as s, but leave the cursor on the NERDTree..........|NERDTree-gs|
-!.......Execute the current file.................................|NERDTree-!|
 O.......Recursively open the selected directory..................|NERDTree-O|
 x.......Close the current nodes parent...........................|NERDTree-x|
 X.......Recursively close all children of the current node.......|NERDTree-X|
@@ -336,14 +335,6 @@ The same as |NERDTree-s| except that the cursor is not moved.
 
 The key combo for this mapping is always "g" + NERDTreeMapOpenVSplit (see
 |NERDTree-s|).
-
-------------------------------------------------------------------------------
-                                                                  *NERDTree-!*
-Default key: !
-Map option: NERDTreeMapExecute
-Applies to: files.
-
-Executes the selected file, prompting for arguments first.
 
 ------------------------------------------------------------------------------
                                                                   *NERDTree-O*

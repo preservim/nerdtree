@@ -105,7 +105,6 @@ call s:initVariable("g:NERDTreeMapChdir", "cd")
 call s:initVariable("g:NERDTreeMapCloseChildren", "X")
 call s:initVariable("g:NERDTreeMapCloseDir", "x")
 call s:initVariable("g:NERDTreeMapDeleteBookmark", "D")
-call s:initVariable("g:NERDTreeMapExecute", "!")
 call s:initVariable("g:NERDTreeMapMenu", "m")
 call s:initVariable("g:NERDTreeMapHelp", "?")
 call s:initVariable("g:NERDTreeMapJumpFirstChild", "K")
@@ -2755,7 +2754,6 @@ function! s:dumpHelp()
         let @h=@h."\" ". g:NERDTreeMapPreviewSplit .": preview split\n"
         let @h=@h."\" ". g:NERDTreeMapOpenVSplit .": open vsplit\n"
         let @h=@h."\" ". g:NERDTreeMapPreviewVSplit .": preview vsplit\n"
-        let @h=@h."\" ". g:NERDTreeMapExecute.": Execute file\n"
 
         let @h=@h."\"\n\" ----------------------------\n"
         let @h=@h."\" Directory node mappings~\n"
@@ -3398,8 +3396,6 @@ function! s:bindMappings()
 
     exec "nnoremap <silent> <buffer> ". g:NERDTreeMapOpenVSplit ." :call <SID>openEntrySplit(1,0)<cr>"
     exec "nnoremap <silent> <buffer> ". g:NERDTreeMapPreviewVSplit ." :call <SID>previewNode(2)<cr>"
-
-    exec "nnoremap <silent> <buffer> ". g:NERDTreeMapExecute ." :call <SID>executeNode()<cr>"
 
     exec "nnoremap <silent> <buffer> ". g:NERDTreeMapOpenRecursively ." :call <SID>openNodeRecursively()<cr>"
 
