@@ -2013,7 +2013,12 @@ endfunction
 "Return:
 "a new Path object
 function! s:Path.getParent()
-    let path = '/'. join(self.pathSegments[0:-2], '/')
+    if s:running_windows
+        let path = self.drive . '\' . join(self.pathSegments[0:-2], '\')
+    else
+        let path = '/'. join(self.pathSegments[0:-2], '/')
+    endif
+
     return s:Path.New(path)
 endfunction
 "FUNCTION: Path.getLastPathComponent(dirSlash) {{{3
