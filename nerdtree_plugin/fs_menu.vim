@@ -85,7 +85,7 @@ function! NERDTreeMoveNode()
     let newNodePath = input("Rename the current node\n" .
                           \ "==========================================================\n" .
                           \ "Enter the new path for the node:                          \n" .
-                          \ "", curNode.path.str()
+                          \ "", curNode.path.str())
 
     if newNodePath ==# ''
         call s:echo("Node Renaming Aborted.")
