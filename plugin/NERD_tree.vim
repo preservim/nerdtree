@@ -511,9 +511,7 @@ function! s:MenuController._echoPrompt()
 
     for i in range(0, len(self.menuItems)-1)
         if self.selection == i
-            echohl todo
             echo "> " . self.menuItems[i].text
-            echohl normal
         else
             echo "  " . self.menuItems[i].text
         endif
