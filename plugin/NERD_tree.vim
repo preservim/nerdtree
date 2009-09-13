@@ -2250,11 +2250,7 @@ endfunction
 "
 " returns a string that can be used with :cd
 function! s:Path._strForCd()
-    if s:running_windows
-        return self.str()
-    else
-        return self.str({'escape': 1})
-    endif
+    return escape(self.str(), s:escape_chars)
 endfunction
 "FUNCTION: Path._strForEdit() {{{3
 "
