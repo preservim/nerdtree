@@ -80,7 +80,12 @@ endif
 let s:NERDTreeSortStarIndex = index(g:NERDTreeSortOrder, '*')
 
 if !exists('g:NERDTreeStatusline')
-    let g:NERDTreeStatusline = "%{b:NERDTreeRoot.path.str()}"
+
+    "the exists() crap here is a hack to stop vim spazzing out when
+    "loading a session that was created with an open nerd tree. It spazzes
+    "because it doesnt store b:NERDTreeRoot (its a b: var, and its a hash)
+    let g:NERDTreeStatusline = "%{exists('b:NERDTreeRoot')?b:NERDTreeRoot.path.str():''}"
+
 endif
 call s:initVariable("g:NERDTreeWinPos", "left")
 call s:initVariable("g:NERDTreeWinSize", 31)
