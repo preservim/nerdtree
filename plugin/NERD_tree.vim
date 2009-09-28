@@ -2671,7 +2671,7 @@ function! s:closeTree()
         close
         call s:exec("wincmd p")
     else
-        :q
+        close
     endif
 endfunction
 
