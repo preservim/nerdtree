@@ -461,7 +461,6 @@ endfunction
 
 "FUNCTION: KeyMap.Create(options) {{{3
 function! s:KeyMap.Create(options)
-    let newKeyMap = {}
     let newKeyMap = copy(self)
     let newKeyMap.key = a:options['key']
     let newKeyMap.quickhelpText = a:options['quickhelpText']
@@ -1047,7 +1046,6 @@ function! s:TreeFileNode.New(path)
     if a:path.isDirectory
         return s:TreeDirNode.New(a:path)
     else
-        let newTreeNode = {}
         let newTreeNode = copy(self)
         let newTreeNode.path = a:path
         let newTreeNode.parent = {}
