@@ -2550,7 +2550,7 @@ function! s:initNerdTreeMirror()
             return
         endif
 
-        let bufferName = options[keys(options)[choice-1]]
+        let bufferName = options[sort(keys(options))[choice-1]]
     elseif len(keys(options)) ==# 1
         let bufferName = values(options)[0]
     else

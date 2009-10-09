@@ -1091,6 +1091,7 @@ The latest dev versions are on github
       Venteicher for the patch.
     - fix a bug where the cursor position/window size of the nerd tree buffer
       wasnt being stored on closing the window, thanks to Richard Hart.
+    - fix a bug where NERDTreeMirror would mirror the wrong tree
 
 3.1.1
     - fix a bug where a non-listed no-name buffer was getting created every
