@@ -2658,7 +2658,7 @@ function! s:centerView()
     endif
 endfunction
 "FUNCTION: s:closeTree() {{{2
-"Closes the NERD tree window
+"Closes the primary NERD tree window for this tab
 function! s:closeTree()
     if !s:isTreeOpen()
         throw "NERDTree.NoTreeFoundError: no NERDTree is open"
@@ -3580,7 +3580,7 @@ function! s:closeTreeWindow()
         exec "buffer " . b:NERDTreePreviousBuf
     else
         if winnr("$") > 1
-            wincmd c
+            call s:closeTree()
         else
             call s:echo("Cannot close last window")
         endif
