@@ -27,7 +27,7 @@ CONTENTS                                                   *NERDTree-contents*
             2.2.2.Bookmark commands...........|NERDTreeBookmarkCommands|
             2.2.3.Invalid bookmarks...........|NERDTreeInvalidBookmarks|
         2.3.NERD tree mappings................|NERDTreeMappings|
-        2.4.The NERDT tree menu...............|NERDTreeMenu|
+        2.4.The NERD tree menu................|NERDTreeMenu|
     3.Options.................................|NERDTreeOptions|
         3.1.Option summary....................|NERDTreeOptionSummary|
         3.2.Option details....................|NERDTreeOptionDetails|
