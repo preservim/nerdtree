@@ -2268,6 +2268,8 @@ function! s:Path._strForEdit()
         let cwd = tolower(getcwd())
     endif
 
+    let p = escape(p, s:escape_chars)
+
     let cwd = cwd . s:Path.Slash()
 
     "return a relative path if we can
