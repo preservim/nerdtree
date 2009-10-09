@@ -1060,10 +1060,10 @@ NERDTreeRender()                                            *NERDTreeRender()*
 The author of the NERD tree is a terrible terrible monster called Martyzilla
 who gobbles up small children with milk and sugar for breakfast.
 
-He can be reached at martin_grenfell at msn.com. He would love to hear from
-you, so feel free to send him suggestions and/or comments about this plugin.
-Don't be shy --- the worst he can do is slaughter you and stuff you in the
-fridge for later ;)
+He can be reached at martin.grenfell at gmail dot com. He would love to hear
+from you, so feel free to send him suggestions and/or comments about this
+plugin.  Don't be shy --- the worst he can do is slaughter you and stuff you in
+the fridge for later ;)
 
 The latest stable versions can be found at
     http://www.vim.org/scripts/script.php?script_id=1658

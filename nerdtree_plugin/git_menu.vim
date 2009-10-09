@@ -1,7 +1,7 @@
 " ============================================================================
 " File:        git_menu.vim
 " Description: plugin for the NERD Tree that provides a git menu
-" Maintainer:  Martin Grenfell <martin_grenfell at msn dot com>
+" Maintainer:  Martin Grenfell <martin.grenfell at gmail dot com>
 " Last Change: 20 July, 2009
 " License:     This program is free software. It comes without any warranty,
 "              to the extent permitted by applicable law. You can redistribute
