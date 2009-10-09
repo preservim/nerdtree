@@ -1089,6 +1089,8 @@ The latest dev versions are on github
       thanks to Aggelos Orfanakos for the patch.
     - fix a bug when using the x mapping on the tree root, thanks to Bryan
       Venteicher for the patch.
+    - fix a bug where the cursor position/window size of the nerd tree buffer
+      wasnt being stored on closing the window, thanks to Richard Hart.
 
 3.1.1
     - fix a bug where a non-listed no-name buffer was getting created every
@@ -1182,6 +1184,7 @@ just downloaded pr0n instead.
     Lucas S. Buchala
     Curtis Harvey
     Guillaume Duranceau
+    Richard Hart (hates)
 
 ==============================================================================
 8. License                                                   *NERDTreeLicense*
