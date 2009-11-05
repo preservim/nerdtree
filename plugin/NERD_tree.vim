@@ -985,7 +985,7 @@ endfunction
 "gets the line number of the root node
 function! s:TreeFileNode.GetRootLineNum()
     let rootLine = 1
-    while getline(rootLine) !~ '^/'
+    while getline(rootLine) !~ '^\(/\|<\)'
         let rootLine = rootLine + 1
     endwhile
     return rootLine
@@ -2898,8 +2898,10 @@ endfunction
 function! s:getPath(ln)
     let line = getline(a:ln)
 
+    let rootLine = s:TreeFileNode.GetRootLineNum()
+
     "check to see if we have the root node
-    if line =~ '^\/'
+    if a:ln == rootLine
         return b:NERDTreeRoot.path
     endif
 
@@ -2923,7 +2925,6 @@ function! s:getPath(ln)
         let curFile = substitute(curFile, '/\?$', '/', "")
     endif
 
-
     let dir = ""
     let lnum = a:ln
     while lnum > 0
@@ -2932,8 +2933,8 @@ function! s:getPath(ln)
         let curLineStripped = s:stripMarkupFromLine(curLine, 1)
 
         "have we reached the top of the tree?
-        if curLine =~ '^/'
-            let dir = substitute (curLine, ' *$', "", "") . dir
+        if lnum == rootLine
+            let dir = b:NERDTreeRoot.path.str({'format': 'UI'}) . dir
             break
         endif
         if curLineStripped =~ '/$'
@@ -3132,7 +3133,13 @@ function! s:renderView()
     call cursor(line(".")+1, col("."))
 
     "draw the header line
-    call setline(line(".")+1, b:NERDTreeRoot.path.str({'format': 'UI'}))
+    let header = b:NERDTreeRoot.path.str({'format': 'UI'})
+    let wid = winwidth(0)
+    if len(header) > wid
+        let header = "<" . strpart(header, len(header) - wid + 1)
+    endif
+
+    call setline(line(".")+1, header)
     call cursor(line(".")+1, col("."))
 
     "draw the tree
