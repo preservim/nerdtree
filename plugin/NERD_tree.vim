@@ -157,6 +157,7 @@ command! -n=? -complete=dir -bar NERDTreeToggle :call s:toggle('<args>')
 command! -n=0 -bar NERDTreeClose :call s:closeTreeIfOpen()
 command! -n=1 -complete=customlist,s:completeBookmarks -bar NERDTreeFromBookmark call s:initNerdTree('<args>')
 command! -n=0 -bar NERDTreeMirror call s:initNerdTreeMirror()
+command! -n=0 -bar NERDTreeFind call s:findAndRevealPath()
 " SECTION: Auto commands {{{1
 "============================================================
 augroup NERDTree
@@ -981,6 +982,14 @@ function! s:TreeFileNode.getLineNum()
     return -1
 endfunction
 
+"FUNCTION: TreeFileNode.GetRootForTab(){{{3
+"get the root node for this tab
+function! s:TreeFileNode.GetRootForTab()
+    if s:treeExistsForTab()
+        return getbufvar(t:NERDTreeBufName, 'NERDTreeRoot')
+    end
+    return {}
+endfunction
 "FUNCTION: TreeFileNode.GetRootLineNum(){{{3
 "gets the line number of the root node
 function! s:TreeFileNode.GetRootLineNum()
@@ -1690,6 +1699,31 @@ function! s:TreeDirNode.refresh()
     endif
 endfunction
 
+"FUNCTION: TreeDirNode.reveal(path) {{{3
+"reveal the given path, i.e. cache and open all treenodes needed to display it
+"in the UI
+function! s:TreeDirNode.reveal(path)
+    if !a:path.isUnder(self.path)
+        throw "NERDTree.InvalidArgumentsError: " . a:path.str() . " should be under " . self.path.str()
+    endif
+
+    call self.open()
+
+    if self.path.equals(a:path.getParent())
+        let n = self.findNode(a:path)
+        call s:renderView()
+        call n.putCursorHere(1,0)
+        return
+    endif
+
+    let p = a:path
+    while !p.getParent().equals(self.path)
+        let p = p.getParent()
+    endwhile
+
+    let n = self.findNode(p)
+    call n.reveal(a:path)
+endfunction
 "FUNCTION: TreeDirNode.removeChild(treenode) {{{3
 "
 "Removes the given treenode from this nodes set of children
@@ -2079,6 +2113,20 @@ function! s:Path.ignore()
     return 0
 endfunction
 
+"FUNCTION: Path.isUnder(path) {{{3
+"return 1 if this path is somewhere under the given path in the filesystem.
+"
+"a:path should be a dir
+function! s:Path.isUnder(path)
+    if a:path.isDirectory == 0
+        return 0
+    endif
+
+    let this = self.str()
+    let that = a:path.str()
+    return stridx(this, that . s:Path.Slash()) == 0
+endfunction
+
 "FUNCTION: Path.JoinPathStrings(...) {{{3
 function! s:Path.JoinPathStrings(...)
     let components = []
@@ -2404,6 +2452,29 @@ function! s:exec(cmd)
     set ei=all
     exec a:cmd
     let &ei = old_ei
+endfunction
+" FUNCTION: s:findAndRevealPath() {{{2
+function! s:findAndRevealPath()
+    try
+        let p = s:Path.New(expand("%"))
+    catch /^NERDTree.InvalidArgumentsError/
+        call s:echo("no file for the current buffer")
+        return
+    endtry
+
+    if !s:treeExistsForTab()
+        call s:initNerdTree(p.getParent().str())
+    else
+        if !p.isUnder(s:TreeFileNode.GetRootForTab().path)
+            call s:initNerdTree(p.getParent().str())
+        else
+            if !s:isTreeOpen()
+                call s:toggle("")
+            endif
+        endif
+    endif
+    call s:putCursorInTreeWin()
+    call b:NERDTreeRoot.reveal(p)
 endfunction
 "FUNCTION: s:initNerdTree(name) {{{2
 "Initialise the nerd tree for this tab. The tree will start in either the

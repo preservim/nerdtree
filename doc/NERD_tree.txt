@@ -128,6 +128,11 @@ The following features and functionality are provided by the NERD tree:
 :NERDTreeClose                                                *:NERDTreeClose*
     Close the NERD tree in this tab.
 
+:NERDTreeFind                                                  *:NERDTreeFind*
+    Find the current file in the tree. If no tree exists for the current tab,
+    or the file is not under the current root, then initialize a new tree where
+    the root is the directory of the current file.
+
 ------------------------------------------------------------------------------
 2.2. Bookmarks                                             *NERDTreeBookmarks*
 
