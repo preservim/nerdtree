@@ -2208,16 +2208,18 @@ endfunction
 "The dict may have the following keys:
 "  'format'
 "  'escape'
+"  'truncateTo'
 "
 "The 'format' key may have a value of:
 "  'Cd' - a string to be used with the :cd command
 "  'Edit' - a string to be used with :e :sp :new :tabedit etc
 "  'UI' - a string used in the NERD tree UI
 "
-"If not specified, a generic unix style path string will be returned
-"
 "The 'escape' key, if specified will cause the output to be escaped with
 "shellescape()
+"
+"The 'truncateTo' key causes the resulting string to be truncated to the value
+"'truncateTo' maps to. A '<' char will be prepended.
 function! s:Path.str(...)
     let options = a:0 ? a:1 : {}
     let toReturn = ""
@@ -2235,6 +2237,13 @@ function! s:Path.str(...)
 
     if has_key(options, 'escape') && options['escape']
         let toReturn = shellescape(toReturn)
+    endif
+
+    if has_key(options, 'truncateTo')
+        let limit = options['truncateTo']
+        if len(toReturn) > limit
+            let toReturn = "<" . strpart(toReturn, len(toReturn) - limit + 1)
+        endif
     endif
 
     return toReturn
@@ -3133,12 +3142,7 @@ function! s:renderView()
     call cursor(line(".")+1, col("."))
 
     "draw the header line
-    let header = b:NERDTreeRoot.path.str({'format': 'UI'})
-    let wid = winwidth(0)
-    if len(header) > wid
-        let header = "<" . strpart(header, len(header) - wid + 1)
-    endif
-
+    let header = b:NERDTreeRoot.path.str({'format': 'UI', 'truncateTo': winwidth(0)})
     call setline(line(".")+1, header)
     call cursor(line(".")+1, col("."))
 
