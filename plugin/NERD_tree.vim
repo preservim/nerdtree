@@ -333,6 +333,21 @@ function! s:Bookmark.GetNodeForName(name, searchFromAbsoluteRoot)
     let bookmark = s:Bookmark.BookmarkFor(a:name)
     return bookmark.getNode(a:searchFromAbsoluteRoot)
 endfunction
+" FUNCTION: Bookmark.GetSelected() {{{3
+" returns the Bookmark the cursor is over, or {}
+function! s:Bookmark.GetSelected()
+    let line = getline(".")
+    let name = substitute(line, '^>\(.\{-}\) .\+$', '\1', '')
+    if name != line
+        try
+            return s:Bookmark.BookmarkFor(name)
+        catch /^NERDTree.BookmarkNotFoundError/
+            return {}
+        endtry
+    endif
+    return {}
+endfunction
+
 " Function: Bookmark.InvalidBookmarks()   {{{3
 " Class method to get all invalid bookmark strings read from the bookmarks
 " file
@@ -3032,21 +3047,6 @@ function! s:getPath(ln)
     return toReturn
 endfunction
 
-"FUNCTION: s:getSelectedBookmark() {{{2
-"returns the bookmark the cursor is over in the bookmarks table or {}
-function! s:getSelectedBookmark()
-    let line = getline(".")
-    let name = substitute(line, '^>\(.\{-}\) .\+$', '\1', '')
-    if name != line
-        try
-            return s:Bookmark.BookmarkFor(name)
-        catch /^NERDTree.BookmarkNotFoundError/
-            return {}
-        endtry
-    endif
-    return {}
-endfunction
-
 "FUNCTION: s:getTreeWinNum() {{{2
 "gets the nerd tree window number for this tab
 function! s:getTreeWinNum()
@@ -3463,7 +3463,7 @@ function! s:activateNode(forceKeepWindowOpen)
     if treenode != {}
         call treenode.activate(a:forceKeepWindowOpen)
     else
-        let bookmark = s:getSelectedBookmark()
+        let bookmark = s:Bookmark.GetSelected()
         if !empty(bookmark)
             call bookmark.activate()
         endif
@@ -3673,7 +3673,7 @@ endfunction
 " FUNCTION: s:deleteBookmark() {{{2
 " if the cursor is on a bookmark, prompt to delete
 function! s:deleteBookmark()
-    let bookmark = s:getSelectedBookmark()
+    let bookmark = s:Bookmark.GetSelected()
     if bookmark ==# {}
         call s:echo("Put the cursor on a bookmark")
         return
