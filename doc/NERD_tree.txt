@@ -1080,6 +1080,21 @@ The latest dev versions are on github
 ==============================================================================
 6. Changelog                                               *NERDTreeChangelog*
 
+4.x.x
+    features:
+    - NERDTreeFind to reveal the node for the current buffer in the tree,
+      see |NERDTreeFind|. This effectively merges the FindInNERDTree plugin (by
+      Doug McInnes) into the script.
+    - make NERDTreeQuitOnOpen apply to the t/T keymaps too. Thanks to Stefan
+      Ritter and Rémi Prévost.
+    - truncate the root node if wider than the tree window. Thanks to Victor
+      Gonzalez.
+
+    bugfixes:
+    - really fix window state restoring
+    - fix some win32 path escaping issues. Thanks to Stephan Baumeister, Ricky,
+      jfilip1024, and Chris Chambers
+
 4.0.0
     - add a new programmable menu system (see :help NERDTreeMenu).
     - add new APIs to add menus/menu-items to the menu system as well as
@@ -1191,6 +1206,14 @@ just downloaded pr0n instead.
     Curtis Harvey
     Guillaume Duranceau
     Richard Hart (hates)
+    Doug McInnes
+    Stefan Ritter
+    Rémi Prévost
+    Victor Gonzalez
+    Stephan Baumeister
+    Ricky
+    jfilip1024
+    Chris Chambers
 
 ==============================================================================
 8. License                                                   *NERDTreeLicense*
