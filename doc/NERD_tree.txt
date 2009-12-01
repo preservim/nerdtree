@@ -1080,7 +1080,7 @@ The latest dev versions are on github
 ==============================================================================
 6. Changelog                                               *NERDTreeChangelog*
 
-4.x.x
+4.1.0
     features:
     - NERDTreeFind to reveal the node for the current buffer in the tree,
       see |NERDTreeFind|. This effectively merges the FindInNERDTree plugin (by
