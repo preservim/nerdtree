@@ -2718,7 +2718,7 @@ function! s:initNerdTreeMirror()
     else
         cal s:echo("No trees to mirror")
         if g:NERDTreeInitWhenNoMirrorFound
-            "cal s:toggle('')
+            cal s:initNerdTree('')
         endif
         return
     endif
