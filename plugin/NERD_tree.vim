@@ -2699,9 +2699,9 @@ function! s:mapBufferOptions(treeBufNames)
     return options
 endfunction
 
-" FUNCTION: s:hasTreeMirror() {{{2
-function! s:hasTreeMirror()
-
+" FUNCTION: s:countTreeBuffers() {{{2
+function! s:countTreeBuffers(options)
+    return len(keys(a:options))
 endfunction
 " 2}}}
 
@@ -2714,12 +2714,13 @@ function! s:initNerdTreeMirror()
     "map the option names (that the user will be prompted with) to the nerd
     "tree buffer names
     let options = s:mapBufferOptions( treeBufNames )
+    let bufcnt = s:countTreeBuffers(options)
 
     "work out which tree to mirror, if there is more than 1 then ask the user
     let bufferName = ''
-    if len(keys(options)) > 1
+    if bufcnt > 1
         let bufferName = s:chooseTreeBuffer(options)
-    elseif len(keys(options)) ==# 1
+    elseif bufcnt ==# 1
         let bufferName = values(options)[0]
     else
         cal s:echo("No trees to mirror")
