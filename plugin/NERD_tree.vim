@@ -65,7 +65,7 @@ call s:initVariable("g:NERDTreeShowFiles", 1)
 call s:initVariable("g:NERDTreeShowHidden", 0)
 call s:initVariable("g:NERDTreeShowLineNumbers", 0)
 call s:initVariable("g:NERDTreeSortDirs", 1)
-call s:initVeriable("g:NERDTreeInitWhenNoMirrorFound",0)
+call s:initVariable("g:NERDTreeInitWhenNoMirrorFound",0)
 
 if !exists("g:NERDTreeSortOrder")
     let g:NERDTreeSortOrder = ['\/$', '*', '\.swp$',  '\.bak$', '\~$']
@@ -2723,7 +2723,9 @@ function! s:initNerdTreeMirror()
         let bufferName = values(options)[0]
     else
         cal s:echo("No trees to mirror")
-        cal s:initNerdTree('')
+        if g:NERDTreeInitWhenNoMirrorFound
+            cal s:initNerdTree('')
+        endif
         return
     endif
 
