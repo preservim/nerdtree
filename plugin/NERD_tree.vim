@@ -2690,12 +2690,11 @@ endfunction
 function! s:mapBufferOptions(treeBufNames)
     let options = {}
     let i = 0
-    while i < len(a:treeBufNames)
+    for i in range(0,len(a:treeBufNames)-1)
         let bufName = a:treeBufNames[i]
         let treeRoot = getbufvar(bufName, "NERDTreeRoot")
         let options[i+1 . '. ' . treeRoot.path.str() . '  (buf name: ' . bufName . ')'] = bufName
-        let i = i + 1
-    endwhile
+    endfor
     return options
 endfunction
 
@@ -2719,7 +2718,7 @@ function! s:initNerdTreeMirror()
     else
         cal s:echo("No trees to mirror")
         if g:NERDTreeInitWhenNoMirrorFound
-            cal s:initNerdTree('')
+            "cal s:toggle('')
         endif
         return
     endif
