@@ -2699,12 +2699,6 @@ function! s:mapBufferOptions(treeBufNames)
     return options
 endfunction
 
-" FUNCTION: s:countTreeBuffers() {{{2
-function! s:countTreeBuffers(options)
-    return len(keys(a:options))
-endfunction
-" 2}}}
-
 " FUNCTION: s:initNerdTreeMirror() {{{2
 function! s:initNerdTreeMirror()
 
@@ -2714,7 +2708,7 @@ function! s:initNerdTreeMirror()
     "map the option names (that the user will be prompted with) to the nerd
     "tree buffer names
     let options = s:mapBufferOptions( treeBufNames )
-    let bufcnt = s:countTreeBuffers(options)
+    let bufcnt = len(keys(options))
 
     "work out which tree to mirror, if there is more than 1 then ask the user
     let bufferName = ''
