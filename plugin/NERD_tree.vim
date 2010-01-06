@@ -2663,10 +2663,8 @@ function! s:initNerdTreeInPlace(dir)
 
     call s:renderView()
 endfunction
-" FUNCTION: s:initNerdTreeMirror() {{{2
-function! s:initNerdTreeMirror()
 
-    "get the names off all the nerd tree buffers
+function! s:getTreeBufferNames()
     let treeBufNames = []
     for i in range(1, tabpagenr("$"))
         let nextName = s:tabpagevar(i, 'NERDTreeBufName')
@@ -2674,34 +2672,58 @@ function! s:initNerdTreeMirror()
             call add(treeBufNames, nextName)
         endif
     endfor
-    let treeBufNames = s:unique(treeBufNames)
+    return s:unique(treeBufNames)
+endf
 
-    "map the option names (that the user will be prompted with) to the nerd
-    "tree buffer names
+function! s:chooseTreeBuffer(options)
+    let choices = ["Choose a tree to mirror"]
+    let choices = extend(choices, sort(keys(a:options)))
+    let choice = inputlist(choices)
+    if choice < 1 || choice > len(a:options) || choice ==# ''
+        return
+    endif
+    let bufferName = a:options[sort(keys(a:options))[choice-1]]
+    return bufferName
+endfunction
+
+function! s:mapBufferOptions(treeBufNames)
     let options = {}
     let i = 0
-    while i < len(treeBufNames)
-        let bufName = treeBufNames[i]
+    while i < len(a:treeBufNames)
+        let bufName = a:treeBufNames[i]
         let treeRoot = getbufvar(bufName, "NERDTreeRoot")
         let options[i+1 . '. ' . treeRoot.path.str() . '  (buf name: ' . bufName . ')'] = bufName
         let i = i + 1
     endwhile
+    return options
+endfunction
+
+" FUNCTION: s:hasTreeMirror() {{{2
+function! s:hasTreeMirror()
+
+endfunction
+" 2}}}
+
+" FUNCTION: s:initNerdTreeMirror() {{{2
+function! s:initNerdTreeMirror()
+
+    "get the names off all the nerd tree buffers
+    let treeBufNames = s:getTreeBufferNames()
+
+    "map the option names (that the user will be prompted with) to the nerd
+    "tree buffer names
+    let options = s:mapBufferOptions( treeBufNames )
 
     "work out which tree to mirror, if there is more than 1 then ask the user
     let bufferName = ''
     if len(keys(options)) > 1
-        let choices = ["Choose a tree to mirror"]
-        let choices = extend(choices, sort(keys(options)))
-        let choice = inputlist(choices)
-        if choice < 1 || choice > len(options) || choice ==# ''
-            return
-        endif
-
-        let bufferName = options[sort(keys(options))[choice-1]]
+        let bufferName = s:chooseTreeBuffer(options)
     elseif len(keys(options)) ==# 1
         let bufferName = values(options)[0]
     else
-        call s:echo("No trees to mirror")
+        cal s:echo("No trees to mirror")
+        " XXX: provide an option for this
+        :cal s:toggle('') 
         return
     endif
 
