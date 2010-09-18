@@ -2820,9 +2820,17 @@ function! s:closeTree()
     endif
 
     if winnr("$") != 1
+        if winnr() == s:getTreeWinNum()
+            wincmd p
+            let bufnr = bufnr("")
+            wincmd p
+        else
+            let bufnr = bufnr("")
+        endif
+
         call s:exec(s:getTreeWinNum() . " wincmd w")
         close
-        call s:exec("wincmd p")
+        call s:exec(bufwinnr(bufnr) . " wincmd w")
     else
         close
     endif
