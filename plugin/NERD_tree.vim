@@ -2530,7 +2530,7 @@ endfunction
 " FUNCTION: s:findAndRevealPath() {{{2
 function! s:findAndRevealPath()
     try
-        let p = s:Path.New(expand("%"))
+        let p = s:Path.New(expand("%:p"))
     catch /^NERDTree.InvalidArgumentsError/
         call s:echo("no file for the current buffer")
         return
