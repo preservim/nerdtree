@@ -1080,6 +1080,9 @@ The latest dev versions are on github
 ==============================================================================
 6. Changelog                                               *NERDTreeChangelog*
 
+4.x.x
+    - Fix a bug with :NERDTreeFind and symlinks. Thanks to Vitaly Bogdanov.
+
 4.1.0
     features:
     - NERDTreeFind to reveal the node for the current buffer in the tree,
@@ -1214,6 +1217,7 @@ just downloaded pr0n instead.
     Ricky
     jfilip1024
     Chris Chambers
+    Vitaly Bogdanov
 
 ==============================================================================
 8. License                                                   *NERDTreeLicense*
