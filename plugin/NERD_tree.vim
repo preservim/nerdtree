@@ -162,6 +162,7 @@ command! -n=0 -bar NERDTreeClose :call s:closeTreeIfOpen()
 command! -n=1 -complete=customlist,s:completeBookmarks -bar NERDTreeFromBookmark call s:initNerdTree('<args>')
 command! -n=0 -bar NERDTreeMirror call s:initNerdTreeMirror()
 command! -n=0 -bar NERDTreeFind call s:findAndRevealPath()
+command! -n=? -complete=dir -bar NERDTreeMirrorToggle call s:mirrorToggle('<args>')
 " SECTION: Auto commands {{{1
 "============================================================
 augroup NERDTree
@@ -2672,9 +2673,8 @@ function! s:initNerdTreeInPlace(dir)
 
     call s:renderView()
 endfunction
-" FUNCTION: s:initNerdTreeMirror() {{{2
-function! s:initNerdTreeMirror()
 
+function! s:getNerdTreeBufs()
     "get the names off all the nerd tree buffers
     let treeBufNames = []
     for i in range(1, tabpagenr("$"))
@@ -2695,7 +2695,25 @@ function! s:initNerdTreeMirror()
         let options[i+1 . '. ' . treeRoot.path.str() . '  (buf name: ' . bufName . ')'] = bufName
         let i = i + 1
     endwhile
+    return options
+endfunction
 
+function! s:mirrorToggle(name)
+    if s:treeExistsForTab()
+        call s:toggle(a:name)
+    else
+        let buffers = s:getNerdTreeBufs()
+        if len(keys(buffers)) > 0
+            call s:initNerdTreeMirror()
+        else
+            call s:initNerdTree(a:name)
+        endif
+    endif
+endfunction
+
+" FUNCTION: s:initNerdTreeMirror() {{{2
+function! s:initNerdTreeMirror()
+    let options = s:getNerdTreeBufs()
     "work out which tree to mirror, if there is more than 1 then ask the user
     let bufferName = ''
     if len(keys(options)) > 1
