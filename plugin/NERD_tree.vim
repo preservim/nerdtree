@@ -168,6 +168,8 @@ command! -n=? -complete=dir -bar NERDTreeMirrorToggle call s:mirrorToggle('<args
 augroup NERDTree
     "Save the cursor position whenever we close the nerd tree
     exec "autocmd BufWinLeave ". s:NERDTreeBufName ."* call <SID>saveScreenState()"
+    exec "autocmd TabLeave ". s:NERDTreeBufName ."* call <SID>saveScreenState()"
+    exec "autocmd TabEnter ". s:NERDTreeBufName ."* call <SID>syncMirrorTreeScreenState()"
     "cache bookmarks when vim loads
     autocmd VimEnter * call s:Bookmark.CacheBookmarks(0)
 
@@ -2705,6 +2707,7 @@ function! s:mirrorToggle(name)
         let buffers = s:getNerdTreeBufs()
         if len(keys(buffers)) > 0
             call s:initNerdTreeMirror()
+            call s:restoreScreenState()
         else
             call s:initNerdTree(a:name)
         endif
@@ -3338,6 +3341,18 @@ function! s:renderViewSavingPosition()
 
     if currentNode != {}
         call currentNode.putCursorHere(0, 0)
+    endif
+endfunction
+
+"FUNCTION: s:syncMirrorTreeScreenState() {{{2
+"
+"Syncs the mirrored tree's screen state after a tab change.
+function! s:syncMirrorTreeScreenState()
+    if s:treeExistsForTab()
+        if s:isTreeOpen() 
+            call s:putCursorInTreeWin()
+            call s:restoreScreenState()
+        endif
     endif
 endfunction
 "FUNCTION: s:restoreScreenState() {{{2
