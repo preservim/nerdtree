@@ -51,6 +51,7 @@ call s:initVariable("g:NERDTreeAutoCenter", 1)
 call s:initVariable("g:NERDTreeAutoCenterThreshold", 3)
 call s:initVariable("g:NERDTreeCaseSensitiveSort", 0)
 call s:initVariable("g:NERDTreeChDirMode", 0)
+call s:initVariable("g:NERDTreeShowPressForHelp", 1)
 if !exists("g:NERDTreeIgnore")
     let g:NERDTreeIgnore = ['\~$']
 endif
@@ -2996,11 +2997,11 @@ function! s:dumpHelp()
         let @h=@h."\" :OpenBookmark <name>\n"
         let @h=@h."\" :ClearBookmarks [<names>]\n"
         let @h=@h."\" :ClearAllBookmarks\n"
-    else
+        silent! put h
+    elseif g:NERDTreeShowPressForHelp == 1
         let @h="\" Press ". g:NERDTreeMapHelp ." for help\n"
+        silent! put h
     endif
-
-    silent! put h
 
     let @h = old_h
 endfunction
@@ -3268,8 +3269,10 @@ function! s:renderView()
     call s:dumpHelp()
 
     "delete the blank line before the help and add one after it
-    call setline(line(".")+1, "")
-    call cursor(line(".")+1, col("."))
+    if g:NERDTreeShowPressForHelp == 1
+        call setline(line(".")+1, "")
+        call cursor(line(".")+1, col("."))
+    endif
 
     if b:NERDTreeShowBookmarks
         call s:renderBookmarks()
