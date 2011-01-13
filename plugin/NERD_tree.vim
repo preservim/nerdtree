@@ -52,6 +52,7 @@ call s:initVariable("g:NERDTreeAutoCenterThreshold", 3)
 call s:initVariable("g:NERDTreeCaseSensitiveSort", 0)
 call s:initVariable("g:NERDTreeChDirMode", 0)
 call s:initVariable("g:NERDTreeShowPressForHelp", 1)
+call s:initVariable("g:NERDTreeShowBookmarksLabel", 1)
 if !exists("g:NERDTreeIgnore")
     let g:NERDTreeIgnore = ['\~$']
 endif
@@ -3241,8 +3242,10 @@ endfunction
 "FUNCTION: s:renderBookmarks {{{2
 function! s:renderBookmarks()
 
-    call setline(line(".")+1, ">----------Bookmarks----------")
-    call cursor(line(".")+1, col("."))
+    if g:NERDTreeShowBookmarksLabel == 1
+        call setline(line(".")+1, ">----------Bookmarks----------")
+        call cursor(line(".")+1, col("."))
+    endif
 
     for i in s:Bookmark.Bookmarks()
         call setline(line(".")+1, i.str())
