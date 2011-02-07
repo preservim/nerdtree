@@ -3365,91 +3365,91 @@ function! s:setupStatusline()
 endfunction
 "FUNCTION: s:setupSyntaxHighlighting() {{{2
 function! s:setupSyntaxHighlighting()
-    "treeFlags are syntax items that should be invisible, but give clues as to
+    "NERDTreeFlags are syntax items that should be invisible, but give clues as to
     "how things should be highlighted
-    syn match treeFlag #\~#
-    syn match treeFlag #\[RO\]#
+    syn match NERDTreeFlag #\~#
+    syn match NERDTreeFlag #\[RO\]#
 
     "highlighting for the .. (up dir) line at the top of the tree
-    execute "syn match treeUp #". s:tree_up_dir_line ."#"
+    execute "syn match NERDTreeUp #". s:tree_up_dir_line ."#"
 
     "highlighting for the ~/+ symbols for the directory nodes
-    syn match treeClosable #\~\<#
-    syn match treeClosable #\~\.#
-    syn match treeOpenable #+\<#
-    syn match treeOpenable #+\.#he=e-1
+    syn match NERDTreeClosable #\~\<#
+    syn match NERDTreeClosable #\~\.#
+    syn match NERDTreeOpenable #+\<#
+    syn match NERDTreeOpenable #+\.#he=e-1
 
     "highlighting for the tree structural parts
-    syn match treePart #|#
-    syn match treePart #`#
-    syn match treePartFile #[|`]-#hs=s+1 contains=treePart
+    syn match NERDTreePart #|#
+    syn match NERDTreePart #`#
+    syn match NERDTreePartFile #[|`]-#hs=s+1 contains=NERDTreePart
 
     "quickhelp syntax elements
-    syn match treeHelpKey #" \{1,2\}[^ ]*:#hs=s+2,he=e-1
-    syn match treeHelpKey #" \{1,2\}[^ ]*,#hs=s+2,he=e-1
-    syn match treeHelpTitle #" .*\~#hs=s+2,he=e-1 contains=treeFlag
-    syn match treeToggleOn #".*(on)#hs=e-2,he=e-1 contains=treeHelpKey
-    syn match treeToggleOff #".*(off)#hs=e-3,he=e-1 contains=treeHelpKey
-    syn match treeHelpCommand #" :.\{-}\>#hs=s+3
-    syn match treeHelp  #^".*# contains=treeHelpKey,treeHelpTitle,treeFlag,treeToggleOff,treeToggleOn,treeHelpCommand
+    syn match NERDTreeHelpKey #" \{1,2\}[^ ]*:#hs=s+2,he=e-1
+    syn match NERDTreeHelpKey #" \{1,2\}[^ ]*,#hs=s+2,he=e-1
+    syn match NERDTreeHelpTitle #" .*\~#hs=s+2,he=e-1 contains=NERDTreeFlag
+    syn match NERDTreeToggleOn #".*(on)#hs=e-2,he=e-1 contains=NERDTreeHelpKey
+    syn match NERDTreeToggleOff #".*(off)#hs=e-3,he=e-1 contains=NERDTreeHelpKey
+    syn match NERDTreeHelpCommand #" :.\{-}\>#hs=s+3
+    syn match NERDTreeHelp  #^".*# contains=NERDTreeHelpKey,NERDTreeHelpTitle,NERDTreeFlag,NERDTreeToggleOff,NERDTreeToggleOn,NERDTreeHelpCommand
 
     "highlighting for readonly files
-    syn match treeRO #.*\[RO\]#hs=s+2 contains=treeFlag,treeBookmark,treePart,treePartFile
+    syn match NERDTreeRO #.*\[RO\]#hs=s+2 contains=NERDTreeFlag,NERDTreeBookmark,NERDTreePart,NERDTreePartFile
 
     "highlighting for sym links
-    syn match treeLink #[^-| `].* -> # contains=treeBookmark,treeOpenable,treeClosable,treeDirSlash
+    syn match NERDTreeLink #[^-| `].* -> # contains=NERDTreeBookmark,NERDTreeOpenable,NERDTreeClosable,NERDTreeDirSlash
 
     "highlighing for directory nodes and file nodes
-    syn match treeDirSlash #/#
-    syn match treeDir #[^-| `].*/# contains=treeLink,treeDirSlash,treeOpenable,treeClosable
-    syn match treeExecFile  #[|`]-.*\*\($\| \)# contains=treeLink,treePart,treeRO,treePartFile,treeBookmark
-    syn match treeFile  #|-.*# contains=treeLink,treePart,treeRO,treePartFile,treeBookmark,treeExecFile
-    syn match treeFile  #`-.*# contains=treeLink,treePart,treeRO,treePartFile,treeBookmark,treeExecFile
-    syn match treeCWD #^/.*$#
+    syn match NERDTreeDirSlash #/#
+    syn match NERDTreeDir #[^-| `].*/# contains=NERDTreeLink,NERDTreeDirSlash,NERDTreeOpenable,NERDTreeClosable
+    syn match NERDTreeExecFile  #[|`]-.*\*\($\| \)# contains=NERDTreeLink,NERDTreePart,NERDTreeRO,NERDTreePartFile,NERDTreeBookmark
+    syn match NERDTreeFile  #|-.*# contains=NERDTreeLink,NERDTreePart,NERDTreeRO,NERDTreePartFile,NERDTreeBookmark,NERDTreeExecFile
+    syn match NERDTreeFile  #`-.*# contains=NERDTreeLink,NERDTreePart,NERDTreeRO,NERDTreePartFile,NERDTreeBookmark,NERDTreeExecFile
+    syn match NERDTreeCWD #^/.*$#
 
     "highlighting for bookmarks
-    syn match treeBookmark # {.*}#hs=s+1
+    syn match NERDTreeBookmark # {.*}#hs=s+1
 
     "highlighting for the bookmarks table
-    syn match treeBookmarksLeader #^>#
-    syn match treeBookmarksHeader #^>-\+Bookmarks-\+$# contains=treeBookmarksLeader
-    syn match treeBookmarkName #^>.\{-} #he=e-1 contains=treeBookmarksLeader
-    syn match treeBookmark #^>.*$# contains=treeBookmarksLeader,treeBookmarkName,treeBookmarksHeader
+    syn match NERDTreeBookmarksLeader #^>#
+    syn match NERDTreeBookmarksHeader #^>-\+Bookmarks-\+$# contains=NERDTreeBookmarksLeader
+    syn match NERDTreeBookmarkName #^>.\{-} #he=e-1 contains=NERDTreeBookmarksLeader
+    syn match NERDTreeBookmark #^>.*$# contains=NERDTreeBookmarksLeader,NERDTreeBookmarkName,NERDTreeBookmarksHeader
 
     if g:NERDChristmasTree
-        hi def link treePart Special
-        hi def link treePartFile Type
-        hi def link treeFile Normal
-        hi def link treeExecFile Title
-        hi def link treeDirSlash Identifier
-        hi def link treeClosable Type
+        hi def link NERDTreePart Special
+        hi def link NERDTreePartFile Type
+        hi def link NERDTreeFile Normal
+        hi def link NERDTreeExecFile Title
+        hi def link NERDTreeDirSlash Identifier
+        hi def link NERDTreeClosable Type
     else
-        hi def link treePart Normal
-        hi def link treePartFile Normal
-        hi def link treeFile Normal
-        hi def link treeClosable Title
+        hi def link NERDTreePart Normal
+        hi def link NERDTreePartFile Normal
+        hi def link NERDTreeFile Normal
+        hi def link NERDTreeClosable Title
     endif
 
-    hi def link treeBookmarksHeader statement
-    hi def link treeBookmarksLeader ignore
-    hi def link treeBookmarkName Identifier
-    hi def link treeBookmark normal
+    hi def link NERDTreeBookmarksHeader statement
+    hi def link NERDTreeBookmarksLeader ignore
+    hi def link NERDTreeBookmarkName Identifier
+    hi def link NERDTreeBookmark normal
 
-    hi def link treeHelp String
-    hi def link treeHelpKey Identifier
-    hi def link treeHelpCommand Identifier
-    hi def link treeHelpTitle Macro
-    hi def link treeToggleOn Question
-    hi def link treeToggleOff WarningMsg
+    hi def link NERDTreeHelp String
+    hi def link NERDTreeHelpKey Identifier
+    hi def link NERDTreeHelpCommand Identifier
+    hi def link NERDTreeHelpTitle Macro
+    hi def link NERDTreeToggleOn Question
+    hi def link NERDTreeToggleOff WarningMsg
 
-    hi def link treeDir Directory
-    hi def link treeUp Directory
-    hi def link treeCWD Statement
-    hi def link treeLink Macro
-    hi def link treeOpenable Title
-    hi def link treeFlag ignore
-    hi def link treeRO WarningMsg
-    hi def link treeBookmark Statement
+    hi def link NERDTreeDir Directory
+    hi def link NERDTreeUp Directory
+    hi def link NERDTreeCWD Statement
+    hi def link NERDTreeLink Macro
+    hi def link NERDTreeOpenable Title
+    hi def link NERDTreeFlag ignore
+    hi def link NERDTreeRO WarningMsg
+    hi def link NERDTreeBookmark Statement
 
     hi def link NERDTreeCurrentNode Search
 endfunction
