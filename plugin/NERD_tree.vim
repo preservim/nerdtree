@@ -373,7 +373,7 @@ endfunction
 " FUNCTION: Bookmark.New(name, path) {{{3
 " Create a new bookmark object with the given name and path object
 function! s:Bookmark.New(name, path)
-    if a:name =~ ' '
+    if a:name =~# ' '
         throw "NERDTree.IllegalBookmarkNameError: illegal name:" . a:name
     endif
 
@@ -1037,7 +1037,7 @@ endfunction
 "gets the line number of the root node
 function! s:TreeFileNode.GetRootLineNum()
     let rootLine = 1
-    while getline(rootLine) !~ '^\(/\|<\)'
+    while getline(rootLine) !~# '^\(/\|<\)'
         let rootLine = rootLine + 1
     endwhile
     return rootLine
@@ -1602,7 +1602,7 @@ function! s:TreeDirNode._initChildren(silent)
         "filter out the .. and . directories
         "Note: we must match .. AND ../ cos sometimes the globpath returns
         "../ for path with strange chars (eg $)
-        if i !~ '\/\.\.\/\?$' && i !~ '\/\.\/\?$'
+        if i !~# '\/\.\.\/\?$' && i !~# '\/\.\/\?$'
 
             "put the next file in a new node and attach it
             try
@@ -1739,7 +1739,7 @@ function! s:TreeDirNode.refresh()
             "filter out the .. and . directories
             "Note: we must match .. AND ../ cos sometimes the globpath returns
             "../ for path with strange chars (eg $)
-            if i !~ '\/\.\.\/\?$' && i !~ '\/\.\/\?$'
+            if i !~# '\/\.\.\/\?$' && i !~# '\/\.\/\?$'
 
                 try
                     "create a new path and see if it exists in this nodes children
@@ -1861,9 +1861,9 @@ let s:Path = {}
 function! s:Path.AbsolutePathFor(str)
     let prependCWD = 0
     if s:running_windows
-        let prependCWD = a:str !~ '^.:\(\\\|\/\)'
+        let prependCWD = a:str !~# '^.:\(\\\|\/\)'
     else
-        let prependCWD = a:str !~ '^/'
+        let prependCWD = a:str !~# '^/'
     endif
 
     let toReturn = a:str
@@ -1980,7 +1980,7 @@ function! s:Path.Create(fullpath)
     try
 
         "if it ends with a slash, assume its a dir create it
-        if a:fullpath =~ '\(\\\|\/\)$'
+        if a:fullpath =~# '\(\\\|\/\)$'
             "whack the trailing slash off the end if it exists
             let fullpath = substitute(a:fullpath, '\(\\\|\/\)$', '', '')
 
@@ -2153,7 +2153,7 @@ endfunction
 function! s:Path.getSortOrderIndex()
     let i = 0
     while i < len(g:NERDTreeSortOrder)
-        if  self.getLastPathComponent(1) =~ g:NERDTreeSortOrder[i]
+        if  self.getLastPathComponent(1) =~# g:NERDTreeSortOrder[i]
             return i
         endif
         let i = i + 1
@@ -2169,14 +2169,14 @@ function! s:Path.ignore()
     "filter out the user specified paths to ignore
     if b:NERDTreeIgnoreEnabled
         for i in g:NERDTreeIgnore
-            if lastPathComponent =~ i
+            if lastPathComponent =~# i
                 return 1
             endif
         endfor
     endif
 
     "dont show hidden files unless instructed to
-    if b:NERDTreeShowHidden ==# 0 && lastPathComponent =~ '^\.'
+    if b:NERDTreeShowHidden ==# 0 && lastPathComponent =~# '^\.'
         return 1
     endif
 
@@ -2266,7 +2266,7 @@ function! s:Path.readInfoFromDisk(fullpath)
 
     let self.isExecutable = 0
     if !self.isDirectory
-        let self.isExecutable = getfperm(a:fullpath) =~ 'x'
+        let self.isExecutable = getfperm(a:fullpath) =~# 'x'
     endif
 
     "grab the last part of the path (minus the trailing slash)
@@ -2285,7 +2285,7 @@ function! s:Path.readInfoFromDisk(fullpath)
 
             "we always wanna treat MS windows shortcuts as files for
             "simplicity
-            if hardPath !~ '\.lnk$'
+            if hardPath !~# '\.lnk$'
 
                 let self.symLinkDest = self.symLinkDest . '/'
             endif
@@ -2517,7 +2517,7 @@ endfunction
 " FUNCTION: s:completeBookmarks(A,L,P) {{{2
 " completion function for the bookmark commands
 function! s:completeBookmarks(A,L,P)
-    return filter(s:Bookmark.BookmarkNames(), 'v:val =~ "^' . a:A . '"')
+    return filter(s:Bookmark.BookmarkNames(), 'v:val =~# "^' . a:A . '"')
 endfunction
 " FUNCTION: s:exec(cmd) {{{2
 " same as :exec cmd  but eventignore=all is set for the duration
@@ -2564,7 +2564,7 @@ function! s:initNerdTree(name)
         let dir = a:name ==# '' ? getcwd() : a:name
 
         "hack to get an absolute path if a relative path is given
-        if dir =~ '^\.'
+        if dir =~# '^\.'
             let dir = getcwd() . s:Path.Slash() . dir
         endif
         let dir = resolve(dir)
@@ -3068,7 +3068,7 @@ function! s:getPath(ln)
     endif
 
     " in case called from outside the tree
-    if line !~ '^ *[|`]' || line =~ '^$'
+    if line !~# '^ *[|`]' || line =~# '^$'
         return {}
     endif
 
@@ -3082,7 +3082,7 @@ function! s:getPath(ln)
     let curFile = s:stripMarkupFromLine(line, 0)
 
     let wasdir = 0
-    if curFile =~ '/$'
+    if curFile =~# '/$'
         let wasdir = 1
         let curFile = substitute(curFile, '/\?$', '/', "")
     endif
@@ -3099,7 +3099,7 @@ function! s:getPath(ln)
             let dir = b:NERDTreeRoot.path.str({'format': 'UI'}) . dir
             break
         endif
-        if curLineStripped =~ '/$'
+        if curLineStripped =~# '/$'
             let lpindent = s:indentLevelFor(curLine)
             if lpindent < indent
                 let indent = indent - 1
@@ -3218,7 +3218,7 @@ function! s:putCursorOnBookmarkTable()
     let rootNodeLine = s:TreeFileNode.GetRootLineNum()
 
     let line = 1
-    while getline(line) !~ '^>-\+Bookmarks-\+$'
+    while getline(line) !~# '^>-\+Bookmarks-\+$'
         let line = line + 1
         if line >= rootNodeLine
             throw "NERDTree.BookmarkTableNotFoundError: didnt find the bookmarks table"
@@ -3476,7 +3476,7 @@ function! s:stripMarkupFromLine(line, removeLeadingSpaces)
     let line = substitute (line, '*\ze\($\| \)', "","")
 
     let wasdir = 0
-    if line =~ '/$'
+    if line =~# '/$'
         let wasdir = 1
     endif
     let line = substitute (line,' -> .*',"","") " remove link to
@@ -3634,14 +3634,14 @@ function! s:checkForActivate()
         "if they clicked a dir, check if they clicked on the + or ~ sign
         "beside it
         if currentNode.path.isDirectory
-            if startToCur =~ s:tree_markup_reg . '$' && char =~ '[+~]'
+            if startToCur =~# s:tree_markup_reg . '$' && char =~# '[+~]'
                 call s:activateNode(0)
                 return
             endif
         endif
 
         if (g:NERDTreeMouseMode ==# 2 && currentNode.path.isDirectory) || g:NERDTreeMouseMode ==# 3
-            if char !~ s:tree_markup_reg && startToCur !~ '\/$'
+            if char !~# s:tree_markup_reg && startToCur !~# '\/$'
                 call s:activateNode(0)
                 return
             endif
@@ -4041,7 +4041,7 @@ endfunction
 "re-rendered
 function! s:upDir(keepState)
     let cwd = b:NERDTreeRoot.path.str({'format': 'UI'})
-    if cwd ==# "/" || cwd =~ '^[^/]..$'
+    if cwd ==# "/" || cwd =~# '^[^/]..$'
         call s:echo("already at top dir")
     else
         if !a:keepState
