@@ -390,7 +390,7 @@ function! s:Bookmark.openInNewTab(options)
         tabnew
         call s:initNerdTree(self.name)
     else
-        exec "tabedit " . bookmark.path.str({'format': 'Edit'})
+        exec "tabedit " . self.path.str({'format': 'Edit'})
     endif
 
     if has_key(a:options, 'stayInCurrentTab')
