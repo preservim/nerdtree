@@ -142,7 +142,7 @@ call s:initVariable("g:NERDTreeMapUpdirKeepOpen", "U")
 if s:running_windows
     let s:escape_chars =  " `\|\"#%&,?()\*^<>"
 else
-    let s:escape_chars =  " \\`\|\"#%&,?()\*^<>"
+    let s:escape_chars =  " \\`\|\"#%&,?()\*^<>[]"
 endif
 let s:NERDTreeBufName = 'NERD_tree_'
 
