@@ -1326,7 +1326,7 @@ function! s:TreeFileNode._renderToString(depth, drawText, vertMap, isLastChild)
                 let treeParts = treeParts . '▸ '
             endif
         else
-            let treeParts = treeParts . ''
+            let treeParts = treeParts . '  '
         endif
         let line = treeParts . self.displayString()
 
@@ -3112,7 +3112,13 @@ function! s:getTreeWinNum()
 endfunction
 "FUNCTION: s:indentLevelFor(line) {{{2
 function! s:indentLevelFor(line)
-    return match(a:line, '[^ \-+~`|]') / s:tree_wid
+    let level = match(a:line, '[^ \-+~▸▾`|]') / s:tree_wid
+    " check if line includes arrows
+    if match(a:line, '[▸▾]') > -1
+        " decrement level as arrow uses 3 ascii chars
+        let level = level - 1
+    endif
+    return level
 endfunction
 "FUNCTION: s:isTreeOpen() {{{2
 function! s:isTreeOpen()
