@@ -150,7 +150,11 @@ let s:NERDTreeBufName = 'NERD_tree_'
 
 let s:tree_wid = 2
 let s:tree_markup_reg = '^[ `|]*[\-+~▾▸ ]*'
-let s:tree_up_dir_line = '.. (up a dir)'
+if g:NERDTreeMinimalUI == 0
+    let s:tree_up_dir_line = '.. (up a dir)'
+else
+    let s:tree_up_dir_line = '..'
+endif
 
 "the number to add to the nerd tree buffer name to make the buf name unique
 let s:next_buffer_number = 1
