@@ -66,6 +66,7 @@ call s:initVariable("g:NERDTreeShowFiles", 1)
 call s:initVariable("g:NERDTreeShowHidden", 0)
 call s:initVariable("g:NERDTreeShowLineNumbers", 0)
 call s:initVariable("g:NERDTreeSortDirs", 1)
+call s:initVariable("g:NERDTreeDirArrows", 0)
 
 if !exists("g:NERDTreeSortOrder")
     let g:NERDTreeSortOrder = ['\/$', '*', '\.swp$',  '\.bak$', '\~$']
@@ -148,7 +149,7 @@ endif
 let s:NERDTreeBufName = 'NERD_tree_'
 
 let s:tree_wid = 2
-let s:tree_markup_reg = '^[ `|]*[\-+~]'
+let s:tree_markup_reg = '^[ `|]*[\-+~▾▸ ]*'
 let s:tree_up_dir_line = '.. (up a dir)'
 
 "the number to add to the nerd tree buffer name to make the buf name unique
@@ -1314,33 +1315,50 @@ function! s:TreeFileNode._renderToString(depth, drawText, vertMap, isLastChild)
         "get all the leading spaces and vertical tree parts for this line
         if a:depth > 1
             for j in a:vertMap[0:-2]
-                if j ==# 1
-                    let treeParts = treeParts . '| '
-                else
+                if g:NERDTreeDirArrows
                     let treeParts = treeParts . '  '
+                else
+                    if j ==# 1
+                        let treeParts = treeParts . '| '
+                    else
+                        let treeParts = treeParts . '  '
+                    endif
                 endif
             endfor
         endif
 
         "get the last vertical tree part for this line which will be different
         "if this node is the last child of its parent
-        if a:isLastChild
-            let treeParts = treeParts . '`'
-        else
-            let treeParts = treeParts . '|'
+        if !g:NERDTreeDirArrows
+            if a:isLastChild
+                let treeParts = treeParts . '`'
+            else
+                let treeParts = treeParts . '|'
+            endif
         endif
-
 
         "smack the appropriate dir/file symbol on the line before the file/dir
         "name itself
         if self.path.isDirectory
             if self.isOpen
-                let treeParts = treeParts . '~'
+                if g:NERDTreeDirArrows
+                    let treeParts = treeParts . '▾ '
+                else
+                    let treeParts = treeParts . '~'
+                endif
             else
-                let treeParts = treeParts . '+'
+                if g:NERDTreeDirArrows
+                    let treeParts = treeParts . '▸ '
+                else
+                    let treeParts = treeParts . '+'
+                endif
             endif
         else
-            let treeParts = treeParts . '-'
+            if g:NERDTreeDirArrows
+                let treeParts = treeParts . '  '
+            else
+                let treeParts = treeParts . '-'
+            endif
         endif
         let line = treeParts . self.displayString()
 
@@ -3068,9 +3086,11 @@ function! s:getPath(ln)
         return b:NERDTreeRoot.path
     endif
 
-    " in case called from outside the tree
-    if line !~# '^ *[|`]' || line =~# '^$'
-        return {}
+    if !g:NERDTreeDirArrows
+        " in case called from outside the tree
+        if line !~# '^ *[|`▸▾ ]' || line =~# '^$'
+            return {}
+        endif
     endif
 
     if line ==# s:tree_up_dir_line
@@ -3126,7 +3146,13 @@ function! s:getTreeWinNum()
 endfunction
 "FUNCTION: s:indentLevelFor(line) {{{2
 function! s:indentLevelFor(line)
-    return match(a:line, '[^ \-+~`|]') / s:tree_wid
+    let level = match(a:line, '[^ \-+~▸▾`|]') / s:tree_wid
+    " check if line includes arrows
+    if match(a:line, '[▸▾]') > -1
+        " decrement level as arrow uses 3 ascii chars
+        let level = level - 1
+    endif
+    return level
 endfunction
 "FUNCTION: s:isTreeOpen() {{{2
 function! s:isTreeOpen()
@@ -3407,7 +3433,7 @@ function! s:setupSyntaxHighlighting()
     "highlighing for directory nodes and file nodes
     syn match NERDTreeDirSlash #/#
     syn match NERDTreeDir #[^-| `].*/# contains=NERDTreeLink,NERDTreeDirSlash,NERDTreeOpenable,NERDTreeClosable
-    syn match NERDTreeExecFile  #[|`]-.*\*\($\| \)# contains=NERDTreeLink,NERDTreePart,NERDTreeRO,NERDTreePartFile,NERDTreeBookmark
+    syn match NERDTreeExecFile  #[|` ].*\*\($\| \)# contains=NERDTreeLink,NERDTreePart,NERDTreeRO,NERDTreePartFile,NERDTreeBookmark
     syn match NERDTreeFile  #|-.*# contains=NERDTreeLink,NERDTreePart,NERDTreeRO,NERDTreePartFile,NERDTreeBookmark,NERDTreeExecFile
     syn match NERDTreeFile  #`-.*# contains=NERDTreeLink,NERDTreePart,NERDTreeRO,NERDTreePartFile,NERDTreeBookmark,NERDTreeExecFile
     syn match NERDTreeCWD #^/.*$#
