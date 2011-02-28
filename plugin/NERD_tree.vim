@@ -3408,7 +3408,7 @@ function! s:setupSyntaxHighlighting()
     syn match NERDTreeFlag #\[RO\]#
 
     "highlighting for the .. (up dir) line at the top of the tree
-    execute "syn match NERDTreeUp #". s:tree_up_dir_line ."#"
+    execute "syn match NERDTreeUp #\\V". s:tree_up_dir_line ."#"
 
     "highlighting for the ~/+ symbols for the directory nodes
     syn match NERDTreeClosable #\~\<#
