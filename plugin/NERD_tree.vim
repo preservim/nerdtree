@@ -3244,6 +3244,10 @@ function! s:putCursorOnBookmarkTable()
         throw "NERDTree.IllegalOperationError: cant find bookmark table, bookmarks arent active"
     endif
 
+    if g:NERDTreeMinimalUI
+        return cursor(1, 2)
+    endif
+
     let rootNodeLine = s:TreeFileNode.GetRootLineNum()
 
     let line = 1
@@ -3253,7 +3257,7 @@ function! s:putCursorOnBookmarkTable()
             throw "NERDTree.BookmarkTableNotFoundError: didnt find the bookmarks table"
         endif
     endwhile
-    call cursor(line, 0)
+    call cursor(line, 2)
 endfunction
 
 "FUNCTION: s:putCursorInTreeWin(){{{2
