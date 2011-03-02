@@ -2664,7 +2664,9 @@ function! s:initNerdTreeInPlace(dir)
         setlocal nu
     else
         setlocal nonu
-        setlocal nornu
+        if v:version >= 703
+            setlocal nornu
+        endif
     endif
 
     iabc <buffer>
@@ -2901,7 +2903,9 @@ function! s:createTreeWin()
         setlocal nu
     else
         setlocal nonu
-        setlocal nornu
+        if v:version >= 703
+            setlocal nornu
+        endif
     endif
 
     iabc <buffer>
