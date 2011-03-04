@@ -51,6 +51,7 @@ call s:initVariable("g:NERDTreeAutoCenter", 1)
 call s:initVariable("g:NERDTreeAutoCenterThreshold", 3)
 call s:initVariable("g:NERDTreeCaseSensitiveSort", 0)
 call s:initVariable("g:NERDTreeChDirMode", 0)
+call s:initVariable("g:NERDTreeMinimalUI", 0)
 if !exists("g:NERDTreeIgnore")
     let g:NERDTreeIgnore = ['\~$']
 endif
@@ -65,6 +66,7 @@ call s:initVariable("g:NERDTreeShowFiles", 1)
 call s:initVariable("g:NERDTreeShowHidden", 0)
 call s:initVariable("g:NERDTreeShowLineNumbers", 0)
 call s:initVariable("g:NERDTreeSortDirs", 1)
+call s:initVariable("g:NERDTreeDirArrows", 0)
 
 if !exists("g:NERDTreeSortOrder")
     let g:NERDTreeSortOrder = ['\/$', '*', '\.swp$',  '\.bak$', '\~$']
@@ -147,7 +149,7 @@ endif
 let s:NERDTreeBufName = 'NERD_tree_'
 
 let s:tree_wid = 2
-let s:tree_markup_reg = '^[ `|]*[\-+~]'
+let s:tree_markup_reg = '^[ `|]*[\-+~▾▸ ]*'
 let s:tree_up_dir_line = '.. (up a dir)'
 
 "the number to add to the nerd tree buffer name to make the buf name unique
@@ -1313,33 +1315,50 @@ function! s:TreeFileNode._renderToString(depth, drawText, vertMap, isLastChild)
         "get all the leading spaces and vertical tree parts for this line
         if a:depth > 1
             for j in a:vertMap[0:-2]
-                if j ==# 1
-                    let treeParts = treeParts . '| '
-                else
+                if g:NERDTreeDirArrows
                     let treeParts = treeParts . '  '
+                else
+                    if j ==# 1
+                        let treeParts = treeParts . '| '
+                    else
+                        let treeParts = treeParts . '  '
+                    endif
                 endif
             endfor
         endif
 
         "get the last vertical tree part for this line which will be different
         "if this node is the last child of its parent
-        if a:isLastChild
-            let treeParts = treeParts . '`'
-        else
-            let treeParts = treeParts . '|'
+        if !g:NERDTreeDirArrows
+            if a:isLastChild
+                let treeParts = treeParts . '`'
+            else
+                let treeParts = treeParts . '|'
+            endif
         endif
-
 
         "smack the appropriate dir/file symbol on the line before the file/dir
         "name itself
         if self.path.isDirectory
             if self.isOpen
-                let treeParts = treeParts . '~'
+                if g:NERDTreeDirArrows
+                    let treeParts = treeParts . '▾ '
+                else
+                    let treeParts = treeParts . '~'
+                endif
             else
-                let treeParts = treeParts . '+'
+                if g:NERDTreeDirArrows
+                    let treeParts = treeParts . '▸ '
+                else
+                    let treeParts = treeParts . '+'
+                endif
             endif
         else
-            let treeParts = treeParts . '-'
+            if g:NERDTreeDirArrows
+                let treeParts = treeParts . '  '
+            else
+                let treeParts = treeParts . '-'
+            endif
         endif
         let line = treeParts . self.displayString()
 
@@ -2645,6 +2664,9 @@ function! s:initNerdTreeInPlace(dir)
         setlocal nu
     else
         setlocal nonu
+        if v:version >= 703
+            setlocal nornu
+        endif
     endif
 
     iabc <buffer>
@@ -2881,6 +2903,9 @@ function! s:createTreeWin()
         setlocal nu
     else
         setlocal nonu
+        if v:version >= 703
+            setlocal nornu
+        endif
     endif
 
     iabc <buffer>
@@ -2996,11 +3021,11 @@ function! s:dumpHelp()
         let @h=@h."\" :OpenBookmark <name>\n"
         let @h=@h."\" :ClearBookmarks [<names>]\n"
         let @h=@h."\" :ClearAllBookmarks\n"
-    else
+        silent! put h
+    elseif g:NERDTreeMinimalUI == 0
         let @h="\" Press ". g:NERDTreeMapHelp ." for help\n"
+        silent! put h
     endif
-
-    silent! put h
 
     let @h = old_h
 endfunction
@@ -3067,9 +3092,11 @@ function! s:getPath(ln)
         return b:NERDTreeRoot.path
     endif
 
-    " in case called from outside the tree
-    if line !~# '^ *[|`]' || line =~# '^$'
-        return {}
+    if !g:NERDTreeDirArrows
+        " in case called from outside the tree
+        if line !~# '^ *[|`▸▾ ]' || line =~# '^$'
+            return {}
+        endif
     endif
 
     if line ==# s:tree_up_dir_line
@@ -3125,7 +3152,13 @@ function! s:getTreeWinNum()
 endfunction
 "FUNCTION: s:indentLevelFor(line) {{{2
 function! s:indentLevelFor(line)
-    return match(a:line, '[^ \-+~`|]') / s:tree_wid
+    let level = match(a:line, '[^ \-+~▸▾`|]') / s:tree_wid
+    " check if line includes arrows
+    if match(a:line, '[▸▾]') > -1
+        " decrement level as arrow uses 3 ascii chars
+        let level = level - 1
+    endif
+    return level
 endfunction
 "FUNCTION: s:isTreeOpen() {{{2
 function! s:isTreeOpen()
@@ -3215,6 +3248,10 @@ function! s:putCursorOnBookmarkTable()
         throw "NERDTree.IllegalOperationError: cant find bookmark table, bookmarks arent active"
     endif
 
+    if g:NERDTreeMinimalUI
+        return cursor(1, 2)
+    endif
+
     let rootNodeLine = s:TreeFileNode.GetRootLineNum()
 
     let line = 1
@@ -3224,7 +3261,7 @@ function! s:putCursorOnBookmarkTable()
             throw "NERDTree.BookmarkTableNotFoundError: didnt find the bookmarks table"
         endif
     endwhile
-    call cursor(line, 0)
+    call cursor(line, 2)
 endfunction
 
 "FUNCTION: s:putCursorInTreeWin(){{{2
@@ -3240,8 +3277,10 @@ endfunction
 "FUNCTION: s:renderBookmarks {{{2
 function! s:renderBookmarks()
 
-    call setline(line(".")+1, ">----------Bookmarks----------")
-    call cursor(line(".")+1, col("."))
+    if g:NERDTreeMinimalUI == 0
+        call setline(line(".")+1, ">----------Bookmarks----------")
+        call cursor(line(".")+1, col("."))
+    endif
 
     for i in s:Bookmark.Bookmarks()
         call setline(line(".")+1, i.str())
@@ -3268,16 +3307,20 @@ function! s:renderView()
     call s:dumpHelp()
 
     "delete the blank line before the help and add one after it
-    call setline(line(".")+1, "")
-    call cursor(line(".")+1, col("."))
+    if g:NERDTreeMinimalUI == 0
+        call setline(line(".")+1, "")
+        call cursor(line(".")+1, col("."))
+    endif
 
     if b:NERDTreeShowBookmarks
         call s:renderBookmarks()
     endif
 
     "add the 'up a dir' line
-    call setline(line(".")+1, s:tree_up_dir_line)
-    call cursor(line(".")+1, col("."))
+    if !g:NERDTreeMinimalUI
+        call setline(line(".")+1, s:tree_up_dir_line)
+        call cursor(line(".")+1, col("."))
+    endif
 
     "draw the header line
     let header = b:NERDTreeRoot.path.str({'format': 'UI', 'truncateTo': winwidth(0)})
@@ -3371,7 +3414,7 @@ function! s:setupSyntaxHighlighting()
     syn match NERDTreeFlag #\[RO\]#
 
     "highlighting for the .. (up dir) line at the top of the tree
-    execute "syn match NERDTreeUp #". s:tree_up_dir_line ."#"
+    execute "syn match NERDTreeUp #\\V". s:tree_up_dir_line ."#"
 
     "highlighting for the ~/+ symbols for the directory nodes
     syn match NERDTreeClosable #\~\<#
@@ -3402,7 +3445,7 @@ function! s:setupSyntaxHighlighting()
     "highlighing for directory nodes and file nodes
     syn match NERDTreeDirSlash #/#
     syn match NERDTreeDir #[^-| `].*/# contains=NERDTreeLink,NERDTreeDirSlash,NERDTreeOpenable,NERDTreeClosable
-    syn match NERDTreeExecFile  #[|`]-.*\*\($\| \)# contains=NERDTreeLink,NERDTreePart,NERDTreeRO,NERDTreePartFile,NERDTreeBookmark
+    syn match NERDTreeExecFile  #[|` ].*\*\($\| \)# contains=NERDTreeLink,NERDTreePart,NERDTreeRO,NERDTreePartFile,NERDTreeBookmark
     syn match NERDTreeFile  #|-.*# contains=NERDTreeLink,NERDTreePart,NERDTreeRO,NERDTreePartFile,NERDTreeBookmark,NERDTreeExecFile
     syn match NERDTreeFile  #`-.*# contains=NERDTreeLink,NERDTreePart,NERDTreeRO,NERDTreePartFile,NERDTreeBookmark,NERDTreeExecFile
     syn match NERDTreeCWD #^/.*$#
