@@ -3524,7 +3524,7 @@ function! s:setupSyntaxHighlighting()
     syn match NERDTreeExecFile  #[|` ].*\*\($\| \)# contains=NERDTreeLink,NERDTreePart,NERDTreeRO,NERDTreePartFile,NERDTreeBookmark
     syn match NERDTreeFile  #|-.*# contains=NERDTreeLink,NERDTreePart,NERDTreeRO,NERDTreePartFile,NERDTreeBookmark,NERDTreeExecFile
     syn match NERDTreeFile  #`-.*# contains=NERDTreeLink,NERDTreePart,NERDTreeRO,NERDTreePartFile,NERDTreeBookmark,NERDTreeExecFile
-    syn match NERDTreeCWD #^/.*$#
+    syn match NERDTreeCWD #^[</].*$#
 
     "highlighting for bookmarks
     syn match NERDTreeBookmark # {.*}#hs=s+1
