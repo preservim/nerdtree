@@ -4113,6 +4113,13 @@ function! s:upDir(keepState)
 endfunction
 
 
+" Support for tplugin, which lazy-loads the plugin on request
+if !has('vim_starting')
+  do NERDTree VimEnter
+  do NERDTreeHijackNetrw VimEnter
+endif
+
+
 "reset &cpo back to users setting
 let &cpo = s:old_cpo
 
