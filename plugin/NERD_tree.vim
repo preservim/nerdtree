@@ -1282,7 +1282,7 @@ let video_music = [".avi", ".mp3", ".mpg", ".mpeg", ".mpeg1", ".mpeg2", ".ogg", 
 let ebook = [".pdf", ".ps"]
 let document = [".odt", ".ods", ".odp", ".odg", ".odf", ".doc", ".xls", ".ppt"]
 let webpage = [".html", ".htm", ".xml"]
-let compressed = [".zip", ".rar", ".tar", ".gz", ".tgz", ".bz", ".tbz", ".7z", ".ar", "jar", ".xz", ".lzma", ".cbz", ".cbr"]
+let compressed = [".zip", ".rar", ".tar", ".gz", ".tgz", ".bz", ".tbz", ".7z", ".ar", "jar", ".xz", ".lzma", ".cbz", ".cbr", ".iso"]
 let torrent = [".torrent"] 
 
 "Aplication => file extension association
