@@ -160,7 +160,7 @@ endif
 let s:NERDTreeBufName = 'NERD_tree_'
 
 let s:tree_wid = 2
-let s:tree_markup_reg = '^[ `|]*[\-+~▾▸ ]*'
+let s:tree_markup_reg = '^[ `|]*[\-+~▾▸ ]\+'
 let s:tree_up_dir_line = '.. (up a dir)'
 
 "the number to add to the nerd tree buffer name to make the buf name unique
@@ -3751,19 +3751,17 @@ function! s:checkForActivate()
     let currentNode = s:TreeFileNode.GetSelected()
     if currentNode != {}
         let startToCur = strpart(getline(line(".")), 0, col("."))
-        let char = strpart(startToCur, strlen(startToCur)-1, 1)
 
-        "if they clicked a dir, check if they clicked on the + or ~ sign
-        "beside it
         if currentNode.path.isDirectory
-            if startToCur =~# s:tree_markup_reg . '$' && char =~# '[+~]'
+            if startToCur =~# s:tree_markup_reg . '$' && startToCur =~# '[+~▾▸]$'
                 call s:activateNode(0)
                 return
             endif
         endif
 
         if (g:NERDTreeMouseMode ==# 2 && currentNode.path.isDirectory) || g:NERDTreeMouseMode ==# 3
-            if char !~# s:tree_markup_reg && startToCur !~# '\/$'
+            let char = strpart(startToCur, strlen(startToCur)-1, 1)
+            if char !~# s:tree_markup_reg
                 call s:activateNode(0)
                 return
             endif
