@@ -8,14 +8,6 @@
 "              it and/or modify it under the terms of the Do What The Fuck You
 "              Want To Public License, Version 2, as published by Sam Hocevar.
 "              See http://sam.zoy.org/wtfpl/COPYING for more details.
-"" =============================================================================
-" Contributor: George Hadjikyriacou <ghadjikyriacou at gmail dot com>
-" Additions:   Code between "NERDTree++ comments
-" Description: You can open files with the appropriate application, simply by 
-"              pressing '!' key. Change global strings in file  
-"              NERD_tree_cfg.vim with application (command) you like.
-" Last Change: 21 April 2011 
-" ==============================================================================
 "
 " ============================================================================
 let s:NERD_tree_version = '4.1.0'
@@ -147,9 +139,6 @@ call s:initVariable("g:NERDTreeMapToggleHidden", "I")
 call s:initVariable("g:NERDTreeMapToggleZoom", "A")
 call s:initVariable("g:NERDTreeMapUpdir", "u")
 call s:initVariable("g:NERDTreeMapUpdirKeepOpen", "U")
-"NERDTree++
-call s:initVariable("g:NERDTreeMapOpenInApp","!")
-"NERDTree++
 
 "SECTION: Script level variable declaration{{{2
 if s:running_windows
@@ -1257,68 +1246,6 @@ function! s:TreeFileNode.openInNewTab(options)
     endif
 
 endfunction
-
-"NERDTree++
-"FUNCTION: TreeFileNode.openInApp() {{{3
-function! s:TreeFileNode.openInApp()
-
-"definition of the null device in windows (sucks) and linux
-"in this case, null device used to disposing output streams of a command
-if s:running_windows
-    let nulldev = " >NUL &"
-else
-    let nulldev = " >/dev/null 2>&1 &"
-endif
-
-"GET filename and file extension
-let selectedfile = self.path.str({'format': 'Edit'})
-let dot = strridx(selectedfile, ".")
-let cext = strpart(selectedfile, dot)
-let ext = tolower(cext)
-
-"File Extensions
-let image = [".jpg", ".jpeg", ".png", ".gif", ".bmp", ".svg", ".svgz", ".tiff", ".tga", ".ico"]
-let video_music = [".avi", ".mp3", ".mpg", ".mpeg", ".mpeg1", ".mpeg2", ".ogg", ".ogv", ".ogm", ".mkv", ".wav", ".wmv", ".mp4", ".mpeg4", ".m3u", ".m4v", ".flv", ".aac", ".mov", ".ts", ".vod", ".3gp"]
-let ebook = [".pdf", ".ps"]
-let document = [".odt", ".ods", ".odp", ".odg", ".odf", ".doc", ".xls", ".ppt"]
-let webpage = [".html", ".htm", ".xml"]
-let compressed = [".zip", ".rar", ".tar", ".gz", ".tgz", ".bz", ".tbz", ".7z", ".ar", "jar", ".xz", ".lzma", ".cbz", ".cbr", ".iso"]
-let torrent = [".torrent"] 
-
-"Aplication => file extension association
-
-if index(image, ext) != -1
-    execute ":silent !" . g:nt_image_viewer . " "  . selectedfile . nulldev
-endif
-
-if index(video_music, ext) != -1
-    execute ":silent !" . g:nt_media_player . " " . selectedfile . nulldev
-endif
-
-if index(ebook, ext) != -1
-    execute ":silent !" . g:nt_ebook_reader . " " .  selectedfile . nulldev
-endif
-
-if index(document, ext) != -1
-    execute ":silent !" . g:nt_office_suite . " " . selectedfile . nulldev
-endif
-
-if index(webpage, ext) != -1
-    execute ":silent !" . g:nt_web_browser . " " . selectedfile . nulldev
-endif
-
-if index(compressed, ext) != -1
-    execute ":silent !" . g:nt_archive_manager . " " . selectedfile . nulldev
-endif
-
-if index(torrent, ext) != -1
-    execute ":silent !" . g:nt_bittorrent_client . " " . selectedfile . nulldev
-endif
-
-redraw!
-endfunction
-"NERDTree++
-
 "FUNCTION: TreeFileNode.putCursorHere(isJump, recurseUpward){{{3
 "Places the cursor on the line number this node is rendered on
 "
@@ -3007,9 +2934,6 @@ function! s:dumpHelp()
         let @h=@h."\" File node mappings~\n"
         let @h=@h."\" ". (g:NERDTreeMouseMode ==# 3 ? "single" : "double") ."-click,\n"
         let @h=@h."\" <CR>,\n"
-"NERDTree++
-        let @h=@h."\" ". g:NERDTreeMapOpenInApp.": open in application\n"
-"NERDTree++
         if b:NERDTreeType ==# "primary"
             let @h=@h."\" ". g:NERDTreeMapActivateNode .": open in prev window\n"
         else
@@ -3711,9 +3635,6 @@ function! s:bindMappings()
     exec "nnoremap <silent> <buffer> ". g:NERDTreeMapOpenExpl ." :call <SID>openExplorer()<cr>"
 
     exec "nnoremap <silent> <buffer> ". g:NERDTreeMapDeleteBookmark ." :call <SID>deleteBookmark()<cr>"
-"NERDTree++
-    exec "nnoremap <silent> <buffer> ". g:NERDTreeMapOpenInApp ." :call <SID>openInApp()<cr>"
-"NERDTree++
 
     "bind all the user custom maps
     call s:KeyMap.BindAll()
@@ -4026,20 +3947,6 @@ function! s:openInNewTab(stayCurrentTab)
         call target.openInNewTab({'stayInCurrentTab': a:stayCurrentTab})
     endif
 endfunction
-
-"NERDTree++
-"FUNCTION s:openInApp() {{{2
-function! s:openInApp()
-    let target = s:TreeFileNode.GetSelected()
-    if target == {}
-        let target = s:Bookmark.GetSelected()
-    endif
-
-    if target != {}
-        call target.openInApp()
-    endif
-endfunction
-"NERDTree++
 
 " FUNCTION: s:openNodeRecursively() {{{2
 function! s:openNodeRecursively()
