@@ -1,6 +1,5 @@
 "" =============================================================================
 " Contributor: George Hadjikyriacou <ghadjikyriacou at gmail dot com>
-" Additions:   Code between "NERDTree++ comments
 " Description: You can open files with the appropriate application, simply by 
 "              pressing '!' key. Change global strings in file  
 "              NERDTreeOpenInApp_cfg.vim with application (command) you like.
