@@ -991,7 +991,7 @@ function! s:TreeFileNode.getLineNum()
     "the path components we have matched so far
     let pathcomponents = [substitute(b:NERDTreeRoot.path.str({'format': 'UI'}), '/ *$', '', '')]
     "the index of the component we are searching for
-    let curPathComponent = 1
+    let curPathComponent = 0
 
     let fullpath = self.path.str({'format': 'UI'})
 
@@ -2029,7 +2029,7 @@ function! s:Path.copy(dest)
 
     let dest = s:Path.WinToUnixPath(a:dest)
 
-    let cmd = g:NERDTreeCopyCmd . " " . self.str() . " " . dest
+    let cmd = g:NERDTreeCopyCmd . " " . escape(self.str(), s:escape_chars) . " " . escape(dest, s:escape_chars)
     let success = system(cmd)
     if success != 0
         throw "NERDTree.CopyError: Could not copy ''". self.str() ."'' to: '" . a:dest . "'"

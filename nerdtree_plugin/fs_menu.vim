@@ -57,7 +57,7 @@ function! NERDTreeAddNode()
     let newNodeName = input("Add a childnode\n".
                           \ "==========================================================\n".
                           \ "Enter the dir/file name to be created. Dirs end with a '/'\n" .
-                          \ "", curDirNode.path.str({'format': 'Glob'}) . g:NERDTreePath.Slash())
+                          \ "", curDirNode.path.str() . g:NERDTreePath.Slash())
 
     if newNodeName ==# ''
         call s:echo("Node Creation Aborted.")
