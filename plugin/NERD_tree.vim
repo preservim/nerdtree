@@ -2556,7 +2556,18 @@ function! s:findAndRevealPath()
     endtry
 
     if !s:treeExistsForTab()
-        call s:initNerdTree(p.getParent().str())
+	try
+	    let cwd = s:Path.New(getcwd())
+	catch /^NERDTree.InvalidArgumentsError/
+	    call s:echo("current directory does not exist.")
+	    let cwd = p.getParent()
+	endtry
+
+	if p.isUnder(cwd)
+	    call s:initNerdTree(cwd.str())
+	else
+            call s:initNerdTree(p.getParent().str())
+	endif
     else
         if !p.isUnder(s:TreeFileNode.GetRootForTab().path)
             call s:initNerdTree(p.getParent().str())
