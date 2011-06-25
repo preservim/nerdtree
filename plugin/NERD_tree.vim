@@ -991,7 +991,7 @@ function! s:TreeFileNode.getLineNum()
     "the path components we have matched so far
     let pathcomponents = [substitute(b:NERDTreeRoot.path.str({'format': 'UI'}), '/ *$', '', '')]
     "the index of the component we are searching for
-    let curPathComponent = 0
+    let curPathComponent = 1
 
     let fullpath = self.path.str({'format': 'UI'})
 
