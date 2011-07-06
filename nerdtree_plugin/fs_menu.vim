@@ -57,7 +57,7 @@ function! NERDTreeAddNode()
     let newNodeName = input("Add a childnode\n".
                           \ "==========================================================\n".
                           \ "Enter the dir/file name to be created. Dirs end with a '/'\n" .
-                          \ "", curDirNode.path.str() . g:NERDTreePath.Slash())
+                          \ "", curDirNode.path.str() . g:NERDTreePath.Slash(), "file")
 
     if newNodeName ==# ''
         call s:echo("Node Creation Aborted.")
@@ -85,7 +85,7 @@ function! NERDTreeMoveNode()
     let newNodePath = input("Rename the current node\n" .
                           \ "==========================================================\n" .
                           \ "Enter the new path for the node:                          \n" .
-                          \ "", curNode.path.str())
+                          \ "", curNode.path.str(), "file")
 
     if newNodePath ==# ''
         call s:echo("Node Renaming Aborted.")
@@ -163,7 +163,7 @@ function! NERDTreeCopyNode()
     let newNodePath = input("Copy the current node\n" .
                           \ "==========================================================\n" .
                           \ "Enter the new path to copy the node to:                   \n" .
-                          \ "", currentNode.path.str())
+                          \ "", currentNode.path.str(), "file")
 
     if newNodePath != ""
         "strip trailing slash
