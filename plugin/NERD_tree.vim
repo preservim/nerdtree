@@ -1880,7 +1880,7 @@ let s:Path = {}
 function! s:Path.AbsolutePathFor(str)
     let prependCWD = 0
     if s:running_windows
-        let prependCWD = a:str !~# '^.:\(\\\|\/\)'
+        let prependCWD = a:str !~# '^.:\(\\\|\/\)' && a:str !~# '^\(\\\\\|\/\/\)'
     else
         let prependCWD = a:str !~# '^/'
     endif
@@ -2109,7 +2109,12 @@ endfunction
 "If running windows, cache the drive letter for this path
 function! s:Path.extractDriveLetter(fullpath)
     if s:running_windows
-        let self.drive = substitute(a:fullpath, '\(^[a-zA-Z]:\).*', '\1', '')
+        if a:fullpath =~ '^\(\\\\\|\/\/\)'
+            let self.drive = substitute(a:fullpath, '^\(\(\\\\\|\/\/\)[^\\\/]*\(\\\|\/\)[^\\\/]*\).*', '\1', '')
+            let self.drive = substitute(self.drive, '/', '\', "g")
+        else
+            let self.drive = substitute(a:fullpath, '\(^[a-zA-Z]:\).*', '\1', '')
+        endif
     else
         let self.drive = ''
     endif
@@ -2488,6 +2493,9 @@ function! s:Path.WinToUnixPath(pathstr)
 
     "remove the x:\ of the front
     let toReturn = substitute(toReturn, '^.*:\(\\\|/\)\?', '/', "")
+
+    "remove the \\ network share from the front
+    let toReturn = substitute(toReturn, '^\(\\\\\|\/\/\)[^\\\/]*\(\\\|\/\)[^\\\/]*\(\\\|\/\)\?', '/', "")
 
     "convert all \ chars to /
     let toReturn = substitute(toReturn, '\', '/', "g")
