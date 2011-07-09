@@ -866,8 +866,10 @@ function! s:TreeFileNode.copy(dest)
     let parent = b:NERDTreeRoot.findNode(newPath.getParent())
     if !empty(parent)
         call parent.refresh()
+        return parent.findNode(newPath)
+    else
+        return {}
     endif
-    return parent.findNode(newPath)
 endfunction
 
 "FUNCTION: TreeFileNode.delete {{{3
