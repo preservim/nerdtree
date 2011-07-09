@@ -179,8 +179,10 @@ function! NERDTreeCopyNode()
         if confirmed
             try
                 let newNode = currentNode.copy(newNodePath)
-                call NERDTreeRender()
-                call newNode.putCursorHere(0, 0)
+                if !empty(newNode)
+                    call NERDTreeRender()
+                    call newNode.putCursorHere(0, 0)
+                endif
             catch /^NERDTree/
                 call s:echoWarning("Could not copy node")
             endtry
