@@ -3,7 +3,7 @@
 " Description: You can open files with the appropriate application, simply by 
 "              pressing '!' key. Change global variables below with application 
 "              (command) and file extension you like. Restart Vim!
-" Last Change: 30 April 2011 
+" Last Change: 11 July 2011 
 " License:     This program is free software. It comes without any warranty,
 "              to the extent permitted by applicable law. You can redistribute
 "              it and/or modify it under the terms of the Do What The Fuck You
@@ -44,7 +44,7 @@ let g:nt_win_program_loader = "wine"
 let g:image = [".jpg", ".jpeg", ".png", ".gif", ".bmp", ".svg", ".svgz", ".tiff", ".tga", ".ico"]
 
 "============================Media Player
-let g:video_music = [".avi", ".mp3", ".mpg", ".mpeg", ".mpeg1", ".mpeg2", ".ogg", ".ogv", ".ogm", ".mkv", ".wav", ".wmv", ".mp4", ".mpeg4", ".m3u", ".m4v", ".flv", ".aac", ".mov", ".ts", ".vod", ".3gp"]
+let g:video_music = [".avi", ".mp3", ".mpg", ".mpeg", ".mpeg1", ".mpeg2", ".ogg", ".ogv", ".ogm", ".mkv", ".wav", ".wmv", ".mp4", ".mpeg4", ".m3u", ".m4v", ".flv", ".aac", ".mov", ".ts", ".vod", ".3gp", ".ram"]
 
 "============================Ebook Reader
 let g:ebook = [".pdf", ".ps"]
