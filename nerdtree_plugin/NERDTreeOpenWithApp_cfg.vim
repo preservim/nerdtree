@@ -1,9 +1,8 @@
 " =============================================================================
 " Author:      George Hadjikyriacou <ghadjikyriacou at gmail dot com>
-" Description: You can open files with the appropriate application, simply by 
-"              pressing '!' key. Change global variables below with application 
-"              (command) and file extension you like. Restart Vim!
-" Last Change: 11 July 2011 
+" Description: Change global variables below with application 
+"              (command) and file extension you want and restart Vim!
+" Last Change: 18 July 2011 
 " License:     This program is free software. It comes without any warranty,
 "              to the extent permitted by applicable law. You can redistribute
 "              it and/or modify it under the terms of the Do What The Fuck You
@@ -11,7 +10,7 @@
 "              See http://sam.zoy.org/wtfpl/COPYING for more details.
 " =============================================================================
 
-"++++++++++++++++++++++++++++Applications
+"++++++++++++++++++++++++++++ Applications ++++++++++++++++++++++++++++
 "============================Image Viewer (default: "eog")
 let g:nt_image_viewer = "eog"
 
@@ -39,7 +38,10 @@ let g:package_installer = "gdebi-gtk"
 "============================Windows Program Loader (default: "wine")
 let g:nt_win_program_loader = "wine"
 
-"++++++++++++++++++++++++++++File Extensions
+"============================File Manager (default: "pcmanfm")
+let g:nt_file_manager = "pcmanfm"
+
+"++++++++++++++++++++++++++++ File Extensions ++++++++++++++++++++++++++++
 "============================Image Viewer
 let g:image = [".jpg", ".jpeg", ".png", ".gif", ".bmp", ".svg", ".svgz", ".tiff", ".tga", ".ico"]
 

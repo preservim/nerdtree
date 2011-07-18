@@ -7,10 +7,11 @@ George Hadjikyriacou <ghadjikyriacou at gmail dot com>
 
 Description
 -----------
-You can open various files (video, images, ebooks, etc) with the 
-appropriate application, simply by pressing '!' key. Change global 
-variables in file NERDTreeOpenWithApp_cfg.vim with application (command) 
-and file extension you like.
+NERDTreeOpenWithApp is a NERDTree plugin to open various files (videos, 
+images, etc) with appropriate application , simply by pressing '!' key. 
+Change global variables in file NERDTreeOpenWithApp_cfg.vim with 
+application (command) and file extension you want.
+Use '@' key to open file manager in current directory.
 
 Requirements
 ------------
@@ -19,7 +20,7 @@ Requirements
 
 Installation
 ------------
-Just copy "NERDTreeOpenWithApp.vim" and "NERDTreeOpenWithApp_cfg.vim" to 
+Copy "NERDTreeOpenWithApp.vim" and "NERDTreeOpenWithApp_cfg.vim" to 
 ~/.vim/nerdtree_plugin/ directory, and restart vim.
 
 License
