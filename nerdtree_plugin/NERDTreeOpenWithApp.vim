@@ -38,10 +38,10 @@ if exists('$DISPLAY') || s:running_windows
         execute ":silent !" . g:nt_file_manager . " "  . dir . " " . s:nulldev
         echo dir
     endif
+redraw!
 else
     echo "Error: You need to run NERDTreeOpenWithApp in an X environment!"
 endif
-redraw!
 endfunction
 
 " function opening files with the appropriate application.
