@@ -44,7 +44,7 @@ else
 endif
 endfunction
 
-" function opening files with the appropriate application.
+" function to open files with the appropriate application.
 function! NERDTreeOpenWithApp()
 if exists('$DISPLAY') || s:running_windows
     let n=g:NERDTreeFileNode.GetSelected()
