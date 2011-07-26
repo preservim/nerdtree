@@ -5,7 +5,8 @@
 "              NERDTreeOpenWithApp_cfg.vim with application (command) and file 
 "              extensions you want.
 "              Use '@' key to open file manager in current directory
-" Last Change: 18 July 2011
+"              Use '#' key to open terminal in current directory
+" Last Change: 26 July 2011
 " License:     This program is free software. It comes without any warranty,
 "              to the extent permitted by applicable law. You can redistribute
 "              it and/or modify it under the terms of the Do What The Fuck You
@@ -15,6 +16,7 @@
 
 call NERDTreeAddKeyMap({'key': '!','callback': 'NERDTreeOpenWithApp','quickhelpText': 'open with application' })
 call NERDTreeAddKeyMap({'key': '@','callback': 'NERDTreeOpenFm','quickhelpText': 'open file manager' })
+call NERDTreeAddKeyMap({'key': '#','callback': 'NERDTreeOpenTerm','quickhelpText': 'open terminal' })
 
 let s:running_windows = has("win16") || has("win32") || has("win64")
 
@@ -26,19 +28,41 @@ else
     let s:nulldev = " >/dev/null 2>&1 &"
 endif
 
+
+function! GETDirAndExt()
+    let n=g:NERDTreeFileNode.GetSelected()
+    if n!={}
+        let s:selectedfile = n.path.str({'format': 'Edit'})
+        let slash = strridx(s:selectedfile, "/")
+
+"GET current directory
+        let s:dir = strpart(s:selectedfile, 0, slash)
+
+"GET file extension
+        let dot = strridx(s:selectedfile, ".")
+        let cext = strpart(s:selectedfile, dot)
+        let s:ext = tolower(cext)
+
+    endif
+endfunction
+
+"function launching terminal in current directory.
+function! NERDTreeOpenTerm()
+if exists('$DISPLAY') || s:running_windows
+    call GETDirAndExt()  
+    execute ":silent !cd " . s:dir . ";"  . g:nt_terminal . " " . s:nulldev
+    redraw!
+else
+    echo "Error: You need to run NERDTreeOpenWithApp in an X environment!"
+endif
+endfunction
+
 "function launching file manager in current directory.
 function! NERDTreeOpenFm()
 if exists('$DISPLAY') || s:running_windows
-    let n=g:NERDTreeFileNode.GetSelected()
-    if n!={}
-"GET current directory
-        let selectedfile = n.path.str({'format': 'Edit'})
-        let slash = strridx(selectedfile, "/")
-        let dir = strpart(selectedfile, 0, slash)
-        execute ":silent !" . g:nt_file_manager . " "  . dir . " " . s:nulldev
-        echo dir
-    endif
-redraw!
+    call GETDirAndExt()
+    execute ":silent !" . g:nt_file_manager . " "  . s:dir . " " . s:nulldev
+    redraw!
 else
     echo "Error: You need to run NERDTreeOpenWithApp in an X environment!"
 endif
@@ -47,48 +71,39 @@ endfunction
 " function to open files with the appropriate application.
 function! NERDTreeOpenWithApp()
 if exists('$DISPLAY') || s:running_windows
-    let n=g:NERDTreeFileNode.GetSelected()
-    if n!={}
-
-"GET filename and file extension
-        let selectedfile = n.path.str({'format': 'Edit'})
-        let dot = strridx(selectedfile, ".")
-        let cext = strpart(selectedfile, dot)
-        let ext = tolower(cext)
-
+    call GETDirAndExt()
 "Aplication => file extension association
 
-        if index(g:image, ext) != -1
-            execute ":silent !" . g:nt_image_viewer . " "  . selectedfile . s:nulldev
+    if index(g:image, s:ext) != -1
+        execute ":silent !" . g:nt_image_viewer . " "  . s:selectedfile . s:nulldev
     
-        elseif index(g:video_music, ext) != -1
-            execute ":silent !" . g:nt_media_player . " " . selectedfile . s:nulldev
+    elseif index(g:video_music, s:ext) != -1
+        execute ":silent !" . g:nt_media_player . " " . s:selectedfile . s:nulldev
 
-        elseif index(g:ebook, ext) != -1
-            execute ":silent !" . g:nt_ebook_reader . " " .  selectedfile . s:nulldev
+    elseif index(g:ebook, s:ext) != -1
+        execute ":silent !" . g:nt_ebook_reader . " " .  s:selectedfile . s:nulldev
 
-        elseif index(g:document, ext) != -1
-            execute ":silent !" . g:nt_office_suite . " " . selectedfile . s:nulldev
+    elseif index(g:document, s:ext) != -1
+        execute ":silent !" . g:nt_office_suite . " " . s:selectedfile . s:nulldev
 
-        elseif index(g:webpage, ext) != -1
-            execute ":silent !" . g:nt_web_browser . " " . selectedfile . s:nulldev
+    elseif index(g:webpage, s:ext) != -1
+        execute ":silent !" . g:nt_web_browser . " " . s:selectedfile . s:nulldev
 
-        elseif index(g:compressed, ext) != -1
-            execute ":silent !" . g:nt_archive_manager . " " . selectedfile . s:nulldev
+    elseif index(g:compressed, s:ext) != -1
+       execute ":silent !" . g:nt_archive_manager . " " . s:selectedfile . s:nulldev
 
-        elseif index(g:torrent, ext) != -1
-            execute ":silent !" . g:nt_bittorrent_client . " " . selectedfile . s:nulldev
+    elseif index(g:torrent, s:ext) != -1
+        execute ":silent !" . g:nt_bittorrent_client . " " . s:selectedfile . s:nulldev
 
-        elseif index(g:package, ext) != -1
-            execute ":silent !" . g:packet_installer . " " . selectedfile . s:nulldev
+    elseif index(g:package, s:ext) != -1
+        execute ":silent !" . g:packet_installer . " " . s:selectedfile . s:nulldev
 
-        elseif index(g:windows_exe, ext) != -1
-            execute ":silent !" . g:nt_win_program_loader . " " . selectedfile . s:nulldev
-
-        endif
+    elseif index(g:windows_exe, s:ext) != -1
+        execute ":silent !" . g:nt_win_program_loader . " " . s:selectedfile . s:nulldev
 
     endif
-    redraw!
+
+redraw!
 else
     echo "Error: You need to run NERDTreeOpenWithApp in an X environment!"
 endif

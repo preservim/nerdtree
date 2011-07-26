@@ -12,6 +12,7 @@ images, etc) with appropriate application , simply by pressing '!' key.
 Change global variables in file NERDTreeOpenWithApp_cfg.vim with 
 application (command) and file extension you want.
 Use '@' key to open file manager in current directory.
+Use '#' key to open terminal in current directory
 
 Requirements
 ------------

@@ -2,7 +2,7 @@
 " Author:      George Hadjikyriacou <ghadjikyriacou at gmail dot com>
 " Description: Change global variables below with application 
 "              (command) and file extension you want and restart Vim!
-" Last Change: 18 July 2011 
+" Last Change: 26 July 2011
 " License:     This program is free software. It comes without any warranty,
 "              to the extent permitted by applicable law. You can redistribute
 "              it and/or modify it under the terms of the Do What The Fuck You
@@ -40,6 +40,9 @@ let g:nt_win_program_loader = "wine"
 
 "============================File Manager (default: "pcmanfm")
 let g:nt_file_manager = "pcmanfm"
+
+"============================Terminal (default: "xterm")
+let g:nt_terminal = "xterm"
 
 "++++++++++++++++++++++++++++ File Extensions ++++++++++++++++++++++++++++
 "============================Image Viewer
