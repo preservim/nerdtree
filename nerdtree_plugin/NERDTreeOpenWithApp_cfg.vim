@@ -42,7 +42,7 @@ let g:nt_win_program_loader = "wine"
 let g:nt_file_manager = "pcmanfm"
 
 "============================Terminal (default: "xterm")
-let g:nt_terminal = "xterm"
+let g:nt_terminal = "terminator"
 
 "++++++++++++++++++++++++++++ File Extensions ++++++++++++++++++++++++++++
 "============================Image Viewer

@@ -6,7 +6,7 @@
 "              extensions you want.
 "              Use '@' key to open file manager in current directory
 "              Use '#' key to open terminal in current directory
-" Last Change: 26 July 2011
+" Last Change: 17 Aug 2011
 " License:     This program is free software. It comes without any warranty,
 "              to the extent permitted by applicable law. You can redistribute
 "              it and/or modify it under the terms of the Do What The Fuck You
@@ -32,7 +32,7 @@ endif
 function! GETDirAndExt()
     let n=g:NERDTreeFileNode.GetSelected()
     if n!={}
-        let s:selectedfile = n.path.str({'format': 'Edit'})
+        let s:selectedfile = n.path.str()
         let slash = strridx(s:selectedfile, "/")
 
 "GET current directory
