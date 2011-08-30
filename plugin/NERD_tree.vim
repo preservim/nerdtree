@@ -66,7 +66,6 @@ call s:initVariable("g:NERDTreeShowFiles", 1)
 call s:initVariable("g:NERDTreeShowHidden", 0)
 call s:initVariable("g:NERDTreeShowLineNumbers", 0)
 call s:initVariable("g:NERDTreeSortDirs", 1)
-call s:initVariable("g:NERDTreeStopInsert", 0)
 call s:initVariable("g:NERDTreeDirArrows", 0)
 
 if !exists("g:NERDTreeSortOrder")
@@ -171,10 +170,8 @@ augroup NERDTree
     "Save the cursor position whenever we close the nerd tree
     exec "autocmd BufWinLeave ". s:NERDTreeBufName ."* call <SID>saveScreenState()"
 
-    if g:NERDTreeStopInsert
-        "disallow insert mode in the NERDTree
-        exec "autocmd BufEnter ". s:NERDTreeBufName ."* stopinsert"
-    endif
+    "disallow insert mode in the NERDTree
+    exec "autocmd BufEnter ". s:NERDTreeBufName ."* stopinsert"
 
     "cache bookmarks when vim loads
     autocmd VimEnter * call s:Bookmark.CacheBookmarks(0)
