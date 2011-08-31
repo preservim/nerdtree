@@ -2,7 +2,7 @@
 " File:        NERD_tree.vim
 " Description: vim global plugin that provides a nice tree explorer
 " Maintainer:  Martin Grenfell <martin.grenfell at gmail dot com>
-" Last Change: 1 December, 2009
+" Last Change: 31 August, 2011
 " License:     This program is free software. It comes without any warranty,
 "              to the extent permitted by applicable law. You can redistribute
 "              it and/or modify it under the terms of the Do What The Fuck You
@@ -2666,6 +2666,7 @@ function! s:initNerdTreeInPlace(dir)
     setlocal foldcolumn=0
     setlocal nobuflisted
     setlocal nospell
+    setlocal nolist
     if g:NERDTreeShowLineNumbers
         setlocal nu
     else
