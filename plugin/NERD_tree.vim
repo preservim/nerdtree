@@ -99,6 +99,7 @@ let s:running_windows = has("win16") || has("win32") || has("win64")
 "Note: the space after the command is important
 if s:running_windows
     call s:initVariable("g:NERDTreeRemoveDirCmd", 'rmdir /s /q ')
+    call s:initVariable("g:NERDTreeForceLowercase", 1)
 else
     call s:initVariable("g:NERDTreeRemoveDirCmd", 'rm -rf ')
     call s:initVariable("g:NERDTreeCopyCmd", 'cp -r ')
@@ -2419,7 +2420,7 @@ function! s:Path._strForEdit()
     let p = self.str({'format': 'UI'})
     let cwd = getcwd()
 
-    if s:running_windows
+    if s:running_windows && g:NERDTreeForceLowercase
         let p = tolower(self.str())
         let cwd = tolower(getcwd())
     endif
