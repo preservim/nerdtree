@@ -565,7 +565,7 @@ function! s:MenuController._echoPrompt()
 endfunction
 
 "FUNCTION: MenuController._current(key) {{{3
-"get the MenuItem that is curently selected
+"get the MenuItem that is currently selected
 function! s:MenuController._current()
     return self.menuItems[self.selection]
 endfunction
