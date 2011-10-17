@@ -170,6 +170,10 @@ command! -n=0 -bar NERDTreeFind call s:findAndRevealPath()
 augroup NERDTree
     "Save the cursor position whenever we close the nerd tree
     exec "autocmd BufWinLeave ". s:NERDTreeBufName ."* call <SID>saveScreenState()"
+
+    "disallow insert mode in the NERDTree
+    exec "autocmd BufEnter ". s:NERDTreeBufName ."* stopinsert"
+
     "cache bookmarks when vim loads
     autocmd VimEnter * call s:Bookmark.CacheBookmarks(0)
 
@@ -562,7 +566,7 @@ function! s:MenuController._echoPrompt()
 endfunction
 
 "FUNCTION: MenuController._current(key) {{{3
-"get the MenuItem that is curently selected
+"get the MenuItem that is currently selected
 function! s:MenuController._current()
     return self.menuItems[self.selection]
 endfunction
