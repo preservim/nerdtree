@@ -648,6 +648,10 @@ NERD tree. These options should be set in your vimrc.
 |'NERDTreeDirArrows'|           Tells the NERD tree to use arrows instead of
                                 + ~ chars when displaying directories.
 
+|'NERDTreeUseExistingWindows'|  Tells the NERD tree to use an existing window
+                                if one already exists with the given file
+                                open.
+
 ------------------------------------------------------------------------------
 3.2. Customisation details                             *NERDTreeOptionDetails*
 
@@ -1001,6 +1005,15 @@ NERDTreeAddKeyMap({options})                             *NERDTreeAddKeyMap()*
     This code should sit in a file like ~/.vim/nerdtree_plugin/mymapping.vim.
     It adds a (rather useless) mapping on 'b' which echos the full path to the
     current node.
+
+------------------------------------------------------------------------------
+                                                  *NERDTreeUseExistingWindows*
+Values: 0 or 1.
+Default: 1.
+
+If this option is set to 1 then when a file is chosen from the tree and it is
+already open in an existing window, instead of opening it in a new window, 
+focus will be switched to the existing window.
 
 ------------------------------------------------------------------------------
 4.2. Menu API                                                *NERDTreeMenuAPI*
