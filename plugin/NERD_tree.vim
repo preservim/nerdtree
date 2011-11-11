@@ -67,6 +67,9 @@ call s:initVariable("g:NERDTreeShowHidden", 0)
 call s:initVariable("g:NERDTreeShowLineNumbers", 0)
 call s:initVariable("g:NERDTreeSortDirs", 1)
 call s:initVariable("g:NERDTreeDirArrows", 0)
+if !exists("g:NERDTreeUseExistingWindows")
+    let g:NERDTreeUseExistingWindows = 0
+endif
 
 if !exists("g:NERDTreeSortOrder")
     let g:NERDTreeSortOrder = ['\/$', '*', '\.swp$',  '\.bak$', '\~$']
@@ -3577,7 +3580,12 @@ function! s:activateNode(forceKeepWindowOpen)
 
     let treenode = s:TreeFileNode.GetSelected()
     if treenode != {}
-        call treenode.activate(a:forceKeepWindowOpen)
+        let w = bufwinnr(treenode.path.str())
+        if w > -1 && g:NERDTreeUseExistingWindows ==# '1'
+            exe w . 'winc w'
+        else
+            call treenode.activate(a:forceKeepWindowOpen)
+        endif
     else
         let bookmark = s:Bookmark.GetSelected()
         if !empty(bookmark)
@@ -3915,13 +3923,18 @@ endfunction
 function! s:openEntrySplit(vertical, forceKeepWindowOpen)
     let treenode = s:TreeFileNode.GetSelected()
     if treenode != {}
-        if a:vertical
-            call treenode.openVSplit()
+        let w = bufwinnr(treenode.path.str())
+        if w > -1 && g:NERDTreeUseExistingWindows ==# '1'
+            exe w . 'winc w'
         else
-            call treenode.openSplit()
-        endif
-        if !a:forceKeepWindowOpen
-            call s:closeTreeIfQuitOnOpen()
+            if a:vertical
+                call treenode.openVSplit()
+            else
+                call treenode.openSplit()
+            endif
+            if !a:forceKeepWindowOpen
+                call s:closeTreeIfQuitOnOpen()
+            endif
         endif
     else
         call s:echo("select a node first")
