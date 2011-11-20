@@ -3569,17 +3569,17 @@ endfunction
 "============================================================
 "FUNCTION: s:findNodeWindow() {{{2
 "If the selected node is a file, and it is open in a window on any tab, 
-"return an array of [tabnr, winnr]. Otherwise, return [-1, -1]
+"return the tab number, otherwise return -1
 function! s:findWindow()
     let treenode = s:TreeFileNode.GetSelected()
     for t in range(tabpagenr('$'))
         for b in tabpagebuflist(t+1)
             if treenode.path.str() == expand('#' . b . ':p')
-                return [t+1, b+1]
+                return t+1
             endif
         endfor
     endfor
-    return [-1, -1]
+    return -1
 endfunction
 "
 "FUNCTION: s:activateNode(forceKeepWindowOpen) {{{2
@@ -3595,12 +3595,11 @@ function! s:activateNode(forceKeepWindowOpen)
 
     let treenode = s:TreeFileNode.GetSelected()
     if treenode != {}
-        echomsg treenode.path.str()
-        let tw = s:findWindow()
-        echomsg join(tw)
-        if tw[0] > -1 && g:NERDTreeUseExistingWindows ==# '1'
-            exe "normal!" . tw[0] . 'gt'
-            exe tw[1] . 'winc w'
+        let tab = s:findWindow()
+        if tab > -1 && g:NERDTreeUseExistingWindows ==# '1'
+            exe "normal!" . tab . 'gt'
+            let w = bufwinnr(treenode.path.str())
+            exe w . 'winc w'
         else
             call treenode.activate(a:forceKeepWindowOpen)
         endif
