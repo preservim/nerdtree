@@ -3567,6 +3567,21 @@ function! s:toggle(dir)
 endfunction
 "SECTION: Interface bindings {{{1
 "============================================================
+"FUNCTION: s:findNodeWindow() {{{2
+"If the selected node is a file, and it is open in a window on any tab, 
+"return an array of [tabnr, winnr]. Otherwise, return [-1, -1]
+function! s:findWindow()
+    let treenode = s:TreeFileNode.GetSelected()
+    for t in range(tabpagenr('$'))
+        for b in tabpagebuflist(t+1)
+            if treenode.path.str() == expand('#' . b . ':p')
+                return [t+1, b+1]
+            endif
+        endfor
+    endfor
+    return [-1, -1]
+endfunction
+"
 "FUNCTION: s:activateNode(forceKeepWindowOpen) {{{2
 "If the current node is a file, open it in the previous window (or a new one
 "if the previous is modified). If it is a directory then it is opened.
@@ -3580,9 +3595,12 @@ function! s:activateNode(forceKeepWindowOpen)
 
     let treenode = s:TreeFileNode.GetSelected()
     if treenode != {}
-        let w = bufwinnr(treenode.path.str())
-        if w > -1 && g:NERDTreeUseExistingWindows ==# '1'
-            exe w . 'winc w'
+        echomsg treenode.path.str()
+        let tw = s:findWindow()
+        echomsg join(tw)
+        if tw[0] > -1 && g:NERDTreeUseExistingWindows ==# '1'
+            exe "normal!" . tw[0] . 'gt'
+            exe tw[1] . 'winc w'
         else
             call treenode.activate(a:forceKeepWindowOpen)
         endif
