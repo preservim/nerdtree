@@ -1248,7 +1248,14 @@ function! s:TreeFileNode.openInNewTab(options)
         call s:closeTreeIfQuitOnOpen()
     endif
 
-    exec "tabedit " . self.path.str({'format': 'Edit'})
+    let tab = s:findWindow()
+    if tab > -1 && g:NERDTreeUseExistingWindows ==# '1'
+        exec "normal!" . tab . 'gt'
+        let w = bufwinnr(self.path.str())
+        exec w . 'winc w'
+    else
+        exec "tabedit " . self.path.str({'format': 'Edit'})
+    end
 
     if has_key(a:options, 'stayInCurrentTab') && a:options['stayInCurrentTab']
         exec "tabnext " . currentTab
@@ -3597,9 +3604,9 @@ function! s:activateNode(forceKeepWindowOpen)
     if treenode != {}
         let tab = s:findWindow()
         if tab > -1 && g:NERDTreeUseExistingWindows ==# '1'
-            exe "normal!" . tab . 'gt'
+            exec "normal!" . tab . 'gt'
             let w = bufwinnr(treenode.path.str())
-            exe w . 'winc w'
+            exec w . 'winc w'
         else
             call treenode.activate(a:forceKeepWindowOpen)
         endif
@@ -3942,9 +3949,9 @@ function! s:openEntrySplit(vertical, forceKeepWindowOpen)
     if treenode != {}
         let tab = s:findWindow()
         if tab > -1 && g:NERDTreeUseExistingWindows ==# '1'
-            exe "normal!" . tab . 'gt'
+            exec "normal!" . tab . 'gt'
             let w = bufwinnr(treenode.path.str())
-            exe w . 'winc w'
+            exec w . 'winc w'
         else
             if a:vertical
                 call treenode.openVSplit()
