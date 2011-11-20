@@ -3940,8 +3940,10 @@ endfunction
 function! s:openEntrySplit(vertical, forceKeepWindowOpen)
     let treenode = s:TreeFileNode.GetSelected()
     if treenode != {}
-        let w = bufwinnr(treenode.path.str())
-        if w > -1 && g:NERDTreeUseExistingWindows ==# '1'
+        let tab = s:findWindow()
+        if tab > -1 && g:NERDTreeUseExistingWindows ==# '1'
+            exe "normal!" . tab . 'gt'
+            let w = bufwinnr(treenode.path.str())
             exe w . 'winc w'
         else
             if a:vertical
