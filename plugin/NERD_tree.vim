@@ -27,6 +27,8 @@ let loaded_nerd_tree = 1
 let s:old_cpo = &cpo
 set cpo&vim
 
+let s:running_windows = has("win16") || has("win32") || has("win64")
+
 "Function: s:initVariable() function {{{2
 "This function is used to initialise a given variable to a given value. The
 "variable is only initialised if it does not exist prior
@@ -66,7 +68,7 @@ call s:initVariable("g:NERDTreeShowFiles", 1)
 call s:initVariable("g:NERDTreeShowHidden", 0)
 call s:initVariable("g:NERDTreeShowLineNumbers", 0)
 call s:initVariable("g:NERDTreeSortDirs", 1)
-call s:initVariable("g:NERDTreeDirArrows", 0)
+call s:initVariable("g:NERDTreeDirArrows", !s:running_windows)
 
 if !exists("g:NERDTreeSortOrder")
     let g:NERDTreeSortOrder = ['\/$', '*', '\.swp$',  '\.bak$', '\~$']
@@ -91,8 +93,6 @@ if !exists('g:NERDTreeStatusline')
 endif
 call s:initVariable("g:NERDTreeWinPos", "left")
 call s:initVariable("g:NERDTreeWinSize", 31)
-
-let s:running_windows = has("win16") || has("win32") || has("win64")
 
 "init the shell commands that will be used to copy nodes, and remove dir trees
 "
