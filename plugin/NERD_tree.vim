@@ -3546,7 +3546,7 @@ function! s:bindMappings()
     "bind all the user custom maps
     call s:KeyMap.BindAll()
 
-    command! -buffer -nargs=1 Bookmark :call <SID>bookmarkNode('<args>')
+    command! -buffer -nargs=? Bookmark :call <SID>bookmarkNode('<args>')
     command! -buffer -complete=customlist,s:completeBookmarks -nargs=1 RevealBookmark :call <SID>revealBookmark('<args>')
     command! -buffer -complete=customlist,s:completeBookmarks -nargs=1 OpenBookmark :call <SID>openBookmark('<args>')
     command! -buffer -complete=customlist,s:completeBookmarks -nargs=* ClearBookmarks call <SID>clearBookmarks('<args>')
@@ -3558,11 +3558,15 @@ endfunction
 
 " FUNCTION: s:bookmarkNode(name) {{{2
 " Associate the current node with the given name
-function! s:bookmarkNode(name)
+function! s:bookmarkNode(...)
     let currentNode = s:TreeFileNode.GetSelected()
     if currentNode != {}
+        let name = a:1
+        if empty(name)
+            let name = currentNode.path.getLastPathComponent(1)
+        endif
         try
-            call currentNode.bookmark(a:name)
+            call currentNode.bookmark(name)
             call s:renderView()
         catch /^NERDTree.IllegalBookmarkNameError/
             call s:echo("bookmark names must not contain spaces")
