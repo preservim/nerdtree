@@ -3452,8 +3452,8 @@ function! s:setupSyntaxHighlighting()
     syn match NERDTreeDirSlash #/#
     syn match NERDTreeDir #[^-| `].*/# contains=NERDTreeLink,NERDTreeDirSlash,NERDTreeOpenable,NERDTreeClosable
     syn match NERDTreeExecFile  #[|` ].*\*\($\| \)# contains=NERDTreeLink,NERDTreePart,NERDTreeRO,NERDTreePartFile,NERDTreeBookmark
-    syn match NERDTreeFile  #|-.*# contains=NERDTreeLink,NERDTreePart,NERDTreeRO,NERDTreePartFile,NERDTreeBookmark,NERDTreeExecFile
-    syn match NERDTreeFile  #`-.*# contains=NERDTreeLink,NERDTreePart,NERDTreeRO,NERDTreePartFile,NERDTreeBookmark,NERDTreeExecFile
+    exec 'syn match NERDTreeSuffixesFile  #[|` ].*\('.substitute(escape(&suffixes, '~.*$^'), '\\\@<!,', '\\|', 'g').'\)\($\| \)# contains=NERDTreeLink,NERDTreePart,NERDTreeRO,NERDTreePartFile,NERDTreeBookmark'
+    syn match NERDTreeFile  #[`|]-.*# contains=NERDTreeLink,NERDTreePart,NERDTreeRO,NERDTreePartFile,NERDTreeBookmark,NERDTreeExecFile,NERDTreeSuffixesFile
     syn match NERDTreeCWD #^[</].*$#
 
     "highlighting for bookmarks
@@ -3472,6 +3472,7 @@ function! s:setupSyntaxHighlighting()
         hi def link NERDTreeExecFile Title
         hi def link NERDTreeDirSlash Identifier
         hi def link NERDTreeClosable Type
+        hi def link NERDTreeSuffixesFile Ignore
     else
         hi def link NERDTreePart Normal
         hi def link NERDTreePartFile Normal
