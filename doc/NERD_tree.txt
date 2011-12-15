@@ -155,6 +155,8 @@ Note that the following commands are only available in the NERD tree buffer.
 :Bookmark <name>
     Bookmark the current node as <name>. If there is already a <name>
     bookmark, it is overwritten. <name> must not contain spaces.
+    If <name> is not provided, it defaults to the file or directory name.
+    For directories, a trailing slash is present.
 
 :BookmarkToRoot <bookmark>
     Make the directory corresponding to <bookmark> the new root. If a treenode
