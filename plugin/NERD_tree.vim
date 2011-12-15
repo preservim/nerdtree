@@ -3797,19 +3797,21 @@ function! s:deleteBookmark()
         return
     endif
 
-    echo  "Are you sure you wish to delete the bookmark:\n\"" . bookmark.name . "\" (yN):"
-
-    if  nr2char(getchar()) ==# 'y'
-        try
-            call bookmark.delete()
-            call s:renderView()
-            redraw
-        catch /^NERDTree/
-            call s:echoWarning("Could not remove bookmark")
-        endtry
-    else
-        call s:echo("delete aborted" )
+    if g:NERDTreeConfirmDeleteBookmark
+        echo  "Are you sure you wish to delete the bookmark:\n\"" . bookmark.name . "\" (yN):"
+        if  nr2char(getchar()) !=# 'y'
+            call s:echo("delete aborted" )
+            return
+        endif
     endif
+
+    try
+        call bookmark.delete()
+        call s:renderView()
+        redraw
+    catch /^NERDTree/
+        call s:echoWarning("Could not remove bookmark")
+    endtry
 
 endfunction
 

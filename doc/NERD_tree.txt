@@ -650,6 +650,10 @@ NERD tree. These options should be set in your vimrc.
 |'NERDTreeDirArrows'|           Tells the NERD tree to use arrows instead of
                                 + ~ chars when displaying directories.
 
+|'NERDTreeConfirmDeleteBookmark'|
+                                Tells the NERD tree to ask for confirmation
+                                before deleting a bookmark.
+
 ------------------------------------------------------------------------------
 3.2. Customisation details                             *NERDTreeOptionDetails*
 
@@ -941,7 +945,7 @@ of the following lines to set this option: >
 <
 
 ------------------------------------------------------------------------------
-                                                           *'NERDTreeDirArrows'*
+                                                         *'NERDTreeDirArrows'*
 Values: 0 or 1
 Default: 0.
 
@@ -951,6 +955,18 @@ the tree. When set to 0 it shows old-school bars (|), + and ~ chars. If set to
 option: >
     let NERDTreeDirArrows=0
     let NERDTreeDirArrows=1
+<
+
+------------------------------------------------------------------------------
+                                             *'NERDTreeConfirmDeleteBookmark'*
+Values: 0 or 1
+Default: 1.
+
+This option enables the "Are you sure you wish to delete the bookmark (yN)"
+prompt. Setting this to 0 will remove the confirmation prompt. Use one of the
+follow lines to set this option: >
+    let NERDTreeConfirmDeleteBookmark=0
+    let NERDTreeConfirmDeleteBookmark=1
 <
 
 ==============================================================================
