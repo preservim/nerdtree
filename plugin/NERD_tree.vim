@@ -399,7 +399,7 @@ function! s:Bookmark.openInNewTab(options)
         exec "tabedit " . self.path.str({'format': 'Edit'})
     endif
 
-    if has_key(a:options, 'stayInCurrentTab')
+    if has_key(a:options, 'stayInCurrentTab') && a:options['stayInCurrentTab']
         exec "tabnext " . currentTab
     endif
 endfunction
