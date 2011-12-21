@@ -3001,7 +3001,7 @@ function! s:firstUsableWindow()
     let i = 1
     while i <= winnr("$")
         let bnum = winbufnr(i)
-        if bnum != -1 && getbufvar(bnum, '&buftype') ==# ''
+        if bnum != -1 && (getbufvar(bnum, '&buftype') == '' || getbufvar(bnum, '&buftype') == 'nofile')
                     \ && !getwinvar(i, '&previewwindow')
                     \ && (!getbufvar(bnum, '&modified') || &hidden)
             return i
@@ -3117,7 +3117,7 @@ function! s:isWindowUsable(winnumber)
 
     let oldwinnr = winnr()
     call s:exec(a:winnumber . "wincmd p")
-    let specialWindow = getbufvar("%", '&buftype') != '' || getwinvar('%', '&previewwindow')
+    let specialWindow = !(getbufvar("%", '&buftype') == '' || getbufvar("%", '&buftype') == 'nofile') || getwinvar('%', '&previewwindow')
     let modified = &modified
     call s:exec(oldwinnr . "wincmd p")
 
