@@ -67,6 +67,7 @@ call s:initVariable("g:NERDTreeShowBookmarks", 0)
 call s:initVariable("g:NERDTreeShowFiles", 1)
 call s:initVariable("g:NERDTreeShowHidden", 0)
 call s:initVariable("g:NERDTreeShowLineNumbers", 0)
+call s:initVariable("g:NERDTreeShowRelativeLineNumbers", 0)
 call s:initVariable("g:NERDTreeSortDirs", 1)
 call s:initVariable("g:NERDTreeDirArrows", !s:running_windows)
 
@@ -2669,6 +2670,14 @@ function! s:initNerdTreeInPlace(dir)
     setlocal nolist
     if g:NERDTreeShowLineNumbers
         setlocal nu
+        if v:version >= 703
+            setlocal nornu
+        end
+    elseif g:NERDTreeShowRelativeLineNumbers
+        if v:version >= 703
+            setlocal rnu
+            setlocal nonu
+        end
     else
         setlocal nonu
         if v:version >= 703
@@ -2904,6 +2913,14 @@ function! s:createTreeWin()
     setlocal nospell
     if g:NERDTreeShowLineNumbers
         setlocal nu
+        if v:version >= 703
+            setlocal nornu
+        end
+    elseif g:NERDTreeShowRelativeLineNumbers
+        if v:version >= 703
+            setlocal rnu
+            setlocal nonu
+        end
     else
         setlocal nonu
         if v:version >= 703
