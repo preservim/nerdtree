@@ -2658,42 +2658,8 @@ function! s:initNerdTreeInPlace(dir)
     let b:NERDTreeRoot = s:TreeDirNode.New(path)
     call b:NERDTreeRoot.open()
 
-    "throwaway buffer options
-    setlocal noswapfile
-    setlocal buftype=nofile
-    setlocal bufhidden=hide
-    setlocal nowrap
-    setlocal foldcolumn=0
-    setlocal nobuflisted
-    setlocal nospell
-    setlocal nolist
-    if g:NERDTreeShowLineNumbers
-        setlocal nu
-    else
-        setlocal nonu
-        if v:version >= 703
-            setlocal nornu
-        endif
-    endif
-
-    iabc <buffer>
-
-    if g:NERDTreeHighlightCursorline
-        setlocal cursorline
-    endif
-
-    call s:setupStatusline()
-
-    let b:treeShowHelp = 0
-    let b:NERDTreeIgnoreEnabled = 1
-    let b:NERDTreeShowFiles = g:NERDTreeShowFiles
-    let b:NERDTreeShowHidden = g:NERDTreeShowHidden
-    let b:NERDTreeShowBookmarks = g:NERDTreeShowBookmarks
-
+    call s:setCommonBufOptions()
     let b:NERDTreeType = "secondary"
-
-    call s:bindMappings()
-    setfiletype nerdtree
 
     call s:renderView()
 endfunction
@@ -2894,33 +2860,7 @@ function! s:createTreeWin()
     endif
 
     setlocal winfixwidth
-
-    "throwaway buffer options
-    setlocal noswapfile
-    setlocal buftype=nofile
-    setlocal nowrap
-    setlocal foldcolumn=0
-    setlocal nobuflisted
-    setlocal nospell
-    if g:NERDTreeShowLineNumbers
-        setlocal nu
-    else
-        setlocal nonu
-        if v:version >= 703
-            setlocal nornu
-        endif
-    endif
-
-    iabc <buffer>
-
-    if g:NERDTreeHighlightCursorline
-        setlocal cursorline
-    endif
-
-    call s:setupStatusline()
-
-    call s:bindMappings()
-    setfiletype nerdtree
+    call s:setCommonBufOptions()
 endfunction
 
 "FUNCTION: s:dumpHelp  {{{2
@@ -3397,6 +3337,43 @@ function! s:saveScreenState()
         call s:exec(win . "wincmd w")
     catch /^NERDTree.InvalidOperationError/
     endtry
+endfunction
+
+"FUNCTION: s:setCommonBufOptions() {{{2
+function! s:setCommonBufOptions()
+    "throwaway buffer options
+    setlocal noswapfile
+    setlocal buftype=nofile
+    setlocal bufhidden=hide
+    setlocal nowrap
+    setlocal foldcolumn=0
+    setlocal nobuflisted
+    setlocal nospell
+    if g:NERDTreeShowLineNumbers
+        setlocal nu
+    else
+        setlocal nonu
+        if v:version >= 703
+            setlocal nornu
+        endif
+    endif
+
+    iabc <buffer>
+
+    if g:NERDTreeHighlightCursorline
+        setlocal cursorline
+    endif
+
+    call s:setupStatusline()
+
+
+    let b:treeShowHelp = 0
+    let b:NERDTreeIgnoreEnabled = 1
+    let b:NERDTreeShowFiles = g:NERDTreeShowFiles
+    let b:NERDTreeShowHidden = g:NERDTreeShowHidden
+    let b:NERDTreeShowBookmarks = g:NERDTreeShowBookmarks
+    setfiletype nerdtree
+    call s:bindMappings()
 endfunction
 
 "FUNCTION: s:setupStatusline() {{{2
