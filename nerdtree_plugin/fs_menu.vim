@@ -18,6 +18,13 @@ let g:loaded_nerdtree_fs_menu = 1
 call NERDTreeAddMenuItem({'text': '(a)dd a childnode', 'shortcut': 'a', 'callback': 'NERDTreeAddNode'})
 call NERDTreeAddMenuItem({'text': '(m)ove the current node', 'shortcut': 'm', 'callback': 'NERDTreeMoveNode'})
 call NERDTreeAddMenuItem({'text': '(d)elete the current node', 'shortcut': 'd', 'callback': 'NERDTreeDeleteNode'})
+
+if has("gui_mac") || has("gui_macvim") 
+    call NERDTreeAddMenuItem({'text': '(r)eveal in Finder the current node', 'shortcut': 'r', 'callback': 'NERDTreeRevealInFinder'})
+    call NERDTreeAddMenuItem({'text': '(o)pen the current node with system editor', 'shortcut': 'o', 'callback': 'NERDTreeExecuteFile'})
+    call NERDTreeAddMenuItem({'text': '(q)uicklook the current node', 'shortcut': 'q', 'callback': 'NERDTreeQuickLook'})
+endif
+
 if g:NERDTreePath.CopyingSupported()
     call NERDTreeAddMenuItem({'text': '(c)copy the current node', 'shortcut': 'c', 'callback': 'NERDTreeCopyNode'})
 endif
@@ -191,6 +198,27 @@ function! NERDTreeCopyNode()
         call s:echo("Copy aborted.")
     endif
     redraw
+endfunction
+
+function! NERDTreeQuickLook()
+    let treenode = g:NERDTreeFileNode.GetSelected()
+    if treenode != {}
+        call system("qlmanage -p 2>/dev/null '" . treenode.path.str() . "'")
+    endif
+endfunction
+
+function! NERDTreeRevealInFinder()
+    let treenode = g:NERDTreeFileNode.GetSelected()
+    if treenode != {}
+        let x = system("open -R '" . treenode.path.str() . "'")
+    endif
+endfunction
+
+function! NERDTreeExecuteFile()
+    let treenode = g:NERDTreeFileNode.GetSelected()
+    if treenode != {}
+        let x = system("open '" . treenode.path.str() . "'")
+    endif
 endfunction
 
 " vim: set sw=4 sts=4 et fdm=marker:
