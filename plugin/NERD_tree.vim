@@ -3563,7 +3563,7 @@ function! s:bookmarkNode(...)
     if currentNode != {}
         let name = a:1
         if empty(name)
-            let name = currentNode.path.getLastPathComponent(1)
+            let name = currentNode.path.getLastPathComponent(0)
         endif
         try
             call currentNode.bookmark(name)
