@@ -225,6 +225,7 @@ O.......Recursively open the selected directory..................|NERDTree-O|
 x.......Close the current nodes parent...........................|NERDTree-x|
 X.......Recursively close all children of the current node.......|NERDTree-X|
 e.......Edit the current dif.....................................|NERDTree-e|
+gg......Open and then close tree if target is a file.............|NERDTree-gg|
 
 <CR>...............same as |NERDTree-o|.
 double-click.......same as the |NERDTree-o| map.

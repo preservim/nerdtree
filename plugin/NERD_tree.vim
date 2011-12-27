@@ -107,6 +107,7 @@ endif
 
 "SECTION: Init variable calls for key mappings {{{2
 call s:initVariable("g:NERDTreeMapActivateNode", "o")
+call s:initVariable("g:NERDTreeMapActivateNodeAndCloseTree", "gg")
 call s:initVariable("g:NERDTreeMapChangeRoot", "C")
 call s:initVariable("g:NERDTreeMapChdir", "cd")
 call s:initVariable("g:NERDTreeMapCloseChildren", "X")
@@ -3476,6 +3477,33 @@ function! s:activateNode(forceKeepWindowOpen)
     endif
 endfunction
 
+"FUNCTION: s:activateNodeAndCloseTree() {{{2
+"Opens a file, a dir or a bookmark. Then closes the tree but only if the
+"opened thing was a file.
+"
+"args:
+"none
+function! s:activateNodeAndCloseTree()
+    if getline(".") ==# s:tree_up_dir_line
+        return s:upDir(0)
+    endif
+    let treenode = s:TreeFileNode.GetSelected()
+    if treenode != {}
+        call treenode.activate(1)
+        if !treenode.path.isDirectory
+            call s:closeTree()
+        endif
+    else
+        let bookmark = s:Bookmark.GetSelected()
+        if !empty(bookmark)
+            call bookmark.activate()
+            if !bookmark.path.isDirectory
+                call s:closeTree()
+            endif
+        endif
+    endif
+endfunction
+
 "FUNCTION: s:bindMappings() {{{2
 function! s:bindMappings()
     " set up mappings and commands for this buffer
@@ -3484,6 +3512,7 @@ function! s:bindMappings()
     nnoremap <silent> <buffer> <2-leftmouse> :call <SID>activateNode(0)<cr>
 
     exec "nnoremap <silent> <buffer> ". g:NERDTreeMapActivateNode . " :call <SID>activateNode(0)<cr>"
+    exec "nnoremap <silent> <buffer> ". g:NERDTreeMapActivateNodeAndCloseTree . " :call <SID>activateNodeAndCloseTree()<cr>"
     exec "nnoremap <silent> <buffer> ". g:NERDTreeMapOpenSplit ." :call <SID>openEntrySplit(0,0)<cr>"
     exec "nnoremap <silent> <buffer> <cr> :call <SID>activateNode(0)<cr>"
 
