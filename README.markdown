@@ -67,6 +67,7 @@ Faq
 ---
 
 Q. Can I have the nerdtree on every tab automatically?
+
 A. Nope. If this is something you want then chances are you aren't using tabs
    and buffers as they were intended to be used. Read this
    http://stackoverflow.com/questions/102384/using-vims-tabs-like-buffers
