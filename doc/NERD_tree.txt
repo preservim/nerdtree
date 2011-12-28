@@ -1116,8 +1116,22 @@ The latest dev versions are on github
 ==============================================================================
 6. Changelog                                               *NERDTreeChangelog*
 
-4.x.x
-    - Fix a bug with :NERDTreeFind and symlinks. Thanks to Vitaly Bogdanov.
+4.2.0
+    - Add NERDTreeDirArrows option to make the UI use pretty arrow chars
+      instead of the old +~| chars to define the tree structure (sickill)
+    - shift the syntax highlighting out into its own syntax file (gnap)
+    - add some mac specific options to the filesystem menu - for macvim
+      only (andersonfreitas)
+    - Add NERDTreeMinimalUI option to remove some non functional parts of the
+      nerdtree ui (camthompson)
+    - tweak the behaviour of :NERDTreeFind - see :help :NERDTreeFind for the
+      new behaviour (benjamingeiger)
+    - if no name is given to :Bookmark, make it default to the name of the
+      target file/dir (minyoung)
+    - use 'file' completion when doing copying, create, and move
+      operations (EvanDotPro)
+    - lots of misc bug fixes (paddyoloughlin, sdewald, camthompson, Vitaly
+      Bogdanov, AndrewRadev, mathias, scottstvnsn, kml, wycats, me RAWR!)
 
 4.1.0
     features:
@@ -1254,6 +1268,21 @@ just downloaded pr0n instead.
     jfilip1024
     Chris Chambers
     Vitaly Bogdanov
+    Patrick O'Loughlin (paddyoloughlin)
+    Cam Thompson (camthompson)
+    Marcin Kulik (sickill)
+    Steve DeWald (sdewald)
+    Ivan Necas (iNecas)
+    George Ang (gnap)
+    Evan Coury (EvanDotPro)
+    Andrew Radev (AndrewRadev)
+    Matt Gauger (mathias)
+    Scott Stevenson (scottstvnsn)
+    Anderson Freitas (andersonfreitas)
+    Kamil K. Lemański (kml)
+    Yehuda Katz (wycats)
+    Min-Young Wu (minyoung)
+    Benjamin Geiger (benjamingeiger)
 
 ==============================================================================
 8. License                                                   *NERDTreeLicense*

@@ -74,3 +74,16 @@ A. Nope. If this is something you want then chances are you aren't using tabs
 
    If you are interested in this behavour then consider [vim-nerdtree-tabs](https://github.com/jistr/vim-nerdtree-tabs)
 
+Changelog
+---------
+
+4.2.0 (2011-12-28)
+
+ * Add NERDTreeDirArrows option to make the UI use pretty arrow chars instead of the old +~| chars to define the tree structure (sickill)
+ * shift the syntax highlighting out into its own syntax file (gnap) * add some mac specific options to the filesystem menu - for macvim only (andersonfreitas)
+ * Add NERDTreeMinimalUI option to remove some non functional parts of the nerdtree ui (camthompson)
+ * tweak the behaviour of :NERDTreeFind - see :help :NERDTreeFind for the new behaviour (benjamingeiger)
+ * if no name is given to :Bookmark, make it default to the name of the target file/dir (minyoung)
+ * use 'file' completion when doing copying, create, and move operations (EvanDotPro)
+ * lots of misc bug fixes (paddyoloughlin, sdewald, camthompson, Vitaly Bogdanov, AndrewRadev, mathias, scottstvnsn, kml, wycats, me RAWR!)
+
