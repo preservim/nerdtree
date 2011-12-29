@@ -485,8 +485,19 @@ let s:KeyMap = {}
 function! s:KeyMap.All()
     if !exists("s:keyMaps")
         let s:keyMaps = []
+        let g:keyMaps = s:keyMaps
     endif
     return s:keyMaps
+endfunction
+
+"FUNCTION: KeyMap.FindFor(key, scope) {{{3
+function! s:KeyMap.FindFor(key, scope)
+    for i in s:KeyMap.All()
+        if i.key == a:key && i.scope == a:scope
+            return i
+        endif
+    endfor
+    return {}
 endfunction
 
 "FUNCTION: KeyMap.BindAll() {{{3
@@ -498,17 +509,102 @@ endfunction
 
 "FUNCTION: KeyMap.bind() {{{3
 function! s:KeyMap.bind()
-    exec "nnoremap <silent> <buffer> ". self.key ." :call ". self.callback ."()<cr>"
+    exec "nnoremap <buffer> <silent> ". self.key ." :call <SID>KeyMap_Invoke('". self.key ."')<cr>"
+endfunction
+
+"FUNCTION: KeyMap.bind() {{{3
+"Call the KeyMaps callback function
+function! s:KeyMap.invoke(...)
+    if a:0
+        call function(self.callback)(a:1)
+    else
+        call function(self.callback)()
+    endif
+endfunction
+
+
+"FUNCTION: KeyMap.Invoke() {{{3
+"Find a keymapping for a:key and the current scope invoke it.
+"
+"Scope is determined as follows:
+"   * if the cursor is on a dir node then "DirNode"
+"   * if the cursor is on a file node then "FileNode"
+"   * if the cursor is on a bookmark then "Bookmark"
+"
+"If a keymap has the scope of "all" then it will be called if no other keymap
+"is found for a:key and the scope.
+function! s:KeyMap.Invoke(key)
+    let node = s:TreeFileNode.GetSelected()
+    if !empty(node)
+
+        "try file node
+        if !node.path.isDirectory
+            let km = s:KeyMap.FindFor(a:key, "FileNode")
+            if !empty(km)
+                return km.invoke(node)
+            endif
+        endif
+
+        "try dir node
+        if node.path.isDirectory
+            let km = s:KeyMap.FindFor(a:key, "DirNode")
+            if !empty(km)
+                return km.invoke(node)
+            endif
+        endif
+
+        "try generic node
+        let km = s:KeyMap.FindFor(a:key, "Node")
+        if !empty(km)
+            return km.invoke(node)
+        endif
+
+    endif
+
+    "try bookmark
+    let bm = s:Bookmark.GetSelected()
+    if !empty(bm)
+        let km = s:KeyMap.FindFor(a:key, "Bookmark")
+        if !empty(km)
+            return km.invoke(bm)
+        endif
+    endif
+
+    "try all
+    let km = s:KeyMap.FindFor(a:key, "all")
+    if !empty(km)
+        return km.invoke()
+    endif
+endfunction
+
+"this is needed since I cant figure out how to invoke dict functions from a
+"key map
+function! s:KeyMap_Invoke(key)
+    call s:KeyMap.Invoke(a:key)
 endfunction
 
 "FUNCTION: KeyMap.Create(options) {{{3
 function! s:KeyMap.Create(options)
     let newKeyMap = copy(self)
-    let newKeyMap.key = a:options['key']
-    let newKeyMap.quickhelpText = a:options['quickhelpText']
-    let newKeyMap.callback = a:options['callback']
-    call add(s:KeyMap.All(), newKeyMap)
+    let opts = extend({'scope': 'all', 'quickhelpText': ''}, copy(a:options))
+    let newKeyMap.key = opts['key']
+    let newKeyMap.quickhelpText = opts['quickhelpText']
+    let newKeyMap.callback = opts['callback']
+    let newKeyMap.scope = opts['scope']
+
+    call s:KeyMap.Add(newKeyMap)
 endfunction
+
+"FUNCTION: KeyMap.Add(keymap) {{{3
+function! s:KeyMap.Add(keymap)
+    let oldmap = s:KeyMap.FindFor(a:keymap.key, a:keymap.scope)
+    if !empty(oldmap)
+        call remove(s:KeyMap.All(), index(s:KeyMap.All(), oldmap))
+    endif
+
+    call add(s:KeyMap.All(), a:keymap)
+endfunction
+
 "CLASS: MenuController {{{2
 "============================================================
 let s:MenuController = {}
