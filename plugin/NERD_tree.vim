@@ -3663,8 +3663,8 @@ endfunction
 function! s:bindMappings()
     " set up mappings and commands for this buffer
     nnoremap <silent> <buffer> <middlerelease> :call <SID>handleMiddleMouse()<cr>
-    nnoremap <silent> <buffer> <leftrelease> <leftrelease>:call <SID>checkForActivate()<cr>
-    nnoremap <silent> <buffer> <2-leftmouse> :call <SID>activateNode(0)<cr>
+    nnoremap <silent> <buffer> <leftrelease> <leftrelease>:call <SID>handleLeftClick()<cr>
+    exec "nnoremap <silent> <buffer> <2-leftmouse> :call <SID>KeyMap_Invoke('". g:NERDTreeMapActivateNode ."')<cr>"
 
     let s = '<SNR>' . s:SID() . '_'
 
@@ -3751,29 +3751,6 @@ function! s:bookmarkNode(...)
         endtry
     else
         call s:echo("select a node first")
-    endif
-endfunction
-"FUNCTION: s:checkForActivate() {{{2
-"Checks if the click should open the current node
-function! s:checkForActivate()
-    let currentNode = s:TreeFileNode.GetSelected()
-    if currentNode != {}
-        let startToCur = strpart(getline(line(".")), 0, col("."))
-
-        if currentNode.path.isDirectory
-            if startToCur =~# s:tree_markup_reg . '$' && startToCur =~# '[+~▾▸]$'
-                call s:activateNode(0)
-                return
-            endif
-        endif
-
-        if (g:NERDTreeMouseMode ==# 2 && currentNode.path.isDirectory) || g:NERDTreeMouseMode ==# 3
-            let char = strpart(startToCur, strlen(startToCur)-1, 1)
-            if char !~# s:tree_markup_reg
-                call s:activateNode(0)
-                return
-            endif
-        endif
     endif
 endfunction
 
@@ -3868,6 +3845,38 @@ function! s:displayHelp()
     call s:centerView()
 endfunction
 
+"FUNCTION: s:handleLeftClick() {{{2
+"Checks if the click should open the current node
+function! s:handleLeftClick()
+    let currentNode = s:TreeFileNode.GetSelected()
+    if currentNode != {}
+
+        "the dir arrows are multibyte chars, and vim's string functions only
+        "deal with single bytes - so split the line up with the hack below and
+        "take the line substring manually
+        let line = split(getline(line(".")), '\zs')
+        let startToCur = ""
+        for i in range(0,virtcol(".")-1)
+            let startToCur .= line[i]
+        endfor
+
+        if currentNode.path.isDirectory
+            if startToCur =~# s:tree_markup_reg . '$' && startToCur =~# '[+~▾▸]$'
+                call s:activateNode(currentNode)
+                return
+            endif
+        endif
+
+        if (g:NERDTreeMouseMode ==# 2 && currentNode.path.isDirectory) || g:NERDTreeMouseMode ==# 3
+            let char = strpart(startToCur, strlen(startToCur)-1, 1)
+            if char !~# s:tree_markup_reg
+                call s:activateAll()
+                return
+            endif
+        endif
+    endif
+endfunction
+
 " FUNCTION: s:handleMiddleMouse() {{{2
 function! s:handleMiddleMouse()
     let curNode = s:TreeFileNode.GetSelected()
@@ -3877,7 +3886,7 @@ function! s:handleMiddleMouse()
     endif
 
     if curNode.path.isDirectory
-        call s:openExplorer()
+        call s:openExplorer(curNode)
     else
         call s:openEntrySplit(0,0)
     endif
