@@ -116,9 +116,9 @@ call s:initVariable("g:NERDTreeMapMenu", "m")
 call s:initVariable("g:NERDTreeMapHelp", "?")
 call s:initVariable("g:NERDTreeMapJumpFirstChild", "K")
 call s:initVariable("g:NERDTreeMapJumpLastChild", "J")
-call s:initVariable("g:NERDTreeMapJumpNextSibling", "<C-j>")
+call s:initVariable("g:NERDTreeMapJumpNextSibling", "C-j")
 call s:initVariable("g:NERDTreeMapJumpParent", "p")
-call s:initVariable("g:NERDTreeMapJumpPrevSibling", "<C-k>")
+call s:initVariable("g:NERDTreeMapJumpPrevSibling", "C-k")
 call s:initVariable("g:NERDTreeMapJumpRoot", "P")
 call s:initVariable("g:NERDTreeMapOpenExpl", "e")
 call s:initVariable("g:NERDTreeMapOpenInTab", "t")
@@ -509,10 +509,15 @@ endfunction
 
 "FUNCTION: KeyMap.bind() {{{3
 function! s:KeyMap.bind()
-    exec "nnoremap <buffer> <silent> ". self.key ." :call <SID>KeyMap_Invoke('". self.key ."')<cr>"
+    let mapkey = self.key
+    if mapkey =~ '^[CM]-'
+        let mapkey = '<' . mapkey . '>'
+    endif
+
+    exec 'nnoremap <buffer> <silent> '. mapkey .' :call <SID>KeyMap_Invoke("'. self.key .'")<cr>'
 endfunction
 
-"FUNCTION: KeyMap.bind() {{{3
+"FUNCTION: KeyMap.invoke() {{{3
 "Call the KeyMaps callback function
 function! s:KeyMap.invoke(...)
     if a:0
@@ -2857,6 +2862,48 @@ endfunction
 function! s:treeExistsForTab()
     return exists("t:NERDTreeBufName")
 endfunction
+" Function: s:SID()   {{{2
+function s:SID()
+    if !exists("s:sid")
+        let s:sid = matchstr(expand('<sfile>'), '<SNR>\zs\d\+\ze_SID$')
+    endif
+    return s:sid
+endfun
+"FUNCTION: s:upDir(keepState) {{{2
+"moves the tree up a level
+"
+"Args:
+"keepState: 1 if the current root should be left open when the tree is
+"re-rendered
+function! s:upDir(keepState)
+    let cwd = b:NERDTreeRoot.path.str({'format': 'UI'})
+    if cwd ==# "/" || cwd =~# '^[^/]..$'
+        call s:echo("already at top dir")
+    else
+        if !a:keepState
+            call b:NERDTreeRoot.close()
+        endif
+
+        let oldRoot = b:NERDTreeRoot
+
+        if empty(b:NERDTreeRoot.parent)
+            let path = b:NERDTreeRoot.path.getParent()
+            let newRoot = s:TreeDirNode.New(path)
+            call newRoot.open()
+            call newRoot.transplantChild(b:NERDTreeRoot)
+            let b:NERDTreeRoot = newRoot
+        else
+            let b:NERDTreeRoot = b:NERDTreeRoot.parent
+        endif
+
+        if g:NERDTreeChDirMode ==# 2
+            call b:NERDTreeRoot.path.changeToDir()
+        endif
+
+        call s:renderView()
+        call oldRoot.putCursorHere(0, 0)
+    endif
+endfunction
 " Function: s:unique(list)   {{{2
 " returns a:list without duplicates
 function! s:unique(list)
@@ -3244,13 +3291,11 @@ endfunction
 " FUNCTION: s:jumpToChild(direction) {{{2
 " Args:
 " direction: 0 if going to first child, 1 if going to last
-function! s:jumpToChild(direction)
-    let currentNode = s:TreeFileNode.GetSelected()
-    if currentNode ==# {} || currentNode.isRoot()
-        call s:echo("cannot jump to " . (a:direction ? "last" : "first") .  " child")
-        return
+function! s:jumpToChild(currentNode, direction)
+    if a:currentNode.isRoot()
+        return s:echo("cannot jump to " . (a:direction ? "last" : "first") .  " child")
     end
-    let dirNode = currentNode.parent
+    let dirNode = a:currentNode.parent
     let childNodes = dirNode.getVisibleChildren()
 
     let targetNode = childNodes[0]
@@ -3258,8 +3303,8 @@ function! s:jumpToChild(direction)
         let targetNode = childNodes[len(childNodes) - 1]
     endif
 
-    if targetNode.equals(currentNode)
-        let siblingDir = currentNode.parent.findOpenDirSiblingWithVisibleChildren(a:direction)
+    if targetNode.equals(a:currentNode)
+        let siblingDir = a:currentNode.parent.findOpenDirSiblingWithVisibleChildren(a:direction)
         if siblingDir != {}
             let indx = a:direction ? siblingDir.getVisibleChildCount()-1 : 0
             let targetNode = siblingDir.getChildByIndex(indx, 1)
@@ -3272,6 +3317,50 @@ function! s:jumpToChild(direction)
 endfunction
 
 
+" FUNCTION: s:jumpToSibling(currentNode, forward) {{{2
+" moves the cursor to the sibling of the current node in the given direction
+"
+" Args:
+" forward: 1 if the cursor should move to the next sibling, 0 if it should
+" move back to the previous sibling
+function! s:jumpToSibling(currentNode, forward)
+    let sibling = a:currentNode.findSibling(a:forward)
+
+    if !empty(sibling)
+        call sibling.putCursorHere(1, 0)
+        call s:centerView()
+    endif
+endfunction
+
+
+
+" FUNCTION: s:openEntrySplit(vertical, forceKeepWindowOpen) {{{2
+function! s:openEntrySplit(vertical, forceKeepWindowOpen)
+    let treenode = s:TreeFileNode.GetSelected()
+    if treenode != {}
+        if a:vertical
+            call treenode.openVSplit()
+        else
+            call treenode.openSplit()
+        endif
+        if !a:forceKeepWindowOpen
+            call s:closeTreeIfQuitOnOpen()
+        endif
+    else
+        call s:echo("select a node first")
+    endif
+endfunction
+
+"FUNCTION: s:previewNode(node, openNewWin) {{{2
+function! s:previewNode(node, openNewWin)
+    let currentBuf = bufnr("")
+    if a:openNewWin > 0
+        call s:openEntrySplit(a:openNewWin ==# 2,1)
+    else
+        call s:activateNode(a:node)
+    end
+    call s:exec(bufwinnr(currentBuf) . "wincmd w")
+endfunction
 "FUNCTION: s:promptToDelBuffer(bufnum, msg){{{2
 "prints out the given msg and, if the user responds by pushing 'y' then the
 "buffer with the given bufnum is deleted
@@ -3550,26 +3639,25 @@ function! s:toggle(dir)
 endfunction
 "SECTION: Interface bindings {{{1
 "============================================================
-"FUNCTION: s:activateNode(forceKeepWindowOpen) {{{2
-"If the current node is a file, open it in the previous window (or a new one
-"if the previous is modified). If it is a directory then it is opened.
-"
-"args:
-"forceKeepWindowOpen - dont close the window even if NERDTreeQuitOnOpen is set
-function! s:activateNode(forceKeepWindowOpen)
+
+"FUNCTION: s:activateAll() {{{2
+"handle the user activating the updir line
+function! s:activateAll()
     if getline(".") ==# s:tree_up_dir_line
         return s:upDir(0)
     endif
+endfunction
 
-    let treenode = s:TreeFileNode.GetSelected()
-    if treenode != {}
-        call treenode.activate(a:forceKeepWindowOpen)
-    else
-        let bookmark = s:Bookmark.GetSelected()
-        if !empty(bookmark)
-            call bookmark.activate()
-        endif
-    endif
+"FUNCTION: s:activateNode() {{{2
+"handle the user activating a tree node
+function! s:activateNode(node)
+    call a:node.activate(0)
+endfunction
+
+"FUNCTION: s:activateBookmark() {{{2
+"handle the user activating a bookmark
+function! s:activateBookmark(bm)
+    call a:bm.activate(0)
 endfunction
 
 "FUNCTION: s:bindMappings() {{{2
@@ -3579,54 +3667,60 @@ function! s:bindMappings()
     nnoremap <silent> <buffer> <leftrelease> <leftrelease>:call <SID>checkForActivate()<cr>
     nnoremap <silent> <buffer> <2-leftmouse> :call <SID>activateNode(0)<cr>
 
-    exec "nnoremap <silent> <buffer> ". g:NERDTreeMapActivateNode . " :call <SID>activateNode(0)<cr>"
-    exec "nnoremap <silent> <buffer> ". g:NERDTreeMapOpenSplit ." :call <SID>openEntrySplit(0,0)<cr>"
-    exec "nnoremap <silent> <buffer> <cr> :call <SID>activateNode(0)<cr>"
+    let s = '<SNR>' . s:SID() . '_'
 
-    exec "nnoremap <silent> <buffer> ". g:NERDTreeMapPreview ." :call <SID>previewNode(0)<cr>"
-    exec "nnoremap <silent> <buffer> ". g:NERDTreeMapPreviewSplit ." :call <SID>previewNode(1)<cr>"
+    call NERDTreeAddKeyMap({ 'key': g:NERDTreeMapActivateNode, 'scope': "Node", 'callback': s."activateNode" })
+    call NERDTreeAddKeyMap({ 'key': g:NERDTreeMapActivateNode, 'scope': "Bookmark", 'callback': s."activateBookmark" })
+    call NERDTreeAddKeyMap({ 'key': g:NERDTreeMapActivateNode, 'scope': "all", 'callback': s."activateAll" })
+    exec "nnoremap <silent> <buffer> <cr> :call <SID>KeyMap_Invoke('". g:NERDTreeMapActivateNode ."')<cr>"
 
-    exec "nnoremap <silent> <buffer> ". g:NERDTreeMapOpenVSplit ." :call <SID>openEntrySplit(1,0)<cr>"
-    exec "nnoremap <silent> <buffer> ". g:NERDTreeMapPreviewVSplit ." :call <SID>previewNode(2)<cr>"
+    call NERDTreeAddKeyMap({ 'key': g:NERDTreeMapOpenSplit, 'scope': "Node", 'callback': s."openHSplit" })
+    call NERDTreeAddKeyMap({ 'key': g:NERDTreeMapOpenVSplit, 'scope': "Node", 'callback': s."openVSplit" })
 
-    exec "nnoremap <silent> <buffer> ". g:NERDTreeMapOpenRecursively ." :call <SID>openNodeRecursively()<cr>"
+    call NERDTreeAddKeyMap({ 'key': g:NERDTreeMapPreview, 'scope': "Node", 'callback': s."previewNodeCurrent" })
+    call NERDTreeAddKeyMap({ 'key': g:NERDTreeMapPreviewVSplit, 'scope': "Node", 'callback': s."previewNodeVSplit" })
+    call NERDTreeAddKeyMap({ 'key': g:NERDTreeMapPreviewSplit, 'scope': "Node", 'callback': s."previewNodeHSplit" })
 
-    exec "nnoremap <silent> <buffer> ". g:NERDTreeMapUpdirKeepOpen ." :call <SID>upDir(1)<cr>"
-    exec "nnoremap <silent> <buffer> ". g:NERDTreeMapUpdir ." :call <SID>upDir(0)<cr>"
-    exec "nnoremap <silent> <buffer> ". g:NERDTreeMapChangeRoot ." :call <SID>chRoot()<cr>"
+    call NERDTreeAddKeyMap({ 'key': g:NERDTreeMapOpenRecursively, 'scope': "DirNode", 'callback': s."openNodeRecursively" })
 
-    exec "nnoremap <silent> <buffer> ". g:NERDTreeMapChdir ." :call <SID>chCwd()<cr>"
+    call NERDTreeAddKeyMap({ 'key': g:NERDTreeMapUpdir, 'scope': "all", 'callback': s."upDirCurrentRootClosed" })
+    call NERDTreeAddKeyMap({ 'key': g:NERDTreeMapUpdirKeepOpen, 'scope': "all", 'callback': s."upDirCurrentRootOpen" })
+    call NERDTreeAddKeyMap({ 'key': g:NERDTreeMapChangeRoot, 'scope': "Node", 'callback': s."chRoot" })
 
-    exec "nnoremap <silent> <buffer> ". g:NERDTreeMapQuit ." :call <SID>closeTreeWindow()<cr>"
+    call NERDTreeAddKeyMap({ 'key': g:NERDTreeMapChdir, 'scope': "Node", 'callback': s."chCwd" })
 
-    exec "nnoremap <silent> <buffer> ". g:NERDTreeMapRefreshRoot ." :call <SID>refreshRoot()<cr>"
-    exec "nnoremap <silent> <buffer> ". g:NERDTreeMapRefresh ." :call <SID>refreshCurrent()<cr>"
+    call NERDTreeAddKeyMap({ 'key': g:NERDTreeMapQuit, 'scope': "all", 'callback': s."closeTreeWindow" })
 
-    exec "nnoremap <silent> <buffer> ". g:NERDTreeMapHelp ." :call <SID>displayHelp()<cr>"
-    exec "nnoremap <silent> <buffer> ". g:NERDTreeMapToggleZoom ." :call <SID>toggleZoom()<cr>"
-    exec "nnoremap <silent> <buffer> ". g:NERDTreeMapToggleHidden ." :call <SID>toggleShowHidden()<cr>"
-    exec "nnoremap <silent> <buffer> ". g:NERDTreeMapToggleFilters ." :call <SID>toggleIgnoreFilter()<cr>"
-    exec "nnoremap <silent> <buffer> ". g:NERDTreeMapToggleFiles ." :call <SID>toggleShowFiles()<cr>"
-    exec "nnoremap <silent> <buffer> ". g:NERDTreeMapToggleBookmarks ." :call <SID>toggleShowBookmarks()<cr>"
+    call NERDTreeAddKeyMap({ 'key': g:NERDTreeMapRefreshRoot, 'scope': "all", 'callback': s."refreshRoot" })
+    call NERDTreeAddKeyMap({ 'key': g:NERDTreeMapRefresh, 'scope': "Node", 'callback': s."refreshCurrent" })
 
-    exec "nnoremap <silent> <buffer> ". g:NERDTreeMapCloseDir ." :call <SID>closeCurrentDir()<cr>"
-    exec "nnoremap <silent> <buffer> ". g:NERDTreeMapCloseChildren ." :call <SID>closeChildren()<cr>"
+    call NERDTreeAddKeyMap({ 'key': g:NERDTreeMapHelp, 'scope': "all", 'callback': s."displayHelp" })
+    call NERDTreeAddKeyMap({ 'key': g:NERDTreeMapToggleZoom, 'scope': "all", 'callback': s."toggleZoom" })
+    call NERDTreeAddKeyMap({ 'key': g:NERDTreeMapToggleHidden, 'scope': "all", 'callback': s."toggleShowHidden" })
+    call NERDTreeAddKeyMap({ 'key': g:NERDTreeMapToggleFilters, 'scope': "all", 'callback': s."toggleIgnoreFilter" })
+    call NERDTreeAddKeyMap({ 'key': g:NERDTreeMapToggleFiles, 'scope': "all", 'callback': s."toggleShowFiles" })
+    call NERDTreeAddKeyMap({ 'key': g:NERDTreeMapToggleBookmarks, 'scope': "all", 'callback': s."toggleShowBookmarks" })
 
-    exec "nnoremap <silent> <buffer> ". g:NERDTreeMapMenu ." :call <SID>showMenu()<cr>"
+    call NERDTreeAddKeyMap({ 'key': g:NERDTreeMapCloseDir, 'scope': "Node", 'callback': s."closeCurrentDir" })
+    call NERDTreeAddKeyMap({ 'key': g:NERDTreeMapCloseChildren, 'scope': "DirNode", 'callback': s."closeChildren" })
 
-    exec "nnoremap <silent> <buffer> ". g:NERDTreeMapJumpParent ." :call <SID>jumpToParent()<cr>"
-    exec "nnoremap <silent> <buffer> ". g:NERDTreeMapJumpNextSibling ." :call <SID>jumpToSibling(1)<cr>"
-    exec "nnoremap <silent> <buffer> ". g:NERDTreeMapJumpPrevSibling ." :call <SID>jumpToSibling(0)<cr>"
-    exec "nnoremap <silent> <buffer> ". g:NERDTreeMapJumpFirstChild ." :call <SID>jumpToFirstChild()<cr>"
-    exec "nnoremap <silent> <buffer> ". g:NERDTreeMapJumpLastChild ." :call <SID>jumpToLastChild()<cr>"
-    exec "nnoremap <silent> <buffer> ". g:NERDTreeMapJumpRoot ." :call <SID>jumpToRoot()<cr>"
+    call NERDTreeAddKeyMap({ 'key': g:NERDTreeMapMenu, 'scope': "Node", 'callback': s."showMenu" })
 
-    exec "nnoremap <silent> <buffer> ". g:NERDTreeMapOpenInTab ." :call <SID>openInNewTab(0)<cr>"
-    exec "nnoremap <silent> <buffer> ". g:NERDTreeMapOpenInTabSilent ." :call <SID>openInNewTab(1)<cr>"
+    call NERDTreeAddKeyMap({ 'key': g:NERDTreeMapJumpParent, 'scope': "Node", 'callback': s."jumpToParent" })
+    call NERDTreeAddKeyMap({ 'key': g:NERDTreeMapJumpFirstChild, 'scope': "Node", 'callback': s."jumpToFirstChild" })
+    call NERDTreeAddKeyMap({ 'key': g:NERDTreeMapJumpLastChild, 'scope': "Node", 'callback': s."jumpToLastChild" })
+    call NERDTreeAddKeyMap({ 'key': g:NERDTreeMapJumpRoot, 'scope': "all", 'callback': s."jumpToRoot" })
+    call NERDTreeAddKeyMap({ 'key': g:NERDTreeMapJumpNextSibling, 'scope': "Node", 'callback': s."jumpToNextSibling" })
+    call NERDTreeAddKeyMap({ 'key': g:NERDTreeMapJumpPrevSibling, 'scope': "Node", 'callback': s."jumpToPrevSibling" })
 
-    exec "nnoremap <silent> <buffer> ". g:NERDTreeMapOpenExpl ." :call <SID>openExplorer()<cr>"
+    call NERDTreeAddKeyMap({ 'key': g:NERDTreeMapOpenInTab, 'scope': "Node", 'callback': s."openInNewTab" })
+    call NERDTreeAddKeyMap({ 'key': g:NERDTreeMapOpenInTabSilent, 'scope': "Node", 'callback': s."openInNewTabSilent" })
+    call NERDTreeAddKeyMap({ 'key': g:NERDTreeMapOpenInTab, 'scope': "Bookmark", 'callback': s."openInNewTab" })
+    call NERDTreeAddKeyMap({ 'key': g:NERDTreeMapOpenInTabSilent, 'scope': "Bookmark", 'callback': s."openInNewTabSilent" })
 
-    exec "nnoremap <silent> <buffer> ". g:NERDTreeMapDeleteBookmark ." :call <SID>deleteBookmark()<cr>"
+    call NERDTreeAddKeyMap({ 'key': g:NERDTreeMapOpenExpl, 'scope': "DirNode", 'callback': s."openExplorer" })
+
+    call NERDTreeAddKeyMap({ 'key': g:NERDTreeMapDeleteBookmark, 'scope': "Bookmark", 'callback': s."deleteBookmark" })
 
     "bind all the user custom maps
     call s:KeyMap.BindAll()
@@ -3661,9 +3755,7 @@ function! s:bookmarkNode(...)
     endif
 endfunction
 "FUNCTION: s:checkForActivate() {{{2
-"Checks if the click should open the current node, if so then activate() is
-"called (directories are automatically opened if the symbol beside them is
-"clicked)
+"Checks if the click should open the current node
 function! s:checkForActivate()
     let currentNode = s:TreeFileNode.GetSelected()
     if currentNode != {}
@@ -3686,31 +3778,19 @@ function! s:checkForActivate()
     endif
 endfunction
 
-" FUNCTION: s:chCwd() {{{2
-function! s:chCwd()
-    let treenode = s:TreeFileNode.GetSelected()
-    if treenode ==# {}
-        call s:echo("Select a node first")
-        return
-    endif
-
+" FUNCTION: s:chCwd(node) {{{2
+function! s:chCwd(node)
     try
-        call treenode.path.changeToDir()
+        call a:node.path.changeToDir()
     catch /^NERDTree.PathChangeError/
         call s:echoWarning("could not change cwd")
     endtry
 endfunction
 
-" FUNCTION: s:chRoot() {{{2
+" FUNCTION: s:chRoot(node) {{{2
 " changes the current root to the selected one
-function! s:chRoot()
-    let treenode = s:TreeFileNode.GetSelected()
-    if treenode ==# {}
-        call s:echo("Select a node first")
-        return
-    endif
-
-    call treenode.makeRoot()
+function! s:chRoot(node)
+    call a:node.makeRoot()
     call s:renderView()
     call b:NERDTreeRoot.putCursorHere(0, 0)
 endfunction
@@ -3730,35 +3810,23 @@ function! s:clearBookmarks(bookmarks)
     endif
     call s:renderView()
 endfunction
-" FUNCTION: s:closeChildren() {{{2
+" FUNCTION: s:closeChildren(node) {{{2
 " closes all childnodes of the current node
-function! s:closeChildren()
-    let currentNode = s:TreeDirNode.GetSelected()
-    if currentNode ==# {}
-        call s:echo("Select a node first")
-        return
-    endif
-
-    call currentNode.closeChildren()
+function! s:closeChildren(node)
+    call a:node.closeChildren()
     call s:renderView()
-    call currentNode.putCursorHere(0, 0)
+    call a:node.putCursorHere(0, 0)
 endfunction
-" FUNCTION: s:closeCurrentDir() {{{2
+" FUNCTION: s:closeCurrentDir(node) {{{2
 " closes the parent dir of the current node
-function! s:closeCurrentDir()
-    let treenode = s:TreeFileNode.GetSelected()
-    if treenode ==# {}
-        call s:echo("Select a node first")
-        return
-    endif
-
-    let parent = treenode.parent
+function! s:closeCurrentDir(node)
+    let parent = a:node.parent
     if parent ==# {} || parent.isRoot()
         call s:echo("cannot close tree root")
     else
-        call treenode.parent.close()
+        call a:node.parent.close()
         call s:renderView()
-        call treenode.parent.putCursorHere(0, 0)
+        call a:node.parent.putCursorHere(0, 0)
     endif
 endfunction
 " FUNCTION: s:closeTreeWindow() {{{2
@@ -3774,20 +3842,14 @@ function! s:closeTreeWindow()
         endif
     endif
 endfunction
-" FUNCTION: s:deleteBookmark() {{{2
+" FUNCTION: s:deleteBookmark(bm) {{{2
 " if the cursor is on a bookmark, prompt to delete
-function! s:deleteBookmark()
-    let bookmark = s:Bookmark.GetSelected()
-    if bookmark ==# {}
-        call s:echo("Put the cursor on a bookmark")
-        return
-    endif
-
-    echo  "Are you sure you wish to delete the bookmark:\n\"" . bookmark.name . "\" (yN):"
+function! s:deleteBookmark(bm)
+    echo  "Are you sure you wish to delete the bookmark:\n\"" . a:bm.name . "\" (yN):"
 
     if  nr2char(getchar()) ==# 'y'
         try
-            call bookmark.delete()
+            call a:bm.delete()
             call s:renderView()
             redraw
         catch /^NERDTree/
@@ -3825,29 +3887,24 @@ endfunction
 
 " FUNCTION: s:jumpToFirstChild() {{{2
 " wrapper for the jump to child method
-function! s:jumpToFirstChild()
-    call s:jumpToChild(0)
+function! s:jumpToFirstChild(node)
+    call s:jumpToChild(a:node, 0)
 endfunction
 
 " FUNCTION: s:jumpToLastChild() {{{2
 " wrapper for the jump to child method
-function! s:jumpToLastChild()
-    call s:jumpToChild(1)
+function! s:jumpToLastChild(node)
+    call s:jumpToChild(a:node, 1)
 endfunction
 
-" FUNCTION: s:jumpToParent() {{{2
+" FUNCTION: s:jumpToParent(node) {{{2
 " moves the cursor to the parent of the current node
-function! s:jumpToParent()
-    let currentNode = s:TreeFileNode.GetSelected()
-    if !empty(currentNode)
-        if !empty(currentNode.parent)
-            call currentNode.parent.putCursorHere(1, 0)
-            call s:centerView()
-        else
-            call s:echo("cannot jump to parent")
-        endif
+function! s:jumpToParent(node)
+    if !empty(a:node.parent)
+        call a:node.parent.putCursorHere(1, 0)
+        call s:centerView()
     else
-        call s:echo("put the cursor on a node first")
+        call s:echo("cannot jump to parent")
     endif
 endfunction
 
@@ -3858,24 +3915,14 @@ function! s:jumpToRoot()
     call s:centerView()
 endfunction
 
-" FUNCTION: s:jumpToSibling() {{{2
-" moves the cursor to the sibling of the current node in the given direction
-"
-" Args:
-" forward: 1 if the cursor should move to the next sibling, 0 if it should
-" move back to the previous sibling
-function! s:jumpToSibling(forward)
-    let currentNode = s:TreeFileNode.GetSelected()
-    if !empty(currentNode)
-        let sibling = currentNode.findSibling(a:forward)
+" FUNCTION: s:jumpToNextSibling(node) {{{2
+function! s:jumpToNextSibling(node)
+    call s:jumpToSibling(a:node, 1)
+endfunction
 
-        if !empty(sibling)
-            call sibling.putCursorHere(1, 0)
-            call s:centerView()
-        endif
-    else
-        call s:echo("put the cursor on a node first")
-    endif
+" FUNCTION: s:jumpToPrevSibling(node) {{{2
+function! s:jumpToPrevSibling(node)
+    call s:jumpToSibling(a:node, 0)
 endfunction
 
 " FUNCTION: s:openBookmark(name) {{{2
@@ -3896,82 +3943,56 @@ function! s:openBookmark(name)
         call targetNode.open()
     endif
 endfunction
-" FUNCTION: s:openEntrySplit(vertical, forceKeepWindowOpen) {{{2
-"Opens the currently selected file from the explorer in a
-"new window
-"
-"args:
-"forceKeepWindowOpen - dont close the window even if NERDTreeQuitOnOpen is set
-function! s:openEntrySplit(vertical, forceKeepWindowOpen)
-    let treenode = s:TreeFileNode.GetSelected()
-    if treenode != {}
-        if a:vertical
-            call treenode.openVSplit()
-        else
-            call treenode.openSplit()
-        endif
-        if !a:forceKeepWindowOpen
-            call s:closeTreeIfQuitOnOpen()
-        endif
-    else
-        call s:echo("select a node first")
-    endif
+
+" FUNCTION: s:openHSplit(node) {{{2
+function! s:openHSplit(node)
+    call a:node.openSplit()
 endfunction
 
-" FUNCTION: s:openExplorer() {{{2
-function! s:openExplorer()
-    let treenode = s:TreeDirNode.GetSelected()
-    if treenode != {}
-        call treenode.openExplorer()
-    else
-        call s:echo("select a node first")
-    endif
+" FUNCTION: s:openVSplit(node) {{{2
+function! s:openVSplit(node)
+    call a:node.openVSplit()
 endfunction
 
-" FUNCTION: s:openInNewTab(stayCurrentTab) {{{2
-" Opens the selected node or bookmark in a new tab
-" Args:
-" stayCurrentTab: if 1 then vim will stay in the current tab, if 0 then vim
-" will go to the tab where the new file is opened
-function! s:openInNewTab(stayCurrentTab)
-    let target = s:TreeFileNode.GetSelected()
-    if target == {}
-        let target = s:Bookmark.GetSelected()
-    endif
-
-    if target != {}
-        call target.openInNewTab({'stayInCurrentTab': a:stayCurrentTab})
-    endif
+" FUNCTION: s:openExplorer(node) {{{2
+function! s:openExplorer(node)
+    call a:node.openExplorer()
 endfunction
 
-" FUNCTION: s:openNodeRecursively() {{{2
-function! s:openNodeRecursively()
-    let treenode = s:TreeFileNode.GetSelected()
-    if treenode ==# {} || treenode.path.isDirectory ==# 0
-        call s:echo("Select a directory node first" )
-    else
-        call s:echo("Recursively opening node. Please wait...")
-        call treenode.openRecursively()
-        call s:renderView()
-        redraw
-        call s:echo("Recursively opening node. Please wait... DONE")
-    endif
-
+" FUNCTION: s:openInNewTab(target) {{{2
+function! s:openInNewTab(target)
+    call a:target.openInNewTab({})
 endfunction
 
-"FUNCTION: s:previewNode() {{{2
-"Args:
-"   openNewWin: if 0, use the previous window, if 1 open in new split, if 2
-"               open in a vsplit
-function! s:previewNode(openNewWin)
-    let currentBuf = bufnr("")
-    if a:openNewWin > 0
-        call s:openEntrySplit(a:openNewWin ==# 2,1)
-    else
-        call s:activateNode(1)
-    end
-    call s:exec(bufwinnr(currentBuf) . "wincmd w")
+" FUNCTION: s:openInNewTabSilent(target) {{{2
+function! s:openInNewTabSilent(target)
+    call a:target.openInNewTab({'stayInCurrentTab': 1})
 endfunction
+
+" FUNCTION: s:openNodeRecursively(node) {{{2
+function! s:openNodeRecursively(node)
+    call s:echo("Recursively opening node. Please wait...")
+    call a:node.openRecursively()
+    call s:renderView()
+    redraw
+    call s:echo("Recursively opening node. Please wait... DONE")
+endfunction
+
+"FUNCTION: s:previewNodeCurrent(node) {{{2
+function! s:previewNodeCurrent(node)
+    call s:previewNode(a:node, 0)
+endfunction
+
+"FUNCTION: s:previewNodeHSplit(node) {{{2
+function! s:previewNodeHSplit(node)
+    call s:previewNode(a:node, 1)
+endfunction
+
+"FUNCTION: s:previewNodeVSplit(node) {{{2
+function! s:previewNodeVSplit(node)
+    call s:previewNode(a:node, 2)
+endfunction
+
 
 " FUNCTION: s:revealBookmark(name) {{{2
 " put the cursor on the node associate with the given name
@@ -3994,29 +4015,22 @@ function! s:refreshRoot()
     call s:echo("Refreshing the root node. This could take a while... DONE")
 endfunction
 
-" FUNCTION: s:refreshCurrent() {{{2
+" FUNCTION: s:refreshCurrent(node) {{{2
 " refreshes the root for the current node
-function! s:refreshCurrent()
-    let treenode = s:TreeDirNode.GetSelected()
-    if treenode ==# {}
-        call s:echo("Refresh failed. Select a node first")
-        return
+function! s:refreshCurrent(node)
+    let node = a:node
+    if !node.path.isDirectory
+        let node = node.parent
     endif
 
     call s:echo("Refreshing node. This could take a while...")
-    call treenode.refresh()
+    call node.refresh()
     call s:renderView()
     redraw
     call s:echo("Refreshing node. This could take a while... DONE")
 endfunction
-" FUNCTION: s:showMenu() {{{2
-function! s:showMenu()
-    let curNode = s:TreeFileNode.GetSelected()
-    if curNode ==# {}
-        call s:echo("Put the cursor on a node first" )
-        return
-    endif
-
+" FUNCTION: s:showMenu(node) {{{2
+function! s:showMenu(node)
     let mc = s:MenuController.New(s:MenuItem.AllEnabled())
     call mc.showMenu()
 endfunction
@@ -4057,7 +4071,7 @@ function! s:toggleShowHidden()
     call s:centerView()
 endfunction
 
-" FUNCTION: s:toggleZoom() {{2
+" FUNCTION: s:toggleZoom() {{{2
 " zoom (maximize/minimize) the NERDTree window
 function! s:toggleZoom()
     if exists("b:NERDTreeZoomed") && b:NERDTreeZoomed
@@ -4070,40 +4084,14 @@ function! s:toggleZoom()
     endif
 endfunction
 
-"FUNCTION: s:upDir(keepState) {{{2
-"moves the tree up a level
-"
-"Args:
-"keepState: 1 if the current root should be left open when the tree is
-"re-rendered
-function! s:upDir(keepState)
-    let cwd = b:NERDTreeRoot.path.str({'format': 'UI'})
-    if cwd ==# "/" || cwd =~# '^[^/]..$'
-        call s:echo("already at top dir")
-    else
-        if !a:keepState
-            call b:NERDTreeRoot.close()
-        endif
+" FUNCTION: s:upDirCurrentRootOpen() {{{2
+function! s:upDirCurrentRootOpen()
+    call s:upDir(1)
+endfunction
 
-        let oldRoot = b:NERDTreeRoot
-
-        if empty(b:NERDTreeRoot.parent)
-            let path = b:NERDTreeRoot.path.getParent()
-            let newRoot = s:TreeDirNode.New(path)
-            call newRoot.open()
-            call newRoot.transplantChild(b:NERDTreeRoot)
-            let b:NERDTreeRoot = newRoot
-        else
-            let b:NERDTreeRoot = b:NERDTreeRoot.parent
-        endif
-
-        if g:NERDTreeChDirMode ==# 2
-            call b:NERDTreeRoot.path.changeToDir()
-        endif
-
-        call s:renderView()
-        call oldRoot.putCursorHere(0, 0)
-    endif
+" FUNCTION: s:upDirCurrentRootClosed() {{{2
+function! s:upDirCurrentRootClosed()
+    call s:upDir(0)
 endfunction
 
 
