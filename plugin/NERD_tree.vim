@@ -3091,13 +3091,13 @@ function! s:dumpHelp()
         let @h=@h."\" ". g:NERDTreeMapToggleBookmarks .": bookmarks (" . (b:NERDTreeShowBookmarks ? "on" : "off") . ")\n"
 
         "add quickhelp entries for each custom key map
-        if len(s:KeyMap.All())
-            let @h=@h."\"\n\" ----------------------------\n"
-            let @h=@h."\" Custom mappings~\n"
-            for i in s:KeyMap.All()
+        let @h=@h."\"\n\" ----------------------------\n"
+        let @h=@h."\" Custom mappings~\n"
+        for i in s:KeyMap.All()
+            if !empty(i.quickhelpText)
                 let @h=@h."\" ". i.key .": ". i.quickhelpText ."\n"
-            endfor
-        endif
+            endif
+        endfor
 
         let @h=@h."\"\n\" ----------------------------\n"
         let @h=@h."\" Other mappings~\n"
