@@ -485,7 +485,6 @@ let s:KeyMap = {}
 function! s:KeyMap.All()
     if !exists("s:keyMaps")
         let s:keyMaps = []
-        let g:keyMaps = s:keyMaps
     endif
     return s:keyMaps
 endfunction
