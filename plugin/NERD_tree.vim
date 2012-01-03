@@ -399,7 +399,7 @@ function! s:Bookmark.openInNewTab(options)
         exec "tabedit " . self.path.str({'format': 'Edit'})
     endif
 
-    if has_key(a:options, 'stayInCurrentTab') && a:options['stayInCurrentTab']
+    if s:has_opt(a:options, 'stayInCurrentTab')
         exec "tabnext " . currentTab
     endif
 endfunction
@@ -1341,13 +1341,13 @@ endfunction
 function! s:TreeFileNode.openInNewTab(options)
     let currentTab = tabpagenr()
 
-    if !has_key(a:options, 'keepTreeOpen')
+    if !s:has_opt(a:options, 'keepTreeOpen')
         call s:closeTreeIfQuitOnOpen()
     endif
 
     exec "tabedit " . self.path.str({'format': 'Edit'})
 
-    if has_key(a:options, 'stayInCurrentTab') && a:options['stayInCurrentTab']
+    if s:has_opt(a:options, 'stayInCurrentTab')
         exec "tabnext " . currentTab
     endif
 
@@ -1803,14 +1803,14 @@ unlet s:TreeDirNode.openInNewTab
 function! s:TreeDirNode.openInNewTab(options)
     let currentTab = tabpagenr()
 
-    if !has_key(a:options, 'keepTreeOpen') || !a:options['keepTreeOpen']
+    if !s:has_opt(a:options, 'keepTreeOpen')
         call s:closeTreeIfQuitOnOpen()
     endif
 
     tabnew
     call s:initNerdTree(self.path.str())
 
-    if has_key(a:options, 'stayInCurrentTab') && a:options['stayInCurrentTab']
+    if s:has_opt(a:options, 'stayInCurrentTab')
         exec "tabnext " . currentTab
     endif
 endfunction
@@ -2482,7 +2482,7 @@ function! s:Path.str(...)
         let toReturn = self._str()
     endif
 
-    if has_key(options, 'escape') && options['escape']
+    if s:has_opt(options, 'escape')
         let toReturn = shellescape(toReturn)
     endif
 
@@ -2686,6 +2686,12 @@ function! s:findAndRevealPath()
     call s:putCursorInTreeWin()
     call b:NERDTreeRoot.reveal(p)
 endfunction
+
+" FUNCTION: s:has_opt(options, name) {{{2
+function! s:has_opt(options, name)
+    return has_key(a:options, a:name) && a:options[a:name] == 1
+endfunction
+
 "FUNCTION: s:initNerdTree(name) {{{2
 "Initialise the nerd tree for this tab. The tree will start in either the
 "given directory, or the directory associated with the given bookmark
