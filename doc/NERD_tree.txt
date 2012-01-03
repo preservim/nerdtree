@@ -991,22 +991,32 @@ NERDTreeAddKeyMap({options})                             *NERDTreeAddKeyMap()*
     "quickhelpText" - the text that will appear in the quickhelp (see
     |NERDTree-?|)
 
+    Additionally, a "scope" argument may be supplied. This constrains the
+    mapping so that it is only activated if the cursor is on a certain object.
+    That object is then passed into the handling method. Possible values are:
+        "FileNode" - a file node
+        "DirNode" - a directory node
+        "Node" - a file or directory node
+        "Bookmark" - A bookmark
+        "all" - the keymap is not constrained to any scope (default). When
+        thei is used, the handling function is not passed any arguments.
+
+
     Example: >
         call NERDTreeAddKeyMap({
-               \ 'key': 'b',
-               \ 'callback': 'NERDTreeEchoCurrentNode',
+               \ 'key': 'foo',
+               \ 'callback': 'NERDTreeCDHandler',
                \ 'quickhelpText': 'echo full path of current node' })
+               \ 'scope': 'DirNode'
 
-        function! NERDTreeEchoCurrentNode()
-            let n = g:NERDTreeFileNode.GetSelected()
-            if n != {}
-                echomsg 'Current node: ' . n.path.str()
-            endif
+        function! NERDTreeCDHandler(dirnode)
+            call a:dirnode.changeToDir()
         endfunction
 <
     This code should sit in a file like ~/.vim/nerdtree_plugin/mymapping.vim.
-    It adds a (rather useless) mapping on 'b' which echos the full path to the
-    current node.
+    It adds a (redundant) mapping on 'foo' which changes vim's CWD to that of
+    the current dir node. Note this mapping will only fire when the cursor is
+    on a directory node.
 
 ------------------------------------------------------------------------------
 4.2. Menu API                                                *NERDTreeMenuAPI*
@@ -1115,6 +1125,9 @@ The latest dev versions are on github
 
 ==============================================================================
 6. Changelog                                               *NERDTreeChangelog*
+
+Next
+    - add 'scope' argument to the key map API
 
 4.2.0
     - Add NERDTreeDirArrows option to make the UI use pretty arrow chars
