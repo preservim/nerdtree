@@ -1128,6 +1128,7 @@ The latest dev versions are on github
 
 Next
     - add 'scope' argument to the key map API
+    - add NERDTreeCustomIgnoreFilter hook - needs doc
 
 4.2.0
     - Add NERDTreeDirArrows option to make the UI use pretty arrow chars

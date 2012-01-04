@@ -2306,6 +2306,10 @@ function! s:Path.ignore()
         return 1
     endif
 
+    if exists("*NERDTreeCustomIgnoreFilter") && NERDTreeCustomIgnoreFilter(self)
+        return 1
+    endif
+
     return 0
 endfunction
 
