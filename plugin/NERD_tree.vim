@@ -521,10 +521,11 @@ endfunction
 "FUNCTION: KeyMap.invoke() {{{3
 "Call the KeyMaps callback function
 function! s:KeyMap.invoke(...)
+    let Callback = function(self.callback)
     if a:0
-        call function(self.callback)(a:1)
+        call Callback(a:1)
     else
-        call function(self.callback)()
+        call Callback()
     endif
 endfunction
 
