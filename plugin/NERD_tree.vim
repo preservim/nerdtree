@@ -492,7 +492,7 @@ endfunction
 "FUNCTION: KeyMap.FindFor(key, scope) {{{3
 function! s:KeyMap.FindFor(key, scope)
     for i in s:KeyMap.All()
-        if i.key == a:key && i.scope == a:scope
+         if i.key ==# a:key && i.scope ==# a:scope
             return i
         endif
     endfor
