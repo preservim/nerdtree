@@ -66,13 +66,28 @@ Then reload vim, run `:helptags`, and check out `:help NERD_tree.txt`.
 Faq
 ---
 
-Q. Can I have the nerdtree on every tab automatically?
+__Q. Can I have the nerdtree on every tab automatically?__
 
 A. Nope. If this is something you want then chances are you aren't using tabs
    and buffers as they were intended to be used. Read this
    http://stackoverflow.com/questions/102384/using-vims-tabs-like-buffers
 
-   If you are interested in this behavour then consider [vim-nerdtree-tabs](https://github.com/jistr/vim-nerdtree-tabs)
+   If you are interested in this behaviour then consider [vim-nerdtree-tabs](https://github.com/jistr/vim-nerdtree-tabs)
+
+__Q. How can I open a NERDTree automatically when vim starts up?__
+
+A. Stick this in your vimrc: `autocmd vimenter * NERDTree`
+
+__Q. How can I open a NERDTree automatically when vim starts up if no files were specified?__
+
+A. Stick this in your vimrc `autocmd vimenter * if !argc() | NERDTree | endif`
+
+__Q. How can I close vim if the only window left open is a NERDTree?__
+
+A. Stick this in your vimrc:
+
+   `autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTreeType") && b:NERDTreeType == "primary") | q | endif`
+
 
 Changelog
 ---------
