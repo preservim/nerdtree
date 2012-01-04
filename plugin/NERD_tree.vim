@@ -509,11 +509,13 @@ endfunction
 "FUNCTION: KeyMap.bind() {{{3
 function! s:KeyMap.bind()
     let mapkey = self.key
-    if mapkey =~ '^[CM]-'
+    if mapkey =~? '^\([CM]-\|middlerelease\|2-leftmouse\|leftrelease\)'
         let mapkey = '<' . mapkey . '>'
     endif
 
-    exec 'nnoremap <buffer> <silent> '. mapkey .' :call <SID>KeyMap_Invoke("'. self.key .'")<cr>'
+    let premap = self.key == "leftrelease" ? " <leftrelease>" : " "
+
+    exec 'nnoremap <buffer> <silent> '. mapkey . premap . ':call <SID>KeyMap_Invoke("'. self.key .'")<cr>'
 endfunction
 
 "FUNCTION: KeyMap.invoke() {{{3
@@ -3667,12 +3669,14 @@ endfunction
 
 "FUNCTION: s:bindMappings() {{{2
 function! s:bindMappings()
-    " set up mappings and commands for this buffer
-    nnoremap <silent> <buffer> <middlerelease> :call <SID>handleMiddleMouse()<cr>
-    nnoremap <silent> <buffer> <leftrelease> <leftrelease>:call <SID>handleLeftClick()<cr>
-    exec "nnoremap <silent> <buffer> <2-leftmouse> :call <SID>KeyMap_Invoke('". g:NERDTreeMapActivateNode ."')<cr>"
-
     let s = '<SNR>' . s:SID() . '_'
+
+    call NERDTreeAddKeyMap({ 'key': 'middlerelease', 'scope': "all", 'callback': s."handleMiddleMouse" })
+    call NERDTreeAddKeyMap({ 'key': 'leftrelease', 'scope': "all", 'callback': s."handleLeftClick" })
+    call NERDTreeAddKeyMap({ 'key': '2-leftmouse', 'scope': "Node", 'callback': s."activateNode" })
+    call NERDTreeAddKeyMap({ 'key': '2-leftmouse', 'scope': "Bookmark", 'callback': s."activateBookmark" })
+    call NERDTreeAddKeyMap({ 'key': '2-leftmouse', 'scope': "all", 'callback': s."activateAll" })
+
 
     call NERDTreeAddKeyMap({ 'key': g:NERDTreeMapActivateNode, 'scope': "Node", 'callback': s."activateNode" })
     call NERDTreeAddKeyMap({ 'key': g:NERDTreeMapActivateNode, 'scope': "Bookmark", 'callback': s."activateBookmark" })
