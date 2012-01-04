@@ -3876,7 +3876,7 @@ function! s:handleLeftClick()
         if (g:NERDTreeMouseMode ==# 2 && currentNode.path.isDirectory) || g:NERDTreeMouseMode ==# 3
             let char = strpart(startToCur, strlen(startToCur)-1, 1)
             if char !~# s:tree_markup_reg
-                call s:activateAll()
+                call s:activateNode(currentNode)
                 return
             endif
         endif
