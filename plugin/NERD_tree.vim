@@ -172,12 +172,6 @@ augroup NERDTree
 
     "disallow insert mode in the NERDTree
     exec "autocmd BufEnter ". s:NERDTreeBufName ."* stopinsert"
-
-    "cache bookmarks when vim loads
-    autocmd VimEnter * call s:Bookmark.CacheBookmarks(0)
-
-    "load all nerdtree plugins after vim starts
-    autocmd VimEnter * runtime! nerdtree_plugin/**/*.vim
 augroup END
 
 if g:NERDTreeHijackNetrw
@@ -2843,6 +2837,13 @@ function! s:nextBufferName()
     let s:next_buffer_number += 1
     return name
 endfunction
+" FUNCTION: s:postSourceActions() {{{2
+function! s:postSourceActions()
+    call s:Bookmark.CacheBookmarks(0)
+
+    "load all nerdtree plugins
+    runtime! nerdtree_plugin/**/*.vim
+endfunction
 " FUNCTION: s:tabpagevar(tabnr, var) {{{2
 function! s:tabpagevar(tabnr, var)
     let currentTab = tabpagenr()
@@ -4113,6 +4114,8 @@ function! s:upDirCurrentRootClosed()
     call s:upDir(0)
 endfunction
 
+" Post Source Actions {{{1
+call s:postSourceActions()
 
 "reset &cpo back to users setting
 let &cpo = s:old_cpo
