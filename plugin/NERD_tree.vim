@@ -149,7 +149,12 @@ endif
 let s:NERDTreeBufName = 'NERD_tree_'
 
 let s:tree_wid = 2
-let s:tree_markup_reg = '^[ `|]*[\-+~▾▸ ]\+'
+
+if g:NERDTreeDirArrows
+    let s:tree_markup_reg = '^ *\([▾▸] \)\?'
+else
+    let s:tree_markup_reg = '^[ `|]*[\-+~]'
+endif
 let s:tree_up_dir_line = '.. (up a dir)'
 
 "the number to add to the nerd tree buffer name to make the buf name unique
@@ -2532,6 +2537,12 @@ function! s:Path._strForEdit()
     "return a relative path if we can
     if stridx(p, cwd) ==# 0
         let p = strpart(p, strlen(cwd))
+
+        "handle the edge case where the file begins with a + (vim interprets
+        "the +foo in `:e +foo` as an option to :edit)
+        if p[0] == "+"
+            let p = '\' . p
+        endif
     endif
 
     if p ==# ''
