@@ -3666,7 +3666,7 @@ endfunction
 "FUNCTION: s:activateBookmark() {{{2
 "handle the user activating a bookmark
 function! s:activateBookmark(bm)
-    call a:bm.activate(0)
+    call a:bm.activate()
 endfunction
 
 "FUNCTION: s:bindMappings() {{{2
