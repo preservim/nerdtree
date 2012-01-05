@@ -780,6 +780,14 @@ For example if you put the following line in your vimrc: >
 <
 then all files ending in .vim or ~ will be ignored.
 
+There are 2 magic flags that can be appended to the end of each regular
+expression to specify that the regex should match only files or only dirs.
+These flags are "[[dir]]" and "[[file]]". Example: >
+    let NERDTreeIgnore=['.d$[[dir]]', '.o$[[file]]']
+<
+This will cause all dirs ending in ".d" to be ignored and all files ending in
+".o" to be ignored.
+
 Note: to tell the NERD tree not to ignore any files you must use the following
 line: >
     let NERDTreeIgnore=[]
@@ -1129,6 +1137,7 @@ The latest dev versions are on github
 Next
     - add 'scope' argument to the key map API
     - add NERDTreeCustomIgnoreFilter hook - needs doc
+    - add magic [[dir]] and [[file]] flags to NERDTreeIgnore
 
 4.2.0
     - Add NERDTreeDirArrows option to make the UI use pretty arrow chars

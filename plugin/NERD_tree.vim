@@ -2291,19 +2291,17 @@ endfunction
 "FUNCTION: Path.ignore() {{{3
 "returns true if this path should be ignored
 function! s:Path.ignore()
-    let lastPathComponent = self.getLastPathComponent(0)
-
     "filter out the user specified paths to ignore
     if b:NERDTreeIgnoreEnabled
         for i in g:NERDTreeIgnore
-            if lastPathComponent =~# i
+            if self._ignorePatternMatches(i)
                 return 1
             endif
         endfor
     endif
 
     "dont show hidden files unless instructed to
-    if b:NERDTreeShowHidden ==# 0 && lastPathComponent =~# '^\.'
+    if b:NERDTreeShowHidden ==# 0 && self.getLastPathComponent(0) =~# '^\.'
         return 1
     endif
 
@@ -2318,6 +2316,24 @@ function! s:Path.ignore()
     return 0
 endfunction
 
+"FUNCTION: Path._ignorePatternMatches(pattern) {{{3
+"returns true if this path matches the given ignore pattern
+function! s:Path._ignorePatternMatches(pattern)
+    let pat = a:pattern
+    if strpart(pat,len(pat)-7) == '[[dir]]'
+        if !self.isDirectory
+            return 0
+        endif
+        let pat = strpart(pat,0, len(pat)-7)
+    elseif strpart(pat,len(pat)-8) == '[[file]]'
+        if self.isDirectory
+            return 0
+        endif
+        let pat = strpart(pat,0, len(pat)-8)
+    endif
+
+    return self.getLastPathComponent(0) =~# pat
+endfunction
 "FUNCTION: Path.isUnder(path) {{{3
 "return 1 if this path is somewhere under the given path in the filesystem.
 "
