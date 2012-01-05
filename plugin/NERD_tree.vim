@@ -2522,20 +2522,18 @@ endfunction
 "Return: the string for this path that is suitable to be used with the :edit
 "command
 function! s:Path._strForEdit()
-    let p = self.str({'format': 'UI'})
-    let cwd = getcwd()
-
-    if s:running_windows
-        let p = tolower(self.str())
-        let cwd = tolower(getcwd())
-    endif
-
-    let p = escape(p, s:escape_chars)
-
-    let cwd = cwd . s:Path.Slash()
+    let p = escape(self.str({'format': 'UI'}), s:escape_chars)
+    let cwd = getcwd() . s:Path.Slash()
 
     "return a relative path if we can
-    if stridx(p, cwd) ==# 0
+    let isRelative = 0
+    if s:running_windows
+        let isRelative = stridx(tolower(p), tolower(cwd)) == 0
+    else
+        let isRelative = stridx(p, cwd) == 0
+    endif
+
+    if isRelative
         let p = strpart(p, strlen(cwd))
 
         "handle the edge case where the file begins with a + (vim interprets
@@ -2550,7 +2548,6 @@ function! s:Path._strForEdit()
     endif
 
     return p
-
 endfunction
 "FUNCTION: Path._strForGlob() {{{3
 function! s:Path._strForGlob()
