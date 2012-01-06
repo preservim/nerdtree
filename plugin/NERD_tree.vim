@@ -1222,7 +1222,7 @@ endfunction
 "           new tab)
 "  'reuse': if a window is displaying the file then jump the cursor there
 "  'keepopen': dont close the tree window
-"  'preview': open the file, but keep the cursor in the tree win
+"  'stay': open the file, but keep the cursor in the tree win
 "
 function! s:TreeFileNode.open(...)
     let opts = a:0 ? a:1 : {}
@@ -1246,11 +1246,11 @@ function! s:TreeFileNode.open(...)
         call self._open()
     endif
 
-    if !s:has_opt(opts, 'forceKeepWinOpen')
+    if !s:has_opt(opts, 'keepopen')
         call s:closeTreeIfQuitOnOpen()
     endif
 
-    if s:has_opt(opts, 'preview')
+    if s:has_opt(opts, 'stay')
         call s:exec('normal ' . currentTab . 'gt')
         call s:exec(bufwinnr(currentBuf) . 'wincmd w')
     endif
@@ -1847,7 +1847,7 @@ endfunction
 "A dictionary containing the following keys (all optional):
 "  'split': 't' if the tree should be opened in a new tab
 "  'keepopen': dont close the tree window
-"  'preview': open the file, but keep the cursor in the tree win
+"  'stay': open the file, but keep the cursor in the tree win
 "
 unlet s:TreeDirNode.open
 function! s:TreeDirNode.open(...)
@@ -1859,12 +1859,12 @@ function! s:TreeDirNode.open(...)
 
         call self._openInNewTab()
 
-        if s:has_opt(opts, 'preview')
+        if s:has_opt(opts, 'stay')
             call s:exec('normal ' . currentTab . 'gt')
             call s:exec(bufwinnr(currentBuf) . 'wincmd w')
         endif
 
-        if !s:has_opt(opts, 'keepTreeOpen')
+        if !s:has_opt(opts, 'keepopen')
             call s:closeTreeIfQuitOnOpen()
         endif
 
@@ -4135,17 +4135,17 @@ endfunction
 
 "FUNCTION: s:previewNodeCurrent(node) {{{2
 function! s:previewNodeCurrent(node)
-    call a:node.open({'preview': 1})
+    call a:node.open({'stay': 1})
 endfunction
 
 "FUNCTION: s:previewNodeHSplit(node) {{{2
 function! s:previewNodeHSplit(node)
-    call a:node.open({'preview': 1, 'split': 'h'})
+    call a:node.open({'stay': 1, 'split': 'h'})
 endfunction
 
 "FUNCTION: s:previewNodeVSplit(node) {{{2
 function! s:previewNodeVSplit(node)
-    call a:node.open({'preview': 1, 'split': 'v'})
+    call a:node.open({'stay': 1, 'split': 'v'})
 endfunction
 
 
