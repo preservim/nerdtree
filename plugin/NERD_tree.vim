@@ -2110,6 +2110,7 @@ endfunction
 function! s:Path.extractDriveLetter(fullpath)
     if s:running_windows
         if a:fullpath =~ '^\(\\\\\|\/\/\)'
+            "For network shares, the 'drive' consists of the first two parts of the path, i.e. \\boxname\share
             let self.drive = substitute(a:fullpath, '^\(\(\\\\\|\/\/\)[^\\\/]*\(\\\|\/\)[^\\\/]*\).*', '\1', '')
             let self.drive = substitute(self.drive, '/', '\', "g")
         else
