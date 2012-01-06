@@ -3486,25 +3486,6 @@ function! s:jumpToSibling(currentNode, forward)
     endif
 endfunction
 
-
-
-" FUNCTION: s:openEntrySplit(vertical, forceKeepWindowOpen) {{{2
-function! s:openEntrySplit(vertical, forceKeepWindowOpen)
-    let treenode = s:TreeFileNode.GetSelected()
-    if treenode != {}
-        if a:vertical
-            call treenode.openVSplit()
-        else
-            call treenode.openSplit()
-        endif
-        if !a:forceKeepWindowOpen
-            call s:closeTreeIfQuitOnOpen()
-        endif
-    else
-        call s:echo("select a node first")
-    endif
-endfunction
-
 "FUNCTION: s:promptToDelBuffer(bufnum, msg){{{2
 "prints out the given msg and, if the user responds by pushing 'y' then the
 "buffer with the given bufnum is deleted
@@ -4035,10 +4016,9 @@ function! s:handleMiddleMouse()
     if curNode.path.isDirectory
         call s:openExplorer(curNode)
     else
-        call s:openEntrySplit(0,0)
+        call curNode.open({'split': 'h'})
     endif
 endfunction
-
 
 " FUNCTION: s:jumpToFirstChild() {{{2
 " wrapper for the jump to child method
