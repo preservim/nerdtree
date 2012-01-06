@@ -3121,9 +3121,9 @@ function! s:closeTree()
 
     if winnr("$") != 1
         if winnr() == s:getTreeWinNum()
-            wincmd p
+            call s:exec("wincmd p")
             let bufnr = bufnr("")
-            wincmd p
+            call s:exec("wincmd p")
         else
             let bufnr = bufnr("")
         endif
