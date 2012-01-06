@@ -192,13 +192,15 @@ endif
 "============================================================
 let s:Bookmark = {}
 " FUNCTION: Bookmark.activate() {{{3
-function! s:Bookmark.activate()
+function! s:Bookmark.activate(...)
+    let opts = a:0 ? a:1 : {}
+
     if self.path.isDirectory
         call self.toRoot()
     else
         if self.validate()
             let n = s:TreeFileNode.New(self.path)
-            call n.open()
+            call n.open(opts)
             call s:closeTreeIfQuitOnOpen()
         endif
     endif
