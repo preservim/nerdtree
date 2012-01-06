@@ -1574,10 +1574,11 @@ function! s:TreeDirNode.AbsoluteTreeRoot()
     endwhile
     return currentNode
 endfunction
-"FUNCTION: TreeDirNode.activate(forceKeepWinOpen) {{{3
+"FUNCTION: TreeDirNode.activate([options]) {{{3
 unlet s:TreeDirNode.activate
-function! s:TreeDirNode.activate(forceKeepWinOpen)
-    call self.toggleOpen()
+function! s:TreeDirNode.activate(...)
+    let opts = a:0 ? a:1 : {}
+    call self.toggleOpen(opts)
     call s:renderView()
     call self.putCursorHere(0, 0)
 endfunction
@@ -1838,17 +1839,42 @@ function! s:TreeDirNode.New(path)
 
     return newTreeNode
 endfunction
-"FUNCTION: TreeDirNode.open() {{{3
-"Reads in all this nodes children
+"FUNCTION: TreeDirNode.open([opts]) {{{3
+"Open the dir in the current tree or in a new tree elsewhere.
 "
-"Return: the number of child nodes read
+"Args:
+"
+"A dictionary containing the following keys (all optional):
+"  'split': 't' if the tree should be opened in a new tab
+"  'keepopen': dont close the tree window
+"  'preview': open the file, but keep the cursor in the tree win
+"
 unlet s:TreeDirNode.open
 function! s:TreeDirNode.open(...)
-    let self.isOpen = 1
-    if self.children ==# []
-        return self._initChildren(0)
+    let opts = a:0 ? a:1 : {}
+
+    if has_key(opts, 'split') && opts['split'] == 't'
+        let currentBuf = bufnr("")
+        let currentTab = tabpagenr()
+
+        call self._openInNewTab()
+
+        if s:has_opt(opts, 'preview')
+            call s:exec('normal ' . currentTab . 'gt')
+            call s:exec(bufwinnr(currentBuf) . 'wincmd w')
+        endif
+
+        if !s:has_opt(opts, 'keepTreeOpen')
+            call s:closeTreeIfQuitOnOpen()
+        endif
+
     else
-        return 0
+        let self.isOpen = 1
+        if self.children ==# []
+            return self._initChildren(0)
+        else
+            return 0
+        endif
     endif
 endfunction
 
@@ -1868,18 +1894,14 @@ endfunction
 "FUNCTION: TreeDirNode.openInNewTab(options) {{{3
 unlet s:TreeDirNode.openInNewTab
 function! s:TreeDirNode.openInNewTab(options)
-    let currentTab = tabpagenr()
-
-    if !s:has_opt(a:options, 'keepTreeOpen')
-        call s:closeTreeIfQuitOnOpen()
-    endif
-
+    call s:deprecated('TreeDirNode.openInNewTab', 'is deprecated, use open() instead')
+    call self.open({'split': 't'})
+endfunction
+"FUNCTION: TreeDirNode._openInNewTab() {{{3
+unlet s:TreeDirNode._openInNewTab
+function! s:TreeDirNode._openInNewTab()
     tabnew
     call s:initNerdTree(self.path.str())
-
-    if s:has_opt(a:options, 'stayInCurrentTab')
-        exec "tabnext " . currentTab
-    endif
 endfunction
 "FUNCTION: TreeDirNode.openRecursively() {{{3
 "Opens this treenode and all of its children whose paths arent 'ignored'
@@ -2019,13 +2041,14 @@ function! s:TreeDirNode.sortChildren()
     call sort(self.children, CompareFunc)
 endfunction
 
-"FUNCTION: TreeDirNode.toggleOpen() {{{3
+"FUNCTION: TreeDirNode.toggleOpen([options]) {{{3
 "Opens this directory if it is closed and vice versa
-function! s:TreeDirNode.toggleOpen()
+function! s:TreeDirNode.toggleOpen(...)
+    let opts = a:0 ? a:1 : {}
     if self.isOpen ==# 1
         call self.close()
     else
-        call self.open()
+        call self.open(opts)
     endif
 endfunction
 
