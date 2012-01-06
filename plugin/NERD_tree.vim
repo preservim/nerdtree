@@ -2076,7 +2076,7 @@ let s:Path = {}
 function! s:Path.AbsolutePathFor(str)
     let prependCWD = 0
     if s:running_windows
-        let prependCWD = a:str !~# '^.:\(\\\|\/\)'
+        let prependCWD = a:str !~# '^.:\(\\\|\/\)' && a:str !~# '^\(\\\\\|\/\/\)'
     else
         let prependCWD = a:str !~# '^/'
     endif
@@ -2305,7 +2305,13 @@ endfunction
 "If running windows, cache the drive letter for this path
 function! s:Path.extractDriveLetter(fullpath)
     if s:running_windows
-        let self.drive = substitute(a:fullpath, '\(^[a-zA-Z]:\).*', '\1', '')
+        if a:fullpath =~ '^\(\\\\\|\/\/\)'
+            "For network shares, the 'drive' consists of the first two parts of the path, i.e. \\boxname\share
+            let self.drive = substitute(a:fullpath, '^\(\(\\\\\|\/\/\)[^\\\/]*\(\\\|\/\)[^\\\/]*\).*', '\1', '')
+            let self.drive = substitute(self.drive, '/', '\', "g")
+        else
+            let self.drive = substitute(a:fullpath, '\(^[a-zA-Z]:\).*', '\1', '')
+        endif
     else
         let self.drive = ''
     endif
@@ -2508,7 +2514,7 @@ function! s:Path.readInfoFromDisk(fullpath)
     let lastPathComponent = self.getLastPathComponent(0)
 
     "get the path to the new node with the parent dir fully resolved
-    let hardPath = resolve(self.strTrunk()) . '/' . lastPathComponent
+    let hardPath = resolve(self.strTrunk()) . lastPathComponent
 
     "if  the last part of the path is a symlink then flag it as such
     let self.isSymLink = (resolve(hardPath) != hardPath)
@@ -2686,9 +2692,13 @@ function! s:Path._str()
 endfunction
 
 "FUNCTION: Path.strTrunk() {{{3
-"Gets the path without the last segment on the end.
+"Gets the path without the last segment on the end, always with an endslash
 function! s:Path.strTrunk()
-    return self.drive . '/' . join(self.pathSegments[0:-2], '/')
+    let toReturn = self.drive . '/' . join(self.pathSegments[0:-2], '/')
+    if toReturn !~# '\/$'
+        let toReturn .= '/'
+    endif
+    return toReturn
 endfunction
 
 " FUNCTION: Path.tabnr() {{{3
@@ -2722,6 +2732,9 @@ function! s:Path.WinToUnixPath(pathstr)
 
     "remove the x:\ of the front
     let toReturn = substitute(toReturn, '^.*:\(\\\|/\)\?', '/', "")
+
+    "remove the \\ network share from the front
+    let toReturn = substitute(toReturn, '^\(\\\\\|\/\/\)[^\\\/]*\(\\\|\/\)[^\\\/]*\(\\\|\/\)\?', '/', "")
 
     "convert all \ chars to /
     let toReturn = substitute(toReturn, '\', '/', "g")
