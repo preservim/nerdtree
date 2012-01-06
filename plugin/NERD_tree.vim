@@ -4229,7 +4229,7 @@ function! s:upDirCurrentRootClosed()
     call s:upDir(0)
 endfunction
 
-" Post Source Actions {{{1
+" SECTION: Post Source Actions {{{1
 call s:postSourceActions()
 
 "reset &cpo back to users setting
