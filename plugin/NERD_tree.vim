@@ -193,17 +193,7 @@ endif
 let s:Bookmark = {}
 " FUNCTION: Bookmark.activate() {{{3
 function! s:Bookmark.activate(...)
-    let opts = a:0 ? a:1 : {}
-
-    if self.path.isDirectory
-        call self.toRoot()
-    else
-        if self.validate()
-            let n = s:TreeFileNode.New(self.path)
-            call n.open(opts)
-            call s:closeTreeIfQuitOnOpen()
-        endif
-    endif
+    call self.open(a:0 ? a:1 : {})
 endfunction
 " FUNCTION: Bookmark.AddBookmark(name, path) {{{3
 " Class method to add a new bookmark to the list, if a previous bookmark exists
@@ -388,6 +378,33 @@ function! s:Bookmark.New(name, path)
     let newBookmark.name = a:name
     let newBookmark.path = a:path
     return newBookmark
+endfunction
+" FUNCTION: Bookmark.open([options]) {{{3
+"Args:
+"A dictionary containing the following keys (all optional):
+"  'split': Specifies whether the node should be opened in new split/tab or in
+"           the previous window. Can be either 'v' or 'h' or 't' (for open in
+"           new tab)
+"  'reuse': if a window is displaying the file then jump the cursor there
+"  'keepopen': dont close the tree window
+"  'stay': open the file, but keep the cursor in the tree win
+"
+function! s:Bookmark.open(...)
+    let opts = a:0 ? a:1 : {}
+
+    if self.path.isDirectory
+        if has_key(opts, 'split')
+            let n = s:TreeDirNode.New(self.path)
+            call n.open(opts)
+        else
+            call self.toRoot()
+        endif
+    else
+        if self.validate()
+            let n = s:TreeFileNode.New(self.path)
+            call n.open(opts)
+        endif
+    endif
 endfunction
 " FUNCTION: Bookmark.openInNewTab(options) {{{3
 " Create a new bookmark object with the given name and path object
@@ -3817,6 +3834,9 @@ function! s:bindMappings()
     call NERDTreeAddKeyMap({ 'key': g:NERDTreeMapOpenSplit, 'scope': "Node", 'callback': s."openHSplit" })
     call NERDTreeAddKeyMap({ 'key': g:NERDTreeMapOpenVSplit, 'scope': "Node", 'callback': s."openVSplit" })
 
+    call NERDTreeAddKeyMap({ 'key': g:NERDTreeMapOpenSplit, 'scope': "Bookmark", 'callback': s."openHSplit" })
+    call NERDTreeAddKeyMap({ 'key': g:NERDTreeMapOpenVSplit, 'scope': "Bookmark", 'callback': s."openVSplit" })
+
     call NERDTreeAddKeyMap({ 'key': g:NERDTreeMapPreview, 'scope': "Node", 'callback': s."previewNodeCurrent" })
     call NERDTreeAddKeyMap({ 'key': g:NERDTreeMapPreviewVSplit, 'scope': "Node", 'callback': s."previewNodeVSplit" })
     call NERDTreeAddKeyMap({ 'key': g:NERDTreeMapPreviewSplit, 'scope': "Node", 'callback': s."previewNodeHSplit" })
@@ -4092,14 +4112,14 @@ function! s:openBookmark(name)
     endif
 endfunction
 
-" FUNCTION: s:openHSplit(node) {{{2
-function! s:openHSplit(node)
-    call a:node.activate({'split': 'h'})
+" FUNCTION: s:openHSplit(target) {{{2
+function! s:openHSplit(target)
+    call a:target.activate({'split': 'h'})
 endfunction
 
-" FUNCTION: s:openVSplit(node) {{{2
-function! s:openVSplit(node)
-    call a:node.activate({'split': 'v'})
+" FUNCTION: s:openVSplit(target) {{{2
+function! s:openVSplit(target)
+    call a:target.activate({'split': 'v'})
 endfunction
 
 " FUNCTION: s:openExplorer(node) {{{2
