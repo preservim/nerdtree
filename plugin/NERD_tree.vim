@@ -1663,13 +1663,7 @@ endfunction
 "FUNCTION: TreeDirNode.open([opts]) {{{3
 "Open the dir in the current tree or in a new tree elsewhere.
 "
-"Args:
-"
-"A dictionary containing the following keys (all optional):
-"  'where': 't' if the tree should be opened in a new tab
-"  'keepopen': dont close the tree window
-"  'stay': open the file, but keep the cursor in the tree win
-"
+"If opening in the current tree, return the number of cached nodes.
 unlet s:TreeDirNode.open
 function! s:TreeDirNode.open(...)
     let opts = a:0 ? a:1 : {}
