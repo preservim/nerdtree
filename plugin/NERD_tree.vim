@@ -4167,7 +4167,7 @@ endfunction
 
 " FUNCTION: s:openInNewTabSilent(target) {{{2
 function! s:openInNewTabSilent(target)
-    call a:target.activate({'where': 't', 'stayInCurrentTab': 1})
+    call a:target.activate({'where': 't', 'stay': 1})
 endfunction
 
 " FUNCTION: s:openNodeRecursively(node) {{{2
