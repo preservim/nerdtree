@@ -382,9 +382,9 @@ endfunction
 " FUNCTION: Bookmark.open([options]) {{{3
 "Args:
 "A dictionary containing the following keys (all optional):
-"  'split': Specifies whether the node should be opened in new split/tab or in
-"           the previous window. Can be either 'v' or 'h' or 't' (for open in
-"           new tab)
+"  'where': Specifies whether the node should be opened in new split/tab or in
+"           the previous window. Can be either 'v' (vertical split), 'h'
+"           (horizontal split), 't' (new tab) or 'p' (previous window).
 "  'reuse': if a window is displaying the file then jump the cursor there
 "  'keepopen': dont close the tree window
 "  'stay': open the file, but keep the cursor in the tree win
@@ -392,7 +392,7 @@ endfunction
 function! s:Bookmark.open(...)
     let opts = a:0 ? a:1 : {}
 
-    if self.path.isDirectory && !has_key(opts, 'split')
+    if self.path.isDirectory && !has_key(opts, 'where')
         call self.toRoot()
     else
         let opener = s:Opener.New(self.path, opts)
@@ -1227,18 +1227,18 @@ endfunction
 "Open this node in a new window
 function! s:TreeFileNode.openSplit()
     call s:deprecated('TreeFileNode.openSplit', 'is deprecated, use .open() instead.')
-    call self.open({'split': 'h'})
+    call self.open({'where': 'h'})
 endfunction
 "FUNCTION: TreeFileNode.openVSplit() {{{3
 "Open this node in a new vertical window
 function! s:TreeFileNode.openVSplit()
     call s:deprecated('TreeFileNode.openVSplit', 'is deprecated, use .open() instead.')
-    call self.open({'split': 'v'})
+    call self.open({'where': 'v'})
 endfunction
 "FUNCTION: TreeFileNode.openInNewTab(options) {{{3
 function! s:TreeFileNode.openInNewTab(options)
     echomsg 'TreeFileNode.openInNewTab is deprecated'
-    call self.open(extend({'split': 't'}, a:options))
+    call self.open(extend({'where': 't'}, a:options))
 endfunction
 "FUNCTION: TreeFileNode.putCursorHere(isJump, recurseUpward){{{3
 "Places the cursor on the line number this node is rendered on
@@ -1666,7 +1666,7 @@ endfunction
 "Args:
 "
 "A dictionary containing the following keys (all optional):
-"  'split': 't' if the tree should be opened in a new tab
+"  'where': 't' if the tree should be opened in a new tab
 "  'keepopen': dont close the tree window
 "  'stay': open the file, but keep the cursor in the tree win
 "
@@ -1674,7 +1674,7 @@ unlet s:TreeDirNode.open
 function! s:TreeDirNode.open(...)
     let opts = a:0 ? a:1 : {}
 
-    if has_key(opts, 'split') && !empty(opts['split'])
+    if has_key(opts, 'where') && !empty(opts['where'])
         let opener = s:Opener.New(self.path, opts)
         call opener.open(self)
     else
@@ -1691,12 +1691,12 @@ endfunction
 " opens an explorer window for this node in the previous window (could be a
 " nerd tree or a netrw)
 function! s:TreeDirNode.openExplorer()
-    call self.open({'split': 'p'})
+    call self.open({'where': 'p'})
 endfunction
 "FUNCTION: TreeDirNode.openInNewTab(options) {{{3
 function! s:TreeDirNode.openInNewTab(options)
     call s:deprecated('TreeDirNode.openInNewTab', 'is deprecated, use open() instead')
-    call self.open({'split': 't'})
+    call self.open({'where': 't'})
 endfunction
 "FUNCTION: TreeDirNode._openInNewTab() {{{3
 function! s:TreeDirNode._openInNewTab()
@@ -1875,22 +1875,22 @@ let s:Opener = {}
 "FUNCTION: Opener._gotoTargetWin() {{{3
 function! s:Opener._gotoTargetWin()
     if b:NERDTreeType ==# "secondary"
-        if self._split == 'v'
+        if self._where == 'v'
             vsplit
-        elseif self._split == 'h'
+        elseif self._where == 'h'
             split
-        elseif self._split == 't'
+        elseif self._where == 't'
             tabnew
         endif
     else
 
-        if self._split == 'v'
+        if self._where == 'v'
             call self._newVSplit()
-        elseif self._split == 'h'
+        elseif self._where == 'h'
             call self._newSplit()
-        elseif self._split == 't'
+        elseif self._where == 't'
             tabnew
-        elseif self._split == 'p'
+        elseif self._where == 'p'
             call self._previousWindow()
         endif
     endif
@@ -1904,7 +1904,7 @@ endfunction
 "a:opts:
 "
 "A dictionary containing the following keys (all optional):
-"  'split': Specifies whether the node should be opened in new split/tab or in
+"  'where': Specifies whether the node should be opened in new split/tab or in
 "           the previous window. Can be either 'v' or 'h' or 't' (for open in
 "           new tab)
 "  'reuse': if a window is displaying the file then jump the cursor there
@@ -1917,7 +1917,7 @@ function! s:Opener.New(path, opts)
     let newObj._stay = s:has_opt(a:opts, 'stay')
     let newObj._reuse = s:has_opt(a:opts, 'reuse')
     let newObj._keepopen = s:has_opt(a:opts, 'keepopen')
-    let newObj._split = has_key(a:opts, 'split') ? a:opts['split'] : ''
+    let newObj._where = has_key(a:opts, 'where') ? a:opts['where'] : ''
     call newObj._saveCursorPos()
 
     return newObj
@@ -2038,11 +2038,11 @@ function! s:Opener._openDirectory(node)
         call s:initNerdTreeInPlace(a:node.path.str())
     else
         call self._gotoTargetWin()
-        if empty(self._split)
+        if empty(self._where)
             call a:node.makeRoot()
             call s:renderView()
             call a:node.putCursorHere(0, 0)
-        elseif self._split == 't'
+        elseif self._where == 't'
             call s:initNerdTree(a:node.path.str())
         else
             call s:initNerdTreeInPlace(a:node.path.str())
@@ -3836,13 +3836,13 @@ endfunction
 "FUNCTION: s:activateFileNode() {{{2
 "handle the user activating a tree node
 function! s:activateFileNode(node)
-    call a:node.activate({'reuse': 1, 'split': 'p'})
+    call a:node.activate({'reuse': 1, 'where': 'p'})
 endfunction
 
 "FUNCTION: s:activateBookmark() {{{2
 "handle the user activating a bookmark
 function! s:activateBookmark(bm)
-    call a:bm.activate(!a:bm.path.isDirectory ? {'split': 'p'} : {})
+    call a:bm.activate(!a:bm.path.isDirectory ? {'where': 'p'} : {})
 endfunction
 
 "FUNCTION: s:bindMappings() {{{2
@@ -4082,7 +4082,7 @@ function! s:handleMiddleMouse()
     if curNode.path.isDirectory
         call s:openExplorer(curNode)
     else
-        call curNode.open({'split': 'h'})
+        call curNode.open({'where': 'h'})
     endif
 endfunction
 
@@ -4141,18 +4141,18 @@ function! s:openBookmark(name)
     if targetNode.path.isDirectory
         call targetNode.openExplorer()
     else
-        call targetNode.open({'split': 'p'})
+        call targetNode.open({'where': 'p'})
     endif
 endfunction
 
 " FUNCTION: s:openHSplit(target) {{{2
 function! s:openHSplit(target)
-    call a:target.activate({'split': 'h'})
+    call a:target.activate({'where': 'h'})
 endfunction
 
 " FUNCTION: s:openVSplit(target) {{{2
 function! s:openVSplit(target)
-    call a:target.activate({'split': 'v'})
+    call a:target.activate({'where': 'v'})
 endfunction
 
 " FUNCTION: s:openExplorer(node) {{{2
@@ -4162,12 +4162,12 @@ endfunction
 
 " FUNCTION: s:openInNewTab(target) {{{2
 function! s:openInNewTab(target)
-    call a:target.activate({'split': 't'})
+    call a:target.activate({'where': 't'})
 endfunction
 
 " FUNCTION: s:openInNewTabSilent(target) {{{2
 function! s:openInNewTabSilent(target)
-    call a:target.activate({'split': 't', 'stayInCurrentTab': 1})
+    call a:target.activate({'where': 't', 'stayInCurrentTab': 1})
 endfunction
 
 " FUNCTION: s:openNodeRecursively(node) {{{2
@@ -4181,17 +4181,17 @@ endfunction
 
 "FUNCTION: s:previewNodeCurrent(node) {{{2
 function! s:previewNodeCurrent(node)
-    call a:node.open({'stay': 1, 'split': 'p'})
+    call a:node.open({'stay': 1, 'where': 'p'})
 endfunction
 
 "FUNCTION: s:previewNodeHSplit(node) {{{2
 function! s:previewNodeHSplit(node)
-    call a:node.open({'stay': 1, 'split': 'h'})
+    call a:node.open({'stay': 1, 'where': 'h'})
 endfunction
 
 "FUNCTION: s:previewNodeVSplit(node) {{{2
 function! s:previewNodeVSplit(node)
-    call a:node.open({'stay': 1, 'split': 'v'})
+    call a:node.open({'stay': 1, 'where': 'v'})
 endfunction
 
 
