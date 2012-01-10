@@ -3816,6 +3816,8 @@ function! s:bindMappings()
 
     call NERDTreeAddKeyMap({ 'key': g:NERDTreeMapOpenSplit, 'scope': "Node", 'callback': s."openHSplit" })
     call NERDTreeAddKeyMap({ 'key': g:NERDTreeMapOpenVSplit, 'scope': "Node", 'callback': s."openVSplit" })
+    call NERDTreeAddKeyMap({ 'key': g:NERDTreeMapOpenSplit, 'scope': "Bookmark", 'callback': s."openBookmarkHSplit" })
+    call NERDTreeAddKeyMap({ 'key': g:NERDTreeMapOpenVSplit, 'scope': "Bookmark", 'callback': s."openBookmarkVSplit" })
 
     call NERDTreeAddKeyMap({ 'key': g:NERDTreeMapPreview, 'scope': "Node", 'callback': s."previewNodeCurrent" })
     call NERDTreeAddKeyMap({ 'key': g:NERDTreeMapPreviewVSplit, 'scope': "Node", 'callback': s."previewNodeVSplit" })
@@ -4090,6 +4092,16 @@ function! s:openBookmark(name)
     else
         call targetNode.open()
     endif
+endfunction
+
+" FUNCTION: s:openBookmarkHSplit(bm) {{{2
+function! s:openBookmarkHSplit(bm)
+    call s:openHSplit(s:TreeFileNode.New(a:bm.path))
+endfunction
+
+" FUNCTION: s:openBookmarkVSplit(bm) {{{2
+function! s:openBookmarkVSplit(bm)
+    call s:openVSplit(s:TreeFileNode.New(a:bm.path))
 endfunction
 
 " FUNCTION: s:openHSplit(node) {{{2
