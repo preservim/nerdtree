@@ -1688,6 +1688,7 @@ function! s:TreeDirNode.openExplorer()
     call self.open({'where': 'p'})
 endfunction
 "FUNCTION: TreeDirNode.openInNewTab(options) {{{3
+unlet s:TreeDirNode.openInNewTab
 function! s:TreeDirNode.openInNewTab(options)
     call s:deprecated('TreeDirNode.openInNewTab', 'is deprecated, use open() instead')
     call self.open({'where': 't'})
