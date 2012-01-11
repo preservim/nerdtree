@@ -3918,7 +3918,6 @@ endfunction
 
 "FUNCTION: s:bindMappings() {{{2
 function! s:bindMappings()
-    "bind all the user custom maps
     call s:KeyMap.BindAll()
 
     command! -buffer -nargs=? Bookmark :call <SID>bookmarkNode('<args>')
