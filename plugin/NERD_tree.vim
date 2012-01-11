@@ -2521,6 +2521,16 @@ function! s:Path.Slash()
     return s:running_windows ? '\' : '/'
 endfunction
 
+"FUNCTION: Path.Resolve() {{{3
+"Invoke the vim resolve() function and return the result
+"This is necessary because in some versions of vim resolve() removes trailing
+"slashes while in other versions it doesn't.  This always removes the trailing
+"slash
+function! s:Path.Resolve(path)
+    let tmp = resolve(a:path)
+    return tmp =~# '/$' ? substitute(tmp, '/$', '', '') : tmp
+endfunction
+
 "FUNCTION: Path.readInfoFromDisk(fullpath) {{{3
 "
 "
@@ -2555,12 +2565,12 @@ function! s:Path.readInfoFromDisk(fullpath)
     let lastPathComponent = self.getLastPathComponent(0)
 
     "get the path to the new node with the parent dir fully resolved
-    let hardPath = resolve(self.strTrunk()) . '/' . lastPathComponent
+    let hardPath = s:Path.Resolve(self.strTrunk()) . '/' . lastPathComponent
 
     "if  the last part of the path is a symlink then flag it as such
-    let self.isSymLink = (resolve(hardPath) != hardPath)
+    let self.isSymLink = (s:Path.Resolve(hardPath) != hardPath)
     if self.isSymLink
-        let self.symLinkDest = resolve(fullpath)
+        let self.symLinkDest = s:Path.Resolve(fullpath)
 
         "if the link is a dir then slap a / on the end of its dest
         if isdirectory(self.symLinkDest)
@@ -2971,7 +2981,7 @@ function! s:initNerdTree(name)
         if dir =~# '^\.'
             let dir = getcwd() . s:Path.Slash() . dir
         endif
-        let dir = resolve(dir)
+        let dir = s:Path.Resolve(dir)
 
         try
             let path = s:Path.New(dir)
