@@ -2555,7 +2555,7 @@ function! s:Path.readInfoFromDisk(fullpath)
     let lastPathComponent = self.getLastPathComponent(0)
 
     "get the path to the new node with the parent dir fully resolved
-    let hardPath = resolve(self.strTrunk()) . lastPathComponent
+    let hardPath = resolve(self.strTrunk()) . '/' . lastPathComponent
 
     "if  the last part of the path is a symlink then flag it as such
     let self.isSymLink = (resolve(hardPath) != hardPath)
@@ -2733,13 +2733,9 @@ function! s:Path._str()
 endfunction
 
 "FUNCTION: Path.strTrunk() {{{3
-"Gets the path without the last segment on the end, always with an endslash
+"Gets the path without the last segment on the end.
 function! s:Path.strTrunk()
-    let toReturn = self.drive . '/' . join(self.pathSegments[0:-2], '/')
-    if toReturn !~# '\/$'
-        let toReturn .= '/'
-    endif
-    return toReturn
+    return self.drive . '/' . join(self.pathSegments[0:-2], '/')
 endfunction
 
 " FUNCTION: Path.tabnr() {{{3
