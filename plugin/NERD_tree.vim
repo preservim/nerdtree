@@ -4211,19 +4211,18 @@ endfunction
 
 "FUNCTION: s:previewNodeCurrent(node) {{{2
 function! s:previewNodeCurrent(node)
-    call a:node.open({'stay': 1, 'where': 'p'})
+    call a:node.open({'stay': 1, 'where': 'p', 'keepopen': 1})
 endfunction
 
 "FUNCTION: s:previewNodeHSplit(node) {{{2
 function! s:previewNodeHSplit(node)
-    call a:node.open({'stay': 1, 'where': 'h'})
+    call a:node.open({'stay': 1, 'where': 'h', 'keepopen': 1})
 endfunction
 
 "FUNCTION: s:previewNodeVSplit(node) {{{2
 function! s:previewNodeVSplit(node)
-    call a:node.open({'stay': 1, 'where': 'v'})
+    call a:node.open({'stay': 1, 'where': 'v', 'keepopen': 1})
 endfunction
-
 
 " FUNCTION: s:revealBookmark(name) {{{2
 " put the cursor on the node associate with the given name
