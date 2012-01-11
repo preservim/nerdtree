@@ -3793,6 +3793,8 @@ function! s:setCommonBufOptions()
     setlocal bufhidden=hide
     setlocal nowrap
     setlocal foldcolumn=0
+    setlocal foldmethod=manual
+    setlocal nofoldenable
     setlocal nobuflisted
     setlocal nospell
     if g:NERDTreeShowLineNumbers
