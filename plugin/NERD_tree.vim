@@ -1872,6 +1872,25 @@ endfunction
 "CLASS: Opener {{{2
 "============================================================
 let s:Opener = {}
+
+"FUNCTION: Opener._checkToCloseTree(newtab) {{{3
+"Check the class options and global options (i.e. NERDTreeQuitOnOpen) to see
+"if the tree should be closed now.
+"
+"Args:
+"a:newtab - boolean. If set, only close the tree now if we are opening the
+"target in a new tab. This is needed because we have to close tree before we
+"leave the tab
+function! s:Opener._checkToCloseTree(newtab)
+    if self._keepopen
+        return
+    endif
+
+    if (a:newtab && self._where == 't') || !a:newtab
+        call s:closeTreeIfQuitOnOpen()
+    endif
+endfunction
+
 "FUNCTION: Opener._gotoTargetWin() {{{3
 function! s:Opener._gotoTargetWin()
     if b:NERDTreeType ==# "secondary"
@@ -1883,6 +1902,7 @@ function! s:Opener._gotoTargetWin()
             tabnew
         endif
     else
+        call self._checkToCloseTree(1)
 
         if self._where == 'v'
             call self._newVSplit()
@@ -1893,6 +1913,8 @@ function! s:Opener._gotoTargetWin()
         elseif self._where == 'p'
             call self._previousWindow()
         endif
+
+        call self._checkToCloseTree(0)
     endif
 endfunction
 
@@ -1918,6 +1940,7 @@ function! s:Opener.New(path, opts)
     let newObj._reuse = s:has_opt(a:opts, 'reuse')
     let newObj._keepopen = s:has_opt(a:opts, 'keepopen')
     let newObj._where = has_key(a:opts, 'where') ? a:opts['where'] : ''
+    let newObj._treetype = b:NERDTreeType
     call newObj._saveCursorPos()
 
     return newObj
@@ -2014,16 +2037,13 @@ function! s:Opener._openFile()
         return
     endif
 
-    if b:NERDTreeType ==# "secondary"
-        call self._gotoTargetWin()
+    call self._gotoTargetWin()
+
+    if self._treetype ==# "secondary"
         call self._path.edit()
     else
-        call self._gotoTargetWin()
         call self._path.edit()
 
-        if self._keepopen
-            call s:closeTreeIfQuitOnOpen()
-        endif
 
         if self._stay
             call self._restoreCursorPos()
@@ -2033,7 +2053,7 @@ endfunction
 
 "FUNCTION: Opener._openDirectory(node) {{{3
 function! s:Opener._openDirectory(node)
-    if b:NERDTreeType ==# "secondary"
+    if self._treetype ==# "secondary"
         call self._gotoTargetWin()
         call s:initNerdTreeInPlace(a:node.path.str())
     else
@@ -2086,11 +2106,13 @@ function! s:Opener._reuseWindow()
     let winnr = bufwinnr('^' . self._path.str() . '$')
     if winnr != -1
         call s:exec(winnr . "wincmd w")
+        call self._checkToCloseTree(0)
         return 1
     else
         "check other tabs
         let tabnr = self._path.tabnr()
         if tabnr
+            call self._checkToCloseTree(1)
             call s:exec('normal! ' . tabnr . 'gt')
             let winnr = bufwinnr('^' . self._path.str() . '$')
             call s:exec(winnr . "wincmd w")
