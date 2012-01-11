@@ -520,6 +520,15 @@ function! s:KeyMap.bind()
     exec 'nnoremap <buffer> <silent> '. mapkey . premap . ':call <SID>KeyMap_Invoke("'. self.key .'")<cr>'
 endfunction
 
+"FUNCTION: KeyMap.Remove(key, scope) {{{3
+function! s:KeyMap.Remove(key, scope)
+    let maps = s:KeyMap.All()
+    for i in range(len(maps))
+         if maps[i].key ==# a:key && maps[i].scope ==# a:scope
+            return remove(maps, i)
+        endif
+    endfor
+endfunction
 "FUNCTION: KeyMap.invoke() {{{3
 "Call the KeyMaps callback function
 function! s:KeyMap.invoke(...)
@@ -606,11 +615,7 @@ endfunction
 
 "FUNCTION: KeyMap.Add(keymap) {{{3
 function! s:KeyMap.Add(keymap)
-    let oldmap = s:KeyMap.FindFor(a:keymap.key, a:keymap.scope)
-    if !empty(oldmap)
-        call remove(s:KeyMap.All(), index(s:KeyMap.All(), oldmap))
-    endif
-
+    call s:KeyMap.Remove(a:keymap.key, a:keymap.scope)
     call add(s:KeyMap.All(), a:keymap)
 endfunction
 
