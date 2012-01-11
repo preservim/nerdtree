@@ -151,7 +151,7 @@ let s:NERDTreeBufName = 'NERD_tree_'
 let s:tree_wid = 2
 
 if g:NERDTreeDirArrows
-    let s:tree_markup_reg = '^ *\([▾▸] \)\?'
+    let s:tree_markup_reg = '^\([▾▸] \| \+[▾▸] \| \+\)'
 else
     let s:tree_markup_reg = '^[ `|]*[\-+~]'
 endif
@@ -4058,8 +4058,8 @@ function! s:handleLeftClick()
         endfor
 
         if currentNode.path.isDirectory
-            if startToCur =~# s:tree_markup_reg . '$' && startToCur =~# '[+~▾▸]$'
-                call s:activateNode(currentNode)
+            if startToCur =~# s:tree_markup_reg && startToCur =~# '[+~▾▸] \?$'
+                call currentNode.activate()
                 return
             endif
         endif
@@ -4067,7 +4067,11 @@ function! s:handleLeftClick()
         if (g:NERDTreeMouseMode ==# 2 && currentNode.path.isDirectory) || g:NERDTreeMouseMode ==# 3
             let char = strpart(startToCur, strlen(startToCur)-1, 1)
             if char !~# s:tree_markup_reg
-                call s:activateNode(currentNode)
+                if currentNode.path.isDirectory
+                    call currentNode.activate()
+                else
+                    call currentNode.activate({'reuse': 1, 'where': 'p'})
+                endif
                 return
             endif
         endif
