@@ -510,14 +510,18 @@ endfunction
 
 "FUNCTION: KeyMap.bind() {{{3
 function! s:KeyMap.bind()
-    let mapkey = self.key
-    if mapkey =~? '^\([CM]-\|middlerelease\|2-leftmouse\|leftrelease\)'
-        let mapkey = '<' . mapkey . '>'
+    " If the key we're trying to map is a special key we must escape the
+    " leading '<', otherwise vim will replace it with the actual keycode
+    " :he <>
+    if self.key =~# '^<'
+        let keymapInvokeString = substitute(self.key, '^<', '<lt>', '')
+    else
+        let keymapInvokeString = self.key
     endif
 
-    let premap = self.key == "leftrelease" ? " <leftrelease>" : " "
+    let premap = self.key == "<LeftRelease>" ? " <LeftRelease>" : " "
 
-    exec 'nnoremap <buffer> <silent> '. mapkey . premap . ':call <SID>KeyMap_Invoke("'. self.key .'")<cr>'
+    exec 'nnoremap <buffer> <silent> '. self.key . premap . ':call <SID>KeyMap_Invoke("'. keymapInvokeString .'")<cr>'
 endfunction
 
 "FUNCTION: KeyMap.Remove(key, scope) {{{3
@@ -2858,12 +2862,12 @@ endfunction
 function! s:createDefaultBindings()
     let s = '<SNR>' . s:SID() . '_'
 
-    call NERDTreeAddKeyMap({ 'key': 'middlerelease', 'scope': "all", 'callback': s."handleMiddleMouse" })
-    call NERDTreeAddKeyMap({ 'key': 'leftrelease', 'scope': "all", 'callback': s."handleLeftClick" })
-    call NERDTreeAddKeyMap({ 'key': '2-leftmouse', 'scope': "DirNode", 'callback': s."activateDirNode" })
-    call NERDTreeAddKeyMap({ 'key': '2-leftmouse', 'scope': "FileNode", 'callback': s."activateFileNode" })
-    call NERDTreeAddKeyMap({ 'key': '2-leftmouse', 'scope': "Bookmark", 'callback': s."activateBookmark" })
-    call NERDTreeAddKeyMap({ 'key': '2-leftmouse', 'scope': "all", 'callback': s."activateAll" })
+    call NERDTreeAddKeyMap({ 'key': '<MiddleRelease>', 'scope': "all", 'callback': s."handleMiddleMouse" })
+    call NERDTreeAddKeyMap({ 'key': '<LeftRelease>', 'scope': "all", 'callback': s."handleLeftClick" })
+    call NERDTreeAddKeyMap({ 'key': '<2-LeftMouse>', 'scope': "DirNode", 'callback': s."activateDirNode" })
+    call NERDTreeAddKeyMap({ 'key': '<2-LeftMouse>', 'scope': "FileNode", 'callback': s."activateFileNode" })
+    call NERDTreeAddKeyMap({ 'key': '<2-LeftMouse>', 'scope': "Bookmark", 'callback': s."activateBookmark" })
+    call NERDTreeAddKeyMap({ 'key': '<2-LeftMouse>', 'scope': "all", 'callback': s."activateAll" })
 
 
     call NERDTreeAddKeyMap({ 'key': g:NERDTreeMapActivateNode, 'scope': "DirNode", 'callback': s."activateDirNode" })
