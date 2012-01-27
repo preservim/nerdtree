@@ -510,11 +510,14 @@ endfunction
 
 "FUNCTION: KeyMap.bind() {{{3
 function! s:KeyMap.bind()
-    " If the key we're trying to map is a special key we must escape the
-    " leading '<', otherwise vim will replace it with the actual keycode
+    " If the key sequence we're trying to map contains any '<>' notation, we
+    " must replace each of the '<' characters with '<lt>' to ensure the string
+    " is not translated into its corresponding keycode during the later part
+    " of the map command below
     " :he <>
-    if self.key =~# '^<'
-        let keymapInvokeString = substitute(self.key, '^<', '<lt>', '')
+    let specialNotationRegex = '\m<\([[:alnum:]_-]\+>\)'
+    if self.key =~# specialNotationRegex
+        let keymapInvokeString = substitute(self.key, specialNotationRegex, '<lt>\1', 'g')
     else
         let keymapInvokeString = self.key
     endif
