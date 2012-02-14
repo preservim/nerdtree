@@ -2088,7 +2088,6 @@ function! s:Opener._previousWindow()
             else
                 call s:exec('wincmd p')
             endif
-            exec ("edit " . self._path.str({'format': 'Edit'}))
         catch /^Vim\%((\a\+)\)\=:E37/
             call s:putCursorInTreeWin()
             throw "NERDTree.FileAlreadyOpenAndModifiedError: ". self._path.str() ." is already open and modified."
