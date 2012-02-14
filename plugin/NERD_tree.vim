@@ -1229,7 +1229,6 @@ endfunction
 
 "FUNCTION: TreeFileNode.open() {{{3
 function! s:TreeFileNode.open(...)
-    echomsg self.path.str()
     let opts = a:0 ? a:1 : {}
     let opener = s:Opener.New(self.path, opts)
     call opener.open(self)
