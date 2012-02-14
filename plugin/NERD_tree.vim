@@ -1229,7 +1229,6 @@ endfunction
 
 "FUNCTION: TreeFileNode.open() {{{3
 function! s:TreeFileNode.open(...)
-    echomsg self.path.str()
     let opts = a:0 ? a:1 : {}
     let opener = s:Opener.New(self.path, opts)
     call opener.open(self)
@@ -2088,7 +2087,6 @@ function! s:Opener._previousWindow()
             else
                 call s:exec('wincmd p')
             endif
-            exec ("edit " . self._path.str({'format': 'Edit'}))
         catch /^Vim\%((\a\+)\)\=:E37/
             call s:putCursorInTreeWin()
             throw "NERDTree.FileAlreadyOpenAndModifiedError: ". self._path.str() ." is already open and modified."
