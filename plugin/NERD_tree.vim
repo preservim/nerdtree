@@ -2074,6 +2074,10 @@ function! s:Opener._openDirectory(node)
             call s:initNerdTreeInPlace(a:node.path.str())
         endif
     endif
+
+    if self._stay
+        call self._restoreCursorPos()
+    endif
 endfunction
 
 "FUNCTION: Opener._previousWindow() {{{3
