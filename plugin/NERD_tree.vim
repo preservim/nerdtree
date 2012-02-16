@@ -3254,6 +3254,14 @@ function! NERDTreeRender()
     call s:renderView()
 endfunction
 
+function! NERDTreeFocus()
+    if s:isTreeOpen()
+        call s:putCursorInTreeWin()
+    else
+        call s:toggle("")
+    endif
+endfunction
+
 " SECTION: View Functions {{{1
 "============================================================
 "FUNCTION: s:centerView() {{{2
