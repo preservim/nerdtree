@@ -47,6 +47,26 @@ function! s:initVariable(var, value)
     return 0
 endfunction
 
+" FUNCTION: s:NERDTreeFocus() {{2
+" Focus existing NERDTree window
+function! s:NERDTreeFocus()
+    if s:treeExistsForTab()
+        if !s:isTreeOpen()
+            call s:createTreeWin()
+            if !&hidden
+                call s:renderView()
+				silent! 99wincmd h
+            endif
+            call s:restoreScreenState()
+			silent! 99wincmd h
+        else
+			silent! 99wincmd h
+        endif
+    else
+        call s:initNerdTree()
+    endif
+endfunction
+
 "SECTION: Init variable calls and other random constants {{{2
 call s:initVariable("g:NERDChristmasTree", 1)
 call s:initVariable("g:NERDTreeAutoCenter", 1)
@@ -165,6 +185,7 @@ let s:next_buffer_number = 1
 "init the command that users start the nerd tree with
 command! -n=? -complete=dir -bar NERDTree :call s:initNerdTree('<args>')
 command! -n=? -complete=dir -bar NERDTreeToggle :call s:toggle('<args>')
+command! -n=? -complete=dir -bar NERDTreeFocus :call s:NERDTreeFocus()
 command! -n=0 -bar NERDTreeClose :call s:closeTreeIfOpen()
 command! -n=1 -complete=customlist,s:completeBookmarks -bar NERDTreeFromBookmark call s:initNerdTree('<args>')
 command! -n=0 -bar NERDTreeMirror call s:initNerdTreeMirror()
