@@ -169,6 +169,7 @@ command! -n=0 -bar NERDTreeClose :call s:closeTreeIfOpen()
 command! -n=1 -complete=customlist,s:completeBookmarks -bar NERDTreeFromBookmark call s:initNerdTree('<args>')
 command! -n=0 -bar NERDTreeMirror call s:initNerdTreeMirror()
 command! -n=0 -bar NERDTreeFind call s:findAndRevealPath()
+command! -n=0 -bar NERDTreeFocus call NERDTreeFocus()
 " SECTION: Auto commands {{{1
 "============================================================
 augroup NERDTree
