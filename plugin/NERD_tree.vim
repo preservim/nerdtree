@@ -4107,7 +4107,7 @@ function! s:handleLeftClick()
         let line = split(getline(line(".")), '\zs')
         let startToCur = ""
         for i in range(0,virtcol(".")-1)
-            let startToCur .= line[i]
+            try | let startToCur .= line[i] | catch | endtry
         endfor
 
         if currentNode.path.isDirectory
