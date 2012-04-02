@@ -1211,6 +1211,8 @@ function! s:TreeFileNode.makeRoot()
     if g:NERDTreeChDirMode ==# 2
         exec "cd " . b:NERDTreeRoot.path.str({'format': 'Edit'})
     endif
+
+    silent doautocmd User NERDTreeNewRoot
 endfunction
 "FUNCTION: TreeFileNode.New(path) {{{3
 "Returns a new TreeNode object with the given path and parent
@@ -3052,11 +3054,12 @@ function! s:initNerdTree(name)
     let b:NERDTreeShowHidden = g:NERDTreeShowHidden
     let b:NERDTreeShowBookmarks = g:NERDTreeShowBookmarks
     let b:NERDTreeRoot = newRoot
-
     let b:NERDTreeType = "primary"
 
     call s:renderView()
     call b:NERDTreeRoot.putCursorHere(0, 0)
+
+    silent doautocmd User NERDTreeInit
 endfunction
 
 "FUNCTION: s:initNerdTreeInPlace(dir) {{{2
@@ -3086,6 +3089,8 @@ function! s:initNerdTreeInPlace(dir)
     let b:NERDTreeType = "secondary"
 
     call s:renderView()
+
+    silent doautocmd User NERDTreeInit
 endfunction
 " FUNCTION: s:initNerdTreeMirror() {{{2
 function! s:initNerdTreeMirror()
