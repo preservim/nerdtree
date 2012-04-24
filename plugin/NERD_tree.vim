@@ -3159,6 +3159,10 @@ function! s:postSourceActions()
 
     "load all nerdtree plugins
     runtime! nerdtree_plugin/**/*.vim
+
+    " Fire Custom Event for others to hook into
+    " eg. redefine mappings
+    silent doautocmd User NERDTreePostSourceActions
 endfunction
 " FUNCTION: s:tabpagevar(tabnr, var) {{{2
 function! s:tabpagevar(tabnr, var)

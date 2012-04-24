@@ -34,6 +34,7 @@ CONTENTS                                                   *NERDTree-contents*
     4.The NERD tree API.......................|NERDTreeAPI|
         4.1.Key map API.......................|NERDTreeKeymapAPI|
         4.2.Menu API..........................|NERDTreeMenuAPI|
+        4.3.Events............................|NERDTreeEvents|
     5.About...................................|NERDTreeAbout|
     6.Changelog...............................|NERDTreeChangelog|
     7.Credits.................................|NERDTreeCredits|
@@ -972,6 +973,15 @@ The NERD tree script allows you to add custom key mappings and menu items via
 a set of API calls. Any scripts that use this API should be placed in
 ~/.vim/nerdtree_plugin/ (*nix) or ~/vimfiles/nerdtree_plugin (windows).
 
+If you don't want to place your custom mappings in those directories you can
+also use a custom event fired by NERDTree after all initialization is done: >
+    function NERDTreeIsInitialized()
+      echo "I was called after NERDTree was initialized"
+    endfun
+
+    autocmd User NERDTreePostSourceActions call NERDTreeIsInitialized()
+<
+
 The script exposes some prototype objects that can be used to manipulate the
 tree and/or get information from it: >
     g:NERDTreePath
@@ -1112,6 +1122,18 @@ will be called.
 NERDTreeRender()                                            *NERDTreeRender()*
     Re-renders the NERD tree buffer. Useful if you change the state of the
     tree and you want to it to be reflected in the UI.
+
+------------------------------------------------------------------------------
+4.3. Events                                                  *NERDTreeEvents*
+   NERDTree fires a set of user events which you can listen to via |autocmd|:
+
+   * NERDTreePostSourceActions:
+       Fired after NERDTree has finished it's initialization.
+       At this time all of the global NERDTree* functions are available for
+       you to use. Use with |autocmd| like this: >
+           autocmd User NERDTreePostSourceActions call YourFunction()
+<
+       Also see |NERDTreeAPI| for an example.
 
 ==============================================================================
 5. About                                                       *NERDTreeAbout*
