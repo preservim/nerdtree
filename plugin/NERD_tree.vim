@@ -69,6 +69,9 @@ call s:initVariable("g:NERDTreeShowHidden", 0)
 call s:initVariable("g:NERDTreeShowLineNumbers", 0)
 call s:initVariable("g:NERDTreeSortDirs", 1)
 call s:initVariable("g:NERDTreeDirArrows", !s:running_windows)
+call s:initVariable("g:NERDTreePrefix", 0)
+call s:initVariable("g:NERDTreeSuffix", 0)
+call s:initVariable("g:NERDTreeBeforeRender", 0)
 
 if !exists("g:NERDTreeSortOrder")
     let g:NERDTreeSortOrder = ['\/$', '*', '\.swp$',  '\.bak$', '\~$']
@@ -2174,6 +2177,14 @@ function! s:Path.cacheDisplayString()
         let self.cachedDisplayString = self.cachedDisplayString . '*'
     endif
 
+    if g:NERDTreePrefix
+        let self.cachedDisplayString = plugin:NERDTreePrefix(self) . self.cachedDisplayString
+    endif
+
+    if g:NERDTreeSuffix
+        let self.cachedDisplayString .= plugin:NERDTreeSuffix(self)
+    endif
+
     let self._bookmarkNames = []
     for i in s:Bookmark.Bookmarks()
         if i.path.equals(self)
@@ -3733,6 +3744,10 @@ endfunction
 "The entry function for rendering the tree
 function! s:renderView()
     setlocal modifiable
+
+    if g:NERDTreeBeforeRender
+        call plugin:NERDTreeBeforeRender()
+    endif
 
     "remember the top line of the buffer and the current line so we can
     "restore the view exactly how it was
