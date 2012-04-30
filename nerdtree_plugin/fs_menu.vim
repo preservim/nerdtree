@@ -100,12 +100,13 @@ function! NERDTreeMoveNode()
     endif
 
     try
+        let bufnum = bufnr(curNode.path.str())
+
         call curNode.rename(newNodePath)
         call NERDTreeRender()
 
         "if the node is open in a buffer, ask the user if they want to
         "close that buffer
-        let bufnum = bufnr(curNode.path.str())
         if buflisted(bufnum)
             let prompt = "\nNode renamed.\n\nThe old file is open in buffer ". bufnum . (bufwinnr(bufnum) ==# -1 ? " (hidden)" : "") .". Delete this buffer? (yN)"
             call s:promptToDelBuffer(bufnum, prompt)
