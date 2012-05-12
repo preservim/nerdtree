@@ -3491,8 +3491,8 @@ endfunction
 function! s:echoError(msg)
     echohl errormsg
     call s:echo(a:msg)
-    throw "NERDTree.Exception: " . a:msg
     echohl normal
+    throw "NERDTree.Exception: " . a:msg
 endfunction
 "FUNCTION: s:firstUsableWindow(){{{2
 "find the window number of the first normal window
