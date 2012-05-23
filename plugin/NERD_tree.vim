@@ -107,10 +107,12 @@ endif
 
 "SECTION: Init variable calls for key mappings {{{2
 call s:initVariable("g:NERDTreeMapActivateNode", "o")
+call s:initVariable("g:NERDTreeMapActivateNodeAlt", "<Right>")
 call s:initVariable("g:NERDTreeMapChangeRoot", "C")
 call s:initVariable("g:NERDTreeMapChdir", "cd")
 call s:initVariable("g:NERDTreeMapCloseChildren", "X")
 call s:initVariable("g:NERDTreeMapCloseDir", "x")
+call s:initVariable("g:NERDTreeMapSlamDir", "<Left>")
 call s:initVariable("g:NERDTreeMapDeleteBookmark", "D")
 call s:initVariable("g:NERDTreeMapMenu", "m")
 call s:initVariable("g:NERDTreeMapHelp", "?")
@@ -2879,7 +2881,7 @@ function! s:createDefaultBindings()
 
 
     call NERDTreeAddKeyMap({ 'key': g:NERDTreeMapActivateNode, 'scope': "DirNode", 'callback': s."activateDirNode" })
-    call NERDTreeAddKeyMap({ 'key': '<Right>', 'scope': "DirNode", 'callback': s."activateDirNode" })
+    call NERDTreeAddKeyMap({ 'key': g:NERDTreeMapActivateNodeAlt, 'scope': "DirNode", 'callback': s."activateDirNode" })
     call NERDTreeAddKeyMap({ 'key': g:NERDTreeMapActivateNode, 'scope': "FileNode", 'callback': s."activateFileNode" })
     call NERDTreeAddKeyMap({ 'key': g:NERDTreeMapActivateNode, 'scope': "Bookmark", 'callback': s."activateBookmark" })
     call NERDTreeAddKeyMap({ 'key': g:NERDTreeMapActivateNode, 'scope': "all", 'callback': s."activateAll" })
@@ -2920,7 +2922,7 @@ function! s:createDefaultBindings()
 
     call NERDTreeAddKeyMap({ 'key': g:NERDTreeMapCloseDir, 'scope': "Node", 'callback': s."closeCurrentDir" })
     call NERDTreeAddKeyMap({ 'key': g:NERDTreeMapCloseChildren, 'scope': "DirNode", 'callback': s."closeChildren" })
-    call NERDTreeAddKeyMap({ 'key': '<Left>', 'scope': "DirNode", 'callback': s."clozeCurrentDir" })
+    call NERDTreeAddKeyMap({ 'key': g:NERDTreeMapSlamDir, 'scope': "DirNode", 'callback': s."slamCurrentDir" })
 
     call NERDTreeAddKeyMap({ 'key': g:NERDTreeMapMenu, 'scope': "Node", 'callback': s."showMenu" })
 
@@ -4062,7 +4064,9 @@ function! s:closeCurrentDir(node)
         call a:node.parent.putCursorHere(0, 0)
     endif
 endfunction
-function! s:clozeCurrentDir(node)
+" FUNCTION: s:slamCurrentDir(node) {{{2
+" closes the current node
+function! s:slamCurrentDir(node)
     call a:node.close()
     call s:renderView()
     call a:node.putCursorHere(0, 0)
