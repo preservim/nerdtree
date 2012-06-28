@@ -969,8 +969,8 @@ function! s:compareNodes(n1, n2)
     return a:n1.path.compareTo(a:n2.path)
 endfunction
 
-"FUNCTION: TreeFileNode.clearBoomarks() {{{3
-function! s:TreeFileNode.clearBoomarks()
+"FUNCTION: TreeFileNode.clearBookmarks() {{{3
+function! s:TreeFileNode.clearBookmarks()
     for i in s:Bookmark.Bookmarks()
         if i.path.equals(self.path)
             call i.delete()
@@ -4035,7 +4035,7 @@ function! s:clearBookmarks(bookmarks)
     if a:bookmarks ==# ''
         let currentNode = s:TreeFileNode.GetSelected()
         if currentNode != {}
-            call currentNode.clearBoomarks()
+            call currentNode.clearBookmarks()
         endif
     else
         for name in split(a:bookmarks, ' ')
