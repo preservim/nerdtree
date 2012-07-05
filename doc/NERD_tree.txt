@@ -972,7 +972,7 @@ option: >
 ------------------------------------------------------------------------------
                                           *'NERDTreeCasadeOpenSingleChildDir'*
 Values: 0 or 1
-Default: 0.
+Default: 1.
 
 This option tell NERDTree open the child directory if the selected opening
 directory has only one child that is a directory, and do same to sub-directory
