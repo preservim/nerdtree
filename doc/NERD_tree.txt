@@ -974,11 +974,10 @@ option: >
 Values: 0 or 1
 Default: 1.
 
-This option tell NERDTree open the child directory if the selected opening
-directory has only one child that is a directory, and do same to sub-directory
-recursively. NERDTree will stop till it find a empty directory or this
-directory has more than one child. This option may be useful for Java projects.
-Use one of the follow lines to set this option: >
+When opening dir nodes, this option tells NERDTree to recursively open dirs
+that have only one child which is also a dir. NERDTree will stop when it finds
+a dir that contains anything but another single dir. This option may be useful
+for Java projects.  Use one of the follow lines to set this option: >
     let NERDTreeCasadeOpenSingleChildDir=0
     let NERDTreeCasadeOpenSingleChildDir=1
 <
