@@ -69,6 +69,7 @@ call s:initVariable("g:NERDTreeShowHidden", 0)
 call s:initVariable("g:NERDTreeShowLineNumbers", 0)
 call s:initVariable("g:NERDTreeSortDirs", 1)
 call s:initVariable("g:NERDTreeDirArrows", !s:running_windows)
+call s:initVariable("g:NERDTreeCasadeOpenSingleChildDir", 0)
 
 if !exists("g:NERDTreeSortOrder")
     let g:NERDTreeSortOrder = ['\/$', '*', '\.swp$',  '\.bak$', '\~$']
@@ -1694,7 +1695,26 @@ function! s:TreeDirNode.open(...)
         endif
     endif
 endfunction
+"FUNCTION: TreeDirNode.openAlong([opts]) {{{3
+"recursive open the dir if it has only one directory child.
+"
+"return the level of opened directories.
+function! s:TreeDirNode.openAlong(...)
+    let opts = a:0 ? a:1 : {}
+    let level = 0
 
+    let node = self
+    while node.path.isDirectory
+        call node.open(opts)
+        let level += 1
+        if node.getVisibleChildCount() == 1
+            let node = node.getChildByIndex(0, 1)
+        else
+            break
+        endif
+    endwhile
+    return level
+endfunction
 " FUNCTION: TreeDirNode.openExplorer() {{{3
 " opens an explorer window for this node in the previous window (could be a
 " nerd tree or a netrw)
@@ -1857,10 +1877,13 @@ function! s:TreeDirNode.toggleOpen(...)
     if self.isOpen ==# 1
         call self.close()
     else
-        call self.open(opts)
+        if g:NERDTreeCasadeOpenSingleChildDir == 0
+            call self.open(opts)
+        else
+            call self.openAlong(opts)
+        endif
     endif
 endfunction
-
 "FUNCTION: TreeDirNode.transplantChild(newNode) {{{3
 "Replaces the child of this with the given node (where the child node's full
 "path matches a:newNode's fullpath). The search for the matching node is
