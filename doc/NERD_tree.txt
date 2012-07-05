@@ -654,6 +654,10 @@ NERD tree. These options should be set in your vimrc.
 |'NERDTreeDirArrows'|           Tells the NERD tree to use arrows instead of
                                 + ~ chars when displaying directories.
 
+|'NERDTreeCasadeOpenSingleChildDir'|
+                                Casade open while selected directory has only
+                                one child that also is a directory.
+
 ------------------------------------------------------------------------------
 3.2. Customisation details                             *NERDTreeOptionDetails*
 
@@ -963,6 +967,20 @@ the tree. When set to 0 it shows old-school bars (|), + and ~ chars. If set to
 option: >
     let NERDTreeDirArrows=0
     let NERDTreeDirArrows=1
+<
+
+------------------------------------------------------------------------------
+                                          *'NERDTreeCasadeOpenSingleChildDir'*
+Values: 0 or 1
+Default: 0.
+
+This option tell NERDTree open the child directory if the selected opening
+directory has only one child that is a directory, and do same to sub-directory
+recursively. NERDTree will stop till it find a empty directory or this
+directory has more than one child. This option may be useful for Java projects.
+Use one of the follow lines to set this option: >
+    let NERDTreeCasadeOpenSingleChildDir=0
+    let NERDTreeCasadeOpenSingleChildDir=1
 <
 
 ==============================================================================
