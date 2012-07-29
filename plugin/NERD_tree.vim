@@ -169,6 +169,7 @@ command! -n=? -complete=dir -bar NERDTreeToggle :call s:toggle('<args>')
 command! -n=0 -bar NERDTreeClose :call s:closeTreeIfOpen()
 command! -n=1 -complete=customlist,s:completeBookmarks -bar NERDTreeFromBookmark call s:initNerdTree('<args>')
 command! -n=0 -bar NERDTreeMirror call s:initNerdTreeMirror()
+command! -n=0 -bar NERDTreeMirrorToggle call s:toggleMirrorOrOpenNew()
 command! -n=0 -bar NERDTreeFind call s:findAndRevealPath()
 command! -n=0 -bar NERDTreeFocus call NERDTreeFocus()
 " SECTION: Auto commands {{{1
@@ -3153,7 +3154,7 @@ function! s:initNerdTreeMirror()
     elseif len(keys(options)) ==# 1
         let bufferName = values(options)[0]
     else
-        call s:echo("No trees to mirror")
+        call s:echoError("No trees to mirror")
         return
     endif
 
@@ -3167,6 +3168,16 @@ function! s:initNerdTreeMirror()
     if !&hidden
         call s:renderView()
     endif
+endfunction
+"FUNCTION: s:toggleMirrorOrOpenNew() {{{2
+"Toggles the NERD tree mirror or open new. I.e the NERD tree mirror is open, 
+"it is closed, if it is
+function! s:toggleMirrorOrOpenNew()
+  try
+    :NERDTreeMirror
+  catch 
+    :NERDTreeToggle
+  endtry
 endfunction
 " FUNCTION: s:nextBufferName() {{{2
 " returns the buffer name for the next nerd tree
@@ -3504,6 +3515,7 @@ function! s:echoError(msg)
     echohl errormsg
     call s:echo(a:msg)
     echohl normal
+    throw "NERDTree.Exception: " . a:msg
 endfunction
 "FUNCTION: s:firstUsableWindow(){{{2
 "find the window number of the first normal window
