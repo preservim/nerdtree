@@ -15,6 +15,11 @@ if exists("g:loaded_nerdtree_fs_menu")
 endif
 let g:loaded_nerdtree_fs_menu = 1
 
+"Automatically delete the buffer after deleting or renaming a file
+if !exists("g:NERDTreeAutoDeleteBuffer")
+    let g:NERDTreeAutoDeleteBuffer = 0
+endif
+
 call NERDTreeAddMenuItem({'text': '(a)dd a childnode', 'shortcut': 'a', 'callback': 'NERDTreeAddNode'})
 call NERDTreeAddMenuItem({'text': '(m)ove the current node', 'shortcut': 'm', 'callback': 'NERDTreeMoveNode'})
 call NERDTreeAddMenuItem({'text': '(d)elete the current node', 'shortcut': 'd', 'callback': 'NERDTreeDeleteNode'})
@@ -52,11 +57,10 @@ endfunction
 "     del the buffer
 function! s:promptToDelBuffer(bufnum, msg)
     echo a:msg
-    if nr2char(getchar()) ==# 'y'
+    if g:NERDTreeAutoDeleteBuffer || nr2char(getchar()) ==# 'y'
         exec "silent bdelete! " . a:bufnum
     endif
 endfunction
-
 "FUNCTION: NERDTreeAddNode(){{{1
 function! NERDTreeAddNode()
     let curDirNode = g:NERDTreeDirNode.GetSelected()
