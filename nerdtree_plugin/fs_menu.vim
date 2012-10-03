@@ -26,7 +26,7 @@ if has("gui_mac") || has("gui_macvim")
 endif
 
 if g:NERDTreePath.CopyingSupported()
-    call NERDTreeAddMenuItem({'text': '(c)copy the current node', 'shortcut': 'c', 'callback': 'NERDTreeCopyNode'})
+    call NERDTreeAddMenuItem({'text': '(c)opy the current node', 'shortcut': 'c', 'callback': 'NERDTreeCopyNode'})
 endif
 
 "FUNCTION: s:echo(msg){{{1
