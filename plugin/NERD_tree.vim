@@ -4134,7 +4134,7 @@ function! s:handleLeftClick()
         "take the line substring manually
         let line = split(getline(line(".")), '\zs')
         let startToCur = ""
-        for i in range(0,virtcol(".")-1)
+        for i in range(0,len(line)-1)
             let startToCur .= line[i]
         endfor
 
