@@ -658,6 +658,10 @@ NERD tree. These options should be set in your vimrc.
                                 Casade open while selected directory has only
                                 one child that also is a directory.
 
+|'NERDTreeAutoDeleteBuffer'|    Tells the NERD tree to automatically remove 
+                                a buffer when a file is being deleted or renamed
+                                via a context menu command.
+
 ------------------------------------------------------------------------------
 3.2. Customisation details                             *NERDTreeOptionDetails*
 
@@ -980,6 +984,20 @@ a dir that contains anything but another single dir. This option may be useful
 for Java projects.  Use one of the follow lines to set this option: >
     let NERDTreeCasadeOpenSingleChildDir=0
     let NERDTreeCasadeOpenSingleChildDir=1
+<
+
+------------------------------------------------------------------------------
+                                          *'NERDTreeAutoDeleteBuffer'*
+Values: 0 or 1
+Default: 0.
+
+When using a context menu to delete or rename a file you may also want to delete
+the buffer which is no more valid. If the option is not set you will see a
+confirmation if you really want to delete an old buffer. If you always press 'y'
+then it worths to set this option to 1. Use one of the follow lines to set this
+option: >
+    let NERDTreeAutoDeleteBuffer=0
+    let NERDTreeAutoDeleteBuffer=1
 <
 
 ==============================================================================
