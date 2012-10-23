@@ -2740,7 +2740,7 @@ endfunction
 "Return: the string for this path that is suitable to be used with the :edit
 "command
 function! s:Path._strForEdit()
-    let p = escape(self.str({'format': 'UI'}), s:escape_chars)
+    let p = escape(self.drive . self.str({'format': 'UI'}), s:escape_chars)
     let cwd = getcwd() . s:Path.Slash()
 
     "return a relative path if we can
