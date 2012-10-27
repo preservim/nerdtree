@@ -599,6 +599,8 @@ NERD tree. These options should be set in your vimrc.
 |'NERDChristmasTree'|           Tells the NERD tree to make itself colourful
                                 and pretty.
 
+|'NERDTreeShowSymlinks'|        Display symlink's original locations.
+
 |'NERDTreeAutoCenter'|          Controls whether the NERD tree window centers
                                 when the cursor moves within a specified
                                 distance to the top/bottom of the window.
@@ -648,7 +650,7 @@ NERD tree. These options should be set in your vimrc.
 |'NERDTreeWinSize'|             Sets the window size when the NERD tree is
                                 opened.
 
-|'NERDTreeMinimalUI'|           Disables display of the 'Bookmarks' label and 
+|'NERDTreeMinimalUI'|           Disables display of the 'Bookmarks' label and
                                 'Press ? for help' text.
 
 |'NERDTreeDirArrows'|           Tells the NERD tree to use arrows instead of
@@ -658,7 +660,7 @@ NERD tree. These options should be set in your vimrc.
                                 Casade open while selected directory has only
                                 one child that also is a directory.
 
-|'NERDTreeAutoDeleteBuffer'|    Tells the NERD tree to automatically remove 
+|'NERDTreeAutoDeleteBuffer'|    Tells the NERD tree to automatically remove
                                 a buffer when a file is being deleted or renamed
                                 via a context menu command.
 
@@ -682,6 +684,14 @@ If this option is set to 1 then some extra syntax highlighting elements are
 added to the nerd tree to make it more colourful.
 
 Set it to 0 for a more vanilla looking tree.
+
+------------------------------------------------------------------------------
+                                                      *'NERDTreeShowSymlinks'*
+Values: 0 or 1.
+Default: 1.
+
+If this option is set to 1 and file node is a symlink, an arrow is added to the
+node pointing to original location.
 
 ------------------------------------------------------------------------------
                                                         *'NERDTreeAutoCenter'*
