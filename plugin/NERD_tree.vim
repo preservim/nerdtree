@@ -70,6 +70,7 @@ call s:initVariable("g:NERDTreeShowLineNumbers", 0)
 call s:initVariable("g:NERDTreeSortDirs", 1)
 call s:initVariable("g:NERDTreeDirArrows", !s:running_windows)
 call s:initVariable("g:NERDTreeCasadeOpenSingleChildDir", 1)
+call s:initVariable("g:NERDTreeShowSymlinks", 1)
 
 if !exists("g:NERDTreeSortOrder")
     let g:NERDTreeSortOrder = ['\/$', '*', '\.swp$',  '\.bak$', '\~$']
@@ -2207,7 +2208,7 @@ function! s:Path.cacheDisplayString()
         let self.cachedDisplayString .= ' {' . join(self._bookmarkNames) . '}'
     endif
 
-    if self.isSymLink
+    if g:NERDTreeShowSymlinks && self.isSymLink
         let self.cachedDisplayString .=  ' -> ' . self.symLinkDest
     endif
 
