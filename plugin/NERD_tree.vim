@@ -140,6 +140,7 @@ call s:initVariable("g:NERDTreeMapToggleHidden", "I")
 call s:initVariable("g:NERDTreeMapToggleZoom", "A")
 call s:initVariable("g:NERDTreeMapUpdir", "u")
 call s:initVariable("g:NERDTreeMapUpdirKeepOpen", "U")
+call s:initVariable("g:NERDTreeMapCWD", "CD")
 
 "SECTION: Script level variable declaration{{{2
 if s:running_windows
@@ -171,6 +172,7 @@ command! -n=1 -complete=customlist,s:completeBookmarks -bar NERDTreeFromBookmark
 command! -n=0 -bar NERDTreeMirror call s:initNerdTreeMirror()
 command! -n=0 -bar NERDTreeFind call s:findAndRevealPath()
 command! -n=0 -bar NERDTreeFocus call NERDTreeFocus()
+command! -n=0 -bar NERDTreeCWD call NERDTreeCWD()
 " SECTION: Auto commands {{{1
 "============================================================
 augroup NERDTree
@@ -2936,6 +2938,8 @@ function! s:createDefaultBindings()
 
     call NERDTreeAddKeyMap({ 'key': g:NERDTreeMapQuit, 'scope': "all", 'callback': s."closeTreeWindow" })
 
+    call NERDTreeAddKeyMap({ 'key': g:NERDTreeMapCWD, 'scope': "all", 'callback': s."chRootCwd" })
+
     call NERDTreeAddKeyMap({ 'key': g:NERDTreeMapRefreshRoot, 'scope': "all", 'callback': s."refreshRoot" })
     call NERDTreeAddKeyMap({ 'key': g:NERDTreeMapRefresh, 'scope': "Node", 'callback': s."refreshCurrent" })
 
@@ -3305,6 +3309,11 @@ function! NERDTreeFocus()
     endif
 endfunction
 
+function! NERDTreeCWD()
+    call NERDTreeFocus()
+    call s:chRootCwd()
+endfunction
+
 " SECTION: View Functions {{{1
 "============================================================
 "FUNCTION: s:centerView() {{{2
@@ -3445,6 +3454,7 @@ function! s:dumpHelp()
         let @h=@h."\" ". g:NERDTreeMapMenu .": Show menu\n"
         let @h=@h."\" ". g:NERDTreeMapChdir .":change the CWD to the\n"
         let @h=@h."\"    selected dir\n"
+        let @h=@h."\" ". g:NERDTreeMapCWD .":change tree root to CWD\n"
 
         let @h=@h."\"\n\" ----------------------------\n"
         let @h=@h."\" Tree filtering mappings~\n"
@@ -4053,6 +4063,21 @@ function! s:chRoot(node)
     call a:node.makeRoot()
     call s:renderView()
     call b:NERDTreeRoot.putCursorHere(0, 0)
+endfunction
+
+" FUNCTION: s:chRootCwd() {{{2
+" changes the current root to CWD
+function! s:chRootCwd()
+    try
+        let cwd = s:Path.New(getcwd())
+    catch /^NERDTree.InvalidArgumentsError/
+        call s:echo("current directory does not exist.")
+        return
+    endtry
+    if cwd.str() == s:TreeFileNode.GetRootForTab().path.str()
+       return
+    endif
+    call s:chRoot(s:TreeDirNode.New(cwd))
 endfunction
 
 " FUNCTION: s:clearBookmarks(bookmarks) {{{2
