@@ -2498,6 +2498,11 @@ function! s:Path.ignore()
         endfor
     endif
 
+    " ignore .. and . regardless of the NERDTreeShowHidden option
+    if self.getLastPathComponent(0) =~# '^\.\.$' || self.getLastPathComponent(0) =~# '^\.$'
+        return 1
+    endif
+
     "dont show hidden files unless instructed to
     if b:NERDTreeShowHidden ==# 0 && self.getLastPathComponent(0) =~# '^\.'
         return 1
