@@ -2999,6 +2999,11 @@ function! s:findAndRevealPath()
         return
     endtry
 
+    if p.getLastPathComponent(0) =~# '^\.'
+        let showhidden=g:NERDTreeShowHidden
+        let g:NERDTreeShowHidden = 1
+    endif
+
     if !s:treeExistsForTab()
         try
             let cwd = s:Path.New(getcwd())
@@ -3023,6 +3028,10 @@ function! s:findAndRevealPath()
     endif
     call s:putCursorInTreeWin()
     call b:NERDTreeRoot.reveal(p)
+
+    if p.getLastPathComponent(0) =~# '^\.'
+        let g:NERDTreeShowHidden = showhidden
+    endif
 endfunction
 
 " FUNCTION: s:has_opt(options, name) {{{2
