@@ -3026,7 +3026,13 @@ function! s:findAndRevealPath()
         endif
     else
         if !p.isUnder(s:TreeFileNode.GetRootForTab().path)
-            call s:initNerdTree(p.getParent().str())
+            if !s:isTreeOpen()
+                call s:createTreeWin()
+            else
+                call s:putCursorInTreeWin()
+            endif
+            let b:NERDTreeShowHidden = g:NERDTreeShowHidden
+            call s:chRoot(s:TreeDirNode.New(p.getParent()))
         else
             if !s:isTreeOpen()
                 call s:toggle("")
