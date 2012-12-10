@@ -2600,7 +2600,7 @@ endfunction
 "slash
 function! s:Path.Resolve(path)
     let tmp = resolve(a:path)
-    return tmp =~# '/$' ? substitute(tmp, '/$', '', '') : tmp
+    return tmp =~# '.\+/$' ? substitute(tmp, '/$', '', '') : tmp
 endfunction
 
 "FUNCTION: Path.readInfoFromDisk(fullpath) {{{3
