@@ -2494,6 +2494,21 @@ endfunction
 function! s:Path.isUnixHiddenFile()
     return self.getLastPathComponent(0) =~# '^\.'
 endfunction
+ 
+"FUNCTION: Path.isUnixHiddenPath() {{{3
+"check for unix path with hidden components
+function! s:Path.isUnixHiddenPath()
+    if self.getLastPathComponent(0) =~# '^\.'
+        return 1
+    else
+        for segment in self.pathSegments
+            if segment =~# '^\.'
+                return 1
+            endif
+        endfor
+        return 0
+    endif
+endfunction
 
 "FUNCTION: Path.ignore() {{{3
 "returns true if this path should be ignored
@@ -3010,7 +3025,7 @@ function! s:findAndRevealPath()
         return
     endtry
 
-    if p.isUnixHiddenFile()
+    if p.isUnixHiddenPath()
         let showhidden=g:NERDTreeShowHidden
         let g:NERDTreeShowHidden = 1
     endif
