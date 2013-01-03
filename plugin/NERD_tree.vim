@@ -70,6 +70,7 @@ call s:initVariable("g:NERDTreeShowLineNumbers", 0)
 call s:initVariable("g:NERDTreeSortDirs", 1)
 call s:initVariable("g:NERDTreeDirArrows", !s:running_windows)
 call s:initVariable("g:NERDTreeCasadeOpenSingleChildDir", 1)
+call s:initVariable("g:NERDTreeLynxMotion", 0)
 
 if !exists("g:NERDTreeSortOrder")
     let g:NERDTreeSortOrder = ['\/$', '*', '\.swp$',  '\.bak$', '\~$']
@@ -108,10 +109,12 @@ endif
 
 "SECTION: Init variable calls for key mappings {{{2
 call s:initVariable("g:NERDTreeMapActivateNode", "o")
+call s:initVariable("g:NERDTreeMapActivateNodeAlt", "<Right>")
 call s:initVariable("g:NERDTreeMapChangeRoot", "C")
 call s:initVariable("g:NERDTreeMapChdir", "cd")
 call s:initVariable("g:NERDTreeMapCloseChildren", "X")
 call s:initVariable("g:NERDTreeMapCloseDir", "x")
+call s:initVariable("g:NERDTreeMapSlamDir", "<Left>")
 call s:initVariable("g:NERDTreeMapDeleteBookmark", "D")
 call s:initVariable("g:NERDTreeMapMenu", "m")
 call s:initVariable("g:NERDTreeMapHelp", "?")
@@ -2978,6 +2981,10 @@ function! s:createDefaultBindings()
 
     call NERDTreeAddKeyMap({ 'key': g:NERDTreeMapDeleteBookmark, 'scope': "Bookmark", 'callback': s."deleteBookmark" })
 
+    if g:NERDTreeLynxMotion == 1
+        call NERDTreeAddKeyMap({ 'key': g:NERDTreeMapActivateNodeAlt, 'scope': "DirNode", 'callback': s."activateDirNode" })
+        call NERDTreeAddKeyMap({ 'key': g:NERDTreeMapSlamDir, 'scope': "DirNode", 'callback': s."slamCurrentDir" })
+    endif
 endfunction
 " FUNCTION: s:deprecated(func, [msg]) {{{2
 " Issue a deprecation warning for a:func. If a second arg is given, use this
@@ -4135,6 +4142,13 @@ function! s:closeCurrentDir(node)
         call s:renderView()
         call a:node.parent.putCursorHere(0, 0)
     endif
+endfunction
+" FUNCTION: s:slamCurrentDir(node) {{{2
+" closes the current node
+function! s:slamCurrentDir(node)
+    call a:node.close()
+    call s:renderView()
+    call a:node.putCursorHere(0, 0)
 endfunction
 " FUNCTION: s:closeTreeWindow() {{{2
 " close the tree window
