@@ -69,6 +69,7 @@ call s:initVariable("g:NERDTreeShowHidden", 0)
 call s:initVariable("g:NERDTreeShowLineNumbers", 0)
 call s:initVariable("g:NERDTreeSortDirs", 1)
 call s:initVariable("g:NERDTreeDirArrows", !s:running_windows)
+call s:initVariable("g:NERDTreeCasadeOpenSingleChildDir", 1)
 
 if !exists("g:NERDTreeSortOrder")
     let g:NERDTreeSortOrder = ['\/$', '*', '\.swp$',  '\.bak$', '\~$']
@@ -141,6 +142,7 @@ call s:initVariable("g:NERDTreeMapToggleHidden", "I")
 call s:initVariable("g:NERDTreeMapToggleZoom", "A")
 call s:initVariable("g:NERDTreeMapUpdir", "u")
 call s:initVariable("g:NERDTreeMapUpdirKeepOpen", "U")
+call s:initVariable("g:NERDTreeMapCWD", "CD")
 
 "SECTION: Script level variable declaration{{{2
 if s:running_windows
@@ -172,6 +174,7 @@ command! -n=1 -complete=customlist,s:completeBookmarks -bar NERDTreeFromBookmark
 command! -n=0 -bar NERDTreeMirror call s:initNerdTreeMirror()
 command! -n=0 -bar NERDTreeFind call s:findAndRevealPath()
 command! -n=0 -bar NERDTreeFocus call NERDTreeFocus()
+command! -n=0 -bar NERDTreeCWD call NERDTreeCWD()
 " SECTION: Auto commands {{{1
 "============================================================
 augroup NERDTree
@@ -971,8 +974,8 @@ function! s:compareNodes(n1, n2)
     return a:n1.path.compareTo(a:n2.path)
 endfunction
 
-"FUNCTION: TreeFileNode.clearBoomarks() {{{3
-function! s:TreeFileNode.clearBoomarks()
+"FUNCTION: TreeFileNode.clearBookmarks() {{{3
+function! s:TreeFileNode.clearBookmarks()
     for i in s:Bookmark.Bookmarks()
         if i.path.equals(self.path)
             call i.delete()
@@ -1619,7 +1622,13 @@ function! s:TreeDirNode._initChildren(silent)
     "get an array of all the files in the nodes dir
     let dir = self.path
     let globDir = dir.str({'format': 'Glob'})
-    let filesStr = globpath(globDir, '*') . "\n" . globpath(globDir, '.*')
+
+    if version >= 703
+        let filesStr = globpath(globDir, '*', 1) . "\n" . globpath(globDir, '.*', 1)
+    else
+        let filesStr = globpath(globDir, '*') . "\n" . globpath(globDir, '.*')
+    endif
+
     let files = split(filesStr, "\n")
 
     if !a:silent && len(files) > g:NERDTreeNotificationThreshold
@@ -1696,7 +1705,26 @@ function! s:TreeDirNode.open(...)
         endif
     endif
 endfunction
+"FUNCTION: TreeDirNode.openAlong([opts]) {{{3
+"recursive open the dir if it has only one directory child.
+"
+"return the level of opened directories.
+function! s:TreeDirNode.openAlong(...)
+    let opts = a:0 ? a:1 : {}
+    let level = 0
 
+    let node = self
+    while node.path.isDirectory
+        call node.open(opts)
+        let level += 1
+        if node.getVisibleChildCount() == 1
+            let node = node.getChildByIndex(0, 1)
+        else
+            break
+        endif
+    endwhile
+    return level
+endfunction
 " FUNCTION: TreeDirNode.openExplorer() {{{3
 " opens an explorer window for this node in the previous window (could be a
 " nerd tree or a netrw)
@@ -1859,10 +1887,13 @@ function! s:TreeDirNode.toggleOpen(...)
     if self.isOpen ==# 1
         call self.close()
     else
-        call self.open(opts)
+        if g:NERDTreeCasadeOpenSingleChildDir == 0
+            call self.open(opts)
+        else
+            call self.openAlong(opts)
+        endif
     endif
 endfunction
-
 "FUNCTION: TreeDirNode.transplantChild(newNode) {{{3
 "Replaces the child of this with the given node (where the child node's full
 "path matches a:newNode's fullpath). The search for the matching node is
@@ -2459,6 +2490,13 @@ function! s:Path.getSortOrderIndex()
     return s:NERDTreeSortStarIndex
 endfunction
 
+
+"FUNCTION: Path.isUnixHiddenFile() {{{3
+"check for unix hidden files
+function! s:Path.isUnixHiddenFile()
+    return self.getLastPathComponent(0) =~# '^\.'
+endfunction
+
 "FUNCTION: Path.ignore() {{{3
 "returns true if this path should be ignored
 function! s:Path.ignore()
@@ -2472,7 +2510,7 @@ function! s:Path.ignore()
     endif
 
     "dont show hidden files unless instructed to
-    if b:NERDTreeShowHidden ==# 0 && self.getLastPathComponent(0) =~# '^\.'
+    if b:NERDTreeShowHidden ==# 0 && self.isUnixHiddenFile()
         return 1
     endif
 
@@ -2564,7 +2602,7 @@ endfunction
 "slash
 function! s:Path.Resolve(path)
     let tmp = resolve(a:path)
-    return tmp =~# '/$' ? substitute(tmp, '/$', '', '') : tmp
+    return tmp =~# '.\+/$' ? substitute(tmp, '/$', '', '') : tmp
 endfunction
 
 "FUNCTION: Path.readInfoFromDisk(fullpath) {{{3
@@ -2910,6 +2948,8 @@ function! s:createDefaultBindings()
 
     call NERDTreeAddKeyMap({ 'key': g:NERDTreeMapQuit, 'scope': "all", 'callback': s."closeTreeWindow" })
 
+    call NERDTreeAddKeyMap({ 'key': g:NERDTreeMapCWD, 'scope': "all", 'callback': s."chRootCwd" })
+
     call NERDTreeAddKeyMap({ 'key': g:NERDTreeMapRefreshRoot, 'scope': "all", 'callback': s."refreshRoot" })
     call NERDTreeAddKeyMap({ 'key': g:NERDTreeMapRefresh, 'scope': "Node", 'callback': s."refreshCurrent" })
 
@@ -2974,6 +3014,11 @@ function! s:findAndRevealPath()
         return
     endtry
 
+    if p.isUnixHiddenFile()
+        let showhidden=g:NERDTreeShowHidden
+        let g:NERDTreeShowHidden = 1
+    endif
+
     if !s:treeExistsForTab()
         try
             let cwd = s:Path.New(getcwd())
@@ -2989,7 +3034,13 @@ function! s:findAndRevealPath()
         endif
     else
         if !p.isUnder(s:TreeFileNode.GetRootForTab().path)
-            call s:initNerdTree(p.getParent().str())
+            if !s:isTreeOpen()
+                call s:createTreeWin()
+            else
+                call s:putCursorInTreeWin()
+            endif
+            let b:NERDTreeShowHidden = g:NERDTreeShowHidden
+            call s:chRoot(s:TreeDirNode.New(p.getParent()))
         else
             if !s:isTreeOpen()
                 call s:toggle("")
@@ -2998,6 +3049,10 @@ function! s:findAndRevealPath()
     endif
     call s:putCursorInTreeWin()
     call b:NERDTreeRoot.reveal(p)
+
+    if p.isUnixHiddenFile()
+        let g:NERDTreeShowHidden = showhidden
+    endif
 endfunction
 
 " FUNCTION: s:has_opt(options, name) {{{2
@@ -3280,6 +3335,11 @@ function! NERDTreeFocus()
     endif
 endfunction
 
+function! NERDTreeCWD()
+    call NERDTreeFocus()
+    call s:chRootCwd()
+endfunction
+
 " SECTION: View Functions {{{1
 "============================================================
 "FUNCTION: s:centerView() {{{2
@@ -3420,6 +3480,7 @@ function! s:dumpHelp()
         let @h=@h."\" ". g:NERDTreeMapMenu .": Show menu\n"
         let @h=@h."\" ". g:NERDTreeMapChdir .":change the CWD to the\n"
         let @h=@h."\"    selected dir\n"
+        let @h=@h."\" ". g:NERDTreeMapCWD .":change tree root to CWD\n"
 
         let @h=@h."\"\n\" ----------------------------\n"
         let @h=@h."\" Tree filtering mappings~\n"
@@ -4030,12 +4091,27 @@ function! s:chRoot(node)
     call b:NERDTreeRoot.putCursorHere(0, 0)
 endfunction
 
+" FUNCTION: s:chRootCwd() {{{2
+" changes the current root to CWD
+function! s:chRootCwd()
+    try
+        let cwd = s:Path.New(getcwd())
+    catch /^NERDTree.InvalidArgumentsError/
+        call s:echo("current directory does not exist.")
+        return
+    endtry
+    if cwd.str() == s:TreeFileNode.GetRootForTab().path.str()
+       return
+    endif
+    call s:chRoot(s:TreeDirNode.New(cwd))
+endfunction
+
 " FUNCTION: s:clearBookmarks(bookmarks) {{{2
 function! s:clearBookmarks(bookmarks)
     if a:bookmarks ==# ''
         let currentNode = s:TreeFileNode.GetSelected()
         if currentNode != {}
-            call currentNode.clearBoomarks()
+            call currentNode.clearBookmarks()
         endif
     else
         for name in split(a:bookmarks, ' ')
@@ -4122,7 +4198,7 @@ function! s:handleLeftClick()
         "take the line substring manually
         let line = split(getline(line(".")), '\zs')
         let startToCur = ""
-        for i in range(0,virtcol(".")-1)
+        for i in range(0,len(line)-1)
             let startToCur .= line[i]
         endfor
 
