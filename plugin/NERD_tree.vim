@@ -70,6 +70,7 @@ call s:initVariable("g:NERDTreeShowLineNumbers", 0)
 call s:initVariable("g:NERDTreeSortDirs", 1)
 call s:initVariable("g:NERDTreeDirArrows", !s:running_windows)
 call s:initVariable("g:NERDTreeCasadeOpenSingleChildDir", 1)
+call s:initVariable("g:NERDTreeLynxMotion", 0)
 
 if !exists("g:NERDTreeSortOrder")
     let g:NERDTreeSortOrder = ['\/$', '*', '\.swp$',  '\.bak$', '\~$']
@@ -2919,7 +2920,6 @@ function! s:createDefaultBindings()
 
 
     call NERDTreeAddKeyMap({ 'key': g:NERDTreeMapActivateNode, 'scope': "DirNode", 'callback': s."activateDirNode" })
-    call NERDTreeAddKeyMap({ 'key': g:NERDTreeMapActivateNodeAlt, 'scope': "DirNode", 'callback': s."activateDirNode" })
     call NERDTreeAddKeyMap({ 'key': g:NERDTreeMapActivateNode, 'scope': "FileNode", 'callback': s."activateFileNode" })
     call NERDTreeAddKeyMap({ 'key': g:NERDTreeMapActivateNode, 'scope': "Bookmark", 'callback': s."activateBookmark" })
     call NERDTreeAddKeyMap({ 'key': g:NERDTreeMapActivateNode, 'scope': "all", 'callback': s."activateAll" })
@@ -2962,7 +2962,6 @@ function! s:createDefaultBindings()
 
     call NERDTreeAddKeyMap({ 'key': g:NERDTreeMapCloseDir, 'scope': "Node", 'callback': s."closeCurrentDir" })
     call NERDTreeAddKeyMap({ 'key': g:NERDTreeMapCloseChildren, 'scope': "DirNode", 'callback': s."closeChildren" })
-    call NERDTreeAddKeyMap({ 'key': g:NERDTreeMapSlamDir, 'scope': "DirNode", 'callback': s."slamCurrentDir" })
 
     call NERDTreeAddKeyMap({ 'key': g:NERDTreeMapMenu, 'scope': "Node", 'callback': s."showMenu" })
 
@@ -2982,6 +2981,10 @@ function! s:createDefaultBindings()
 
     call NERDTreeAddKeyMap({ 'key': g:NERDTreeMapDeleteBookmark, 'scope': "Bookmark", 'callback': s."deleteBookmark" })
 
+    if g:NERDTreeLynxMotion == 1
+        call NERDTreeAddKeyMap({ 'key': g:NERDTreeMapActivateNodeAlt, 'scope': "DirNode", 'callback': s."activateDirNode" })
+        call NERDTreeAddKeyMap({ 'key': g:NERDTreeMapSlamDir, 'scope': "DirNode", 'callback': s."slamCurrentDir" })
+    endif
 endfunction
 " FUNCTION: s:deprecated(func, [msg]) {{{2
 " Issue a deprecation warning for a:func. If a second arg is given, use this
