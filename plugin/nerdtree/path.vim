@@ -327,6 +327,21 @@ function! s:Path.isUnixHiddenFile()
     return self.getLastPathComponent(0) =~# '^\.'
 endfunction
 
+"FUNCTION: Path.isUnixHiddenPath() {{{3
+"check for unix path with hidden components
+function! s:Path.isUnixHiddenPath()
+    if self.getLastPathComponent(0) =~# '^\.'
+        return 1
+    else
+        for segment in self.pathSegments
+            if segment =~# '^\.'
+                return 1
+            endif
+        endfor
+        return 0
+    endif
+endfunction
+
 "FUNCTION: Path.ignore() {{{3
 "returns true if this path should be ignored
 function! s:Path.ignore()
@@ -693,3 +708,4 @@ function! s:Path.WinToUnixPath(pathstr)
     return toReturn
 endfunction
 
+" vim: set sw=4 sts=4 et fdm=marker:

@@ -179,7 +179,7 @@ function! nerdtree#findAndRevealPath()
         return
     endtry
 
-    if p.isUnixHiddenFile()
+    if p.isUnixHiddenPath()
         let showhidden=g:NERDTreeShowHidden
         let g:NERDTreeShowHidden = 1
     endif
