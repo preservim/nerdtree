@@ -1,15 +1,17 @@
-"CLASS: TreeFileNode {{{2
-"This class is the parent of the TreeDirNode class and constitures the
+"CLASS: TreeFileNode
+"This class is the parent of the TreeDirNode class and is the
 "'Component' part of the composite design pattern between the treenode
 "classes.
 "============================================================
 let s:TreeFileNode = {}
 let g:NERDTreeFileNode = s:TreeFileNode
-"FUNCTION: TreeFileNode.activate(...) {{{3
+
+"FUNCTION: TreeFileNode.activate(...) {{{1
 function! s:TreeFileNode.activate(...)
     call self.open(a:0 ? a:1 : {})
 endfunction
-"FUNCTION: TreeFileNode.bookmark(name) {{{3
+
+"FUNCTION: TreeFileNode.bookmark(name) {{{1
 "bookmark this node with a:name
 function! s:TreeFileNode.bookmark(name)
 
@@ -30,7 +32,8 @@ function! s:TreeFileNode.bookmark(name)
         call oldMarkedNode.path.cacheDisplayString()
     endif
 endfunction
-"FUNCTION: TreeFileNode.cacheParent() {{{3
+
+"FUNCTION: TreeFileNode.cacheParent() {{{1
 "initializes self.parent if it isnt already
 function! s:TreeFileNode.cacheParent()
     if empty(self.parent)
@@ -42,7 +45,7 @@ function! s:TreeFileNode.cacheParent()
     endif
 endfunction
 
-"FUNCTION: TreeFileNode.clearBookmarks() {{{3
+"FUNCTION: TreeFileNode.clearBookmarks() {{{1
 function! s:TreeFileNode.clearBookmarks()
     for i in g:NERDTreeBookmark.Bookmarks()
         if i.path.equals(self.path)
@@ -51,7 +54,8 @@ function! s:TreeFileNode.clearBookmarks()
     endfor
     call self.path.cacheDisplayString()
 endfunction
-"FUNCTION: TreeFileNode.copy(dest) {{{3
+
+"FUNCTION: TreeFileNode.copy(dest) {{{1
 function! s:TreeFileNode.copy(dest)
     call self.path.copy(a:dest)
     let newPath = s:NERDTreePath.New(a:dest)
@@ -64,14 +68,14 @@ function! s:TreeFileNode.copy(dest)
     endif
 endfunction
 
-"FUNCTION: TreeFileNode.delete {{{3
+"FUNCTION: TreeFileNode.delete {{{1
 "Removes this node from the tree and calls the Delete method for its path obj
 function! s:TreeFileNode.delete()
     call self.path.delete()
     call self.parent.removeChild(self)
 endfunction
 
-"FUNCTION: TreeFileNode.displayString() {{{3
+"FUNCTION: TreeFileNode.displayString() {{{1
 "
 "Returns a string that specifies how the node should be represented as a
 "string
@@ -82,7 +86,7 @@ function! s:TreeFileNode.displayString()
     return self.path.displayString()
 endfunction
 
-"FUNCTION: TreeFileNode.equals(treenode) {{{3
+"FUNCTION: TreeFileNode.equals(treenode) {{{1
 "
 "Compares this treenode to the input treenode and returns 1 if they are the
 "same node.
@@ -96,7 +100,7 @@ function! s:TreeFileNode.equals(treenode)
     return self.path.str() ==# a:treenode.path.str()
 endfunction
 
-"FUNCTION: TreeFileNode.findNode(path) {{{3
+"FUNCTION: TreeFileNode.findNode(path) {{{1
 "Returns self if this node.path.Equals the given path.
 "Returns {} if not equal.
 "
@@ -108,7 +112,8 @@ function! s:TreeFileNode.findNode(path)
     endif
     return {}
 endfunction
-"FUNCTION: TreeFileNode.findOpenDirSiblingWithVisibleChildren(direction) {{{3
+
+"FUNCTION: TreeFileNode.findOpenDirSiblingWithVisibleChildren(direction) {{{1
 "
 "Finds the next sibling for this node in the indicated direction. This sibling
 "must be a directory and may/may not have children as specified.
@@ -133,7 +138,8 @@ function! s:TreeFileNode.findOpenDirSiblingWithVisibleChildren(direction)
 
     return {}
 endfunction
-"FUNCTION: TreeFileNode.findSibling(direction) {{{3
+
+"FUNCTION: TreeFileNode.findSibling(direction) {{{1
 "
 "Finds the next sibling for this node in the indicated direction
 "
@@ -172,7 +178,7 @@ function! s:TreeFileNode.findSibling(direction)
     return {}
 endfunction
 
-"FUNCTION: TreeFileNode.getLineNum(){{{3
+"FUNCTION: TreeFileNode.getLineNum(){{{1
 "returns the line number this node is rendered on, or -1 if it isnt rendered
 function! s:TreeFileNode.getLineNum()
     "if the node is the root then return the root line no.
@@ -221,7 +227,7 @@ function! s:TreeFileNode.getLineNum()
     return -1
 endfunction
 
-"FUNCTION: TreeFileNode.GetRootForTab(){{{3
+"FUNCTION: TreeFileNode.GetRootForTab(){{{1
 "get the root node for this tab
 function! s:TreeFileNode.GetRootForTab()
     if nerdtree#treeExistsForTab()
@@ -229,7 +235,8 @@ function! s:TreeFileNode.GetRootForTab()
     end
     return {}
 endfunction
-"FUNCTION: TreeFileNode.GetRootLineNum(){{{3
+
+"FUNCTION: TreeFileNode.GetRootLineNum(){{{1
 "gets the line number of the root node
 function! s:TreeFileNode.GetRootLineNum()
     let rootLine = 1
@@ -239,7 +246,7 @@ function! s:TreeFileNode.GetRootLineNum()
     return rootLine
 endfunction
 
-"FUNCTION: TreeFileNode.GetSelected() {{{3
+"FUNCTION: TreeFileNode.GetSelected() {{{1
 "gets the treenode that the cursor is currently over
 function! s:TreeFileNode.GetSelected()
     try
@@ -252,13 +259,15 @@ function! s:TreeFileNode.GetSelected()
         return {}
     endtry
 endfunction
-"FUNCTION: TreeFileNode.isVisible() {{{3
+
+"FUNCTION: TreeFileNode.isVisible() {{{1
 "returns 1 if this node should be visible according to the tree filters and
 "hidden file filters (and their on/off status)
 function! s:TreeFileNode.isVisible()
     return !self.path.ignore()
 endfunction
-"FUNCTION: TreeFileNode.isRoot() {{{3
+
+"FUNCTION: TreeFileNode.isRoot() {{{1
 "returns 1 if this node is b:NERDTreeRoot
 function! s:TreeFileNode.isRoot()
     if !nerdtree#treeExistsForBuf()
@@ -268,7 +277,7 @@ function! s:TreeFileNode.isRoot()
     return self.equals(b:NERDTreeRoot)
 endfunction
 
-"FUNCTION: TreeFileNode.makeRoot() {{{3
+"FUNCTION: TreeFileNode.makeRoot() {{{1
 "Make this node the root of the tree
 function! s:TreeFileNode.makeRoot()
     if self.path.isDirectory
@@ -287,7 +296,8 @@ function! s:TreeFileNode.makeRoot()
 
     silent doautocmd User NERDTreeNewRoot
 endfunction
-"FUNCTION: TreeFileNode.New(path) {{{3
+
+"FUNCTION: TreeFileNode.New(path) {{{1
 "Returns a new TreeNode object with the given path and parent
 "
 "Args:
@@ -303,31 +313,34 @@ function! s:TreeFileNode.New(path)
     endif
 endfunction
 
-"FUNCTION: TreeFileNode.open() {{{3
+"FUNCTION: TreeFileNode.open() {{{1
 function! s:TreeFileNode.open(...)
     let opts = a:0 ? a:1 : {}
     let opener = g:NERDTreeOpener.New(self.path, opts)
     call opener.open(self)
 endfunction
 
-"FUNCTION: TreeFileNode.openSplit() {{{3
+"FUNCTION: TreeFileNode.openSplit() {{{1
 "Open this node in a new window
 function! s:TreeFileNode.openSplit()
     call nerdtree#deprecated('TreeFileNode.openSplit', 'is deprecated, use .open() instead.')
     call self.open({'where': 'h'})
 endfunction
-"FUNCTION: TreeFileNode.openVSplit() {{{3
+
+"FUNCTION: TreeFileNode.openVSplit() {{{1
 "Open this node in a new vertical window
 function! s:TreeFileNode.openVSplit()
     call nerdtree#deprecated('TreeFileNode.openVSplit', 'is deprecated, use .open() instead.')
     call self.open({'where': 'v'})
 endfunction
-"FUNCTION: TreeFileNode.openInNewTab(options) {{{3
+
+"FUNCTION: TreeFileNode.openInNewTab(options) {{{1
 function! s:TreeFileNode.openInNewTab(options)
     echomsg 'TreeFileNode.openInNewTab is deprecated'
     call self.open(extend({'where': 't'}, a:options))
 endfunction
-"FUNCTION: TreeFileNode.putCursorHere(isJump, recurseUpward){{{3
+
+"FUNCTION: TreeFileNode.putCursorHere(isJump, recurseUpward){{{1
 "Places the cursor on the line number this node is rendered on
 "
 "Args:
@@ -354,11 +367,12 @@ function! s:TreeFileNode.putCursorHere(isJump, recurseUpward)
     endif
 endfunction
 
-"FUNCTION: TreeFileNode.refresh() {{{3
+"FUNCTION: TreeFileNode.refresh() {{{1
 function! s:TreeFileNode.refresh()
     call self.path.refresh()
 endfunction
-"FUNCTION: TreeFileNode.rename() {{{3
+
+"FUNCTION: TreeFileNode.rename() {{{1
 "Calls the rename method for this nodes path obj
 function! s:TreeFileNode.rename(newName)
     let newName = substitute(a:newName, '\(\\\|\/\)$', '', '')
@@ -373,12 +387,12 @@ function! s:TreeFileNode.rename(newName)
         call newParent.refresh()
     endif
 endfunction
-"FUNCTION: TreeFileNode.renderToString {{{3
+
+"FUNCTION: TreeFileNode.renderToString {{{1
 "returns a string representation for this tree to be rendered in the view
 function! s:TreeFileNode.renderToString()
     return self._renderToString(0, 0, [], self.getChildCount() ==# 1)
 endfunction
-
 
 "Args:
 "depth: the current depth in the tree for this call
@@ -467,3 +481,5 @@ function! s:TreeFileNode._renderToString(depth, drawText, vertMap, isLastChild)
 
     return output
 endfunction
+
+" vim: set sw=4 sts=4 et fdm=marker:

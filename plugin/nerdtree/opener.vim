@@ -1,9 +1,9 @@
-"CLASS: Opener {{{2
+"CLASS: Opener
 "============================================================
 let s:Opener = {}
 let g:NERDTreeOpener = s:Opener
 
-"FUNCTION: Opener._checkToCloseTree(newtab) {{{3
+"FUNCTION: Opener._checkToCloseTree(newtab) {{{1
 "Check the class options and global options (i.e. NERDTreeQuitOnOpen) to see
 "if the tree should be closed now.
 "
@@ -21,7 +21,7 @@ function! s:Opener._checkToCloseTree(newtab)
     endif
 endfunction
 
-"FUNCTION: Opener._gotoTargetWin() {{{3
+"FUNCTION: Opener._gotoTargetWin() {{{1
 function! s:Opener._gotoTargetWin()
     if b:NERDTreeType ==# "secondary"
         if self._where == 'v'
@@ -48,7 +48,7 @@ function! s:Opener._gotoTargetWin()
     endif
 endfunction
 
-"FUNCTION: Opener.New(path, opts) {{{3
+"FUNCTION: Opener.New(path, opts) {{{1
 "Args:
 "
 "a:path: The path object that is to be opened.
@@ -76,7 +76,7 @@ function! s:Opener.New(path, opts)
     return newObj
 endfunction
 
-"FUNCTION: Opener._newSplit() {{{3
+"FUNCTION: Opener._newSplit() {{{1
 function! s:Opener._newSplit()
     " Save the user's settings for splitbelow and splitright
     let savesplitbelow=&splitbelow
@@ -136,7 +136,7 @@ function! s:Opener._newSplit()
     let &splitright=savesplitright
 endfunction
 
-"FUNCTION: Opener._newVSplit() {{{3
+"FUNCTION: Opener._newVSplit() {{{1
 function! s:Opener._newVSplit()
     let winwidth = winwidth(".")
     if winnr("$")==#1
@@ -152,7 +152,7 @@ function! s:Opener._newVSplit()
     call nerdtree#exec('wincmd p')
 endfunction
 
-"FUNCTION: Opener.open(target) {{{3
+"FUNCTION: Opener.open(target) {{{1
 function! s:Opener.open(target)
     if self._path.isDirectory
         call self._openDirectory(a:target)
@@ -161,7 +161,7 @@ function! s:Opener.open(target)
     endif
 endfunction
 
-"FUNCTION: Opener._openFile() {{{3
+"FUNCTION: Opener._openFile() {{{1
 function! s:Opener._openFile()
     if self._reuse && self._reuseWindow()
         return
@@ -181,7 +181,7 @@ function! s:Opener._openFile()
     endif
 endfunction
 
-"FUNCTION: Opener._openDirectory(node) {{{3
+"FUNCTION: Opener._openDirectory(node) {{{1
 function! s:Opener._openDirectory(node)
     if self._treetype ==# "secondary"
         call self._gotoTargetWin()
@@ -204,7 +204,7 @@ function! s:Opener._openDirectory(node)
     endif
 endfunction
 
-"FUNCTION: Opener._previousWindow() {{{3
+"FUNCTION: Opener._previousWindow() {{{1
 function! s:Opener._previousWindow()
     if !nerdtree#isWindowUsable(winnr("#")) && nerdtree#firstUsableWindow() ==# -1
         call self._newSplit()
@@ -224,13 +224,13 @@ function! s:Opener._previousWindow()
     endif
 endfunction
 
-"FUNCTION: Opener._restoreCursorPos(){{{3
+"FUNCTION: Opener._restoreCursorPos(){{{1
 function! s:Opener._restoreCursorPos()
     call nerdtree#exec('normal ' . self._tabnr . 'gt')
     call nerdtree#exec(bufwinnr(self._bufnr) . 'wincmd w')
 endfunction
 
-"FUNCTION: Opener._reuseWindow(){{{3
+"FUNCTION: Opener._reuseWindow(){{{1
 "put the cursor in the first window we find for this file
 "
 "return 1 if we were successful
@@ -255,9 +255,10 @@ function! s:Opener._reuseWindow()
     return 0
 endfunction
 
-"FUNCTION: Opener._saveCursorPos(){{{3
+"FUNCTION: Opener._saveCursorPos(){{{1
 function! s:Opener._saveCursorPos()
     let self._bufnr = bufnr("")
     let self._tabnr = tabpagenr()
 endfunction
 
+" vim: set sw=4 sts=4 et fdm=marker:

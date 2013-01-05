@@ -1,8 +1,9 @@
-"CLASS: MenuItem {{{2
+"CLASS: MenuItem
 "============================================================
 let s:MenuItem = {}
 let g:NERDTreeMenuItem = s:MenuItem
-"FUNCTION: MenuItem.All() {{{3
+
+"FUNCTION: MenuItem.All() {{{1
 "get all top level menu items
 function! s:MenuItem.All()
     if !exists("s:menuItems")
@@ -11,7 +12,7 @@ function! s:MenuItem.All()
     return s:menuItems
 endfunction
 
-"FUNCTION: MenuItem.AllEnabled() {{{3
+"FUNCTION: MenuItem.AllEnabled() {{{1
 "get all top level menu items that are currently enabled
 function! s:MenuItem.AllEnabled()
     let toReturn = []
@@ -23,7 +24,7 @@ function! s:MenuItem.AllEnabled()
     return toReturn
 endfunction
 
-"FUNCTION: MenuItem.Create(options) {{{3
+"FUNCTION: MenuItem.Create(options) {{{1
 "make a new menu item and add it to the global list
 function! s:MenuItem.Create(options)
     let newMenuItem = copy(self)
@@ -51,7 +52,7 @@ function! s:MenuItem.Create(options)
     return newMenuItem
 endfunction
 
-"FUNCTION: MenuItem.CreateSeparator(options) {{{3
+"FUNCTION: MenuItem.CreateSeparator(options) {{{1
 "make a new separator menu item and add it to the global list
 function! s:MenuItem.CreateSeparator(options)
     let standard_options = { 'text': '--------------------',
@@ -62,7 +63,7 @@ function! s:MenuItem.CreateSeparator(options)
     return s:MenuItem.Create(options)
 endfunction
 
-"FUNCTION: MenuItem.CreateSubmenu(options) {{{3
+"FUNCTION: MenuItem.CreateSubmenu(options) {{{1
 "make a new submenu and add it to global list
 function! s:MenuItem.CreateSubmenu(options)
     let standard_options = { 'callback': -1 }
@@ -71,7 +72,7 @@ function! s:MenuItem.CreateSubmenu(options)
     return s:MenuItem.Create(options)
 endfunction
 
-"FUNCTION: MenuItem.enabled() {{{3
+"FUNCTION: MenuItem.enabled() {{{1
 "return 1 if this menu item should be displayed
 "
 "delegates off to the isActiveCallback, and defaults to 1 if no callback was
@@ -83,7 +84,7 @@ function! s:MenuItem.enabled()
     return 1
 endfunction
 
-"FUNCTION: MenuItem.execute() {{{3
+"FUNCTION: MenuItem.execute() {{{1
 "perform the action behind this menu item, if this menuitem has children then
 "display a new menu for them, otherwise deletegate off to the menuitem's
 "callback
@@ -98,15 +99,16 @@ function! s:MenuItem.execute()
     endif
 endfunction
 
-"FUNCTION: MenuItem.isSeparator() {{{3
+"FUNCTION: MenuItem.isSeparator() {{{1
 "return 1 if this menuitem is a separator
 function! s:MenuItem.isSeparator()
     return self.callback == -1 && self.children == []
 endfunction
 
-"FUNCTION: MenuItem.isSubmenu() {{{3
+"FUNCTION: MenuItem.isSubmenu() {{{1
 "return 1 if this menuitem is a submenu
 function! s:MenuItem.isSubmenu()
     return self.callback == -1 && !empty(self.children)
 endfunction
 
+" vim: set sw=4 sts=4 et fdm=marker:
