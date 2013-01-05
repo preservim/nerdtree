@@ -7,9 +7,6 @@ function! nerdtree#version()
     return '4.2.0'
 endfunction
 
-"the number to add to the nerd tree buffer name to make the buf name unique
-let s:next_buffer_number = 1
-
 " SECTION: General Functions {{{1
 "============================================================
 "FUNCTION: nerdtree#bufInWindows(bnum){{{2
@@ -377,9 +374,20 @@ endfunction
 " FUNCTION: nerdtree#nextBufferName() {{{2
 " returns the buffer name for the next nerd tree
 function! nerdtree#nextBufferName()
-    let name = nerdtree#bufNamePrefix() . s:next_buffer_number
-    let s:next_buffer_number += 1
+    let name = nerdtree#bufNamePrefix() . nerdtree#nextBufferNumber()
     return name
+endfunction
+
+" FUNCTION: nerdtree#nextBufferNumber() {{{2
+" the number to add to the nerd tree buffer name to make the buf name unique
+function! nerdtree#nextBufferNumber()
+    if !exists("s:nextBufNum")
+        let s:nextBufNum = 1
+    else
+        let s:nextBufNum += 1
+    endif
+
+    return s:nextBufNum
 endfunction
 
 " FUNCTION: nerdtree#postSourceActions() {{{2
