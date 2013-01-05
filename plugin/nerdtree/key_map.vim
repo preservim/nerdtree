@@ -43,7 +43,7 @@ function! s:KeyMap.bind()
 
     let premap = self.key == "<LeftRelease>" ? " <LeftRelease>" : " "
 
-    exec 'nnoremap <buffer> <silent> '. self.key . premap . ':call <SID>KeyMap_Invoke("'. keymapInvokeString .'")<cr>'
+    exec 'nnoremap <buffer> <silent> '. self.key . premap . ':call nerdtree#invokeKeyMap("'. keymapInvokeString .'")<cr>'
 endfunction
 
 "FUNCTION: KeyMap.Remove(key, scope) {{{3
@@ -121,12 +121,6 @@ function! s:KeyMap.Invoke(key)
     endif
 endfunction
 
-"this is needed since I cant figure out how to invoke dict functions from a
-"key map
-function! s:KeyMap_Invoke(key)
-    call s:KeyMap.Invoke(a:key)
-endfunction
-
 "FUNCTION: KeyMap.Create(options) {{{3
 function! s:KeyMap.Create(options)
     let newKeyMap = copy(self)
@@ -145,3 +139,4 @@ function! s:KeyMap.Add(keymap)
     call add(s:KeyMap.All(), a:keymap)
 endfunction
 
+" vim: set sw=4 sts=4 et fdm=marker:

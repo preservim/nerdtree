@@ -371,6 +371,13 @@ function! nerdtree#initNerdTreeMirror()
     endif
 endfunction
 
+" FUNCTION: nerdtree#invokeKeyMap(key) {{{2
+"this is needed since I cant figure out how to invoke dict functions from a
+"key map
+function! nerdtree#invokeKeyMap(key)
+    call g:NERDTreeKeyMap.Invoke(a:key)
+endfunction
+
 " FUNCTION: nerdtree#nextBufferName() {{{2
 " returns the buffer name for the next nerd tree
 function! nerdtree#nextBufferName()
