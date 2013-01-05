@@ -1228,10 +1228,10 @@ endfunction
 
 "FUNCTION: nerdtree#bindMappings() {{{2
 function! nerdtree#bindMappings()
-    "make <cr> do the same as the default 'o' mapping
-    exec "nnoremap <silent> <buffer> <cr> :call <SID>KeyMap_Invoke('". g:NERDTreeMapActivateNode ."')<cr>"
-
     call g:NERDTreeKeyMap.BindAll()
+
+    "make <cr> do the same as the default 'o' mapping
+    exec "nnoremap <silent> <buffer> <cr> :call nerdtree#invokeKeyMap('". g:NERDTreeMapActivateNode ."')<cr>"
 
     command! -buffer -nargs=? Bookmark :call <SID>bookmarkNode('<args>')
     command! -buffer -complete=customlist,nerdtree#completeBookmarks -nargs=1 RevealBookmark :call <SID>revealBookmark('<args>')
