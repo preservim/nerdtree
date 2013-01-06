@@ -290,7 +290,7 @@ function! s:Bookmark.validate()
     else
         call s:Bookmark.CacheBookmarks(1)
         call nerdtree#renderView()
-        call s:echo(self.name . "now points to an invalid location. See :help NERDTreeInvalidBookmarks for info.")
+        call nerdtree#echo(self.name . "now points to an invalid location. See :help NERDTreeInvalidBookmarks for info.")
         return 0
     endif
 endfunction
