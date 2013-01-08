@@ -351,7 +351,7 @@ endfunction
 "FUNCTION: TreeDirNode._openInNewTab() {{{1
 function! s:TreeDirNode._openInNewTab()
     tabnew
-    call nerdtree#initNerdTree(self.path.str())
+    call g:NERDTreeCreator.New().createPrimary(self.path.str())
 endfunction
 
 "FUNCTION: TreeDirNode.openRecursively() {{{1

@@ -144,15 +144,16 @@ runtime plugin/nerdtree/bookmark.vim
 runtime plugin/nerdtree/tree_file_node.vim
 runtime plugin/nerdtree/tree_dir_node.vim
 runtime plugin/nerdtree/opener.vim
+runtime plugin/nerdtree/creator.vim
 
 " SECTION: Commands {{{1
 "============================================================
 "init the command that users start the nerd tree with
-command! -n=? -complete=dir -bar NERDTree :call nerdtree#initNerdTree('<args>')
-command! -n=? -complete=dir -bar NERDTreeToggle :call nerdtree#toggle('<args>')
+command! -n=? -complete=dir -bar NERDTree :call g:NERDTreeCreator.New().createPrimary('<args>')
+command! -n=? -complete=dir -bar NERDTreeToggle :call g:NERDTreeCreator.New().togglePrimary('<args>')
 command! -n=0 -bar NERDTreeClose :call nerdtree#closeTreeIfOpen()
-command! -n=1 -complete=customlist,nerdtree#completeBookmarks -bar NERDTreeFromBookmark call nerdtree#initNerdTree('<args>')
-command! -n=0 -bar NERDTreeMirror call nerdtree#initNerdTreeMirror()
+command! -n=1 -complete=customlist,nerdtree#completeBookmarks -bar NERDTreeFromBookmark call g:NERDTreeCreator.New().createPrimary('<args>')
+command! -n=0 -bar NERDTreeMirror call g:NERDTreeCreator.New().createMirror()
 command! -n=0 -bar NERDTreeFind call nerdtree#findAndRevealPath()
 command! -n=0 -bar NERDTreeFocus call NERDTreeFocus()
 command! -n=0 -bar NERDTreeCWD call NERDTreeCWD()
@@ -200,7 +201,7 @@ function! NERDTreeFocus()
     if nerdtree#isTreeOpen()
         call nerdtree#putCursorInTreeWin()
     else
-        call nerdtree#toggle("")
+        call g:NERDTreeCreator.New().togglePrimary("")
     endif
 endfunction
 
