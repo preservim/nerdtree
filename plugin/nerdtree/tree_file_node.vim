@@ -58,7 +58,7 @@ endfunction
 "FUNCTION: TreeFileNode.copy(dest) {{{1
 function! s:TreeFileNode.copy(dest)
     call self.path.copy(a:dest)
-    let newPath = s:NERDTreePath.New(a:dest)
+    let newPath = g:NERDTreePath.New(a:dest)
     let parent = b:NERDTreeRoot.findNode(newPath.getParent())
     if !empty(parent)
         call parent.refresh()
