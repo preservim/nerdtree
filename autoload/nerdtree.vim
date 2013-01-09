@@ -42,7 +42,7 @@ endfunction
 "inits a secondary nerd tree in the current buffer if appropriate
 function! nerdtree#checkForBrowse(dir)
     if a:dir != '' && isdirectory(a:dir)
-        call g:NERDTreeCreator.New().createSecondary(a:dir)
+        call g:NERDTreeCreator.CreateSecondary(a:dir)
     endif
 endfunction
 
@@ -193,14 +193,14 @@ function! nerdtree#findAndRevealPath()
         endtry
 
         if p.isUnder(cwd)
-            call g:NERDTreeCreator.New().createPrimary(cwd.str())
+            call g:NERDTreeCreator.CreatePrimary(cwd.str())
         else
-            call g:NERDTreeCreator.New().createPrimary(p.getParent().str())
+            call g:NERDTreeCreator.CreatePrimary(p.getParent().str())
         endif
     else
         if !p.isUnder(g:NERDTreeFileNode.GetRootForTab().path)
             if !nerdtree#isTreeOpen()
-                call g:NERDTreeCreator.New().togglePrimary('')
+                call g:NERDTreeCreator.TogglePrimary('')
             else
                 call nerdtree#putCursorInTreeWin()
             endif
@@ -208,7 +208,7 @@ function! nerdtree#findAndRevealPath()
             call nerdtree#chRoot(g:NERDTreeDirNode.New(p.getParent()))
         else
             if !nerdtree#isTreeOpen()
-                call g:NERDTreeCreator.New().togglePrimary("")
+                call g:NERDTreeCreator.TogglePrimary("")
             endif
         endif
     endif

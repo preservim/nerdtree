@@ -185,7 +185,7 @@ endfunction
 function! s:Opener._openDirectory(node)
     if self._treetype ==# "secondary"
         call self._gotoTargetWin()
-        call g:NERDTreeCreator.New().createSecondary(a:node.path.str())
+        call g:NERDTreeCreator.CreateSecondary(a:node.path.str())
     else
         call self._gotoTargetWin()
         if empty(self._where)
@@ -193,9 +193,9 @@ function! s:Opener._openDirectory(node)
             call nerdtree#renderView()
             call a:node.putCursorHere(0, 0)
         elseif self._where == 't'
-            call g:NERDTreeCreator.New().createPrimary(a:node.path.str())
+            call g:NERDTreeCreator.CreatePrimary(a:node.path.str())
         else
-            call g:NERDTreeCreator.New().createSecondary(a:node.path.str())
+            call g:NERDTreeCreator.CreateSecondary(a:node.path.str())
         endif
     endif
 

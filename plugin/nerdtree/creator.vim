@@ -27,6 +27,12 @@ function! s:Creator._broadcastInitEvent()
     silent doautocmd User NERDTreeInit
 endfunction
 
+"FUNCTION: s:Creator.CreatePrimary(a:name) {{{1
+function! s:Creator.CreatePrimary(name)
+    let creator = s:Creator.New()
+    call creator.createPrimary(a:name)
+endfunction
+
 "FUNCTION: s:Creator.createPrimary(a:name) {{{1
 "name: the name of a bookmark or a directory
 function! s:Creator.createPrimary(name)
@@ -63,6 +69,12 @@ function! s:Creator.createPrimary(name)
     call self._broadcastInitEvent()
 endfunction
 
+"FUNCTION: s:Creator.CreateSecondary(dir) {{{1
+function! s:Creator.CreateSecondary(dir)
+    let creator = s:Creator.New()
+    call creator.createSecondary(a:dir)
+endfunction
+
 "FUNCTION: s:Creator.createSecondary(dir) {{{1
 function! s:Creator.createSecondary(dir)
     try
@@ -92,6 +104,12 @@ function! s:Creator.createSecondary(dir)
     call nerdtree#renderView()
 
     call self._broadcastInitEvent()
+endfunction
+
+" FUNCTION: s:Creator.CreateMirror() {{{1
+function! s:Creator.CreateMirror()
+    let creator = s:Creator.New()
+    call creator.createMirror()
 endfunction
 
 " FUNCTION: s:Creator.createMirror() {{{1
@@ -246,6 +264,12 @@ function! s:Creator._setupStatusline()
     if g:NERDTreeStatusline != -1
         let &l:statusline = g:NERDTreeStatusline
     endif
+endfunction
+
+"FUNCTION: s:Creator.TogglePrimary(dir) {{{1
+function! s:Creator.TogglePrimary(dir)
+    let creator = s:Creator.New()
+    call creator.togglePrimary(a:dir)
 endfunction
 
 "FUNCTION: s:Creator.togglePrimary(dir) {{{1
