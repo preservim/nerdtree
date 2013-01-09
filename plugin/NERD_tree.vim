@@ -161,10 +161,10 @@ command! -n=0 -bar NERDTreeCWD call NERDTreeCWD()
 "============================================================
 augroup NERDTree
     "Save the cursor position whenever we close the nerd tree
-    exec "autocmd BufWinLeave ". nerdtree#bufNamePrefix() ."* call nerdtree#saveScreenState()"
+    exec "autocmd BufWinLeave ". g:NERDTreeCreator.BufNamePrefix() ."* call nerdtree#saveScreenState()"
 
     "disallow insert mode in the NERDTree
-    exec "autocmd BufEnter ". nerdtree#bufNamePrefix() ."* stopinsert"
+    exec "autocmd BufEnter ". g:NERDTreeCreator.BufNamePrefix() ."* stopinsert"
 augroup END
 
 if g:NERDTreeHijackNetrw

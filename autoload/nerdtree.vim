@@ -33,11 +33,6 @@ function! nerdtree#bufInWindows(bnum)
     return cnt
 endfunction
 
-" FUNCTION: nerdtree#bufNamePrefix() {{{2
-function! nerdtree#bufNamePrefix()
-    return 'NERD_tree_'
-endfunction
-
 "FUNCTION: nerdtree#checkForBrowse(dir) {{{2
 "inits a secondary nerd tree in the current buffer if appropriate
 function! nerdtree#checkForBrowse(dir)
@@ -230,25 +225,6 @@ endfunction
 "key map
 function! nerdtree#invokeKeyMap(key)
     call g:NERDTreeKeyMap.Invoke(a:key)
-endfunction
-
-" FUNCTION: nerdtree#nextBufferName() {{{2
-" returns the buffer name for the next nerd tree
-function! nerdtree#nextBufferName()
-    let name = nerdtree#bufNamePrefix() . nerdtree#nextBufferNumber()
-    return name
-endfunction
-
-" FUNCTION: nerdtree#nextBufferNumber() {{{2
-" the number to add to the nerd tree buffer name to make the buf name unique
-function! nerdtree#nextBufferNumber()
-    if !exists("s:nextBufNum")
-        let s:nextBufNum = 1
-    else
-        let s:nextBufNum += 1
-    endif
-
-    return s:nextBufNum
 endfunction
 
 " FUNCTION: nerdtree#postSourceActions() {{{2

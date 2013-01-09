@@ -27,6 +27,11 @@ function! s:Creator._broadcastInitEvent()
     silent doautocmd User NERDTreeInit
 endfunction
 
+" FUNCTION: s:Creator.BufNamePrefix() {{{2
+function! s:Creator.BufNamePrefix()
+    return 'NERD_tree_'
+endfunction
+
 "FUNCTION: s:Creator.CreatePrimary(a:name) {{{1
 function! s:Creator.CreatePrimary(name)
     let creator = s:Creator.New()
@@ -91,7 +96,7 @@ function! s:Creator.createSecondary(dir)
 
     "we need a unique name for each secondary tree buffer to ensure they are
     "all independent
-    exec "silent edit " . nerdtree#nextBufferName()
+    exec "silent edit " . self._nextBufferName()
 
     let b:NERDTreePreviousBuf = bufnr(previousBuf)
 
@@ -174,7 +179,7 @@ function! s:Creator._createTreeWin()
     let splitSize = g:NERDTreeWinSize
 
     if !exists('t:NERDTreeBufName')
-        let t:NERDTreeBufName = nerdtree#nextBufferName()
+        let t:NERDTreeBufName = self._nextBufferName()
         silent! exec splitLocation . 'vertical ' . splitSize . ' new'
         silent! exec "edit " . t:NERDTreeBufName
     else
@@ -190,6 +195,25 @@ endfunction
 function! s:Creator.New()
     let newCreator = copy(self)
     return newCreator
+endfunction
+
+" FUNCTION: s:Creator._nextBufferName() {{{2
+" returns the buffer name for the next nerd tree
+function! s:Creator._nextBufferName()
+    let name = s:Creator.BufNamePrefix() . self._nextBufferNumber()
+    return name
+endfunction
+
+" FUNCTION: s:Creator._nextBufferNumber() {{{2
+" the number to add to the nerd tree buffer name to make the buf name unique
+function! s:Creator._nextBufferNumber()
+    if !exists("s:Creator._NextBufNum")
+        let s:Creator._NextBufNum = 1
+    else
+        let s:Creator._NextBufNum += 1
+    endif
+
+    return s:Creator._NextBufNum
 endfunction
 
 "FUNCTION: s:Creator._pathForString(str) {{{1
