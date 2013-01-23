@@ -174,11 +174,25 @@ function! s:Path.copy(dest)
 
     call s:Path.createParentDirectories(a:dest)
 
-    let dest = s:Path.WinToUnixPath(a:dest)
+    if !nerdtree#runningWindows()
+        let dest = s:Path.WinToUnixPath(a:dest)
+    else
+        let dest = a:dest
+    endif
 
-    let cmd = g:NERDTreeCopyCmd . " " . escape(self.str(), self._escChars()) . " " . escape(dest, self._escChars())
+    if !exists('g:NERDTreeCopyCmd')
+        if self.isDirectory
+            let cmd_prefix = g:NERDTreeCopyDirCmd
+        else
+            let cmd_prefix = g:NERDTreeCopyFileCmd
+        endif
+    else
+        let cmd_prefix = g:NERDTreeCopyCmd
+    end
+
+    let cmd = cmd_prefix . " " . escape(self.str(), self._escChars()) . " " . escape(dest, self._escChars())
     let success = system(cmd)
-    if success != 0
+    if v:shell_error != 0
         throw "NERDTree.CopyError: Could not copy ''". self.str() ."'' to: '" . a:dest . "'"
     endif
 endfunction
@@ -187,7 +201,11 @@ endfunction
 "
 "returns 1 if copying is supported for this OS
 function! s:Path.CopyingSupported()
-    return exists('g:NERDTreeCopyCmd')
+    if !exists('g:NERDTreeCopyCmd')
+        return exists('g:NERDTreeCopyDirCmd') && exists('g:NERDTreeCopyFileCmd')
+    endif
+
+    return 1
 endfunction
 
 "FUNCTION: Path.copyingWillOverwrite(dest) {{{1
