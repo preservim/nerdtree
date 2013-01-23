@@ -188,7 +188,7 @@ function! s:Path.copy(dest)
         endif
     else
         let cmd_prefix = g:NERDTreeCopyCmd
-    end
+    endif
 
     let cmd = cmd_prefix . " " . escape(self.str(), self._escChars()) . " " . escape(dest, self._escChars())
     let success = system(cmd)
