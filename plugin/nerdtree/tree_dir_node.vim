@@ -422,7 +422,7 @@ function! s:TreeDirNode.refresh()
                     endif
 
 
-                catch /^NERDTree.InvalidArgumentsError/
+                catch /^NERDTree.\(InvalidArguments\|InvalidFiletype\)Error/
                     let invalidFilesFound = 1
                 endtry
             endif
