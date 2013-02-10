@@ -618,6 +618,7 @@ function! s:Path._strForEdit()
     "return a relative path if we can
     let isRelative = 0
     if nerdtree#runningWindows()
+        let p = self.str()
         let isRelative = stridx(tolower(p), tolower(cwd)) == 0
     else
         let isRelative = stridx(p, cwd) == 0
