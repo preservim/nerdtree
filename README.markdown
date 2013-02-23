@@ -80,7 +80,7 @@ A. Stick this in your vimrc: `autocmd vimenter * NERDTree`
 
 __Q. How can I open a NERDTree automatically when vim starts up if no files were specified?__
 
-A. Stick this in your vimrc `autocmd vimenter * if !argc() | NERDTree | endif`
+A. Stick this in your vimrc `autocmd vimenter * if !argc() && !&modified | NERDTree | endif`
 
 __Q. How can I map a specific key or shortcut to open NERDTree?__
 
