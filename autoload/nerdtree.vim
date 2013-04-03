@@ -98,7 +98,7 @@ function! nerdtree#createDefaultBindings()
 
     call NERDTreeAddKeyMap({ 'key': g:NERDTreeMapQuit, 'scope': "all", 'callback': s."closeTreeWindow" })
 
-    call NERDTreeAddKeyMap({ 'key': g:NERDTreeMapCWD, 'scope': "all", 'callback': s."chRootCwd" })
+    call NERDTreeAddKeyMap({ 'key': g:NERDTreeMapCWD, 'scope': "all", 'callback': "nerdtree#chRootCwd" })
 
     call NERDTreeAddKeyMap({ 'key': g:NERDTreeMapRefreshRoot, 'scope': "all", 'callback': s."refreshRoot" })
     call NERDTreeAddKeyMap({ 'key': g:NERDTreeMapRefresh, 'scope': "Node", 'callback': s."refreshCurrent" })
@@ -1011,7 +1011,7 @@ endfunction
 
 " FUNCTION: s:chRootCwd() {{{2
 " changes the current root to CWD
-function! s:chRootCwd()
+function! nerdtree#chRootCwd()
     try
         let cwd = g:NERDTreePath.New(getcwd())
     catch /^NERDTree.InvalidArgumentsError/
