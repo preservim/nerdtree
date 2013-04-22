@@ -993,8 +993,9 @@ Default: 1.
 
 When opening dir nodes, this option tells NERDTree to recursively open dirs
 that have only one child which is also a dir. NERDTree will stop when it finds
-a dir that contains anything but another single dir. This option may be useful
-for Java projects.  Use one of the follow lines to set this option: >
+a dir that contains anything but another single dir. Set this option on also 
+cause NERDTree close parent dir intelligent. This option may be useful for Java 
+projects. Use one of the follow lines to set this option: >
     let NERDTreeCascadeOpenSingleChildDir=0
     let NERDTreeCascadeOpenSingleChildDir=1
 <
