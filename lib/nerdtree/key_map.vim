@@ -44,7 +44,7 @@ function! s:KeyMap.bind()
 
     let premap = self.key == "<LeftRelease>" ? " <LeftRelease>" : " "
 
-    exec 'nnoremap <buffer> <silent> '. self.key . premap . ':call nerdtree#invokeKeyMap("'. keymapInvokeString .'")<cr>'
+    exec 'silent! nnoremap <buffer> <silent> <unique> '. self.key . premap . ':call nerdtree#invokeKeyMap("'. keymapInvokeString .'")<cr>'
 endfunction
 
 "FUNCTION: KeyMap.Remove(key, scope) {{{1
