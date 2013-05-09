@@ -675,6 +675,9 @@ NERD tree. These options should be set in your vimrc.
                                 a buffer when a file is being deleted or renamed
                                 via a context menu command.
 
+|'NERDTreeNoOverride'|          Tells the NERD tree not to override certian
+                                mappings.
+
 ------------------------------------------------------------------------------
 3.2. Customisation details                             *NERDTreeOptionDetails*
 
@@ -1011,6 +1014,18 @@ then it worths to set this option to 1. Use one of the follow lines to set this
 option: >
     let NERDTreeAutoDeleteBuffer=0
     let NERDTreeAutoDeleteBuffer=1
+<
+
+------------------------------------------------------------------------------
+                                          *'NERDTreeNoOverride'*
+Values: An array of strings.
+Default: Nothing, ignored by default.
+
+When entering a NERDTree window, certain keys are remapped for convenience. If
+you want some (or all) of them not to be remapped, you can specify that with
+this option.  For instance, to disallow mapping of Control+k and Control+j in
+NERDTree windows, you would set the following option: >
+    let NERDTreeNoOverride=['<C-k>', '<C-j>']
 <
 
 ==============================================================================
