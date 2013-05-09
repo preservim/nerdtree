@@ -1017,7 +1017,7 @@ option: >
 <
 
 ------------------------------------------------------------------------------
-                                          *'NERDTreeNoOverride'*
+                                                        *'NERDTreeNoOverride'*
 Values: An array of strings.
 Default: Nothing, ignored by default.
 
@@ -1025,8 +1025,10 @@ When entering a NERDTree window, certain keys are remapped for convenience. If
 you want some (or all) of them not to be remapped, you can specify that with
 this option.  For instance, to disallow mapping of Control+k and Control+j in
 NERDTree windows, you would set the following option: >
-    let NERDTreeNoOverride=['<C-k>', '<C-j>']
+    let NERDTreeNoOverride=['<c-k>', '<c-j>']
 <
+Note: mappings are specified as lowercase strings. The full list can be found
+under |NERDTreeMappings|.
 
 ==============================================================================
 4. The NERD tree API                                             *NERDTreeAPI*
