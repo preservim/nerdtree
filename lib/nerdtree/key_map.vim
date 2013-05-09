@@ -44,8 +44,8 @@ function! s:KeyMap.bind()
 
     let premap = self.key == "<LeftRelease>" ? " <LeftRelease>" : " "
 
-    " don't remap keys the user specifies in g:NERDNoOverride
-    if !exists('g:NERDNoOverride') || !count(g:NERDNoOverride, keymapInvokeString)
+    " don't remap keys the user specifies in g:NERDTreeNoOverride
+    if !exists('g:NERDTreeNoOverride') || !count(g:NERDTreeNoOverride, keymapInvokeString)
         exec 'nnoremap <buffer> <silent> '. self.key . premap . ':call nerdtree#invokeKeyMap("'. keymapInvokeString .'")<cr>'
     endif
 endfunction
