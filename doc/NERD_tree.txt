@@ -675,6 +675,10 @@ NERD tree. These options should be set in your vimrc.
                                 a buffer when a file is being deleted or renamed
                                 via a context menu command.
 
+|'NERDTreeReuseWindows'|        If file is already being edited
+                                in some window: jump back to that window
+                                instead of opening the new one.
+
 ------------------------------------------------------------------------------
 3.2. Customisation details                             *NERDTreeOptionDetails*
 
@@ -1012,6 +1016,16 @@ option: >
     let NERDTreeAutoDeleteBuffer=0
     let NERDTreeAutoDeleteBuffer=1
 <
+
+------------------------------------------------------------------------------
+                                                      *'NERDTreeReuseWindows'*
+Values: 0 or 1
+Default: 1.
+
+While working with several windows and/or tabs there may be situation when
+you ask NERDTree to open file already being edited in other window.
+Default behavior is to jump to that window. If this option is not set
+NERDTree will always open selected file in previous window.
 
 ==============================================================================
 4. The NERD tree API                                             *NERDTreeAPI*
