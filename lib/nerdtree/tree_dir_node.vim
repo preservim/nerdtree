@@ -228,7 +228,7 @@ function! s:TreeDirNode._initChildren(silent)
     let dir = self.path
     let globDir = dir.str({'format': 'Glob'})
 
-    if version >= 703
+    if version >= 703 && g:NERDTreeWildIgnore
         let filesStr = globpath(globDir, '*', 1) . "\n" . globpath(globDir, '.*', 1)
     else
         let filesStr = globpath(globDir, '*') . "\n" . globpath(globDir, '.*')
