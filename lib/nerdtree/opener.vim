@@ -92,7 +92,7 @@ function! s:Opener._newSplit()
     " splitbelow and splitright IF the explorer is the only window.
     "
     let there= g:NERDTreeWinPos ==# "left" ? "wincmd h" : "wincmd l"
-    let back = g:NERDTreeWinPos ==# "left" ? "wincmd l" : "wincmd h"
+    let back = "wincmd p"
     let right= g:NERDTreeWinPos ==# "left"
     let below=0
 
