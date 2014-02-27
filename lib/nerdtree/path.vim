@@ -362,6 +362,13 @@ function! s:Path.ignore()
         endfor
     endif
 
+    "only keep user specified filter
+    if b:NERDTreeSearchEnabled
+        if lastPathComponent !~ g:NERDTreeSearch && !self.isDirectory
+            return 1
+        endif
+    endif
+
     "dont show hidden files unless instructed to
     if b:NERDTreeShowHidden ==# 0 && self.isUnixHiddenFile()
         return 1

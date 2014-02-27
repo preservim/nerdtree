@@ -54,6 +54,9 @@ call s:initVariable("g:NERDTreeMinimalUI", 0)
 if !exists("g:NERDTreeIgnore")
     let g:NERDTreeIgnore = ['\~$']
 endif
+if !exists("g:NERDTreeSearch")
+    let g:NERDTreeSearch = '.*'
+endif
 call s:initVariable("g:NERDTreeBookmarksFile", expand('$HOME') . '/.NERDTreeBookmarks')
 call s:initVariable("g:NERDTreeHighlightCursorline", 1)
 call s:initVariable("g:NERDTreeHijackNetrw", 1)
@@ -129,6 +132,7 @@ call s:initVariable("g:NERDTreeMapRefreshRoot", "R")
 call s:initVariable("g:NERDTreeMapToggleBookmarks", "B")
 call s:initVariable("g:NERDTreeMapToggleFiles", "F")
 call s:initVariable("g:NERDTreeMapToggleFilters", "f")
+call s:initVariable("g:NERDTreeMapToggleSearch", "G")
 call s:initVariable("g:NERDTreeMapToggleHidden", "I")
 call s:initVariable("g:NERDTreeMapToggleZoom", "A")
 call s:initVariable("g:NERDTreeMapUpdir", "u")
