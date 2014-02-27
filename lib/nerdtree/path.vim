@@ -364,7 +364,7 @@ function! s:Path.ignore()
 
     "only keep user specified filter
     if b:NERDTreeSearchEnabled
-        if lastPathComponent !~ g:NERDTreeSearch && !self.isDirectory
+        if self.getLastPathComponent(1) !~ g:NERDTreeSearch && !self.isDirectory
             return 1
         endif
     endif
