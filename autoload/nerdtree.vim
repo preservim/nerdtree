@@ -1344,8 +1344,8 @@ function! s:toggleSearchFilter()
         call inputrestore()
     endif
 
-    call s:renderViewSavingPosition()
-    call s:centerView()
+    call nerdtree#renderViewSavingPosition()
+    call nerdtree#centerView()
 endfunction
 
 " FUNCTION: s:toggleShowBookmarks() {{{2
