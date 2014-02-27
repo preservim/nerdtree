@@ -255,6 +255,7 @@ CD......Change tree root to the CWD..............................|NERDTree-CD|
 
 I.......Toggle whether hidden files displayed....................|NERDTree-I|
 f.......Toggle whether the file filters are used.................|NERDTree-f|
+f.......Toggle search filter.....................................|NERDTree-G|
 F.......Toggle whether files are displayed.......................|NERDTree-F|
 B.......Toggle whether the bookmark table is displayed...........|NERDTree-B|
 
@@ -542,6 +543,17 @@ Map option: NERDTreeMapToggleFilters
 Applies to: no restrictions.
 
 Toggles whether file filters are used. See |'NERDTreeIgnore'| for details.
+
+------------------------------------------------------------------------------
+                                                                  *NERDTree-G*
+Default key: G
+Map option: NERDTreeMapToggleSearch
+Applies to: no restrictions.
+
+Toggles search filter. Prompts for regular expression and filters files to
+those matching the regex.
+
+When the search filter is switched on, the file filters are switched off.
 
 ------------------------------------------------------------------------------
                                                                   *NERDTree-F*
