@@ -83,7 +83,11 @@ endfunction
 "Return:
 "a string that can be used in the view to represent this node
 function! s:TreeFileNode.displayString()
-    return self.path.displayString()
+    let ds = self.path.displayString()
+    if exists('g:nerdtree_show_git_status') && g:nerdtree_show_git_status == 1
+        let ds = plugin:GetGitStatusPrefix(self.path) . ds
+    endif
+    return ds
 endfunction
 
 "FUNCTION: TreeFileNode.equals(treenode) {{{1
@@ -256,6 +260,7 @@ function! s:TreeFileNode.GetSelected()
         endif
         return b:NERDTreeRoot.findNode(path)
     catch /^NERDTree/
+        echo 'exception'
         return {}
     endtry
 endfunction
