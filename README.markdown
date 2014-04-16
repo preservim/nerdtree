@@ -4,7 +4,7 @@ The NERD Tree
 Intro
 -----
 
-The NERD tree allows you to explore your filesystem and to open files and
+The NERD tree allows you to explore your filesystem and to open files and 
 directories. It presents the filesystem to you in the form of a tree which you
 manipulate with the keyboard and/or mouse. It also allows you to perform
 simple filesystem operations.
@@ -54,6 +54,8 @@ The following features and functionality are provided by the NERD tree:
 
 Installation
 ------------
+
+hello i want to pull request
 
 [pathogen.vim](https://github.com/tpope/vim-pathogen) is the recommended way to install nerdtree.
 
