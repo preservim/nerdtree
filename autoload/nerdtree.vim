@@ -168,7 +168,7 @@ endfunction
 " FUNCTION: nerdtree#findAndRevealPath() {{{2
 function! nerdtree#findAndRevealPath()
     try
-        let p = g:NERDTreePath.New(expand("%:p"))
+        let p = g:NERDTreePath.New(resolve(expand("%:p")))
     catch /^NERDTree.InvalidArgumentsError/
         call nerdtree#echo("no file for the current buffer")
         return
