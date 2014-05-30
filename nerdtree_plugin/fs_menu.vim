@@ -82,13 +82,14 @@ endfunction
 function! s:promptToRenameBuffer(bufnum, msg, newFileName)
     echo a:msg
     if g:NERDTreeAutoDeleteBuffer || nr2char(getchar()) ==# 'y'
+        let quotedFileName = "'" . a:newFileName . "'"
         " 1. ensure that a new buffer is loaded
-        exec "badd " . a:newFileName
+        exec "badd " . quotedFileName
         " 2. ensure that all windows which display the just deleted filename
         " display a buffer for a new filename. 
         let s:originalTabNumber = tabpagenr()
         let s:originalWindowNumber = winnr()
-        exec "tabdo windo if winbufnr(0) == " . a:bufnum . " | exec ':e! " . a:newFileName . "' | endif"
+        exec "tabdo windo if winbufnr(0) == " . a:bufnum . " | exec \":e! " . quotedFileName . "\" | endif"
         exec "tabnext " . s:originalTabNumber
         exec s:originalWindowNumber . "wincmd w"
         " 3. We don't need a previous buffer anymore
