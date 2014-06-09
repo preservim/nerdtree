@@ -103,6 +103,10 @@ function! s:Path.compareTo(path)
     elseif thisSS > thatSS
         return 1
     else
+        if !g:NERDTreeSortHiddenFirst
+            let thisPath = substitute(thisPath, '^[._]', '', '')
+            let thatPath = substitute(thatPath, '^[._]', '', '')
+        endif
         "if the sort sequences are the same then compare the paths
         "alphabetically
         let pathCompare = g:NERDTreeCaseSensitiveSort ? thisPath <# thatPath : thisPath <? thatPath

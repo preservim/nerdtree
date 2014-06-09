@@ -620,6 +620,10 @@ NERD tree. These options should be set in your vimrc.
 |'NERDTreeCaseSensitiveSort'|   Tells the NERD tree whether to be case
                                 sensitive or not when sorting nodes.
 
+|'NERDTreeSortHiddenFirst'|     Tells the NERD tree whether to take the dot
+                                at the beginning of the hidden file names
+                                into account when sorting nodes.
+
 |'NERDTreeChDirMode'|           Tells the NERD tree if/when it should change
                                 vim's current working directory.
 
