@@ -115,7 +115,10 @@ function! NERDTreeAddNode()
         let parentNode = b:NERDTreeRoot.findNode(newPath.getParent())
 
         let newTreeNode = g:NERDTreeFileNode.New(newPath)
-        if parentNode.isOpen || !empty(parentNode.children)
+        if empty(parentNode)
+            call b:NERDTreeRoot.refresh()
+            call nerdtree#renderView()
+        elseif parentNode.isOpen || !empty(parentNode.children)
             call parentNode.addChild(newTreeNode, 1)
             call NERDTreeRender()
             call newTreeNode.putCursorHere(1, 0)
@@ -225,7 +228,10 @@ function! NERDTreeCopyNode()
         if confirmed
             try
                 let newNode = currentNode.copy(newNodePath)
-                if !empty(newNode)
+                if empty(newNode)
+                    call b:NERDTreeRoot.refresh()
+                    call nerdtree#renderView()
+                else
                     call NERDTreeRender()
                     call newNode.putCursorHere(0, 0)
                 endif
