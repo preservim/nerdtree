@@ -637,6 +637,9 @@ NERD tree. These options should be set in your vimrc.
 
 |'NERDTreeBookmarksFile'|       Where the bookmarks are stored.
 
+|'NERDTreeBookmarksSort'|       Whether the bookmarks list is sorted on
+                                display.
+
 |'NERDTreeMouseMode'|           Tells the NERD tree how to handle mouse
                                 clicks.
 
@@ -827,6 +830,14 @@ Values: a path
 Default: $HOME/.NERDTreeBookmarks
 
 This is where bookmarks are saved. See |NERDTreeBookmarkCommands|.
+
+------------------------------------------------------------------------------
+                                                     *'NERDTreeBookmarksSort'*
+Values: 0 or 1
+Default: 1
+
+If set to 0 then the bookmarks list is not sorted.
+If set to 1 the bookmarks list is sorted.
 
 ------------------------------------------------------------------------------
                                                        *'NERDTreeMouseMode'*
