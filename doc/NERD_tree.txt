@@ -358,7 +358,7 @@ Default key: O
 Map option: NERDTreeMapOpenRecursively
 Applies to: directories.
 
-Recursively opens the selelected directory.
+Recursively opens the selected directory.
 
 All files and directories are cached, but if a directory would not be
 displayed due to file filters (see |'NERDTreeIgnore'| |NERDTree-f|) or the
