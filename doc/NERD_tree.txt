@@ -1086,8 +1086,8 @@ NERDTreeAddKeyMap({options})                             *NERDTreeAddKeyMap()*
         call NERDTreeAddKeyMap({
                \ 'key': 'foo',
                \ 'callback': 'NERDTreeCDHandler',
-               \ 'quickhelpText': 'echo full path of current node' })
-               \ 'scope': 'DirNode'
+               \ 'quickhelpText': 'echo full path of current node',
+               \ 'scope': 'DirNode' })
 
         function! NERDTreeCDHandler(dirnode)
             call a:dirnode.changeToDir()
