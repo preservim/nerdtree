@@ -142,7 +142,7 @@ function! NERDTreeMoveNode()
     endif
 
     try
-        let bufnum = bufnr(curNode.path.str())
+        let bufnum = bufnr("^".curNode.path.str()."$")
 
         call curNode.rename(newNodePath)
         call NERDTreeRender()
@@ -190,7 +190,7 @@ function! NERDTreeDeleteNode()
 
             "if the node is open in a buffer, ask the user if they want to
             "close that buffer
-            let bufnum = bufnr(currentNode.path.str())
+            let bufnum = bufnr("^".currentNode.path.str()."$")
             if buflisted(bufnum)
                 let prompt = "\nNode deleted.\n\nThe file is open in buffer ". bufnum . (bufwinnr(bufnum) ==# -1 ? " (hidden)" : "") .". Delete this buffer? (yN)"
                 call s:promptToDelBuffer(bufnum, prompt)
