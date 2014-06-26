@@ -635,7 +635,7 @@ NERD tree. These options should be set in your vimrc.
 
 |'NERDTreeIgnore'|              Tells the NERD tree which files to ignore.
 
-|'NERDTreeWildIgnore'|          Tells the NERD tree to respect |'wildignore'|.
+|'NERDTreeRespectWildIgnore'|   Tells the NERD tree to respect |'wildignore'|.
 
 |'NERDTreeBookmarksFile'|       Where the bookmarks are stored.
 
@@ -827,7 +827,7 @@ The file filters can be turned on and off dynamically with the |NERDTree-f|
 mapping.
 
 ------------------------------------------------------------------------------
-                                                        *'NERDTreeWildIgnore'*
+                                                *'NERDTreeRespectWildIgnore'*
 Values: 0 or 1.
 Default: 0.
 
