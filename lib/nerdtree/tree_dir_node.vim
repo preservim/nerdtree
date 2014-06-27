@@ -229,7 +229,7 @@ function! s:TreeDirNode._initChildren(silent)
     let globDir = dir.str({'format': 'Glob'})
 
     if version >= 703
-        let filesStr = globpath(globDir, '*', 1) . "\n" . globpath(globDir, '.*', 1)
+        let filesStr = globpath(globDir, '*', !g:NERDTreeRespectWildIgnore) . "\n" . globpath(globDir, '.*', !g:NERDTreeRespectWildIgnore)
     else
         let filesStr = globpath(globDir, '*') . "\n" . globpath(globDir, '.*')
     endif
@@ -422,7 +422,7 @@ function! s:TreeDirNode.refresh()
                     endif
 
 
-                catch /^NERDTree.InvalidArgumentsError/
+                catch /^NERDTree.\(InvalidArguments\|InvalidFiletype\)Error/
                     let invalidFilesFound = 1
                 endtry
             endif

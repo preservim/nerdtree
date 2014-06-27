@@ -26,7 +26,9 @@ function! s:Bookmark.AddBookmark(name, path)
         endif
     endfor
     call add(s:Bookmark.Bookmarks(), s:Bookmark.New(l:name, a:path))
-    call s:Bookmark.Sort()
+    if g:NERDTreeBookmarksSort ==# 1
+        call s:Bookmark.Sort()
+    endif
 endfunction
 
 " FUNCTION: Bookmark.Bookmarks()   {{{1
@@ -74,7 +76,7 @@ function! s:Bookmark.BookmarkNames()
 endfunction
 
 " FUNCTION: Bookmark.CacheBookmarks(silent) {{{1
-" Class method to read all bookmarks from the bookmarks file intialize
+" Class method to read all bookmarks from the bookmarks file initialize
 " bookmark objects for each one.
 "
 " Args:
@@ -108,7 +110,9 @@ function! s:Bookmark.CacheBookmarks(silent)
                 call nerdtree#echo(invalidBookmarksFound . " invalid bookmarks were read. See :help NERDTreeInvalidBookmarks for info.")
             endif
         endif
-        call s:Bookmark.Sort()
+        if g:NERDTreeBookmarksSort ==# 1
+            call s:Bookmark.Sort()
+        endif
     endif
 endfunction
 

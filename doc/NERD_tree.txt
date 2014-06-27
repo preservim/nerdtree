@@ -83,12 +83,12 @@ The following features and functionality are provided by the NERD tree:
       as you left it
     * You can have a separate NERD tree for each tab, share trees across tabs,
       or a mix of both.
-    * By default the script overrides the default file browser (netw), so if
-      you :edit a directory a (slighly modified) NERD tree will appear in the
+    * By default the script overrides the default file browser (netrw), so if
+      you :edit a directory a (slightly modified) NERD tree will appear in the
       current window
     * A programmable menu system is provided (simulates right clicking on a
       node)
-        * one default menu plugin is provided to perform basic filesytem
+        * one default menu plugin is provided to perform basic filesystem
           operations (create/delete/move/copy files/directories)
     * There's an API for adding your own keymappings
 
@@ -109,7 +109,7 @@ The following features and functionality are provided by the NERD tree:
 <
 :NERDTreeFromBookmark <bookmark>                       *:NERDTreeFromBookmark*
     Opens a fresh NERD tree with the root initialized to the dir for
-    <bookmark>.  This only reason to use this command over :NERDTree is for
+    <bookmark>.  The only reason to use this command over :NERDTree is for
     the completion (which is for bookmarks rather than directories).
 
 :NERDTreeToggle [<start-directory> | <bookmark>]             *:NERDTreeToggle*
@@ -228,7 +228,7 @@ gs......Same as s, but leave the cursor on the NERDTree..........|NERDTree-gs|
 O.......Recursively open the selected directory..................|NERDTree-O|
 x.......Close the current nodes parent...........................|NERDTree-x|
 X.......Recursively close all children of the current node.......|NERDTree-X|
-e.......Edit the current dif.....................................|NERDTree-e|
+e.......Edit the current dir.....................................|NERDTree-e|
 
 <CR>...............same as |NERDTree-o|.
 double-click.......same as the |NERDTree-o| map.
@@ -358,7 +358,7 @@ Default key: O
 Map option: NERDTreeMapOpenRecursively
 Applies to: directories.
 
-Recursively opens the selelected directory.
+Recursively opens the selected directory.
 
 All files and directories are cached, but if a directory would not be
 displayed due to file filters (see |'NERDTreeIgnore'| |NERDTree-f|) or the
@@ -620,6 +620,10 @@ NERD tree. These options should be set in your vimrc.
 |'NERDTreeCaseSensitiveSort'|   Tells the NERD tree whether to be case
                                 sensitive or not when sorting nodes.
 
+|'NERDTreeSortHiddenFirst'|     Tells the NERD tree whether to take the dot
+                                at the beginning of the hidden file names
+                                into account when sorting nodes.
+
 |'NERDTreeChDirMode'|           Tells the NERD tree if/when it should change
                                 vim's current working directory.
 
@@ -631,7 +635,12 @@ NERD tree. These options should be set in your vimrc.
 
 |'NERDTreeIgnore'|              Tells the NERD tree which files to ignore.
 
+|'NERDTreeRespectWildIgnore'|   Tells the NERD tree to respect |'wildignore'|.
+
 |'NERDTreeBookmarksFile'|       Where the bookmarks are stored.
+
+|'NERDTreeBookmarksSort'|       Whether the bookmarks list is sorted on
+                                display.
 
 |'NERDTreeMouseMode'|           Tells the NERD tree how to handle mouse
                                 clicks.
@@ -780,7 +789,7 @@ If set to 1, doing a >
 <
 will open up a "secondary" NERD tree instead of a netrw in the target window.
 
-Secondary NERD trees behaves slighly different from a regular trees in the
+Secondary NERD trees behaves slightly different from a regular trees in the
 following respects:
     1. 'o' will open the selected file in the same window as the tree,
        replacing it.
@@ -818,11 +827,26 @@ The file filters can be turned on and off dynamically with the |NERDTree-f|
 mapping.
 
 ------------------------------------------------------------------------------
+                                                *'NERDTreeRespectWildIgnore'*
+Values: 0 or 1.
+Default: 0.
+
+If set to 1, the |'wildignore'| setting is respected.
+
+------------------------------------------------------------------------------
                                                      *'NERDTreeBookmarksFile'*
 Values: a path
 Default: $HOME/.NERDTreeBookmarks
 
 This is where bookmarks are saved. See |NERDTreeBookmarkCommands|.
+
+------------------------------------------------------------------------------
+                                                     *'NERDTreeBookmarksSort'*
+Values: 0 or 1
+Default: 1
+
+If set to 0 then the bookmarks list is not sorted.
+If set to 1 the bookmarks list is sorted.
 
 ------------------------------------------------------------------------------
                                                        *'NERDTreeMouseMode'*
@@ -1062,8 +1086,8 @@ NERDTreeAddKeyMap({options})                             *NERDTreeAddKeyMap()*
         call NERDTreeAddKeyMap({
                \ 'key': 'foo',
                \ 'callback': 'NERDTreeCDHandler',
-               \ 'quickhelpText': 'echo full path of current node' })
-               \ 'scope': 'DirNode'
+               \ 'quickhelpText': 'echo full path of current node',
+               \ 'scope': 'DirNode' })
 
         function! NERDTreeCDHandler(dirnode)
             call a:dirnode.changeToDir()

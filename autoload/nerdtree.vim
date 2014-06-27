@@ -33,11 +33,6 @@ function! nerdtree#bufInWindows(bnum)
     return cnt
 endfunction
 
-" FUNCTION: nerdtree#bufNamePrefix() {{{2
-function! nerdtree#bufNamePrefix()
-    return 'NERD_tree_'
-endfunction
-
 "FUNCTION: nerdtree#checkForBrowse(dir) {{{2
 "inits a secondary nerd tree in the current buffer if appropriate
 function! nerdtree#checkForBrowse(dir)
@@ -103,7 +98,7 @@ function! nerdtree#createDefaultBindings()
 
     call NERDTreeAddKeyMap({ 'key': g:NERDTreeMapQuit, 'scope': "all", 'callback': s."closeTreeWindow" })
 
-    call NERDTreeAddKeyMap({ 'key': g:NERDTreeMapCWD, 'scope': "all", 'callback': s."chRootCwd" })
+    call NERDTreeAddKeyMap({ 'key': g:NERDTreeMapCWD, 'scope': "all", 'callback': "nerdtree#chRootCwd" })
 
     call NERDTreeAddKeyMap({ 'key': g:NERDTreeMapRefreshRoot, 'scope': "all", 'callback': s."refreshRoot" })
     call NERDTreeAddKeyMap({ 'key': g:NERDTreeMapRefresh, 'scope': "Node", 'callback': s."refreshCurrent" })
@@ -232,23 +227,17 @@ function! nerdtree#invokeKeyMap(key)
     call g:NERDTreeKeyMap.Invoke(a:key)
 endfunction
 
-" FUNCTION: nerdtree#nextBufferName() {{{2
-" returns the buffer name for the next nerd tree
-function! nerdtree#nextBufferName()
-    let name = nerdtree#bufNamePrefix() . nerdtree#nextBufferNumber()
-    return name
-endfunction
-
-" FUNCTION: nerdtree#nextBufferNumber() {{{2
-" the number to add to the nerd tree buffer name to make the buf name unique
-function! nerdtree#nextBufferNumber()
-    if !exists("s:nextBufNum")
-        let s:nextBufNum = 1
-    else
-        let s:nextBufNum += 1
-    endif
-
-    return s:nextBufNum
+" FUNCTION: nerdtree#loadClassFiles() {{{2
+function! nerdtree#loadClassFiles()
+    runtime lib/nerdtree/path.vim
+    runtime lib/nerdtree/menu_controller.vim
+    runtime lib/nerdtree/menu_item.vim
+    runtime lib/nerdtree/key_map.vim
+    runtime lib/nerdtree/bookmark.vim
+    runtime lib/nerdtree/tree_file_node.vim
+    runtime lib/nerdtree/tree_dir_node.vim
+    runtime lib/nerdtree/opener.vim
+    runtime lib/nerdtree/creator.vim
 endfunction
 
 " FUNCTION: nerdtree#postSourceActions() {{{2
@@ -1035,7 +1024,7 @@ endfunction
 
 " FUNCTION: s:chRootCwd() {{{2
 " changes the current root to CWD
-function! s:chRootCwd()
+function! nerdtree#chRootCwd()
     try
         let cwd = g:NERDTreePath.New(getcwd())
     catch /^NERDTree.InvalidArgumentsError/
