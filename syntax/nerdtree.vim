@@ -12,7 +12,7 @@ syn match NERDTreeHelpKey #" \{1,2\}[^ ]*:#ms=s+2,me=e-1
 syn match NERDTreeHelpKey #" \{1,2\}[^ ]*,#ms=s+2,me=e-1
 syn match NERDTreeHelpTitle #" .*\~#ms=s+2,me=e-1
 syn match NERDTreeToggleOn #(on)#ms=s+1,he=e-1
-syn match NERDTreeToggleOff #(off)#hs=e-3,he=e-1
+syn match NERDTreeToggleOff #(off)#ms=e-3,me=e-1
 syn match NERDTreeHelpCommand #" :.\{-}\>#hs=s+3
 syn match NERDTreeHelp  #^".*# contains=NERDTreeHelpKey,NERDTreeHelpTitle,NERDTreeFlag,NERDTreeToggleOff,NERDTreeToggleOn,NERDTreeHelpCommand
 
