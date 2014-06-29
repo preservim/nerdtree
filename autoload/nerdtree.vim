@@ -513,7 +513,7 @@ function! nerdtree#dumpHelp()
         let @h=@h."\" ". g:NERDTreeMapHelp .": toggle help\n"
         let @h=@h."\"\n\" ----------------------------\n"
         let @h=@h."\" Bookmark commands~\n"
-        let @h=@h."\" :Bookmark <name>\n"
+        let @h=@h."\" :Bookmark [<name>]\n"
         let @h=@h."\" :BookmarkToRoot <name>\n"
         let @h=@h."\" :RevealBookmark <name>\n"
         let @h=@h."\" :OpenBookmark <name>\n"

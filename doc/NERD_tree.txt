@@ -160,7 +160,7 @@ click bookmarks or use the |NERDTree-o| mapping to activate them. See also,
 
 Note that the following commands are only available in the NERD tree buffer.
 
-:Bookmark <name>
+:Bookmark [<name>]
     Bookmark the current node as <name>. If there is already a <name>
     bookmark, it is overwritten. <name> must not contain spaces.
     If <name> is not provided, it defaults to the file or directory name.
