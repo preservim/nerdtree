@@ -8,16 +8,16 @@ syn match NERDTreeFlag #\[RO\]#
 execute "syn match NERDTreeUp #\\V". s:tree_up_dir_line ."#"
 
 "quickhelp syntax elements
-syn match NERDTreeHelpKey #" \{1,2\}[^ ]*:#hs=s+2,he=e-1
-syn match NERDTreeHelpKey #" \{1,2\}[^ ]*,#hs=s+2,he=e-1
-syn match NERDTreeHelpTitle #" .*\~#hs=s+2,he=e-1 contains=NERDTreeFlag
-syn match NERDTreeToggleOn #".*(on)#hs=e-2,he=e-1 contains=NERDTreeHelpKey
-syn match NERDTreeToggleOff #".*(off)#hs=e-3,he=e-1 contains=NERDTreeHelpKey
+syn match NERDTreeHelpKey #" \{1,2\}[^ ]*:#ms=s+2,me=e-1
+syn match NERDTreeHelpKey #" \{1,2\}[^ ]*,#ms=s+2,me=e-1
+syn match NERDTreeHelpTitle #" .*\~#ms=s+2,me=e-1
+syn match NERDTreeToggleOn #(on)#ms=s+1,he=e-1
+syn match NERDTreeToggleOff #(off)#hs=e-3,he=e-1
 syn match NERDTreeHelpCommand #" :.\{-}\>#hs=s+3
 syn match NERDTreeHelp  #^".*# contains=NERDTreeHelpKey,NERDTreeHelpTitle,NERDTreeFlag,NERDTreeToggleOff,NERDTreeToggleOn,NERDTreeHelpCommand
 
 "highlighting for readonly files
-syn match NERDTreeRO #.*\[RO\]#hs=s+2 contains=NERDTreeFlag,NERDTreeBookmark,NERDTreePart,NERDTreePartFile
+syn match NERDTreeRO #.*\[RO\]#hs=s+2 contains=NERDTreeFlag,NERDTreeBookmark,NERDTreePart
 
 "highlighting for sym links
 syn match NERDTreeLinkTarget #->.*# containedin=NERDTreeDir,NERDTreeFile
@@ -31,12 +31,9 @@ if g:NERDTreeDirArrows
     syn match NERDTreeClosable #▾# containedin=NERDTreeDir,NERDTreeFile
     syn match NERDTreeOpenable #▸# containedin=NERDTreeDir,NERDTreeFile
 
-    syn match NERDTreeDir #[^▾▸ ].*/# contains=NERDTreeLink
-    syn match NERDTreeExecFile  #^ .*\*\($\| \)# contains=NERDTreeLink,NERDTreeRO,NERDTreePartFile,NERDTreeBookmark
-    syn match NERDTreeFile  #^[^"\.▾▸] *[^▾▸]*# contains=NERDTreeLink,NERDTreeRO,NERDTreePartFile,NERDTreeBookmark,NERDTreeExecFile
-
-    "highlighting for sym links
-    syn match NERDTreeLink #^ *[^▾▸]* -> # contains=NERDTreeBookmark,NERDTreeOpenable,NERDTreeClosable,NERDTreeDirSlash
+    syn match NERDTreeDir #[^▾▸ ].*/#
+    syn match NERDTreeExecFile  #^ .*\*\($\| \)# contains=NERDTreeRO,NERDTreeBookmark
+    syn match NERDTreeFile  #^[^"\.▾▸] *[^▾▸]*# contains=NERDTreeLink,NERDTreeRO,NERDTreeBookmark,NERDTreeExecFile
 else
     "highlighting for the ~/+ symbols for the directory nodes
     syn match NERDTreeClosable #\~\<#
@@ -47,15 +44,12 @@ else
     "highlighting for the tree structural parts
     syn match NERDTreePart #|#
     syn match NERDTreePart #`#
-    syn match NERDTreePartFile #[|`]-#hs=s+1 contains=NERDTreePart
+    syn match NERDTreePartFile #[|`]-#hs=s+1 contains=NERDTreePart containedin=NERDTreeRO
 
     syn match NERDTreeDir #[^-| `].*/# contains=NERDTreeLink,NERDTreeOpenable,NERDTreeClosable
     syn match NERDTreeExecFile  #[|` ].*\*\($\| \)# contains=NERDTreeLink,NERDTreePart,NERDTreeRO,NERDTreePartFile,NERDTreeBookmark
     syn match NERDTreeFile  #|-.*# contains=NERDTreeLink,NERDTreePart,NERDTreeRO,NERDTreePartFile,NERDTreeBookmark,NERDTreeExecFile
     syn match NERDTreeFile  #`-.*# contains=NERDTreeLink,NERDTreePart,NERDTreeRO,NERDTreePartFile,NERDTreeBookmark,NERDTreeExecFile
-
-    "highlighting for sym links
-    syn match NERDTreeLink #[^-| `].* -> # contains=NERDTreeBookmark,NERDTreeOpenable,NERDTreeClosable,NERDTreeDirSlash
 endif
 
 syn match NERDTreeCWD #^[</].*$#
