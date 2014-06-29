@@ -1337,6 +1337,7 @@ endfunction
 " toggles the display of bookmarks
 function! s:toggleShowBookmarks()
     let b:NERDTreeShowBookmarks = !b:NERDTreeShowBookmarks
+    let g:NERDTreeShowBookmarks = b:NERDTreeShowBookmarks
     if b:NERDTreeShowBookmarks
         call nerdtree#renderView()
         call nerdtree#putCursorOnBookmarkTable()
@@ -1350,6 +1351,7 @@ endfunction
 " toggles the display of hidden files
 function! s:toggleShowFiles()
     let b:NERDTreeShowFiles = !b:NERDTreeShowFiles
+    let g:NERDTreeShowFiles = b:NERDTreeShowFiles
     call nerdtree#renderViewSavingPosition()
     call nerdtree#centerView()
 endfunction
@@ -1358,6 +1360,7 @@ endfunction
 " toggles the display of hidden files
 function! s:toggleShowHidden()
     let b:NERDTreeShowHidden = !b:NERDTreeShowHidden
+    let g:NERDTreeShowHidden = b:NERDTreeShowHidden
     call nerdtree#renderViewSavingPosition()
     call nerdtree#centerView()
 endfunction
