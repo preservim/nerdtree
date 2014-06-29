@@ -19,6 +19,11 @@ syn match NERDTreeHelp  #^".*# contains=NERDTreeHelpKey,NERDTreeHelpTitle,NERDTr
 "highlighting for readonly files
 syn match NERDTreeRO #.*\[RO\]#hs=s+2 contains=NERDTreeFlag,NERDTreeBookmark,NERDTreePart,NERDTreePartFile
 
+"highlighting for sym links
+syn match NERDTreeLinkTarget #->.*# containedin=NERDTreeDir,NERDTreeFile
+syn match NERDTreeLinkFile #.* ->#me=e-3 containedin=NERDTreeFile
+syn match NERDTreeLinkDir #.*/ ->#me=e-3 containedin=NERDTreeDir
+
 "highlighing for directory nodes and file nodes
 syn match NERDTreeDirSlash #/# containedin=NERDTreeDir
 
@@ -86,11 +91,14 @@ hi def link NERDTreeHelpTitle Macro
 hi def link NERDTreeToggleOn Question
 hi def link NERDTreeToggleOff WarningMsg
 
+hi def link NERDTreeLinkTarget Type
+hi def link NERDTreeLinkFile Macro
+hi def link NERDTreeLinkDir Macro
+
 hi def link NERDTreeDir Directory
 hi def link NERDTreeUp Directory
 hi def link NERDTreeFile Normal
 hi def link NERDTreeCWD Statement
-hi def link NERDTreeLink Macro
 hi def link NERDTreeOpenable Title
 hi def link NERDTreeClosable Title
 hi def link NERDTreeFlag ignore
