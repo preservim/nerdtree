@@ -45,7 +45,6 @@ function! s:initVariable(var, value)
 endfunction
 
 "SECTION: Init variable calls and other random constants {{{2
-call s:initVariable("g:NERDChristmasTree", 1)
 call s:initVariable("g:NERDTreeAutoCenter", 1)
 call s:initVariable("g:NERDTreeAutoCenterThreshold", 3)
 call s:initVariable("g:NERDTreeCaseSensitiveSort", 0)

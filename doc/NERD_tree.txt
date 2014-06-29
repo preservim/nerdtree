@@ -609,12 +609,10 @@ NERD tree. These options should be set in your vimrc.
 
 |'loaded_nerd_tree'|            Turns off the script.
 
-|'NERDChristmasTree'|           Tells the NERD tree to make itself colourful
-                                and pretty.
-
 |'NERDTreeAutoCenter'|          Controls whether the NERD tree window centers
                                 when the cursor moves within a specified
                                 distance to the top/bottom of the window.
+
 |'NERDTreeAutoCenterThreshold'| Controls the sensitivity of autocentering.
 
 |'NERDTreeCaseSensitiveSort'|   Tells the NERD tree whether to be case
@@ -695,15 +693,6 @@ If this plugin is making you feel homicidal, it may be a good idea to turn it
 off with this line in your vimrc: >
     let loaded_nerd_tree=1
 <
-------------------------------------------------------------------------------
-                                                         *'NERDChristmasTree'*
-Values: 0 or 1.
-Default: 1.
-
-If this option is set to 1 then some extra syntax highlighting elements are
-added to the nerd tree to make it more colourful.
-
-Set it to 0 for a more vanilla looking tree.
 
 ------------------------------------------------------------------------------
                                                         *'NERDTreeAutoCenter'*

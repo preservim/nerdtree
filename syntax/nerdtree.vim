@@ -63,15 +63,10 @@ syn match NERDTreeBookmarksHeader #^>-\+Bookmarks-\+$# contains=NERDTreeBookmark
 syn match NERDTreeBookmarkName #^>.\{-} #he=e-1 contains=NERDTreeBookmarksLeader
 syn match NERDTreeBookmark #^>.*$# contains=NERDTreeBookmarksLeader,NERDTreeBookmarkName,NERDTreeBookmarksHeader
 
-if exists("g:NERDChristmasTree") && g:NERDChristmasTree
-    hi def link NERDTreePart Special
-    hi def link NERDTreePartFile Type
-    hi def link NERDTreeExecFile Title
-    hi def link NERDTreeDirSlash Identifier
-else
-    hi def link NERDTreePart Normal
-    hi def link NERDTreePartFile Normal
-endif
+hi def link NERDTreePart Special
+hi def link NERDTreePartFile Type
+hi def link NERDTreeExecFile Title
+hi def link NERDTreeDirSlash Identifier
 
 hi def link NERDTreeBookmarksHeader statement
 hi def link NERDTreeBookmarksLeader ignore
