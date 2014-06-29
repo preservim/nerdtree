@@ -31,14 +31,16 @@ syn match NERDTreeHelp  #^".*# contains=NERDTreeHelpKey,NERDTreeHelpTitle,NERDTr
 syn match NERDTreeRO #.*\[RO\]#hs=s+2 contains=NERDTreeFlag,NERDTreeBookmark,NERDTreePart,NERDTreePartFile
 
 "highlighting for sym links
-syn match NERDTreeLink #[^-| `].* -> # contains=NERDTreeBookmark,NERDTreeOpenable,NERDTreeClosable,NERDTreeDirSlash
+syn match NERDTreeLinkTarget #->.*# containedin=NERDTreeDir,NERDTreeFile
+syn match NERDTreeLinkFile #.* ->#me=e-3 containedin=NERDTreeFile
+syn match NERDTreeLinkDir #.*/ ->#me=e-3 containedin=NERDTreeDir
 
 "highlighing for directory nodes and file nodes
 syn match NERDTreeDirSlash #/#
-syn match NERDTreeDir #[^-| `].*/# contains=NERDTreeLink,NERDTreeDirSlash,NERDTreeOpenable,NERDTreeClosable
-syn match NERDTreeExecFile  #[|` ].*\*\($\| \)# contains=NERDTreeLink,NERDTreePart,NERDTreeRO,NERDTreePartFile,NERDTreeBookmark
-syn match NERDTreeFile  #|-.*# contains=NERDTreeLink,NERDTreePart,NERDTreeRO,NERDTreePartFile,NERDTreeBookmark,NERDTreeExecFile
-syn match NERDTreeFile  #`-.*# contains=NERDTreeLink,NERDTreePart,NERDTreeRO,NERDTreePartFile,NERDTreeBookmark,NERDTreeExecFile
+syn match NERDTreeDir #[^-| `].*/# contains=NERDTreeDirSlash,NERDTreeOpenable,NERDTreeClosable
+syn match NERDTreeExecFile  #[|` ].*\*\($\| \)# contains=NERDTreePart,NERDTreeRO,NERDTreePartFile,NERDTreeBookmark
+syn match NERDTreeFile  #|-.*# contains=NERDTreePart,NERDTreeRO,NERDTreePartFile,NERDTreeBookmark,NERDTreeExecFile
+syn match NERDTreeFile  #`-.*# contains=NERDTreePart,NERDTreeRO,NERDTreePartFile,NERDTreeBookmark,NERDTreeExecFile
 syn match NERDTreeCWD #^[</].*$#
 
 "highlighting for bookmarks
@@ -76,10 +78,13 @@ hi def link NERDTreeHelpTitle Macro
 hi def link NERDTreeToggleOn Question
 hi def link NERDTreeToggleOff WarningMsg
 
+hi def link NERDTreeLinkTarget Type
+hi def link NERDTreeLinkFile Macro
+hi def link NERDTreeLinkDir Macro
+
 hi def link NERDTreeDir Directory
 hi def link NERDTreeUp Directory
 hi def link NERDTreeCWD Statement
-hi def link NERDTreeLink Macro
 hi def link NERDTreeOpenable Title
 hi def link NERDTreeFlag ignore
 hi def link NERDTreeRO WarningMsg
