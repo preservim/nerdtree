@@ -28,9 +28,9 @@ if g:NERDTreeDirArrows
     syn match NERDTreeClosable #▾# containedin=NERDTreeDir,NERDTreeFile
     syn match NERDTreeOpenable #▸# containedin=NERDTreeDir,NERDTreeFile
 
-    "syn match NERDTreeDir #[^▾▸ ].*/#
-    "syn match NERDTreeExecFile  #^ .*\*\($\| \)# contains=NERDTreeRO,NERDTreeBookmark
-    "syn match NERDTreeFile  #^[^"\.▾▸] *[^▾▸]*# contains=NERDTreeLink,NERDTreeRO,NERDTreeBookmark,NERDTreeExecFile
+    syn match NERDTreeDir #[^▾▸ ].*/#
+    syn match NERDTreeExecFile  #^ .*\*\($\| \)# contains=NERDTreeRO,NERDTreeBookmark
+    syn match NERDTreeFile  #^[^"\.▾▸] *[^▾▸]*# contains=NERDTreeLink,NERDTreeRO,NERDTreeBookmark,NERDTreeExecFile
 
     "highlighting for readonly files
     syn match NERDTreeRO # *\zs.*\ze \[RO\]# contains=NERDTreeFlag,NERDTreeBookmark,NERDTreeFile
