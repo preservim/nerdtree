@@ -79,9 +79,16 @@ endfunction
 "If a keymap has the scope of "all" then it will be called if no other keymap
 "is found for a:key and the scope.
 function! s:KeyMap.Invoke(key)
-    if !exists('b:NERDTreeRoot')
+
+    "required because clicking the command window below another window still
+    "invokes the <LeftRelease> mapping - but changes the window cursor
+    "is in first
+    "
+    "TODO: remove this check when the vim bug is fixed
+    if !nerdtree#treeExistsForBuf()
         return {}
     endif
+
     let node = g:NERDTreeFileNode.GetSelected()
     if !empty(node)
 
