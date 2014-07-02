@@ -7,8 +7,8 @@ let g:NERDTreeCreator = s:Creator
 
 "FUNCTION: s:Creator._bindMappings() {{{1
 function! s:Creator._bindMappings()
-    "make <cr> do the same as the default 'o' mapping
-    exec "nnoremap <silent> <buffer> <cr> :call nerdtree#invokeKeyMap('". g:NERDTreeMapActivateNode ."')<cr>"
+    "make <cr> do the same as the activate node mapping
+    exec "nnoremap <silent> <buffer> <cr> :call nerdtree#invokeKeyMap(g:NERDTreeMapActivateNode)<cr>"
 
     call g:NERDTreeKeyMap.BindAll()
 
