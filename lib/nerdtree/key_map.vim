@@ -79,6 +79,9 @@ endfunction
 "If a keymap has the scope of "all" then it will be called if no other keymap
 "is found for a:key and the scope.
 function! s:KeyMap.Invoke(key)
+    if !exists('b:NERDTreeRoot')
+        return {}
+    endif
     let node = g:NERDTreeFileNode.GetSelected()
     if !empty(node)
 
