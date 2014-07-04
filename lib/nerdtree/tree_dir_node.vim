@@ -252,6 +252,7 @@ function! s:TreeDirNode._initChildren(silent)
             try
                 let path = g:NERDTreePath.New(i)
                 call self.createChild(path, 0)
+                call g:NERDTreeRefreshNotifier.NotifyListeners(path)
             catch /^NERDTree.\(InvalidArguments\|InvalidFiletype\)Error/
                 let invalidFilesFound += 1
             endtry

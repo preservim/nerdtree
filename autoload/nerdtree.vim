@@ -238,6 +238,7 @@ function! nerdtree#loadClassFiles()
     runtime lib/nerdtree/tree_dir_node.vim
     runtime lib/nerdtree/opener.vim
     runtime lib/nerdtree/creator.vim
+    runtime lib/nerdtree/refresh_notifier.vim
 endfunction
 
 " FUNCTION: nerdtree#postSourceActions() {{{2
@@ -940,6 +941,9 @@ function! nerdtree#stripMarkupFromLine(line, removeLeadingSpaces)
 
     "strip off any executable flags
     let line = substitute (line, '*\ze\($\| \)', "","")
+
+    "strip off any generic flags
+    let line = substitute (line, '\[[^]]*\]', "","")
 
     let wasdir = 0
     if line =~# '/$'

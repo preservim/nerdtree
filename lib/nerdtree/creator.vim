@@ -56,17 +56,17 @@ function! s:Creator.createPrimary(name)
         unlet t:NERDTreeBufName
     endif
 
+    call self._createTreeWin()
     let newRoot = g:NERDTreeDirNode.New(path)
+    let b:NERDTreeRoot = newRoot
+    let b:NERDTreeType = "primary"
     call newRoot.open()
 
-    call self._createTreeWin()
     let b:treeShowHelp = 0
     let b:NERDTreeIgnoreEnabled = 1
     let b:NERDTreeShowFiles = g:NERDTreeShowFiles
     let b:NERDTreeShowHidden = g:NERDTreeShowHidden
     let b:NERDTreeShowBookmarks = g:NERDTreeShowBookmarks
-    let b:NERDTreeRoot = newRoot
-    let b:NERDTreeType = "primary"
 
     call nerdtree#renderView()
     call b:NERDTreeRoot.putCursorHere(0, 0)
