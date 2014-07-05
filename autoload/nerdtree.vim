@@ -239,6 +239,7 @@ function! nerdtree#loadClassFiles()
     runtime lib/nerdtree/opener.vim
     runtime lib/nerdtree/creator.vim
     runtime lib/nerdtree/refresh_notifier.vim
+    runtime lib/nerdtree/flag_set.vim
 endfunction
 
 " FUNCTION: nerdtree#postSourceActions() {{{2
