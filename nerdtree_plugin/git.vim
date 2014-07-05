@@ -9,6 +9,7 @@
 "              See http://sam.zoy.org/wtfpl/COPYING for more details.
 "
 " ============================================================================
+finish
 if exists("g:loaded_nerdtree_git")
     finish
 endif

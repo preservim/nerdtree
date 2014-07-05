@@ -3,19 +3,29 @@
 let s:RefreshNotifier = {}
 let g:NERDTreeRefreshNotifier = s:RefreshNotifier
 
-function! s:RefreshNotifier.AddListener(funcname)
-    call add(s:RefreshNotifier.GetListeners(), a:funcname)
+function! s:RefreshNotifier.AddListenerForAction(action, funcname)
+    let listeners = s:RefreshNotifier.GetListenersForAction(a:action)
+    if listeners == []
+        let listenersMap = s:RefreshNotifier.GetListenersMap()
+        let listenersMap[a:action] = listeners
+    endif
+    call add(listeners, a:funcname)
 endfunction
 
-function! s:RefreshNotifier.NotifyListeners(refreshedPath)
-    for listener in s:RefreshNotifier.GetListeners()
+function! s:RefreshNotifier.NotifyListenersForAction(action, refreshedPath)
+    for listener in s:RefreshNotifier.GetListenersForAction(a:action)
         call {listener}(a:refreshedPath)
     endfor
 endfunction
 
-function! s:RefreshNotifier.GetListeners()
-    if !exists("s:refreshListeners")
-        let s:refreshListeners = []
+function! s:RefreshNotifier.GetListenersMap()
+    if !exists("s:refreshListenersMap")
+        let s:refreshListenersMap = {}
     endif
-    return s:refreshListeners
+    return s:refreshListenersMap
+endfunction
+
+function! s:RefreshNotifier.GetListenersForAction(action)
+    let listenersMap = s:RefreshNotifier.GetListenersMap()
+    return get(listenersMap, a:action, [])
 endfunction
