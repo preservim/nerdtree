@@ -12,9 +12,9 @@ function! s:RefreshNotifier.AddListenerForAction(action, funcname)
     call add(listeners, a:funcname)
 endfunction
 
-function! s:RefreshNotifier.NotifyListenersForAction(action, refreshedPath)
+function! s:RefreshNotifier.NotifyListenersForAction(action, refreshedPath, params)
     for listener in s:RefreshNotifier.GetListenersForAction(a:action)
-        call {listener}(a:refreshedPath)
+        call {listener}(a:refreshedPath, a:params)
     endfor
 endfunction
 

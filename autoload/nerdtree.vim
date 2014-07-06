@@ -1303,6 +1303,7 @@ endfunction
 " will be reloaded.
 function! s:refreshRoot()
     call nerdtree#echo("Refreshing the root node. This could take a while...")
+    call g:NERDTreeRefreshNotifier.NotifyListenersForAction('RootRefresh', b:NERDTreeRoot.path, {})
     call b:NERDTreeRoot.refresh()
     call nerdtree#renderView()
     redraw
@@ -1318,6 +1319,7 @@ function! s:refreshCurrent(node)
     endif
 
     call nerdtree#echo("Refreshing node. This could take a while...")
+    call g:NERDTreeRefreshNotifier.NotifyListenersForAction('CurrentNodeRefresh', node.path, {})
     call node.refresh()
     call nerdtree#renderView()
     redraw

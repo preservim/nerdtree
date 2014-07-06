@@ -540,7 +540,7 @@ endfunction
 "FUNCTION: Path.refresh() {{{1
 function! s:Path.refresh()
     call self.readInfoFromDisk(self.str())
-    call g:NERDTreeRefreshNotifier.NotifyListenersForAction('PathRefresh', self)
+    call g:NERDTreeRefreshNotifier.NotifyListenersForAction('PathRefresh', self, {})
     call self.cacheDisplayString()
 endfunction
 
