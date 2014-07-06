@@ -24,9 +24,9 @@ function! g:NERDTreeGitRefreshListener(path)
 
     let modifiedFiles = s:GetModifiedFiles()
     if index(modifiedFiles, a:path.str()) >= 0
-        call a:path.addFlag("+")
+        call a:path.flagSet.addFlag("git", "+")
     else
-        call a:path.removeFlag("+")
+        call a:path.flagSet.removeFlag("git", "+")
     endif
 endfunction
 

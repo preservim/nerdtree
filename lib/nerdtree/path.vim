@@ -24,13 +24,6 @@ function! s:Path.AbsolutePathFor(str)
     return toReturn
 endfunction
 
-"FUNCTION: Path.addFlag(flag) {{{1
-function! s:Path.addFlag(flag)
-    if index(self._flags, a:flag) == -1
-        call add(self._flags, a:flag)
-    endif
-endfunction
-
 "FUNCTION: Path.bookmarkNames() {{{1
 function! s:Path.bookmarkNames()
     if !exists("self._bookmarkNames")
@@ -41,7 +34,7 @@ endfunction
 
 "FUNCTION: Path.cacheDisplayString() {{{1
 function! s:Path.cacheDisplayString() abort
-    let self.cachedDisplayString = self._flagString()
+    let self.cachedDisplayString = self.flagSet.renderToString()
 
     let self.cachedDisplayString .= self.getLastPathComponent(1)
 
@@ -359,15 +352,6 @@ function! s:Path.getSortOrderIndex()
     return s:NERDTreeSortStarIndex
 endfunction
 
-"FUNCTION: Path._flagString() {{{1
-function! s:Path._flagString()
-    if empty(self._flags)
-        return ""
-    endif
-
-    return '[' . join(self._flags, ',') . ']'
-endfunction
-
 "FUNCTION: Path.isUnixHiddenFile() {{{1
 "check for unix hidden files
 function! s:Path.isUnixHiddenFile()
@@ -478,7 +462,7 @@ function! s:Path.New(path)
     call newPath.readInfoFromDisk(s:Path.AbsolutePathFor(a:path))
 
     let newPath.cachedDisplayString = ""
-    let newPath._flags = []
+    let newPath.flagSet = g:NERDTreeFlagSet.New()
 
     return newPath
 endfunction
@@ -497,14 +481,6 @@ endfunction
 function! s:Path.Resolve(path)
     let tmp = resolve(a:path)
     return tmp =~# '.\+/$' ? substitute(tmp, '/$', '', '') : tmp
-endfunction
-
-"FUNCTION: Path.removeFlag(flag) {{{1
-function! s:Path.removeFlag(flag)
-    let i = index(self._flags, a:flag)
-    if i >= 0
-        call remove(self._flags, i)
-    endif
 endfunction
 
 "FUNCTION: Path.readInfoFromDisk(fullpath) {{{1
