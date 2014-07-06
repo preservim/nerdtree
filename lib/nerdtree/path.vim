@@ -34,6 +34,7 @@ endfunction
 
 "FUNCTION: Path.cacheDisplayString() {{{1
 function! s:Path.cacheDisplayString() abort
+    call g:NERDTreeRefreshNotifier.NotifyListenersForAction('CacheDisplayString', self, {})
     let self.cachedDisplayString = self.flagSet.renderToString()
 
     let self.cachedDisplayString .= self.getLastPathComponent(1)
@@ -540,7 +541,6 @@ endfunction
 "FUNCTION: Path.refresh() {{{1
 function! s:Path.refresh()
     call self.readInfoFromDisk(self.str())
-    call g:NERDTreeRefreshNotifier.NotifyListenersForAction('PathRefresh', self, {})
     call self.cacheDisplayString()
 endfunction
 

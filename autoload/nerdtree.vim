@@ -381,6 +381,7 @@ endfunction
 " FUNCTION: nerdtree#chRoot(node) {{{2
 " changes the current root to the selected one
 function! nerdtree#chRoot(node)
+    call g:NERDTreeRefreshNotifier.NotifyListenersForAction('ChangeRoot', a:node.path, {})
     call s:chRoot(a:node)
 endfunction
 "FUNCTION: nerdtree#closeTree() {{{2
@@ -815,6 +816,8 @@ endfunction
 "The entry function for rendering the tree
 function! nerdtree#renderView()
     setlocal modifiable
+
+    call g:NERDTreeRefreshNotifier.NotifyListenersForAction('RenderView', b:NERDTreeRoot.path, {})
 
     "remember the top line of the buffer and the current line so we can
     "restore the view exactly how it was

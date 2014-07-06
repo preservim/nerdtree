@@ -43,6 +43,8 @@ endfunction
 function! s:Creator.createPrimary(name)
     let path = self._pathForString(a:name)
 
+    call g:NERDTreeRefreshNotifier.NotifyListenersForAction('CreatePrimary', path, {'name': a:name})
+
     "if instructed to, then change the vim CWD to the dir the NERDTree is
     "inited in
     if g:NERDTreeChDirMode != 0
