@@ -62,6 +62,7 @@ function! s:Creator.createPrimary(name)
     call self._createTreeWin()
     let b:treeShowHelp = 0
     let b:NERDTreeIgnoreEnabled = 1
+    let b:NERDTreeSearchEnabled = 0
     let b:NERDTreeShowFiles = g:NERDTreeShowFiles
     let b:NERDTreeShowHidden = g:NERDTreeShowHidden
     let b:NERDTreeShowBookmarks = g:NERDTreeShowBookmarks
@@ -276,6 +277,7 @@ function! s:Creator._setCommonBufOptions()
 
     let b:treeShowHelp = 0
     let b:NERDTreeIgnoreEnabled = 1
+    let b:NERDTreeSearchEnabled = 0
     let b:NERDTreeShowFiles = g:NERDTreeShowFiles
     let b:NERDTreeShowHidden = g:NERDTreeShowHidden
     let b:NERDTreeShowBookmarks = g:NERDTreeShowBookmarks

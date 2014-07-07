@@ -107,6 +107,7 @@ function! nerdtree#createDefaultBindings()
     call NERDTreeAddKeyMap({ 'key': g:NERDTreeMapToggleZoom, 'scope': "all", 'callback': s."toggleZoom" })
     call NERDTreeAddKeyMap({ 'key': g:NERDTreeMapToggleHidden, 'scope': "all", 'callback': s."toggleShowHidden" })
     call NERDTreeAddKeyMap({ 'key': g:NERDTreeMapToggleFilters, 'scope': "all", 'callback': s."toggleIgnoreFilter" })
+    call NERDTreeAddKeyMap({ 'key': g:NERDTreeMapToggleSearch, 'scope': "all", 'callback': s."toggleSearchFilter" })
     call NERDTreeAddKeyMap({ 'key': g:NERDTreeMapToggleFiles, 'scope': "all", 'callback': s."toggleShowFiles" })
     call NERDTreeAddKeyMap({ 'key': g:NERDTreeMapToggleBookmarks, 'scope': "all", 'callback': s."toggleShowBookmarks" })
 
@@ -493,6 +494,7 @@ function! nerdtree#dumpHelp()
         let @h=@h."\" Tree filtering mappings~\n"
         let @h=@h."\" ". g:NERDTreeMapToggleHidden .": hidden files (" . (b:NERDTreeShowHidden ? "on" : "off") . ")\n"
         let @h=@h."\" ". g:NERDTreeMapToggleFilters .": file filters (" . (b:NERDTreeIgnoreEnabled ? "on" : "off") . ")\n"
+        let @h=@h."\" ". g:NERDTreeMapToggleSearch .": search filter (" . (b:NERDTreeSearchEnabled ? "on" : "off") . ")\n"
         let @h=@h."\" ". g:NERDTreeMapToggleFiles .": files (" . (b:NERDTreeShowFiles ? "on" : "off") . ")\n"
         let @h=@h."\" ". g:NERDTreeMapToggleBookmarks .": bookmarks (" . (b:NERDTreeShowBookmarks ? "on" : "off") . ")\n"
 
@@ -1329,6 +1331,27 @@ endfunction
 " toggles the use of the NERDTreeIgnore option
 function! s:toggleIgnoreFilter()
     let b:NERDTreeIgnoreEnabled = !b:NERDTreeIgnoreEnabled
+    " turn off search filter when turn on ignore
+    if b:NERDTreeIgnoreEnabled
+        let b:NERDTreeSearchEnabled = 0
+    endif
+    call nerdtree#renderViewSavingPosition()
+    call nerdtree#centerView()
+endfunction
+
+" FUNCTION: s:toggleSearchFilter() {{{2
+" toggles the use of the NERDTreeIgnore option
+function! s:toggleSearchFilter()
+    let b:NERDTreeSearchEnabled = !b:NERDTreeSearchEnabled
+    if b:NERDTreeSearchEnabled
+        " turn off ignore filter when turn on search
+        let b:NERDTreeIgnoreEnabled = 0
+        " prompt for search filter text
+        call inputsave()
+        let g:NERDTreeSearch = input('Enter filter text (regex): ')
+        call inputrestore()
+    endif
+
     call nerdtree#renderViewSavingPosition()
     call nerdtree#centerView()
 endfunction
