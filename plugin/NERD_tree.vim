@@ -142,15 +142,8 @@ call nerdtree#loadClassFiles()
 
 " SECTION: Commands {{{1
 "============================================================
-"init the command that users start the nerd tree with
-command! -n=? -complete=dir -bar NERDTree :call g:NERDTreeCreator.CreatePrimary('<args>')
-command! -n=? -complete=dir -bar NERDTreeToggle :call g:NERDTreeCreator.TogglePrimary('<args>')
-command! -n=0 -bar NERDTreeClose :call nerdtree#closeTreeIfOpen()
-command! -n=1 -complete=customlist,nerdtree#completeBookmarks -bar NERDTreeFromBookmark call g:NERDTreeCreator.CreatePrimary('<args>')
-command! -n=0 -bar NERDTreeMirror call g:NERDTreeCreator.CreateMirror()
-command! -n=0 -bar NERDTreeFind call nerdtree#findAndRevealPath()
-command! -n=0 -bar NERDTreeFocus call NERDTreeFocus()
-command! -n=0 -bar NERDTreeCWD call NERDTreeCWD()
+call nerdtree#ui_glue#setupCommands()
+
 " SECTION: Auto commands {{{1
 "============================================================
 augroup NERDTree

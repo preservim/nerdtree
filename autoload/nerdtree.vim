@@ -9,29 +9,6 @@ endfunction
 
 " SECTION: General Functions {{{1
 "============================================================
-"FUNCTION: nerdtree#bufInWindows(bnum){{{2
-"[[STOLEN FROM VTREEEXPLORER.VIM]]
-"Determine the number of windows open to this buffer number.
-"Care of Yegappan Lakshman.  Thanks!
-"
-"Args:
-"bnum: the subject buffers buffer number
-function! nerdtree#bufInWindows(bnum)
-    let cnt = 0
-    let winnum = 1
-    while 1
-        let bufnum = winbufnr(winnum)
-        if bufnum < 0
-            break
-        endif
-        if bufnum ==# a:bnum
-            let cnt = cnt + 1
-        endif
-        let winnum = winnum + 1
-    endwhile
-
-    return cnt
-endfunction
 
 "FUNCTION: nerdtree#checkForBrowse(dir) {{{2
 "inits a secondary nerd tree in the current buffer if appropriate
@@ -57,7 +34,6 @@ function! nerdtree#compareNodes(n1, n2)
     return a:n1.path.compareTo(a:n2.path)
 endfunction
 
-
 " FUNCTION: nerdtree#deprecated(func, [msg]) {{{2
 " Issue a deprecation warning for a:func. If a second arg is given, use this
 " as the deprecation message
@@ -73,15 +49,6 @@ function! nerdtree#deprecated(func, ...)
     endif
 endfunction
 
-"FUNCTION: nerdtree#escChars(dir) {{{2
-function! nerdtree#escChars()
-    if nerdtree#runningWindows()
-        return " `\|\"#%&,?()\*^<>"
-    endif
-
-    return " \\`\|\"#%&,?()\*^<>[]"
-endfunction
-
 " FUNCTION: nerdtree#exec(cmd) {{{2
 " same as :exec cmd  but eventignore=all is set for the duration
 function! nerdtree#exec(cmd)
@@ -91,66 +58,9 @@ function! nerdtree#exec(cmd)
     let &ei = old_ei
 endfunction
 
-" FUNCTION: nerdtree#findAndRevealPath() {{{2
-function! nerdtree#findAndRevealPath()
-    try
-        let p = g:NERDTreePath.New(expand("%:p"))
-    catch /^NERDTree.InvalidArgumentsError/
-        call nerdtree#echo("no file for the current buffer")
-        return
-    endtry
-
-    if p.isUnixHiddenPath()
-        let showhidden=g:NERDTreeShowHidden
-        let g:NERDTreeShowHidden = 1
-    endif
-
-    if !nerdtree#treeExistsForTab()
-        try
-            let cwd = g:NERDTreePath.New(getcwd())
-        catch /^NERDTree.InvalidArgumentsError/
-            call nerdtree#echo("current directory does not exist.")
-            let cwd = p.getParent()
-        endtry
-
-        if p.isUnder(cwd)
-            call g:NERDTreeCreator.CreatePrimary(cwd.str())
-        else
-            call g:NERDTreeCreator.CreatePrimary(p.getParent().str())
-        endif
-    else
-        if !p.isUnder(g:NERDTreeFileNode.GetRootForTab().path)
-            if !nerdtree#isTreeOpen()
-                call g:NERDTreeCreator.TogglePrimary('')
-            else
-                call nerdtree#putCursorInTreeWin()
-            endif
-            let b:NERDTreeShowHidden = g:NERDTreeShowHidden
-            call nerdtree#chRoot(g:NERDTreeDirNode.New(p.getParent()))
-        else
-            if !nerdtree#isTreeOpen()
-                call g:NERDTreeCreator.TogglePrimary("")
-            endif
-        endif
-    endif
-    call nerdtree#putCursorInTreeWin()
-    call b:NERDTreeRoot.reveal(p)
-
-    if p.isUnixHiddenFile()
-        let g:NERDTreeShowHidden = showhidden
-    endif
-endfunction
-
 " FUNCTION: nerdtree#has_opt(options, name) {{{2
 function! nerdtree#has_opt(options, name)
     return has_key(a:options, a:name) && a:options[a:name] == 1
-endfunction
-
-" FUNCTION: nerdtree#invokeKeyMap(key) {{{2
-"this is needed since I cant figure out how to invoke dict functions from a
-"key map
-function! nerdtree#invokeKeyMap(key)
-    call g:NERDTreeKeyMap.Invoke(a:key)
 endfunction
 
 " FUNCTION: nerdtree#loadClassFiles() {{{2
@@ -178,24 +88,6 @@ endfunction
 "FUNCTION: nerdtree#runningWindows(dir) {{{2
 function! nerdtree#runningWindows()
     return has("win16") || has("win32") || has("win64")
-endfunction
-
-" FUNCTION: nerdtree#tabpagevar(tabnr, var) {{{2
-function! nerdtree#tabpagevar(tabnr, var)
-    let currentTab = tabpagenr()
-    let old_ei = &ei
-    set ei=all
-
-    exec "tabnext " . a:tabnr
-    let v = -1
-    if exists('t:' . a:var)
-        exec 'let v = t:' . a:var
-    endif
-    exec "tabnext " . currentTab
-
-    let &ei = old_ei
-
-    return v
 endfunction
 
 " Function: nerdtree#treeExistsForBuffer()   {{{2
@@ -229,54 +121,6 @@ function! nerdtree#treeWid()
     return 2
 endfunction
 
-"FUNCTION: nerdtree#upDir(keepState) {{{2
-"moves the tree up a level
-"
-"Args:
-"keepState: 1 if the current root should be left open when the tree is
-"re-rendered
-function! nerdtree#upDir(keepState)
-    let cwd = b:NERDTreeRoot.path.str({'format': 'UI'})
-    if cwd ==# "/" || cwd =~# '^[^/]..$'
-        call nerdtree#echo("already at top dir")
-    else
-        if !a:keepState
-            call b:NERDTreeRoot.close()
-        endif
-
-        let oldRoot = b:NERDTreeRoot
-
-        if empty(b:NERDTreeRoot.parent)
-            let path = b:NERDTreeRoot.path.getParent()
-            let newRoot = g:NERDTreeDirNode.New(path)
-            call newRoot.open()
-            call newRoot.transplantChild(b:NERDTreeRoot)
-            let b:NERDTreeRoot = newRoot
-        else
-            let b:NERDTreeRoot = b:NERDTreeRoot.parent
-        endif
-
-        if g:NERDTreeChDirMode ==# 2
-            call b:NERDTreeRoot.path.changeToDir()
-        endif
-
-        call nerdtree#renderView()
-        call oldRoot.putCursorHere(0, 0)
-    endif
-endfunction
-
-" Function: nerdtree#unique(list)   {{{2
-" returns a:list without duplicates
-function! nerdtree#unique(list)
-  let uniqlist = []
-  for elem in a:list
-    if index(uniqlist, elem) ==# -1
-      let uniqlist += [elem]
-    endif
-  endfor
-  return uniqlist
-endfunction
-
 " SECTION: View Functions {{{1
 "============================================================
 "
@@ -299,6 +143,7 @@ endfunction
 function! nerdtree#chRoot(node)
     call s:chRoot(a:node)
 endfunction
+
 "FUNCTION: nerdtree#closeTree() {{{2
 "Closes the primary NERD tree window for this tab
 function! nerdtree#closeTree()
@@ -476,23 +321,6 @@ function! nerdtree#echoWarning(msg)
     echohl normal
 endfunction
 
-"FUNCTION: nerdtree#firstUsableWindow(){{{2
-"find the window number of the first normal window
-function! nerdtree#firstUsableWindow()
-    let i = 1
-    while i <= winnr("$")
-        let bnum = winbufnr(i)
-        if bnum != -1 && getbufvar(bnum, '&buftype') ==# ''
-                    \ && !getwinvar(i, '&previewwindow')
-                    \ && (!getbufvar(bnum, '&modified') || &hidden)
-            return i
-        endif
-
-        let i += 1
-    endwhile
-    return -1
-endfunction
-
 "FUNCTION: nerdtree#getPath(ln) {{{2
 "Gets the full path to the node that is rendered on the given line number
 "
@@ -586,95 +414,6 @@ endfunction
 "FUNCTION: nerdtree#isTreeOpen() {{{2
 function! nerdtree#isTreeOpen()
     return nerdtree#getTreeWinNum() != -1
-endfunction
-
-"FUNCTION: nerdtree#isWindowUsable(winnumber) {{{2
-"Returns 0 if opening a file from the tree in the given window requires it to
-"be split, 1 otherwise
-"
-"Args:
-"winnumber: the number of the window in question
-function! nerdtree#isWindowUsable(winnumber)
-    "gotta split if theres only one window (i.e. the NERD tree)
-    if winnr("$") ==# 1
-        return 0
-    endif
-
-    let oldwinnr = winnr()
-    call nerdtree#exec(a:winnumber . "wincmd p")
-    let specialWindow = getbufvar("%", '&buftype') != '' || getwinvar('%', '&previewwindow')
-    let modified = &modified
-    call nerdtree#exec(oldwinnr . "wincmd p")
-
-    "if its a special window e.g. quickfix or another explorer plugin then we
-    "have to split
-    if specialWindow
-        return 0
-    endif
-
-    if &hidden
-        return 1
-    endif
-
-    return !modified || nerdtree#bufInWindows(winbufnr(a:winnumber)) >= 2
-endfunction
-
-" FUNCTION: nerdtree#jumpToChild(direction) {{{2
-" Args:
-" direction: 0 if going to first child, 1 if going to last
-function! nerdtree#jumpToChild(currentNode, direction)
-    if a:currentNode.isRoot()
-        return nerdtree#echo("cannot jump to " . (a:direction ? "last" : "first") .  " child")
-    end
-    let dirNode = a:currentNode.parent
-    let childNodes = dirNode.getVisibleChildren()
-
-    let targetNode = childNodes[0]
-    if a:direction
-        let targetNode = childNodes[len(childNodes) - 1]
-    endif
-
-    if targetNode.equals(a:currentNode)
-        let siblingDir = a:currentNode.parent.findOpenDirSiblingWithVisibleChildren(a:direction)
-        if siblingDir != {}
-            let indx = a:direction ? siblingDir.getVisibleChildCount()-1 : 0
-            let targetNode = siblingDir.getChildByIndex(indx, 1)
-        endif
-    endif
-
-    call targetNode.putCursorHere(1, 0)
-
-    call nerdtree#centerView()
-endfunction
-
-" FUNCTION: nerdtree#jumpToSibling(currentNode, forward) {{{2
-" moves the cursor to the sibling of the current node in the given direction
-"
-" Args:
-" forward: 1 if the cursor should move to the next sibling, 0 if it should
-" move back to the previous sibling
-function! nerdtree#jumpToSibling(currentNode, forward)
-    let sibling = a:currentNode.findSibling(a:forward)
-
-    if !empty(sibling)
-        call sibling.putCursorHere(1, 0)
-        call nerdtree#centerView()
-    endif
-endfunction
-
-"FUNCTION: nerdtree#promptToDelBuffer(bufnum, msg){{{2
-"prints out the given msg and, if the user responds by pushing 'y' then the
-"buffer with the given bufnum is deleted
-"
-"Args:
-"bufnum: the buffer that may be deleted
-"msg: a message that will be echoed to the user asking them if they wish to
-"     del the buffer
-function! nerdtree#promptToDelBuffer(bufnum, msg)
-    echo a:msg
-    if nr2char(getchar()) ==# 'y'
-        exec "silent bdelete! " . a:bufnum
-    endif
 endfunction
 
 "FUNCTION: nerdtree#putCursorOnBookmarkTable(){{{2

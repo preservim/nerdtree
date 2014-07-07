@@ -122,12 +122,12 @@ function! s:Creator.createMirror()
     "get the names off all the nerd tree buffers
     let treeBufNames = []
     for i in range(1, tabpagenr("$"))
-        let nextName = nerdtree#tabpagevar(i, 'NERDTreeBufName')
+        let nextName = self._tabpagevar(i, 'NERDTreeBufName')
         if nextName != -1 && (!exists("t:NERDTreeBufName") || nextName != t:NERDTreeBufName)
             call add(treeBufNames, nextName)
         endif
     endfor
-    let treeBufNames = nerdtree#unique(treeBufNames)
+    let treeBufNames = self._uniq(treeBufNames)
 
     "map the option names (that the user will be prompted with) to the nerd
     "tree buffer names
@@ -290,6 +290,24 @@ function! s:Creator._setupStatusline()
     endif
 endfunction
 
+" FUNCTION: s:Creator._tabpagevar(tabnr, var) {{{1
+function! s:Creator._tabpagevar(tabnr, var)
+    let currentTab = tabpagenr()
+    let old_ei = &ei
+    set ei=all
+
+    exec "tabnext " . a:tabnr
+    let v = -1
+    if exists('t:' . a:var)
+        exec 'let v = t:' . a:var
+    endif
+    exec "tabnext " . currentTab
+
+    let &ei = old_ei
+
+    return v
+endfunction
+
 "FUNCTION: s:Creator.TogglePrimary(dir) {{{1
 function! s:Creator.TogglePrimary(dir)
     let creator = s:Creator.New()
@@ -317,6 +335,18 @@ function! s:Creator.togglePrimary(dir)
     else
         call self.createPrimary(a:dir)
     endif
+endfunction
+
+" Function: s:Creator._uniq(list)   {{{1
+" returns a:list without duplicates
+function! s:Creator._uniq(list)
+  let uniqlist = []
+  for elem in a:list
+    if index(uniqlist, elem) ==# -1
+      let uniqlist += [elem]
+    endif
+  endfor
+  return uniqlist
 endfunction
 
 " vim: set sw=4 sts=4 et fdm=marker:
