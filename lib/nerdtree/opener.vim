@@ -262,7 +262,7 @@ function! s:Opener._openDirectory(node)
         call self._gotoTargetWin()
         if empty(self._where)
             call a:node.makeRoot()
-            call nerdtree#renderView()
+            call b:NERDTree.render()
             call a:node.putCursorHere(0, 0)
         elseif self._where == 't'
             call g:NERDTreeCreator.CreatePrimary(a:node.path.str())

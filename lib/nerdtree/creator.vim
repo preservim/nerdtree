@@ -17,8 +17,8 @@ function! s:Creator._bindMappings()
     command! -buffer -complete=customlist,nerdtree#completeBookmarks -nargs=1 OpenBookmark :call nerdtree#ui_glue#openBookmark('<args>')
     command! -buffer -complete=customlist,nerdtree#completeBookmarks -nargs=* ClearBookmarks call nerdtree#ui_glue#clearBookmarks('<args>')
     command! -buffer -complete=customlist,nerdtree#completeBookmarks -nargs=+ BookmarkToRoot call g:NERDTreeBookmark.ToRoot('<args>')
-    command! -buffer -nargs=0 ClearAllBookmarks call g:NERDTreeBookmark.ClearAll() <bar> call nerdtree#renderView()
-    command! -buffer -nargs=0 ReadBookmarks call g:NERDTreeBookmark.CacheBookmarks(0) <bar> call nerdtree#renderView()
+    command! -buffer -nargs=0 ClearAllBookmarks call g:NERDTreeBookmark.ClearAll() <bar> call b:NERDTree.render()
+    command! -buffer -nargs=0 ReadBookmarks call g:NERDTreeBookmark.CacheBookmarks(0) <bar> call b:NERDTree.render()
     command! -buffer -nargs=0 WriteBookmarks call g:NERDTreeBookmark.Write()
 endfunction
 
@@ -56,19 +56,16 @@ function! s:Creator.createPrimary(name)
         unlet t:NERDTreeBufName
     endif
 
-    let newRoot = g:NERDTreeDirNode.New(path)
-    call newRoot.open()
-
     call self._createTreeWin()
+    call self._createNERDTree(path)
     let b:treeShowHelp = 0
     let b:NERDTreeIgnoreEnabled = 1
     let b:NERDTreeShowFiles = g:NERDTreeShowFiles
     let b:NERDTreeShowHidden = g:NERDTreeShowHidden
     let b:NERDTreeShowBookmarks = g:NERDTreeShowBookmarks
-    let b:NERDTreeRoot = newRoot
     let b:NERDTreeType = "primary"
 
-    call nerdtree#renderView()
+    call b:NERDTree.render()
     call b:NERDTreeRoot.putCursorHere(0, 0)
 
     call self._broadcastInitEvent()
@@ -99,16 +96,24 @@ function! s:Creator.createSecondary(dir)
     exec "silent edit " . self._nextBufferName()
 
     let b:NERDTreePreviousBuf = bufnr(previousBuf)
-
-    let b:NERDTreeRoot = g:NERDTreeDirNode.New(path)
-    call b:NERDTreeRoot.open()
-
+    call self._createNERDTree(path)
     call self._setCommonBufOptions()
     let b:NERDTreeType = "secondary"
 
-    call nerdtree#renderView()
+    call b:NERDTree.render()
 
     call self._broadcastInitEvent()
+endfunction
+
+" FUNCTION: s:Creator._createNERDTree(path) {{{1
+function! s:Creator._createNERDTree(path)
+    let b:NERDTree = g:NERDTree.New(a:path)
+    call b:NERDTree.root.open()
+
+    "TODO: This is kept for compatability only since many things use
+    "b:NERDTreeRoot instead of the new NERDTree.root
+    "Remove this one day
+    let b:NERDTreeRoot = b:NERDTree.root
 endfunction
 
 " FUNCTION: s:Creator.CreateMirror() {{{1
@@ -166,7 +171,7 @@ function! s:Creator.createMirror()
     call self._createTreeWin()
     exec 'buffer ' .  bufferName
     if !&hidden
-        call nerdtree#renderView()
+        call b:NERDTree.render()
     endif
 endfunction
 
@@ -326,9 +331,9 @@ function! s:Creator.togglePrimary(dir)
         if !nerdtree#isTreeOpen()
             call self._createTreeWin()
             if !&hidden
-                call nerdtree#renderView()
+                call b:NERDTree.render()
             endif
-            call nerdtree#restoreScreenState()
+            call b:NERDTree.ui.restoreScreenState()
         else
             call nerdtree#closeTree()
         endif

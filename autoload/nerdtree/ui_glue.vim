@@ -119,7 +119,7 @@ function! nerdtree#ui_glue#bookmarkNode(...)
         endif
         try
             call currentNode.bookmark(name)
-            call nerdtree#renderView()
+            call b:NERDTree.render()
         catch /^NERDTree.IllegalBookmarkNameError/
             call nerdtree#echo("bookmark names must not contain spaces")
         endtry
@@ -141,7 +141,7 @@ endfunction
 " changes the current root to the selected one
 function! s:chRoot(node)
     call a:node.makeRoot()
-    call nerdtree#renderView()
+    call b:NERDTree.render()
     call b:NERDTreeRoot.putCursorHere(0, 0)
 endfunction
 
@@ -173,14 +173,14 @@ function! nerdtree#ui_glue#clearBookmarks(bookmarks)
             call bookmark.delete()
         endfor
     endif
-    call nerdtree#renderView()
+    call b:NERDTree.render()
 endfunction
 
 " FUNCTION: s:closeChildren(node) {{{1
 " closes all childnodes of the current node
 function! s:closeChildren(node)
     call a:node.closeChildren()
-    call nerdtree#renderView()
+    call b:NERDTree.render()
     call a:node.putCursorHere(0, 0)
 endfunction
 
@@ -200,7 +200,7 @@ function! s:closeCurrentDir(node)
             endif
         endwhile
         call parent.close()
-        call nerdtree#renderView()
+        call b:NERDTree.render()
         call parent.putCursorHere(0, 0)
     endif
 endfunction
@@ -227,7 +227,7 @@ function! s:deleteBookmark(bm)
     if  nr2char(getchar()) ==# 'y'
         try
             call a:bm.delete()
-            call nerdtree#renderView()
+            call b:NERDTree.render()
             redraw
         catch /^NERDTree/
             call nerdtree#echoWarning("Could not remove bookmark")
@@ -242,7 +242,7 @@ endfunction
 " toggles the help display
 function! s:displayHelp()
     let b:treeShowHelp = b:treeShowHelp ? 0 : 1
-    call nerdtree#renderView()
+    call b:NERDTree.render()
     call nerdtree#centerView()
 endfunction
 
@@ -486,7 +486,7 @@ endfunction
 function! s:openNodeRecursively(node)
     call nerdtree#echo("Recursively opening node. Please wait...")
     call a:node.openRecursively()
-    call nerdtree#renderView()
+    call b:NERDTree.render()
     redraw
     call nerdtree#echo("Recursively opening node. Please wait... DONE")
 endfunction
@@ -523,7 +523,7 @@ endfunction
 function! s:refreshRoot()
     call nerdtree#echo("Refreshing the root node. This could take a while...")
     call b:NERDTreeRoot.refresh()
-    call nerdtree#renderView()
+    call b:NERDTree.render()
     redraw
     call nerdtree#echo("Refreshing the root node. This could take a while... DONE")
 endfunction
@@ -538,7 +538,7 @@ function! s:refreshCurrent(node)
 
     call nerdtree#echo("Refreshing node. This could take a while...")
     call node.refresh()
-    call nerdtree#renderView()
+    call b:NERDTree.render()
     redraw
     call nerdtree#echo("Refreshing node. This could take a while... DONE")
 endfunction
@@ -573,7 +573,7 @@ endfunction
 " toggles the use of the NERDTreeIgnore option
 function! s:toggleIgnoreFilter()
     let b:NERDTreeIgnoreEnabled = !b:NERDTreeIgnoreEnabled
-    call nerdtree#renderViewSavingPosition()
+    call b:NERDTree.ui.renderViewSavingPosition()
     call nerdtree#centerView()
 endfunction
 
@@ -582,10 +582,10 @@ endfunction
 function! s:toggleShowBookmarks()
     let b:NERDTreeShowBookmarks = !b:NERDTreeShowBookmarks
     if b:NERDTreeShowBookmarks
-        call nerdtree#renderView()
+        call b:NERDTree.render()
         call nerdtree#putCursorOnBookmarkTable()
     else
-        call nerdtree#renderViewSavingPosition()
+        call b:NERDTree.ui.renderViewSavingPosition()
     endif
     call nerdtree#centerView()
 endfunction
@@ -594,7 +594,7 @@ endfunction
 " toggles the display of hidden files
 function! s:toggleShowFiles()
     let b:NERDTreeShowFiles = !b:NERDTreeShowFiles
-    call nerdtree#renderViewSavingPosition()
+    call b:NERDTree.ui.renderViewSavingPosition()
     call nerdtree#centerView()
 endfunction
 
@@ -602,7 +602,7 @@ endfunction
 " toggles the display of hidden files
 function! s:toggleShowHidden()
     let b:NERDTreeShowHidden = !b:NERDTreeShowHidden
-    call nerdtree#renderViewSavingPosition()
+    call b:NERDTree.ui.renderViewSavingPosition()
     call nerdtree#centerView()
 endfunction
 
@@ -650,7 +650,7 @@ function! nerdtree#ui_glue#upDir(keepState)
             call b:NERDTreeRoot.path.changeToDir()
         endif
 
-        call nerdtree#renderView()
+        call b:NERDTree.render()
         call oldRoot.putCursorHere(0, 0)
     endif
 endfunction

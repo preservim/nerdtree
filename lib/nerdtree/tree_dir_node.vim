@@ -21,7 +21,7 @@ unlet s:TreeDirNode.activate
 function! s:TreeDirNode.activate(...)
     let opts = a:0 ? a:1 : {}
     call self.toggleOpen(opts)
-    call nerdtree#renderView()
+    call b:NERDTree.render()
     call self.putCursorHere(0, 0)
 endfunction
 
@@ -450,7 +450,7 @@ function! s:TreeDirNode.reveal(path)
 
     if self.path.equals(a:path.getParent())
         let n = self.findNode(a:path)
-        call nerdtree#renderView()
+        call b:NERDTree.render()
         call n.putCursorHere(1,0)
         return
     endif

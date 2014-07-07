@@ -74,6 +74,8 @@ function! nerdtree#loadClassFiles()
     runtime lib/nerdtree/tree_dir_node.vim
     runtime lib/nerdtree/opener.vim
     runtime lib/nerdtree/creator.vim
+    runtime lib/nerdtree/nerdtree.vim
+    runtime lib/nerdtree/ui.vim
 endfunction
 
 " FUNCTION: nerdtree#postSourceActions() {{{2
@@ -321,75 +323,6 @@ function! nerdtree#echoWarning(msg)
     echohl normal
 endfunction
 
-"FUNCTION: nerdtree#getPath(ln) {{{2
-"Gets the full path to the node that is rendered on the given line number
-"
-"Args:
-"ln: the line number to get the path for
-"
-"Return:
-"A path if a node was selected, {} if nothing is selected.
-"If the 'up a dir' line was selected then the path to the parent of the
-"current root is returned
-function! nerdtree#getPath(ln)
-    let line = getline(a:ln)
-
-    let rootLine = g:NERDTreeFileNode.GetRootLineNum()
-
-    "check to see if we have the root node
-    if a:ln == rootLine
-        return b:NERDTreeRoot.path
-    endif
-
-    if !g:NERDTreeDirArrows
-        " in case called from outside the tree
-        if line !~# '^ *[|`▸▾ ]' || line =~# '^$'
-            return {}
-        endif
-    endif
-
-    if line ==# nerdtree#treeUpDirLine()
-        return b:NERDTreeRoot.path.getParent()
-    endif
-
-    let indent = nerdtree#indentLevelFor(line)
-
-    "remove the tree parts and the leading space
-    let curFile = nerdtree#stripMarkupFromLine(line, 0)
-
-    let wasdir = 0
-    if curFile =~# '/$'
-        let wasdir = 1
-        let curFile = substitute(curFile, '/\?$', '/', "")
-    endif
-
-    let dir = ""
-    let lnum = a:ln
-    while lnum > 0
-        let lnum = lnum - 1
-        let curLine = getline(lnum)
-        let curLineStripped = nerdtree#stripMarkupFromLine(curLine, 1)
-
-        "have we reached the top of the tree?
-        if lnum == rootLine
-            let dir = b:NERDTreeRoot.path.str({'format': 'UI'}) . dir
-            break
-        endif
-        if curLineStripped =~# '/$'
-            let lpindent = nerdtree#indentLevelFor(curLine)
-            if lpindent < indent
-                let indent = indent - 1
-
-                let dir = substitute (curLineStripped,'^\\', "", "") . dir
-                continue
-            endif
-        endif
-    endwhile
-    let curFile = b:NERDTreeRoot.path.drive . dir . curFile
-    let toReturn = g:NERDTreePath.New(curFile)
-    return toReturn
-endfunction
-
 "FUNCTION: nerdtree#getTreeWinNum() {{{2
 "gets the nerd tree window number for this tab
 function! nerdtree#getTreeWinNum()
@@ -398,17 +331,6 @@ function! nerdtree#getTreeWinNum()
     else
         return -1
     endif
-endfunction
-
-"FUNCTION: nerdtree#indentLevelFor(line) {{{2
-function! nerdtree#indentLevelFor(line)
-    let level = match(a:line, '[^ \-+~▸▾`|]') / nerdtree#treeWid()
-    " check if line includes arrows
-    if match(a:line, '[▸▾]') > -1
-        " decrement level as arrow uses 3 ascii chars
-        let level = level - 1
-    endif
-    return level
 endfunction
 
 "FUNCTION: nerdtree#isTreeOpen() {{{2
@@ -427,7 +349,7 @@ function! nerdtree#putCursorOnBookmarkTable()
         return cursor(1, 2)
     endif
 
-    let rootNodeLine = g:NERDTreeFileNode.GetRootLineNum()
+    let rootNodeLine = b:NERDTree.ui.getRootLineNum()
 
     let line = 1
     while getline(line) !~# '^>-\+Bookmarks-\+$'
@@ -467,116 +389,10 @@ function! nerdtree#renderBookmarks()
 endfunction
 
 "FUNCTION: nerdtree#renderView {{{2
-"The entry function for rendering the tree
 function! nerdtree#renderView()
-    setlocal modifiable
-
-    "remember the top line of the buffer and the current line so we can
-    "restore the view exactly how it was
-    let curLine = line(".")
-    let curCol = col(".")
-    let topLine = line("w0")
-
-    "delete all lines in the buffer (being careful not to clobber a register)
-    silent 1,$delete _
-
-    call nerdtree#dumpHelp()
-
-    "delete the blank line before the help and add one after it
-    if g:NERDTreeMinimalUI == 0
-        call setline(line(".")+1, "")
-        call cursor(line(".")+1, col("."))
-    endif
-
-    if b:NERDTreeShowBookmarks
-        call nerdtree#renderBookmarks()
-    endif
-
-    "add the 'up a dir' line
-    if !g:NERDTreeMinimalUI
-        call setline(line(".")+1, nerdtree#treeUpDirLine())
-        call cursor(line(".")+1, col("."))
-    endif
-
-    "draw the header line
-    let header = b:NERDTreeRoot.path.str({'format': 'UI', 'truncateTo': winwidth(0)})
-    call setline(line(".")+1, header)
-    call cursor(line(".")+1, col("."))
-
-    "draw the tree
-    let old_o = @o
-    let @o = b:NERDTreeRoot.renderToString()
-    silent put o
-    let @o = old_o
-
-    "delete the blank line at the top of the buffer
-    silent 1,1delete _
-
-    "restore the view
-    let old_scrolloff=&scrolloff
-    let &scrolloff=0
-    call cursor(topLine, 1)
-    normal! zt
-    call cursor(curLine, curCol)
-    let &scrolloff = old_scrolloff
-
-    setlocal nomodifiable
-endfunction
-
-"FUNCTION: nerdtree#renderViewSavingPosition {{{2
-"Renders the tree and ensures the cursor stays on the current node or the
-"current nodes parent if it is no longer available upon re-rendering
-function! nerdtree#renderViewSavingPosition()
-    let currentNode = g:NERDTreeFileNode.GetSelected()
-
-    "go up the tree till we find a node that will be visible or till we run
-    "out of nodes
-    while currentNode != {} && !currentNode.isVisible() && !currentNode.isRoot()
-        let currentNode = currentNode.parent
-    endwhile
-
-    call nerdtree#renderView()
-
-    if currentNode != {}
-        call currentNode.putCursorHere(0, 0)
-    endif
+    call b:NERDTree.render()
 endfunction
 "
-"FUNCTION: nerdtree#restoreScreenState() {{{2
-"
-"Sets the screen state back to what it was when nerdtree#saveScreenState was last
-"called.
-"
-"Assumes the cursor is in the NERDTree window
-function! nerdtree#restoreScreenState()
-    if !exists("b:NERDTreeOldTopLine") || !exists("b:NERDTreeOldPos") || !exists("b:NERDTreeOldWindowSize")
-        return
-    endif
-    exec("silent vertical resize ".b:NERDTreeOldWindowSize)
-
-    let old_scrolloff=&scrolloff
-    let &scrolloff=0
-    call cursor(b:NERDTreeOldTopLine, 0)
-    normal! zt
-    call setpos(".", b:NERDTreeOldPos)
-    let &scrolloff=old_scrolloff
-endfunction
-
-"FUNCTION: nerdtree#saveScreenState() {{{2
-"Saves the current cursor position in the current buffer and the window
-"scroll position
-function! nerdtree#saveScreenState()
-    let win = winnr()
-    try
-        call nerdtree#putCursorInTreeWin()
-        let b:NERDTreeOldPos = getpos(".")
-        let b:NERDTreeOldTopLine = line("w0")
-        let b:NERDTreeOldWindowSize = winwidth("")
-        call nerdtree#exec(win . "wincmd w")
-    catch /^NERDTree.InvalidOperationError/
-    endtry
-endfunction
-
 "FUNCTION: nerdtree#stripMarkupFromLine(line, removeLeadingSpaces){{{2
 "returns the given line with all the tree parts stripped off
 "
