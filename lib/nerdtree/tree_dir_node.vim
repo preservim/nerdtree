@@ -439,6 +439,15 @@ function! s:TreeDirNode.refresh()
     endif
 endfunction
 
+"FUNCTION: TreeDirNode.refreshFlags() {{{1
+unlet s:TreeDirNode.refreshFlags
+function! s:TreeDirNode.refreshFlags()
+    call self.path.refreshFlags()
+    for i in self.children
+        call i.refreshFlags()
+    endfor
+endfunction
+
 "FUNCTION: TreeDirNode.reveal(path) {{{1
 "reveal the given path, i.e. cache and open all treenodes needed to display it
 "in the UI

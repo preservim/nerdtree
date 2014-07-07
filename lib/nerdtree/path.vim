@@ -544,6 +544,12 @@ function! s:Path.refresh()
     call self.cacheDisplayString()
 endfunction
 
+"FUNCTION: Path.refreshFlags() {{{1
+function! s:Path.refreshFlags()
+    call g:NERDTreeRefreshNotifier.NotifyListeners(self)
+    call self.cacheDisplayString()
+endfunction
+
 "FUNCTION: Path.rename() {{{1
 "
 "Renames this node on the filesystem
