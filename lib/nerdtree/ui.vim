@@ -211,7 +211,7 @@ function! s:UI.render()
     endif
 
     "add the 'up a dir' line
-    if !g:NERDTreeMinimalUI
+    if g:NERDTreeAlwaysShowUpDirLine || !g:NERDTreeMinimalUI
         call setline(line(".")+1, nerdtree#treeUpDirLine())
         call cursor(line(".")+1, col("."))
     endif
