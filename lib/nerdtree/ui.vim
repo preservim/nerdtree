@@ -3,6 +3,26 @@
 let s:UI = {}
 let g:NERDTreeUI = s:UI
 
+
+function! s:UI.lolcats()
+    echomsg "lolcats"
+endfunction
+
+"FUNCTION: s:UI.centerView() {{{2
+"centers the nerd tree window around the cursor (provided the nerd tree
+"options permit)
+function! s:UI.centerView()
+    if g:NERDTreeAutoCenter
+        let current_line = winline()
+        let lines_to_top = current_line
+        let lines_to_bottom = winheight(nerdtree#getTreeWinNum()) - current_line
+        if lines_to_top < g:NERDTreeAutoCenterThreshold || lines_to_bottom < g:NERDTreeAutoCenterThreshold
+            normal! zz
+        endif
+    endif
+endfunction
+
+"FUNCTION: s:UI.new(nerdtree) {{{1
 function! s:UI.New(nerdtree)
     let newObj = copy(self)
     let newObj.nerdtree = a:nerdtree
@@ -258,5 +278,55 @@ function! s:UI.renderViewSavingPosition()
 
     if currentNode != {}
         call currentNode.putCursorHere(0, 0)
+    endif
+endfunction
+
+" FUNCTION: s:UI.toggleIgnoreFilter() {{{1
+" toggles the use of the NERDTreeIgnore option
+function! s:UI.toggleIgnoreFilter()
+    let b:NERDTreeIgnoreEnabled = !b:NERDTreeIgnoreEnabled
+    call b:NERDTree.ui.renderViewSavingPosition()
+    call b:NERDTree.ui.centerView()
+endfunction
+
+" FUNCTION: s:UI.toggleShowBookmarks() {{{1
+" toggles the display of bookmarks
+function! s:UI.toggleShowBookmarks()
+    let b:NERDTreeShowBookmarks = !b:NERDTreeShowBookmarks
+    if b:NERDTreeShowBookmarks
+        call b:NERDTree.render()
+        call nerdtree#putCursorOnBookmarkTable()
+    else
+        call b:NERDTree.ui.renderViewSavingPosition()
+    endif
+    call b:NERDTree.ui.centerView()
+endfunction
+
+" FUNCTION: s:UI.toggleShowFiles() {{{1
+" toggles the display of hidden files
+function! s:UI.toggleShowFiles()
+    let b:NERDTreeShowFiles = !b:NERDTreeShowFiles
+    call b:NERDTree.ui.renderViewSavingPosition()
+    call b:NERDTree.ui.centerView()
+endfunction
+
+" FUNCTION: s:UI.toggleShowHidden() {{{1
+" toggles the display of hidden files
+function! s:UI.toggleShowHidden()
+    let b:NERDTreeShowHidden = !b:NERDTreeShowHidden
+    call b:NERDTree.ui.renderViewSavingPosition()
+    call self.centerView()
+endfunction
+
+" FUNCTION: s:UI.toggleZoom() {{{1
+" zoom (maximize/minimize) the NERDTree window
+function! s:UI.toggleZoom()
+    if exists("b:NERDTreeZoomed") && b:NERDTreeZoomed
+        let size = exists("b:NERDTreeOldWindowSize") ? b:NERDTreeOldWindowSize : g:NERDTreeWinSize
+        exec "silent vertical resize ". size
+        let b:NERDTreeZoomed = 0
+    else
+        exec "vertical resize"
+        let b:NERDTreeZoomed = 1
     endif
 endfunction

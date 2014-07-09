@@ -128,20 +128,6 @@ endfunction
 " SECTION: View Functions {{{1
 "============================================================
 "
-"FUNCTION: nerdtree#centerView() {{{2
-"centers the nerd tree window around the cursor (provided the nerd tree
-"options permit)
-function! nerdtree#centerView()
-    if g:NERDTreeAutoCenter
-        let current_line = winline()
-        let lines_to_top = current_line
-        let lines_to_bottom = winheight(nerdtree#getTreeWinNum()) - current_line
-        if lines_to_top < g:NERDTreeAutoCenterThreshold || lines_to_bottom < g:NERDTreeAutoCenterThreshold
-            normal! zz
-        endif
-    endif
-endfunction
-
 " FUNCTION: nerdtree#chRoot(node) {{{2
 " changes the current root to the selected one
 function! nerdtree#chRoot(node)

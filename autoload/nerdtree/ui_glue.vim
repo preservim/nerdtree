@@ -243,7 +243,7 @@ endfunction
 function! s:displayHelp()
     let b:treeShowHelp = b:treeShowHelp ? 0 : 1
     call b:NERDTree.render()
-    call nerdtree#centerView()
+    call b:NERDTree.ui.centerView()
 endfunction
 
 " FUNCTION: s:findAndRevealPath() {{{1
@@ -372,7 +372,7 @@ function! s:jumpToChild(currentNode, direction)
 
     call targetNode.putCursorHere(1, 0)
 
-    call nerdtree#centerView()
+    call b:NERDTree.ui.centerView()
 endfunction
 
 
@@ -400,7 +400,7 @@ endfunction
 function! s:jumpToParent(node)
     if !empty(a:node.parent)
         call a:node.parent.putCursorHere(1, 0)
-        call nerdtree#centerView()
+        call b:NERDTree.ui.centerView()
     else
         call nerdtree#echo("cannot jump to parent")
     endif
@@ -410,7 +410,7 @@ endfunction
 " moves the cursor to the root node
 function! s:jumpToRoot()
     call b:NERDTreeRoot.putCursorHere(1, 0)
-    call nerdtree#centerView()
+    call b:NERDTree.ui.centerView()
 endfunction
 
 " FUNCTION: s:jumpToNextSibling(node) {{{1
@@ -434,7 +434,7 @@ function! s:jumpToSibling(currentNode, forward)
 
     if !empty(sibling)
         call sibling.putCursorHere(1, 0)
-        call nerdtree#centerView()
+        call b:NERDTree.ui.centerView()
     endif
 endfunction
 
@@ -570,53 +570,29 @@ function! s:showMenu(node)
 endfunction
 
 " FUNCTION: s:toggleIgnoreFilter() {{{1
-" toggles the use of the NERDTreeIgnore option
 function! s:toggleIgnoreFilter()
-    let b:NERDTreeIgnoreEnabled = !b:NERDTreeIgnoreEnabled
-    call b:NERDTree.ui.renderViewSavingPosition()
-    call nerdtree#centerView()
+    call b:NERDTree.ui.toggleIgnoreFilter()
 endfunction
 
 " FUNCTION: s:toggleShowBookmarks() {{{1
-" toggles the display of bookmarks
 function! s:toggleShowBookmarks()
-    let b:NERDTreeShowBookmarks = !b:NERDTreeShowBookmarks
-    if b:NERDTreeShowBookmarks
-        call b:NERDTree.render()
-        call nerdtree#putCursorOnBookmarkTable()
-    else
-        call b:NERDTree.ui.renderViewSavingPosition()
-    endif
-    call nerdtree#centerView()
+    call b:NERDTree.ui.toggleShowBookmarks()
 endfunction
 
 " FUNCTION: s:toggleShowFiles() {{{1
-" toggles the display of hidden files
 function! s:toggleShowFiles()
-    let b:NERDTreeShowFiles = !b:NERDTreeShowFiles
-    call b:NERDTree.ui.renderViewSavingPosition()
-    call nerdtree#centerView()
+    call b:NERDTree.ui.toggleShowFiles()
 endfunction
 
 " FUNCTION: s:toggleShowHidden() {{{1
 " toggles the display of hidden files
 function! s:toggleShowHidden()
-    let b:NERDTreeShowHidden = !b:NERDTreeShowHidden
-    call b:NERDTree.ui.renderViewSavingPosition()
-    call nerdtree#centerView()
+    call b:NERDTree.ui.toggleShowHidden()
 endfunction
 
 " FUNCTION: s:toggleZoom() {{{1
-" zoom (maximize/minimize) the NERDTree window
 function! s:toggleZoom()
-    if exists("b:NERDTreeZoomed") && b:NERDTreeZoomed
-        let size = exists("b:NERDTreeOldWindowSize") ? b:NERDTreeOldWindowSize : g:NERDTreeWinSize
-        exec "silent vertical resize ". size
-        let b:NERDTreeZoomed = 0
-    else
-        exec "vertical resize"
-        let b:NERDTreeZoomed = 1
-    endif
+    call b:NERDTree.ui.toggleZoom()
 endfunction
 
 "FUNCTION: nerdtree#ui_glue#upDir(keepState) {{{1
