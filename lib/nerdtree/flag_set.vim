@@ -12,7 +12,7 @@ function! s:FlagSet.addFlag(scope, flag)
 endfunction
 
 "FUNCTION: FlagSet.clearFlags(scope) {{{1
-function! s:FlagSet.clearFlags(scope, flag)
+function! s:FlagSet.clearFlags(scope)
     let self._flags[a:scope] = []
 endfunction
 

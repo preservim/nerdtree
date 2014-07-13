@@ -372,6 +372,11 @@ function! s:TreeFileNode.refresh()
     call self.path.refresh()
 endfunction
 
+"FUNCTION: TreeFileNode.refreshFlags() {{{1
+function! s:TreeFileNode.refreshFlags()
+    call self.path.refreshFlags()
+endfunction
+
 "FUNCTION: TreeFileNode.rename() {{{1
 "Calls the rename method for this nodes path obj
 function! s:TreeFileNode.rename(newName)
