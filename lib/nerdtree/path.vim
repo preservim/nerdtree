@@ -555,7 +555,7 @@ endfunction
 
 "FUNCTION: Path.refreshFlags() {{{1
 function! s:Path.refreshFlags()
-    call g:NERDTreeRefreshNotifier.NotifyListeners(self)
+    call g:NERDTreeRefreshNotifier.NotifyListenersForAction('RefreshFlags', self, {})
     call self.cacheDisplayString()
 endfunction
 

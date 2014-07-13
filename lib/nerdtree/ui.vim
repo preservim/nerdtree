@@ -209,6 +209,8 @@ endfunction
 function! s:UI.render()
     setlocal modifiable
 
+    call g:NERDTreeRefreshNotifier.NotifyListenersForAction("RenderView", b:NERDTreeRoot.path, {})
+
     "remember the top line of the buffer and the current line so we can
     "restore the view exactly how it was
     let curLine = line(".")
