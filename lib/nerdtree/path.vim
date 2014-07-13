@@ -173,7 +173,7 @@ function! s:Path.copy(dest)
 
     let dest = s:Path.WinToUnixPath(a:dest)
 
-    let cmd = g:NERDTreeCopyCmd . " " . escape(self.str(), nerdtree#escChars()) . " " . escape(dest, nerdtree#escChars())
+    let cmd = g:NERDTreeCopyCmd . " " . escape(self.str(), self._escChars()) . " " . escape(dest, self._escChars())
     let success = system(cmd)
     if success != 0
         throw "NERDTree.CopyError: Could not copy ''". self.str() ."'' to: '" . a:dest . "'"
@@ -290,6 +290,15 @@ endfunction
 function! s:Path.exists()
     let p = self.str()
     return filereadable(p) || isdirectory(p)
+endfunction
+
+"FUNCTION: Path._escChars() {{{1
+function! s:Path._escChars()
+    if nerdtree#runningWindows()
+        return " `\|\"#%&,?()\*^<>"
+    endif
+
+    return " \\`\|\"#%&,?()\*^<>[]"
 endfunction
 
 "FUNCTION: Path.getDir() {{{1
@@ -635,7 +644,7 @@ endfunction
 "
 " returns a string that can be used with :cd
 function! s:Path._strForCd()
-    return escape(self.str(), nerdtree#escChars())
+    return escape(self.str(), self._escChars())
 endfunction
 
 "FUNCTION: Path._strForEdit() {{{1
@@ -643,7 +652,7 @@ endfunction
 "Return: the string for this path that is suitable to be used with the :edit
 "command
 function! s:Path._strForEdit()
-    let p = escape(self.str({'format': 'UI'}), nerdtree#escChars())
+    let p = escape(self.str({'format': 'UI'}), self._escChars())
     let cwd = getcwd() . s:Path.Slash()
 
     "return a relative path if we can
@@ -683,7 +692,7 @@ function! s:Path._strForGlob()
     let toReturn = lead . join(self.pathSegments, s:Path.Slash())
 
     if !nerdtree#runningWindows()
-        let toReturn = escape(toReturn, nerdtree#escChars())
+        let toReturn = escape(toReturn, self._escChars())
     endif
     return toReturn
 endfunction
