@@ -194,7 +194,7 @@ endfunction
 
 function! NERDTreeCWD()
     call NERDTreeFocus()
-    call nerdtree#chRootCwd()
+    call nerdtree#ui_glue#chRootCwd()
 endfunction
 " SECTION: Post Source Actions {{{1
 call nerdtree#postSourceActions()

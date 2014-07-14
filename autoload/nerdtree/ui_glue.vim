@@ -157,7 +157,7 @@ function! nerdtree#ui_glue#chRootCwd()
     if cwd.str() == g:NERDTreeFileNode.GetRootForTab().path.str()
        return
     endif
-    call nerdtree#chRoot(g:NERDTreeDirNode.New(cwd))
+    call s:chRoot(g:NERDTreeDirNode.New(cwd))
 endfunction
 
 " FUNCTION: nnerdtree#ui_glue#clearBookmarks(bookmarks) {{{1
@@ -281,7 +281,7 @@ function! s:findAndRevealPath()
                 call nerdtree#putCursorInTreeWin()
             endif
             let b:NERDTreeShowHidden = g:NERDTreeShowHidden
-            call nerdtree#chRoot(g:NERDTreeDirNode.New(p.getParent()))
+            call s:chRoot(g:NERDTreeDirNode.New(p.getParent()))
         else
             if !nerdtree#isTreeOpen()
                 call g:NERDTreeCreator.TogglePrimary("")

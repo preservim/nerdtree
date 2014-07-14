@@ -127,12 +127,6 @@ endfunction
 
 " SECTION: View Functions {{{1
 "============================================================
-"
-" FUNCTION: nerdtree#chRoot(node) {{{2
-" changes the current root to the selected one
-function! nerdtree#chRoot(node)
-    call s:chRoot(a:node)
-endfunction
 
 "FUNCTION: nerdtree#closeTree() {{{2
 "Closes the primary NERD tree window for this tab
