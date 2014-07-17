@@ -74,10 +74,11 @@ function! nerdtree#loadClassFiles()
     runtime lib/nerdtree/tree_dir_node.vim
     runtime lib/nerdtree/opener.vim
     runtime lib/nerdtree/creator.vim
-    runtime lib/nerdtree/refresh_notifier.vim
     runtime lib/nerdtree/flag_set.vim
     runtime lib/nerdtree/nerdtree.vim
     runtime lib/nerdtree/ui.vim
+    runtime lib/nerdtree/event.vim
+    runtime lib/nerdtree/notifier.vim
 endfunction
 
 " FUNCTION: nerdtree#postSourceActions() {{{2

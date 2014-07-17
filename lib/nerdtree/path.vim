@@ -549,13 +549,13 @@ endfunction
 "FUNCTION: Path.refresh() {{{1
 function! s:Path.refresh()
     call self.readInfoFromDisk(self.str())
-    call g:NERDTreeRefreshNotifier.NotifyListeners(self)
+    call g:NERDTreePathNotifier.NotifyListeners('refresh', self, {})
     call self.cacheDisplayString()
 endfunction
 
 "FUNCTION: Path.refreshFlags() {{{1
 function! s:Path.refreshFlags()
-    call g:NERDTreeRefreshNotifier.NotifyListeners(self)
+    call g:NERDTreePathNotifier.NotifyListeners('refreshFlags', self, {})
     call self.cacheDisplayString()
 endfunction
 
