@@ -85,7 +85,7 @@ function! s:KeyMap.Invoke(key)
     "is in first
     "
     "TODO: remove this check when the vim bug is fixed
-    if !nerdtree#treeExistsForBuf()
+    if !g:NERDTree.ExistsForBuf()
         return {}
     endif
 

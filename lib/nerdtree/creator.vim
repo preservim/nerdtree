@@ -49,7 +49,7 @@ function! s:Creator.createPrimary(name)
         call path.changeToDir()
     endif
 
-    if nerdtree#treeExistsForTab()
+    if g:NERDTree.ExistsForTab()
         if nerdtree#isTreeOpen()
             call nerdtree#closeTree()
         endif
@@ -163,7 +163,7 @@ function! s:Creator.createMirror()
         return
     endif
 
-    if nerdtree#treeExistsForTab() && nerdtree#isTreeOpen()
+    if g:NERDTree.ExistsForTab() && nerdtree#isTreeOpen()
         call nerdtree#closeTree()
     endif
 
@@ -327,7 +327,7 @@ endfunction
 "dir: the full path for the root node (is only used if the NERD tree is being
 "initialized.
 function! s:Creator.togglePrimary(dir)
-    if nerdtree#treeExistsForTab()
+    if g:NERDTree.ExistsForTab()
         if !nerdtree#isTreeOpen()
             call self._createTreeWin()
             if !&hidden

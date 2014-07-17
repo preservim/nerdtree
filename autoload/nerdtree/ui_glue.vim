@@ -260,7 +260,7 @@ function! s:findAndRevealPath()
         let g:NERDTreeShowHidden = 1
     endif
 
-    if !nerdtree#treeExistsForTab()
+    if !g:NERDTree.ExistsForTab()
         try
             let cwd = g:NERDTreePath.New(getcwd())
         catch /^NERDTree.InvalidArgumentsError/

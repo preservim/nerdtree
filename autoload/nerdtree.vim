@@ -95,18 +95,6 @@ function! nerdtree#runningWindows()
     return has("win16") || has("win32") || has("win64")
 endfunction
 
-" Function: nerdtree#treeExistsForBuffer()   {{{2
-" Returns 1 if a nerd tree root exists in the current buffer
-function! nerdtree#treeExistsForBuf()
-    return exists("b:NERDTreeRoot")
-endfunction
-
-" Function: nerdtree#treeExistsForTab()   {{{2
-" Returns 1 if a nerd tree root exists in the current tab
-function! nerdtree#treeExistsForTab()
-    return exists("t:NERDTreeBufName")
-endfunction
-
 "FUNCTION: nerdtree#treeMarkupReg(dir) {{{2
 function! nerdtree#treeMarkupReg()
     if g:NERDTreeDirArrows
