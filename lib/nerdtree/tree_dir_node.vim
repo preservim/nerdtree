@@ -448,6 +448,11 @@ function! s:TreeDirNode.refreshFlags()
     endfor
 endfunction
 
+"FUNCTION: TreeDirNode.refreshDirFlags() {{{1
+function! s:TreeDirNode.refreshDirFlags()
+    call self.path.refreshFlags()
+endfunction
+
 "FUNCTION: TreeDirNode.reveal(path) {{{1
 "reveal the given path, i.e. cache and open all treenodes needed to display it
 "in the UI
