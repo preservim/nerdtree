@@ -135,7 +135,7 @@ function! nerdtree#closeTree()
 
         call nerdtree#exec(nerdtree#getTreeWinNum() . " wincmd w")
         close
-        call nerdtree#exec(bufwinnr(bufnr) . " wincmd w")
+        execute bufwinnr(bufnr) . " wincmd w"
     else
         close
     endif
