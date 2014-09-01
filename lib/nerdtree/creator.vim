@@ -43,7 +43,7 @@ endfunction
 function! s:Creator.createPrimary(name)
     let path = self._pathForString(a:name)
 
-    if path == 0
+    if path == {}
         return
     endif
 
@@ -244,7 +244,7 @@ function! s:Creator._pathForString(str)
             let path = g:NERDTreePath.New(dir)
         catch /^NERDTree.InvalidArgumentsError/
             call nerdtree#echo("No bookmark or directory found for: " . a:str)
-            return
+            return {}
         endtry
     endif
     if !path.isDirectory
