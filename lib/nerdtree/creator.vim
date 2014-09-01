@@ -43,6 +43,10 @@ endfunction
 function! s:Creator.createPrimary(name)
     let path = self._pathForString(a:name)
 
+    if path == 0
+        return
+    endif
+
     "if instructed to, then change the vim CWD to the dir the NERDTree is
     "inited in
     if g:NERDTreeChDirMode != 0
