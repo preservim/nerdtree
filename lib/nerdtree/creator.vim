@@ -43,6 +43,10 @@ endfunction
 function! s:Creator.createPrimary(name)
     let path = self._pathForString(a:name)
 
+    if path == {}
+        return
+    endif
+
     "if instructed to, then change the vim CWD to the dir the NERDTree is
     "inited in
     if g:NERDTreeChDirMode != 0
@@ -240,7 +244,7 @@ function! s:Creator._pathForString(str)
             let path = g:NERDTreePath.New(dir)
         catch /^NERDTree.InvalidArgumentsError/
             call nerdtree#echo("No bookmark or directory found for: " . a:str)
-            return
+            return {}
         endtry
     endif
     if !path.isDirectory
