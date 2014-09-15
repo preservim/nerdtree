@@ -23,6 +23,7 @@ endif
 call NERDTreeAddMenuItem({'text': '(a)dd a childnode', 'shortcut': 'a', 'callback': 'NERDTreeAddNode'})
 call NERDTreeAddMenuItem({'text': '(m)ove the current node', 'shortcut': 'm', 'callback': 'NERDTreeMoveNode'})
 call NERDTreeAddMenuItem({'text': '(d)elete the current node', 'shortcut': 'd', 'callback': 'NERDTreeDeleteNode'})
+call NERDTreeAddMenuItem({'text': 'show (p)roperties of the current node', 'shortcut': 'p', 'callback': 'NERDTreeNodeProperties'})
 
 if has("gui_mac") || has("gui_macvim") 
     call NERDTreeAddMenuItem({'text': '(r)eveal in Finder the current node', 'shortcut': 'r', 'callback': 'NERDTreeRevealInFinder'})
@@ -204,6 +205,12 @@ function! NERDTreeDeleteNode()
         call s:echo("delete aborted")
     endif
 
+endfunction
+
+" FUNCTION: NERDTreeNodeProperties() {{{1
+function! NERDTreeNodeProperties()
+    let currentNode = g:NERDTreeFileNode.GetSelected()
+    call s:echo(getfsize(currentNode.path.str())." bytes     modified on ".strftime("%A %Y-%m-%d %H:%M:%S", getftime(currentNode.path.str())))
 endfunction
 
 " FUNCTION: NERDTreeCopyNode() {{{1
