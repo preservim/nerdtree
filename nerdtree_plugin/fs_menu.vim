@@ -89,7 +89,8 @@ function! s:promptToRenameBuffer(bufnum, msg, newFileName)
         " display a buffer for a new filename.
         let s:originalTabNumber = tabpagenr()
         let s:originalWindowNumber = winnr()
-        exec "tabdo windo if winbufnr(0) == " . a:bufnum . " | exec \":e! " . a:newFileName . "\" | endif"
+        let editStr = g:NERDTreePath.New(a:newFileName).str({'format': 'Edit'})
+        exec "tabdo windo if winbufnr(0) == " . a:bufnum . " | exec ':e! " . editStr . "' | endif"
         exec "tabnext " . s:originalTabNumber
         exec s:originalWindowNumber . "wincmd w"
         " 3. We don't need a previous buffer anymore
