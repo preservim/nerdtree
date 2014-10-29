@@ -652,13 +652,12 @@ endfunction
 "Return: the string for this path that is suitable to be used with the :edit
 "command
 function! s:Path._strForEdit()
-    let p = escape(self.str({'format': 'UI'}), self._escChars())
+    let p = escape(self.str(), self._escChars())
     let cwd = getcwd() . s:Path.Slash()
 
     "return a relative path if we can
     let isRelative = 0
     if nerdtree#runningWindows()
-        let p = self.str()
         let isRelative = stridx(tolower(p), tolower(cwd)) == 0
     else
         let isRelative = stridx(p, cwd) == 0
