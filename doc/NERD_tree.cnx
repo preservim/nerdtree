@@ -1,0 +1,1265 @@
+*NERD_tree.txt*   像妈妈一样体贴的树形插件！
+
+
+
+    天哪，这是 ... ~
+
+    ________  ________   _   ____________  ____     __________  ____________~
+   /_  __/ / / / ____/  / | / / ____/ __ \/ __ \   /_  __/ __ \/ ____/ ____/~
+    / / / /_/ / __/    /  |/ / __/ / /_/ / / / /    / / / /_/ / __/ / __/   ~
+   / / / __  / /___   / /|  / /___/ _, _/ /_/ /    / / / _, _/ /___/ /___   ~
+  /_/ /_/ /_/_____/  /_/ |_/_____/_/ |_/_____/    /_/ /_/ |_/_____/_____/   ~
+
+
+                                 参考手册~
+
+
+
+
+==============================================================================
+内容                                                   *NERDTree-contents*
+
+    1.介绍....................................|NERDTree|
+    2.提供的功能..............................|NERDTreeFunctionality|
+        2.1.全局命令..........................|NERDTreeGlobalCommands|
+        2.2.书签..............................|NERDTreeBookmarks|
+            2.2.1.书签表......................|NERDTreeBookmarkTable|
+            2.2.2.书签命令....................|NERDTreeBookmarkCommands|
+            2.2.3.不可用书签..................|NERDTreeInvalidBookmarks|
+        2.3.NERD tree 按键绑定................|NERDTreeMappings|
+        2.4.NERD tree 菜单....................|NERDTreeMenu|
+    3.选项....................................|NERDTreeOptions|
+        3.1.选项总结..........................|NERDTreeOptionSummary|
+        3.2.选项详情..........................|NERDTreeOptionDetails|
+    4.NERD tree API...........................|NERDTreeAPI|
+        4.1.按键绑定 API......................|NERDTreeKeymapAPI|
+        4.2.菜单 API..........................|NERDTreeMenuAPI|
+    5.关于....................................|NERDTreeAbout|
+    6.更新日志................................|NERDTreeChangelog|
+    7.贡献者..................................|NERDTreeCredits|
+    8.授权协议................................|NERDTreeLicense|
+
+==============================================================================
+1. 介绍                                                             *NERDTree*
+
+"NERD tree"是什么??
+
+NERD tree 可以让你浏览你的文件系统和打开文件和目录。以树形的结构显示你的文件系
+统，可以让你通过鼠标或者键盘操作。它还允许你执行简单的文件系统操作。
+
+下面的特性和功能是 NERD tree 提供的：
+    * 文件和目录以树形层级结构显示
+    * 为下面的节点类型提供不同的高亮：
+        * 文件
+        * 目录
+        * 系统链接
+        * windows 的 .lnk 文件
+        * 只读的文件
+        * 可执行的文件
+    * 许多（可自定义的）绑定来操作树：
+        * 打开/关闭/浏览 目录节点
+        * 在新的/已经存在的窗口/标签打开文件
+        * 更改当前树的根
+        * 在树结构中导航
+        * ...
+    * 目录和文件可以被添加为书签
+    * 大部分 NERD tree 的导航操作也可以使用鼠标完成
+    * 过滤树的内容（可以在运行时切换）
+        * 自定义的文件过滤器来阻止比如vim备份文件的显示
+        * 可以选择是否显示隐藏文件（.开头的文件）
+        * 可以关闭文件的显示来只看目录
+    * NERD tree 窗口的位置和大小可以被自定义
+    * 树形结构中节点被显示的顺序可以被自定义
+    * 当你浏览的时候，创建和操作你的文件系统的模型。这样有几个好处：
+        * 所有的文件系统信息被缓存并且只在需要的时候被重新读取
+        * 如果你重新访问目录树中你以前的会话中访问过的部分，目录节点会被按照
+          上次的方式打开/关闭
+    * 插件会记住在 NERD tree 中的光标位置和窗口位置，这样你就可以把窗口隐藏（
+      或者直接关闭属性窗口），当再次打开它的时候（使用 NERDTreeToggle），NERD
+      tree 的窗口会以被你关闭时的状态出现
+    * 你可以为每一个标签打开一个不相关的 NERD tree，或者跨标签共享树，或者混合
+      使用上面两种方式
+    * 默认情况下插件会覆盖默认的文件浏览器（netrw），这样你使用 :edit 编辑一个
+      目录的时候一个（轻微修改）过的NERD tree 会出现在当前窗口
+    * 提供一个可编程的菜单系统（在一个节点上模拟右键）
+        * 默认的菜单插件来执行基本的文件系统操作（新建/删除/移动/复制 文件/目
+          录）
+    * 提供 API 来让你添加自己的按键绑定
+
+
+==============================================================================
+2. 提供的功能                                          *NERDTreeFunctionality*
+
+------------------------------------------------------------------------------
+2.1. 全局命令                                         *NERDTreeGlobalCommands*
+
+:NERDTree [<起始目录> | <书签>]                                    *:NERDTree*
+    打开一个新的 NERD tree。树的根根据参数来决定。有三种情况：如果没有提供参数
+    会使用当前目录。如果指定了目录，会使用指定的目录。如果指定了书签，书签标记
+    的目会被使用。例如：>
+        :NERDTree /home/marty/vim7/src
+        :NERDTree foo   (foo 是一个书签的名字)
+<
+:NERDTreeFromBookmark <书签>                           *:NERDTreeFromBookmark*
+    使用 <书签> 的目录作为根目录打开一个新的 NERD tree。使用该命令而不是
+     :NERDTree 的惟一原因是为了补全功能（会补全书签而不是目录）。
+
+:NERDTreeToggle [<start-directory> | <bookmark>]             *:NERDTreeToggle*
+    If a NERD tree already exists for this tab, it is reopened and rendered
+    如果这个标签内已经存在一个 NERD tree 窗口，它会被重新打开和渲染。如果这个
+    标签内没有 NERD tree 存在，这个命令的行为和 |:NERDTree| 一样。
+
+:NERDTreeMirror                                              *:NERDTreeMirror*
+    共享一个存在的 NERD tree，从另一个标签，到当前标签里面。
+    由于是使用同一个缓冲区，当一个树改变的时候，会体现在所有的共享标签里面。
+
+    如果只有一个另外的 NERD tree 存在，那个树被自动镜像。如果存在多个，插件会
+    询问使用哪一个作为镜像。
+
+:NERDTreeClose                                                *:NERDTreeClose*
+    关闭这个标签里面的 NERD tree 。
+
+:NERDTreeFind                                                  *:NERDTreeFind*
+    在树中找到当前文件。
+
+    如果没有树存在并且当前文件在 vim 的 CWD 中，就使用 CWD 初始化树并且显示。
+    否则使用当前文件的目录初始化树。
+
+    在任何情况下，当前文件都被显示并且光标在其上。
+
+:NERDTreeCWD                                                    *:NERDTreeCWD*
+    修改树的根节点为当前目录。如果当前标签没有 NERD tree 存在，一个新的树会被
+    打开。
+
+------------------------------------------------------------------------------
+2.2. 书签                                                  *NERDTreeBookmarks*
+
+NERD tree 中的书签是一种标记感兴趣的文件或者目录的方式。例如，你可以使用书签来
+标记你所有的项目目录。
+
+------------------------------------------------------------------------------
+2.2.1. 书签表                                          *NERDTreeBookmarkTable*
+
+如果书签表是活动状态（参见 |NERDTree-B| 和 |'NERDTreeShowBookmarks'|)，它会被渲染
+到树上，你可以双击书签或者使用 |NERDTree-o| 绑定来激活他们。参见 |NERDTree-t|
+和 |NERDTree-T|
+
+------------------------------------------------------------------------------
+2.2.2. 书签命令                                     *NERDTreeBookmarkCommands*
+
+注意下面的命令只在 NERD tree 的缓冲区内可用。
+
+:Bookmark [<名称>]
+    将当前节点添加为书签 <名称> 。如果已经存在一个名字为 <名称> 的书签，它会被
+    覆盖。<名称> 不能包含空格。
+    如果没有提供 <名称> ，会被默认文件或者目录名。对于目录，会显示一个尾斜线。
+
+:BookmarkToRoot <书签>
+    使用 <书签> 标记的目录作为新的树的根节点。如果 <书签> 标记的树节点
+    已经被缓存在树的某处，将会使用当前的树，否则一个新的树会被打开。
+    注意如果 <书签> 指向一个文件，会使用它的父目录。
+
+:RevealBookmark <书签>
+    如果这个节点被缓存在当前的根下，它会被展现（即 它的祖先节点会被打开）并且
+    光标在其上。
+
+:OpenBookmark <书签>
+    <书签> 必须指向一个文件。这个文件以 |NERDTree-o| 那种方式打开。如果这个节
+    点被缓存在当前根下，它会被显示并且光标在其上。
+
+:ClearBookmarks [<书签>]
+    移除所有指定的书签。如果没有指定书签，会移除当前节点上的所有书签。
+
+:ClearAllBookmarks
+    移除所有书签。
+
+:ReadBookmarks
+    重新读取 |'NERDTreeBookmarksFile'| 中的书签。
+
+参见 |:NERDTree| 和 |:NERDTreeFromBookmark| 。
+
+------------------------------------------------------------------------------
+2.2.3. 无效的书签                                   *NERDTreeInvalidBookmarks*
+
+如果发现无效的书签，插件会现实一个错误信息并且无效书签无法被使用。
+
+这些书签仍然会被储存在书签文件中（参见 |'NERDTreeBookmarksFile'| ）)，在底部。
+可用书签和无效书签之间永远会有一个空行。
+
+书签文件中的每一行都代表一个书签。正确的格式是：
+<书签名><空格><书签位置的全路径>
+
+After you have corrected any invalid bookmarks, either restart vim, or go
+在你修复任何无效书签后，重启 vim ，或者在 NERD tree 窗口使用 :ReadBookmarks 。
+
+------------------------------------------------------------------------------
+2.3. NERD tree 按键绑定                                     *NERDTreeMappings*
+
+默认描述~                                                         help-tag~
+键~
+
+o.......打开文件，目录和书签.....................................|NERDTree-o|
+go......打开所选文件，但是把光标留在 NERDTree 中.................|NERDTree-go|
+t.......在新便签打开所选的节点/书签..............................|NERDTree-t|
+T.......和 t 一样，但是把光标留在当前的标签内....................|NERDTree-T|
+i.......在一个新的横向分割出的窗口中打开所选文件.................|NERDTree-i|
+gi......和 i 一样，但是把光标留在 NERDTree 中....................|NERDTree-gi|
+s.......在一个新的竖向分割的窗口中打开所选文件...................|NERDTree-s|
+gs......和 s 一样，但是把光标留在 NERDTree 中....................|NERDTree-gs|
+O.......递归打开所选目录.........................................|NERDTree-O|
+x.......关闭当前节点的父节点.....................................|NERDTree-x|
+X.......递归关闭当前节点的所有子节点.............................|NERDTree-X|
+e.......编辑当前目录.............................................|NERDTree-e|
+
+<CR>...............和 |NERDTree-o| 一样。
+double-click.......和 |NERDTree-o| 绑定一样。
+middle-click.......对文件和 |NERDTree-i| 一样，对目录和 |NERDTree-e| 一样。
+
+D.......删除当前书签..................... .......................|NERDTree-D|
+
+P.......跳转到根节点.............................................|NERDTree-P|
+p.......跳转到当前节点的父节点...................................|NERDTree-p|
+K.......跳转到当前树深度的顶部节点...............................|NERDTree-K|
+J.......跳转到当前树深度的底部节点...............................|NERDTree-J|
+<C-J>...跳转到当前目录的下一个兄弟节点...........................|NERDTree-C-J|
+<C-K>...跳转到当前目录的上一个兄弟节点...........................|NERDTree-C-K|
+
+C.......将选定的目录设置为根节点.................................|NERDTree-C|
+u.......将树的根节点的父目录设置为根节点.........................|NERDTree-u|
+U.......和 u 一样，但是旧的根节点保持打开状态....................|NERDTree-U|
+r.......递归刷新当前目录.........................................|NERDTree-r|
+R.......递归刷新根目录...........................................|NERDTree-R|
+m.......显示 NERD tree 菜单......................................|NERDTree-m|
+cd......将所选节点设置为 CWD ....................................|NERDTree-cd|
+CD......将所选节点设置为根节点 CWD...............................|NERDTree-CD|
+
+I.......切换是否显示隐藏文件.....................................|NERDTree-I|
+f.......切换是否使用文件过滤.....................................|NERDTree-f|
+F.......切换是否显示文件.........................................|NERDTree-F|
+B.......切换是否显示书签表.......................................|NERDTree-B|
+
+q.......关闭 NERDTree 窗口.......................................|NERDTree-q|
+A.......缩放（最大/最小）NERDTree 窗口...........................|NERDTree-A|
+?.......切换是否显示快速帮助.....................................|NERDTree-?|
+
+------------------------------------------------------------------------------
+                                                                  *NERDTree-o*
+默认绑定： o
+绑定选项： NERDTreeMapActivateNode
+应用对象： 文件和目录
+
+如果一个文件节点被选中，它会在前一个窗口中被打开。
+
+如果一个目录节点被选中，会根据它现在的状态被打开或者关闭。
+
+如果一个标记目录的书签被选中，那个目录会成为新的根节点。
+
+如果一个标记文件的书签被选中，那个文件会在前一个窗口中被打开。
+
+------------------------------------------------------------------------------
+                                                                 *NERDTree-go*
+默认绑定： go
+绑定选项： None
+应用对象： 文件
+
+如果一个文件节点被选中，它会在前一个窗口中被打开，但是光标位置不会变。
+
+这个按键组合永远是 "g" + NERDTreeMapActivateNode （见 |NERDTree-o| ）。
+
+------------------------------------------------------------------------------
+                                                                  *NERDTree-t*
+默认绑定： t
+绑定选项： NERDTreeMapOpenInTab
+应用对象： 文件和目录
+
+在一个新标签中打开所选文件。如果一个目录被选中，在新标签中为该目录打开一个新的
+NERD Tree 。
+
+如果一个标记目录的书签被选中，在新标签中为该目录打开一个新的 NERD Tree 。如果
+一个标记文件的书签被选中，在新标签中打开那个文件。
+
+------------------------------------------------------------------------------
+                                                                  *NERDTree-T*
+默认绑定： T
+绑定选项： NERDTreeMapOpenInTabSilent
+应用对象： 文件和目录
+
+和 |NERDTree-t| 一样，只不过焦点仍然保留在当前标签。
+
+------------------------------------------------------------------------------
+                                                                  *NERDTree-i*
+默认绑定： i
+绑定选项： NERDTreeMapOpenSplit
+应用对象： 文件
+
+在新的横向分割窗口中打开所选文件并且将光标放置在新窗口中。
+
+------------------------------------------------------------------------------
+                                                                 *NERDTree-gi*
+默认绑定： gi
+绑定选项： None
+应用对象： 文件
+
+和 |NERDTree-i| 一样，只不过光标不会被移动。
+
+这个按键组合永远是 "g" + NERDTreeMapOpenSplit 的形式（见 |NERDTree-i| ）。
+
+------------------------------------------------------------------------------
+                                                                  *NERDTree-s*
+默认绑定： s
+绑定选项： NERDTreeMapOpenVSplit
+应用对象： 文件
+
+在新的竖直分割窗口打开所选文件并且将光标放置在新窗口中。
+
+------------------------------------------------------------------------------
+                                                                 *NERDTree-gs*
+默认绑定： gs
+绑定选项： None
+应用对象： files.
+
+和 |NERDTree-s| 一样，只不过光标不会被移动。
+
+这个按键组合永远是 "g" + NERDTreeMapOpenVSplit 的形式（见 |NERDTree-s| ）。
+
+------------------------------------------------------------------------------
+                                                                  *NERDTree-O*
+默认绑定： O
+绑定选项： NERDTreeMapOpenRecursively
+应用对象： 目录
+
+递归打开所选目录。
+
+所有文件和目录被缓存，但是如果一个目录由于文件过滤器
+（见 |'NERDTreeIgnore'| |NERDTree-f| ）或者隐藏文件过滤器
+（见 |'NERDTreeIgnore'| |NERDTree-f|）显示，那么 它的内容不会被缓存。这样有用
+的，尤其是你有 .svn 目录的时候。
+
+------------------------------------------------------------------------------
+                                                                  *NERDTree-x*
+默认绑定： x
+绑定选项： NERDTreeMapCloseDir
+应用对象： 文件和目录
+
+关闭所选节点的父节点。
+
+------------------------------------------------------------------------------
+                                                                  *NERDTree-X*
+默认绑定： X
+绑定选项： NERDTreeMapCloseChildren
+应用对象： 目录
+
+递归关闭所选目录的所有子节点。
+
+提示: 快速“重置”树，使用 |NERDTree-P| 和这个按键。
+
+------------------------------------------------------------------------------
+                                                                  *NERDTree-e*
+默认绑定： e
+绑定选项： NERDTreeMapOpenExpl
+应用对象： files and directories.
+
+|:edit| 所选目录，或者所选文件的目录。依据 |'NERDTreeHijackNetrw'| 的设定，可
+以打开一个 NERD tree 或者 一个 netrw 。
+
+------------------------------------------------------------------------------
+                                                                  *NERDTree-D*
+默认绑定： D
+绑定选项： NERDTreeMapDeleteBookmark
+应用对象： 书签表中的行
+
+删除当前选中的书签。
+
+------------------------------------------------------------------------------
+                                                                  *NERDTree-P*
+默认绑定： P
+绑定选项： NERDTreeMapJumpRoot
+应用对象： 没有限制
+
+跳转到跟节点
+
+------------------------------------------------------------------------------
+                                                                  *NERDTree-p*
+默认绑定： p
+绑定选项： NERDTreeMapJumpParent
+应用对象： 文件和目录
+
+跳转到所选目录的父节点
+
+------------------------------------------------------------------------------
+                                                                  *NERDTree-K*
+默认绑定： K
+绑定选项： NERDTreeMapJumpFirstChild
+应用对象： 文件和目录
+
+跳转到当前节点父节点的第一个子节点
+
+如果光标已经在第一个节点上，按照下面的做：
+    * 在当前节点父节点的兄弟节点中向后查找，直到找到了一个打开的有子节点的目录
+    * 跳转到那个节点的第一个子节点
+
+------------------------------------------------------------------------------
+                                                                  *NERDTree-J*
+默认绑定： J
+绑定选项： NERDTreeMapJumpLastChild
+应用对象： 文件和目录
+
+跳转到当前节点父节点的最后一个子节点
+
+如果光标已经在最后一个节点上，按照下面的做：
+    * 在当前节点父节点的兄弟节点中向前查找，直到找到了一个打开的有子节点的目录
+    * 跳转到那个节点的最后一个子节点
+
+------------------------------------------------------------------------------
+                                                                *NERDTree-C-J*
+默认绑定： <C-J>
+绑定选项： NERDTreeMapJumpNextSibling
+应用对象： 文件和目录
+
+跳转到所选节点的下一个兄弟节点。
+
+------------------------------------------------------------------------------
+                                                                *NERDTree-C-K*
+默认绑定： <C-K>
+绑定选项： NERDTreeMapJumpPrevSibling
+应用对象： 文件和目录
+
+跳转到所选节点的前一个兄弟节点。
+
+
+------------------------------------------------------------------------------
+                                                                  *NERDTree-C*
+默认绑定： C
+绑定选项： NERDTreeMapChangeRoot
+应用对象： 文件和目录
+
+使用所选的目录节点作为新的根节点。如果被选择的是一个文件，会使用它的父节点。
+
+------------------------------------------------------------------------------
+                                                                  *NERDTree-u*
+默认绑定： u
+绑定选项： NERDTreeMapUpdir
+应用对象： 没有限制
+
+将树的根节点向上移动一级（就像使用了 "cd .." ）。
+
+------------------------------------------------------------------------------
+                                                                  *NERDTree-U*
+默认绑定： U
+绑定选项： NERDTreeMapUpdirKeepOpen
+应用对象： 没有限制
+
+和 |NERDTree-u| 一样，只不过旧的根节点保持打开。
+
+------------------------------------------------------------------------------
+                                                                  *NERDTree-r*
+默认绑定： r
+绑定选项： NERDTreeMapRefresh
+应用对象： 文件和目录
+
+如果选择的是目录，递归更新那个目录，即：扫描文件系统来获取更改并且显示到树中。
+
+如果选择的是文件，上面的操作被应用到它的父节点上。
+
+------------------------------------------------------------------------------
+                                                                  *NERDTree-R*
+默认绑定： R
+绑定选项： NERDTreeMapRefreshRoot
+应用对象： 没有限制
+
+递归更新树的根节点。
+
+------------------------------------------------------------------------------
+                                                                  *NERDTree-m*
+默认绑定： m
+绑定选项： NERDTreeMapMenu
+应用对象： 文件和目录
+
+显示 NERD tree 的菜单。详见 |NERDTreeMenu| 。
+
+------------------------------------------------------------------------------
+                                                                 *NERDTree-cd*
+默认绑定： cd
+绑定选项： NERDTreeMapChdir
+应用对象： 文件和目录
+
+改变 vims 的当前工作目录为那个选中的节点。
+
+------------------------------------------------------------------------------
+                                                                 *NERDTree-CD*
+默认绑定： CD
+绑定选项： NERDTreeMapCWD
+应用对象： 没有限制
+
+将树的根节点改变为 vims 的当前工作目录。
+
+------------------------------------------------------------------------------
+                                                                  *NERDTree-I*
+默认绑定： I
+绑定选项： NERDTreeMapToggleHidden
+应用对象： 没有限制
+
+切换是否显示隐藏文件（即 点号开头的文件）
+
+------------------------------------------------------------------------------
+                                                                  *NERDTree-f*
+默认绑定： f
+绑定选项： NERDTreeMapToggleFilters
+应用对象： 没有限制
+
+切换是否使用文件过滤。详见|'NERDTreeIgnore'| 。
+
+------------------------------------------------------------------------------
+                                                                  *NERDTree-F*
+默认绑定： F
+绑定选项： NERDTreeMapToggleFiles
+应用对象： 没有限制
+
+切换是否显示文件。
+
+------------------------------------------------------------------------------
+                                                                  *NERDTree-B*
+默认绑定： B
+绑定选项： NERDTreeMapToggleBookmarks
+应用对象： 没有限制
+
+切换是否显示书签表。
+
+------------------------------------------------------------------------------
+                                                                  *NERDTree-q*
+默认绑定： q
+绑定选项： NERDTreeMapQuit
+应用对象： 没有限制
+
+关闭 NERDTree 窗口。
+
+------------------------------------------------------------------------------
+                                                                  *NERDTree-A*
+默认绑定： A
+绑定选项： NERDTreeMapToggleZoom
+应用对象： 没有限制
+
+缩放（最大/最小）NERDTree 窗口。
+
+------------------------------------------------------------------------------
+                                                                  *NERDTree-?*
+默认绑定： ?
+绑定选项： NERDTreeMapHelp
+应用对象： 没有限制
+
+切换是否显示快速帮助。
+
+------------------------------------------------------------------------------
+2.3. NERD tree 菜单                                             *NERDTreeMenu*
+
+NERD tree 有一个可以通过 API 编程的菜单（见 |NERDTreeMenuAPI| ）。这个主意是为
+了模拟大多数文件浏览器都具有的右键菜单。
+
+这个插件有两个默认菜单插件：exec_menuitem.vim 和 fs_menu.vim。fs_menu.vim 添加
+一些基本的 新建/删除/移动/复制 文件和目录的操作。exec_menuitem.vim 提供了一个
+菜单项来执行可执行文件。
+
+相关标签: |NERDTree-m| |NERDTreeApi|
+
+==============================================================================
+3. 自定义                                                    *NERDTreeOptions*
+
+
+------------------------------------------------------------------------------
+3.1. 自定义总结                                        *NERDTreeOptionSummary*
+
+提供下面的选项，可以自定义 NERD tree 的行为。这些选项需要被设置在 vimrc 中。
+
+|'loaded_nerd_tree'|            关闭插件。
+
+|'NERDTreeAutoCenter'|          当光标移动到距离顶部/底部指定的距离的时候，控
+                                制 NERD tree 是否将光标所在位置自动设置为窗口的
+                                中心。
+
+|'NERDTreeAutoCenterThreshold'| 控制自动将光标位置居中的敏感度。
+
+|'NERDTreeCaseSensitiveSort'|   告诉 NERD tree 排序节点的时候是否大小写敏感。
+
+|'NERDTreeSortHiddenFirst'|     告诉 NERD tree 排序节点的时候是否考虑隐藏文件
+                                开头的点号。
+
+|'NERDTreeChDirMode'|           告诉 NERD tree 什么情况下/什么时候它应该改变当
+                                前工作目录。
+
+|'NERDTreeHighlightCursorline'| 告诉 NERD tree 是否高亮光标所在行。
+
+|'NERDTreeHijackNetrw'|         告诉 NERD tree 是否替换 netrw 来浏览本地目录。
+
+|'NERDTreeIgnore'|              告诉 NERD tree 忽略哪些文件。
+
+|'NERDTreeRespectWildIgnore'|   告诉 NERD tree 是否考虑 |'wildignore'| 。
+
+|'NERDTreeBookmarksFile'|       指定书签存储位置。
+
+|'NERDTreeBookmarksSort'|       显示书签的时候是否排序。
+
+|'NERDTreeMouseMode'|           告诉 NERD tree 如何处理鼠标点击。
+
+|'NERDTreeQuitOnOpen'|          打开文件后关闭树窗口。
+
+|'NERDTreeShowBookmarks'|       告诉 NERD tree 启动时是否显示书签。
+
+|'NERDTreeShowFiles'|           告诉 NERD tree 启动时是否显示文件。
+
+|'NERDTreeShowHidden'|          告诉 NERD tree 启动时是否显示隐藏文件。
+
+|'NERDTreeShowLineNumbers'|     告诉 NERD tree 树窗口中是否显示行号。
+
+|'NERDTreeSortOrder'|           告诉 NERD tree 如何排序节点。
+
+|'NERDTreeStatusline'|          给 NERD tree 窗口设置一个状态栏。
+
+|'NERDTreeWinPos'|              告诉插件把 NERD tree 窗口放置在哪儿。
+
+|'NERDTreeWinSize'|             设置 NERD tree 窗口被打开时的大小。
+
+|'NERDTreeMinimalUI'|           禁止显示 'Bookmarks' 和 'Press ? for help'
+
+|'NERDTreeDirArrows'|           告诉 NERD tree 显示目录的时候使用箭头代替 + ~ 。
+
+|'NERDTreeCascadeOpenSingleChildDir'|
+                                当所选目录只有一个子节点并且该节点是目录的时候，
+                                级联展开。
+
+|'NERDTreeAutoDeleteBuffer'|    告诉 NERD tree 当文件被上下文菜单命令删除或重命
+                                名的时候，自动移除缓冲区。
+
+------------------------------------------------------------------------------
+3.2. 自定义详细描述                                    *NERDTreeOptionDetails*
+
+把给出的行加到你的 ~/.vimrc 来开启下面的选项
+
+                                                          *'loaded_nerd_tree'*
+如果这个插件让你觉得想杀人，在你的 vimrc 中使用这行设置来关闭它： >
+    let loaded_nerd_tree=1
+<
+
+------------------------------------------------------------------------------
+                                                        *'NERDTreeAutoCenter'*
+取值范围： 0 或 1
+默认值： 1
+
+如果设置为1，当光标移动到距顶部/底部的行数是 |'NERDTreeAutoCenterThreshold'|
+指定的行范围以内的时候，NERD tree 窗口会将光标所在位置自动设置为窗口的中心。
+
+这个选项只会对树导航绑定作出反应，即：
+|NERDTree-J| |NERDTree-K| |NERDTree-C-J| |NERDTree-C-K| |NERDTree-p|
+|NERDTree-P|
+
+使用 |zz| 操作来居中。
+
+------------------------------------------------------------------------------
+                                               *'NERDTreeAutoCenterThreshold'*
+取值范围： 任何自然数。
+默认值： 3
+
+这个选项控制自动居中的敏感度，详见 |'NERDTreeAutoCenter'| 。
+
+------------------------------------------------------------------------------
+                                                 *'NERDTreeCaseSensitiveSort'*
+取值范围： 0 或 1
+默认值： 0
+
+默认情况下 NERD tree 排序节点的时候并不是大小写敏感的，即节点会像这样排序： >
+    bar.c
+    Baz.c
+    blarg.c
+    boner.c
+    Foo.c
+<
+但是，如果你把选项设置为1，上面的节点会按下面的方式排序： >
+    Baz.c
+    Foo.c
+    bar.c
+    blarg.c
+    boner.c
+<
+------------------------------------------------------------------------------
+                                                         *'NERDTreeChDirMode'*
+
+取值范围： 0，1 或 2
+默认值： 0
+
+用这个选项告诉插件什么时候（如果真的需要）改变 vim 的当前工作目录（ CWD ）。
+
+如果设置为0，CWD 永远不会被 NERD tree 改变。
+
+如果设置为1，CWD 会在第一次加载 NERD tree 的时候被改变为它初始化的目录。比如：
+如果你使用下面的命令启动 NERD tree ： >
+    :NERDTree /home/marty/foobar
+<
+然后 CWD 会被改变为 /home/marty/foobar 并且不会被再次改变除非你使用相似的命令
+初始化了另一个 NERD tree 。
+
+如果这个选项被设置为2，插件的行为和被设置为1类似，只不过当树的根目录被改变的时
+候 CWD 也会被改变。例如，如果 CWD 是 /home/marty/foobar 并且你把
+/home/marty/foobar/baz 设置为了新的根节点，CWD 也会被改变为
+/home/marty/foobar/baz 。
+
+------------------------------------------------------------------------------
+                                               *'NERDTreeHighlightCursorline'*
+取值范围： 0 或 1
+默认值： 1
+
+如果设置为1，NERD tree 缓冲区内的当前光标所在行会被高亮，使用 |'cursorline'|
+来完成。
+
+------------------------------------------------------------------------------
+                                                       *'NERDTreeHijackNetrw'*
+取值范围： 0 或 1
+默认值： 1
+
+如果设置为1，当执行 >
+    :edit <some directory>
+<
+会在目标窗口打开一个“次等”的 NERD tree 来代替 netrw 。
+
+“次等”的 NERD tree 在下面几个方面和普通的有所区别：
+    1. 'o' 会在和树同一个窗口打开文件，替换掉当前打开的内容。
+    2. 在同一个标签内你可以有任意多的“次等”的 NERD tree 。
+
+------------------------------------------------------------------------------
+                                                            *'NERDTreeIgnore'*
+取值范围： 正则表达式列表
+默认值： ['\~$']
+
+这个选项用来指定哪些文件会被 NERD tree 忽略。它必须是一个正则表达式的列表。当
+NERD tree 被渲染的时候，被 'NERDTreeIgnore' 中的正则表达式匹配的任何文件/目录
+都不会被显示。
+
+例如你把下面的设置放到你的 vimrc 中： >
+    let NERDTreeIgnore=['\.vim$', '\~$']
+<
+所有以 .vim 或 ~ 结尾的文件都会被忽略。
+
+有两个魔法标志可以添加到每一个正则表达式后面来指定这个正则表达式只能被用于匹配
+文件或者只能被用于匹配目录。这些标志是 "[[dir]]" 和 "[[file]]"，例如： >
+    let NERDTreeIgnore=['.d$[[dir]]', '.o$[[file]]']
+<
+会导致所有以 ".d" 结尾的目录会被忽略，所有以 ".o" 结尾的目录会被忽略。
+
+注意：告诉 NERD tree 不要忽略任何文件，你必须用下面这种设置。 >
+    let NERDTreeIgnore=[]
+<
+
+文件过滤器可以被 |NERDTree-f| 绑定动态的打开或关闭。
+
+------------------------------------------------------------------------------
+                                                *'NERDTreeRespectWildIgnore'*
+取值范围： 0 或 1
+默认值： 0
+
+如果设置为1，会考虑 |'wildignore'| 选项。
+
+------------------------------------------------------------------------------
+                                                     *'NERDTreeBookmarksFile'*
+取值范围： a path
+默认值： $HOME/.NERDTreeBookmarks
+
+指定书签存储位置。见 |NERDTreeBookmarkCommands| 。
+
+------------------------------------------------------------------------------
+                                                     *'NERDTreeBookmarksSort'*
+取值范围： 0 或 1
+默认值： 1
+
+设置为0，书签列表不会被排序。
+设置为1，书签列表会被排序。
+
+------------------------------------------------------------------------------
+                                                       *'NERDTreeMouseMode'*
+取值范围： 1，2 或 3
+默认值： 1
+
+如果设置为1，双击一个节点会打开它。
+如果设置为2，单击一个节点会打开目录节点，文件节点需要双击才会打开。
+如果设置为2，单击会打开任何类型的节点。
+
+注意：双击树节点所在行的任何位置都会激活它，但是所有单击激活必须单击节点名称。
+例如，如果有下面的节点： >
+    | | |-application.rb
+<
+那么 (单击激活) 你必须单击 'application.rb' 中的某个地方。
+
+------------------------------------------------------------------------------
+                                                        *'NERDTreeQuitOnOpen'*
+
+取值范围： 0 或 1
+默认值： 0
+
+如果设置为1，NERD tree 窗口会在用下面的绑定打开文件后被关闭： |NERDTree-o| ，
+|NERDTree-i| ， |NERDTree-t| 和 |NERDTree-T| 。
+
+------------------------------------------------------------------------------
+                                                     *'NERDTreeShowBookmarks'*
+取值范围： 0 或 1
+默认值： 0
+
+如果选项设置为1，会显示书签表。
+
+这个选项可以被每个树动态切换，使用 |NERDTree-B| 的按键绑定。
+
+------------------------------------------------------------------------------
+                                                         *'NERDTreeShowFiles'*
+取值范围： 0 或 1
+默认值： 1
+
+如果这个选项被设置为1，会在 NERD tree 中显示文件。如果设置为0，只有目录被显示。
+
+这个选项可以被每个树动态切换，使用 |NERDTree-F| 的按键绑定，并且在你需要导
+航到树的某个部分的时候可以大幅缩减树的节点。
+
+------------------------------------------------------------------------------
+                                                        *'NERDTreeShowHidden'*
+取值范围： 0 或 1
+默认值： 0
+
+这个选项告诉 vim 是否默认显示隐藏文件。这个选项可以被每个树动态改变，使用
+|NERDTree-I| 的按键绑定。使用下面的方式来设置这个选项。 >
+    let NERDTreeShowHidden=0
+    let NERDTreeShowHidden=1
+<
+
+------------------------------------------------------------------------------
+                                                   *'NERDTreeShowLineNumbers'*
+取值范围： 0 或 1
+默认值： 0
+
+这个选项用来告诉 vim 是否为 NERD tree 窗口显示行号。使用下面的方式来设置： >
+    let NERDTreeShowLineNumbers=0
+    let NERDTreeShowLineNumbers=1
+<
+
+------------------------------------------------------------------------------
+                                                         *'NERDTreeSortOrder'*
+取值范围： 正则表达式列表
+默认值： ['\/$', '*', '\.swp$',  '\.bak$', '\~$']
+
+这个选项中设置的正则表达式列表用来指定父节点下子节点的顺序。
+
+例如，如果这些选项被设置为： >
+    ['\.vim$', '\.c$', '\.h$', '*', 'foobar']
+<
+那么所有的 .vim 文件会被放置在顶部，接着是 .c 文件，让后是所有 .h 文件。所有包
+含字符串 'foobar' 的文件会被放置在底部。星号是一个特殊的标志：它告诉脚本每一个
+不匹配任何正则表达式的节点应该被放在这里。
+
+如果 'NERDTreeSortOrder' 选项中没有星号，会在数组末尾自动添加一个。
+
+正则表达式 '\/$' 用来匹配目录。
+
+排序完成后，每一个组组内的文件被按字母序排序。
+
+其它例子： >
+    (1) ['*', '\/$']
+    (2) []
+    (3) ['\/$', '\.rb$', '\.php$', '*', '\.swp$',  '\.bak$', '\~$']
+<
+1. 目录在最后，其它所有在前面。
+2. 任何节点都会按字母序出现。
+3. 目录在前面，接着是 ruby 和 php 文件。交换文件，备份文件和 vim 备份文件跟随
+   在其它所有文件后面。
+
+------------------------------------------------------------------------------
+                                                        *'NERDTreeStatusline'*
+取值范围： 任何可用的状态栏设置
+默认值： %{b:NERDTreeRoot.path.strForOS(0)}
+
+告诉插件为 NERD tree 窗口使用 |'statusline'| 设置。
+
+注意状态栏是使用 |:let-&| 而不是 |:set| 所以不用转义空格。
+
+将这个选项设置为-1会禁止它，这样就可以使用你自己的全局状态栏设置。
+
+------------------------------------------------------------------------------
+                                                            *'NERDTreeWinPos'*
+取值范围： "left" 或 "right"
+默认值： "left"
+
+这个选项用来决定 NERD tree 窗口被显示在屏幕的什么位置。
+
+这个选项使同时使用两个浏览插件成为可能。例如，你可以在左侧显示 taglist 插件的
+窗口，右侧显示 NERD tree 的窗口。
+
+------------------------------------------------------------------------------
+                                                           *'NERDTreeWinSize'*
+取值范围： 正整数
+默认值： 31
+
+这个选项用来改变 NERD tree 窗口在加载时的大小。
+
+------------------------------------------------------------------------------
+                                                         *'NERDTreeMinimalUI'*
+取值范围： 0 或 1
+默认值： 0
+
+这个选项禁止 NERD tree 窗口显示 'Bookmarks' 和 'Press ? for help' 文本，
+使用下面的方式来设置这个选项： >
+    let NERDTreeMinimalUI=0
+    let NERDTreeMinimalUI=1
+<
+
+------------------------------------------------------------------------------
+                                                         *'NERDTreeDirArrows'*
+取值范围： 0 或 1
+默认值： 0
+
+这个选项用来改变树中目录节点的默认外观。当这个选项设置为0的时候，会使用老式的
+长条(|)，+，~ 字符。当设置为1的时候使用右箭头和下箭头。使用下面方式设置这个选
+项： >
+    let NERDTreeDirArrows=0
+    let NERDTreeDirArrows=1
+<
+
+------------------------------------------------------------------------------
+                                         *'NERDTreeCascadeOpenSingleChildDir'*
+取值范围： 0 或 1
+默认值： 1
+
+当打开目录节点的时候，这个选项告诉 NERDTree 来递归的打开只有一个目录类型子节点
+目录。当找到一个包含任何类型的节点，但不是单独的目录的时候，NERDTree 会停止递
+归。这个选项可以导致 |NERDTree-x| 绑定以同样地方式关闭目录。这个选项对于Java工
+程很有用。使用下面的方式来设置这个选项： >
+    let NERDTreeCascadeOpenSingleChildDir=0
+    let NERDTreeCascadeOpenSingleChildDir=1
+<
+
+------------------------------------------------------------------------------
+                                                  *'NERDTreeAutoDeleteBuffer'*
+取值范围： 0 或 1
+默认值： 0
+
+当使用上下文菜单来删除或重命名文件的时候可能你也想删除那个不再可用的缓冲区。这
+个选项没有被设置的时候，你删除询问你是否真的想删除旧的缓冲区的提醒。如果你总是
+按 'y' 那么可以把这个选项设置为1。使用下面的方式来设置这个选项： >
+    let NERDTreeAutoDeleteBuffer=0
+    let NERDTreeAutoDeleteBuffer=1
+<
+
+==============================================================================
+4. NERD tree API                                                 *NERDTreeAPI*
+
+NERD tree 插件允许你通过 API 添加自定义的按键绑定和菜单项。任何使用 API 的脚本
+需要被放在 ~/.vim/nerdtree_plugin/ (*nix系统) 或
+~/vimfiles/nerdtree_plugin (windows系统)
+
+插件导出了一些可以用来操作树 和/或 从中获得信息的原型对象： >
+    g:NERDTreePath
+    g:NERDTreeDirNode
+    g:NERDTreeFileNode
+    g:NERDTreeBookmark
+<
+参考 NERD_tree 中的代码/注释来找到使用这些对象的方法。使用了下面的代码约定：
+    * 类成员变量以大写字母开头
+    * 实例成员变量以小写字母开头
+    * 私有成员变量以下划线开头
+
+更多细节见博客文章：
+ http://got-ravings.blogspot.com/2008/09/vim-pr0n-prototype-based-objects.html
+
+------------------------------------------------------------------------------
+4.1. 按键绑定 API                                          *NERDTreeKeymapAPI*
+
+NERDTreeAddKeyMap({options})                             *NERDTreeAddKeyMap()*
+    为所有 NERD tree 缓冲区添加一个新的按键绑定。
+    {options} 必须是一个字典类型，必须包含下面的键：
+    "key" - 新绑定的触发键
+    "callback" - 新按键绑定的处理函数
+    "quickhelpText" - 在快速帮助中显示的文本（见 |NERDTree-?| ）
+    "override" - 如果为1，那么新的按键绑定会覆盖任何以前定义的 按键/作用范围。
+    可以用来覆盖默认的按键绑定。
+
+    此外，可以提供一个 "scope" 参数。限制按键绑定只在光标在确定的对象上时才被
+    激活。那个对象会被传递到处理函数。可能的值为：
+        "FileNode" - 文件节点
+        "DirNode" - 目录节点
+        "Node" - 文件或目录节点
+        "Bookmark" - 书签
+        "all" - 这个按键绑定默认不会限制任何作用范围。当它们被使用的时候，处
+        理函数不会被传递任何对象。
+
+
+    例子： >
+        call NERDTreeAddKeyMap({
+               \ 'key': 'foo',
+               \ 'callback': 'NERDTreeCDHandler',
+               \ 'quickhelpText': 'echo full path of current node',
+               \ 'scope': 'DirNode' })
+
+        function! NERDTreeCDHandler(dirnode)
+            call a:dirnode.changeToDir()
+        endfunction
+<
+    这些代码应该被放到类似 ~/.vim/nerdtree_plugin/mymapping.vim 的文件中。它
+    添加了一个（多余的）绑定 'foo' ，可以用来修改 vim 的 CWD 为当前目录节点。
+    注意这个绑定只会在光标位于目录节点上时触发。
+
+------------------------------------------------------------------------------
+4.2. 菜单 API                                                *NERDTreeMenuAPI*
+
+NERDTreeAddSubmenu({options})                           *NERDTreeAddSubmenu()*
+    创建并返回一个新的子菜单。
+
+    {options} 必须是一个字典类型，必须包含下面的键：
+    "text" - 显示给用户看的子菜单的文本
+    "shortcut" - 子菜单的快捷键（不必惟一）
+
+    下面的键是可选的：
+    "isActiveCallback" - 一个用来决定这个子菜单是否被展示的快捷键。这个回调函
+    数必须返回0或1。
+    "parent" - 新的子菜单的父菜单（从前一个 NERDTreeAddSubmenu()的调用返回）。
+    如果这个键没有指定值，那么新的子菜单会被现实在顶级菜单中。
+
+    参考下面的例子。
+
+NERDTreeAddMenuItem({options})                         *NERDTreeAddMenuItem()*
+    在 NERD tree 菜单中添加一个新的菜单项（见 |NERDTreeMenu| ）。
+
+    {options} 必须是一个字典类型，必须包含下面的键：
+    "text" - 显示给用户看的菜单项的文本
+    "shortcut" - 菜单项的快捷键（不必惟一）
+    "callback" - 用户激活菜单项的时候调用的函数
+
+    下面的键是可选的：
+    "isActiveCallback" - 一个用来决定这个菜单项是否被展示的快捷键。这个回调函
+    数必须返回0或1。
+    "parent" - 如果这个菜单项属于某个子菜单，那么这个键必须被设置。这个键的值
+    需要被设置为使用 |NERDTreeAddSubmenu()| 创建子菜单时返回的那个对象。
+
+    参考下面的例子。
+
+NERDTreeAddMenuSeparator([{options}])             *NERDTreeAddMenuSeparator()*
+    添加一个菜单分割线（一行虚线）。
+
+    {options} 是一个可选的，可以包含下面键的字典类型：
+    "isActiveCallback" - 参见 |NERDTreeAddMenuItem()| 中的描述。
+
+下面是一个菜单 API 的实际的例子。 >
+    call NERDTreeAddMenuSeparator()
+
+    call NERDTreeAddMenuItem({
+                \ 'text': 'a (t)op level menu item',
+                \ 'shortcut': 't',
+                \ 'callback': 'SomeFunction' })
+
+    let submenu = NERDTreeAddSubmenu({
+                \ 'text': 'a (s)ub menu',
+                \ 'shortcut': 's' })
+
+    call NERDTreeAddMenuItem({
+                \ 'text': '(n)ested item 1',
+                \ 'shortcut': 'n',
+                \ 'callback': 'SomeFunction',
+                \ 'parent': submenu })
+
+    call NERDTreeAddMenuItem({
+                \ 'text': '(n)ested item 2',
+                \ 'shortcut': 'n',
+                \ 'callback': 'SomeFunction',
+                \ 'parent': submenu })
+<
+这会创建如下所示的菜单： >
+  --------------------
+  a (t)op level menu item
+  a (s)ub menu
+<
+选择 "a (s)ub menu" 会展示第二级菜单： >
+  (n)ested item 1
+  (n)ested item 2
+<
+当三个实际的个菜单项中任何一个被选中后 "SomeFunction" 会被调用。
+
+------------------------------------------------------------------------------
+NERDTreeRender()                                            *NERDTreeRender()*
+    Re-renders the NERD tree buffer. Useful if you change the state of the
+    tree and you want to it to be reflected in the UI.
+
+==============================================================================
+5. 关于                                                        *NERDTreeAbout*
+
+NERD tree 的作者是一个叫 Martyzilla 的十分可怕地怪兽，他在早餐的时候配着牛奶和
+糖大口的吃小朋友。
+
+他的电子邮件地址为 martin.grenfell 圈 gmail 点 com 。他很乐意收到你的邮件，所
+以请把你对这个插件的建议 和/或 评论直接发送给他。不要害羞 --- 他能做的最坏的事
+情也不过是把你剁了，然后冷藏到冰箱里面晚一点再吃 ;)
+
+最新的稳定版在
+    http://www.vim.org/scripts/script.php?script_id=1658
+
+最新的开发版在 github
+    http://github.com/scrooloose/nerdtree
+
+
+==============================================================================
+6. 更新日志                                                *NERDTreeChangelog*
+
+下一步
+    - 为按键绑定 API 添加 'scope' 参数
+    - 添加 NERDTreeCustomIgnoreFilter 钩子函数 - 需要文档
+    - 为 NERDTreeIgnore 添加 [[dir]] 和 [[file]] 魔法标志
+
+4.2.0
+    - 添加 NERDTreeDirArrows 选项来使 UI 使用好看的箭头符号代替旧的 +~| 字符来
+      定义树结构(sickill)
+    - 把语法高亮移动到独自的高亮文件中(gnap)
+    - 在文件菜单中为 mac 添加单独的选项 - 只对 macvim 有效 (andersonfreitas)
+    - 添加 NERDTreeMinimalUI 选项来移除 nerdtree ui 中一些非功能性的部分
+      (camthompson)
+    - 调整 :NERDTreeFind 的行为 - 新行为参见 :help :NERDTreeFind
+      (benjamingeiger)
+    - 如果没有给 :Bookmark 指定名称，它会使用目标文件/目录的名称(minyoung)
+    - 当进行复制、创建和移动操作的时候使用 'file' 补全(EvanDotPro)
+    - 很多的bug修复 (paddyoloughlin, sdewald, camthompson, Vitaly
+      Bogdanov, AndrewRadev, mathias, scottstvnsn, kml, wycats, me RAWR!)
+
+4.1.0
+    特性：
+    - NERDTreeFind to 展现树的当前缓冲区，参见 |NERDTreeFind| 。插件合并了
+      FindInNERDTree(作者 Doug McInnes)
+    - NERDTreeQuitOnOpen 对 t/T 绑定生效。感谢Stefan Ritter 和 Rémi Prévost
+    - 如果比树窗口宽，缩短根节点。感谢 Victor Gonzalez 。
+
+    bug修复:
+    - 完全修复了窗口状态还原。
+    - 修复一些 win32 路径转移的问题。感谢 Stephan Baumeister, Ricky,
+      jfilip1024, and Chris Chambers 。
+
+4.0.0
+    - 添加一个新的可编程的菜单系统（参见 :help NERDTreeMenu ）。
+    - 添加新的 API 来添加菜单/菜单项到菜单系统和添加自定义绑定到NERD tree
+      缓冲区（参见 :help NERDTreeAPI ）。
+    - 移除旧的 API
+    - 添加一个新的绑定来最大化/还原 nert tree 的窗口，感谢
+      Guillaume Duranceau 的补丁。详见 :help NERDTree-A 。
+
+    - 修复次等的 nerd tree (netrw hijacked trees) 和 NERDTreeQuitOnOpen
+      选项共存的问题，感谢 Curtis Harvey 。
+    - 修复插件忽略以点号结尾的目录的问题，感谢 Aggelos Orfanakos 的补丁。
+    - 修复 x 按键在树的根节点的问题，感谢 Bryan Venteicher 的补丁。
+    - 修复 nerd tree 缓冲区内的光标位置/窗口大小在关闭时没有被正确存储的
+      问题，感谢 Richard Hart 。
+    - 修复 NERDTreeMirror 镜像错误的树的问题
+
+3.1.1
+    - 修复每次树窗口被创建的时候一个没有列表没有名字的缓冲区被创建的bug，
+      感谢 Derek Wyatt and owen1
+    - 使 <CR> 行为和 'o' 绑定一样。
+    - 修复文档中一些帮助标签，感谢 strull
+    - 修复使用 :set nohidden和打开前一个缓冲区被修改过的文件中的bug。感
+      谢 iElectric
+    - 其它小修复
+
+3.1.0
+    小功能:
+    - 添加在竖直窗口打开文件的绑定，参见 :help NERDTree-s 和 :help NERDTree-gs
+    - 将 nerd tree 的窗口状态栏的默认值设置为一些更加有用的值。参见
+      :help 'NERDTreeStatusline'
+    bug修复:
+    - 劫持 netrw 对 "vim <some dir>" 方式打开的也生效(感谢 Alf Mikula 的补丁)
+    - 修复 CWD 没有被一些操作改变的情况，即使是设置了 NERDTreeChDirMode==2（感
+      谢 Lucas S. Buchala ）
+    - 给所有 nerd tree :commands 添加 -bar，这样他们就可以链式调用其他
+      :commands。 （感谢 tpope）
+    - 修复设置忽略中的bug （感谢 nach ）
+    - 修复相对路径的一个bug （感谢 nach ）
+    - 修复使用 :cd 会导致 :NERDTreeToggle 失败的bug （感谢 nach ）
+
+3.0.1
+    bug修复:
+    - 修复'hidden' 没有设置时 :NERDTreeToggle 和 :NERDTreeMirror 中的bug
+    - 修复当 <path> 是相对路径并且没有以 ./ 或 ../开头的时候，
+      :NERDTree <path> 会失败的bug，感谢 James Kanze 。
+    - 使按键绑定 q 对次等（:e <dir> 形式） nerd tree 生效，感谢 jamessan
+    - 修复次等 nerd tree 中大把的错误。
+
+    许多疯狂的重构。
+
+3.0.0
+    - 劫持 netrw ，当使用 :edit <directory> 会将一个 NERD tree 放入窗口，而
+      不是一个 netrw 浏览器。见 :help 'NERDTreeHijackNetrw'
+    - 允许跨标签分享树，参见 :help :NERDTreeMirror
+    - 移除 NERDTreeWinPos 中 "top" 和 "bottom" 设置
+    - 改变 '<tab>' 绑定为 'i'
+    - 改变默认的 'H' 绑定为 'I'
+    - 大量重构
+
+==============================================================================
+7. 贡献                                                      *NERDTreeCredits*
+
+感谢下面的提供测试，bug报告，新想法等的人。没有你们我可能已经厌烦了继续开发
+NERD tree 而去直接下载毛片了。
+
+    Tim Carey-Smith (halorgium)
+    Vigil
+    Nick Brettell
+    Thomas Scott Urban
+    Terrance Cohen
+    Yegappan Lakshmanan
+    Jason Mills
+    Michael Geddes (frogonwheels)
+    Yu Jun
+    Michael Madsen
+    AOYAMA Shotaro
+    Zhang Weiwu
+    Niels Aan de Brugh
+    Olivier Yiptong
+    Zhang Shuhan
+    Cory Echols
+    Piotr Czachur
+    Yuan Jiang
+    Matan Nassau
+    Maxim Kim
+    Charlton Wang
+    Matt Wozniski (godlygeek)
+    knekk
+    Sean Chou
+    Ryan Penn
+    Simon Peter Nicholls
+    Michael Foobar
+    Tomasz Chomiuk
+    Denis Pokataev
+    Tim Pope (tpope)
+    James Kanze
+    James Vega (jamessan)
+    Frederic Chanal (nach)
+    Alf Mikula
+    Lucas S. Buchala
+    Curtis Harvey
+    Guillaume Duranceau
+    Richard Hart (hates)
+    Doug McInnes
+    Stefan Ritter
+    Rémi Prévost
+    Victor Gonzalez
+    Stephan Baumeister
+    Ricky
+    jfilip1024
+    Chris Chambers
+    Vitaly Bogdanov
+    Patrick O'Loughlin (paddyoloughlin)
+    Cam Thompson (camthompson)
+    Marcin Kulik (sickill)
+    Steve DeWald (sdewald)
+    Ivan Necas (iNecas)
+    George Ang (gnap)
+    Evan Coury (EvanDotPro)
+    Andrew Radev (AndrewRadev)
+    Matt Gauger (mathias)
+    Scott Stevenson (scottstvnsn)
+    Anderson Freitas (andersonfreitas)
+    Kamil K. Lemański (kml)
+    Yehuda Katz (wycats)
+    Min-Young Wu (minyoung)
+    Benjamin Geiger (benjamingeiger)
+
+==============================================================================
+8. 授权                                                      *NERDTreeLicense*
+
+NERD tree 使用 wtfpl 协议发布。
+See http://sam.zoy.org/wtfpl/COPYING.
