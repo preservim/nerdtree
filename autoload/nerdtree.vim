@@ -98,7 +98,7 @@ endfunction
 "FUNCTION: nerdtree#treeMarkupReg(dir) {{{2
 function! nerdtree#treeMarkupReg()
     if g:NERDTreeDirArrows
-        return '^\([▾▸] \| \+[▾▸] \| \+\)'
+        return '^\([▼▶] \| \+[▼▶] \| \+\)'
     endif
 
     return '^[ `|]*[\-+~]'
