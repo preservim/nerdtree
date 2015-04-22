@@ -131,7 +131,7 @@ The following features and functionality are provided by the NERD tree:
 :NERDTreeFind                                                  *:NERDTreeFind*
     Find the current file in the tree.
 
-    If not tree exists and the current file is under vim's CWD, then init a
+    If no tree exists and the current file is under vim's CWD, then init a
     tree at the CWD and reveal the file. Otherwise init a tree in the current
     file's directory.
 
