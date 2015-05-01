@@ -51,7 +51,7 @@ function! s:UI.getPath(ln)
 
     if !g:NERDTreeDirArrows
         " in case called from outside the tree
-        if line !~# '^ *[|`▸▾ ]' || line =~# '^$'
+        if line !~# '^ *[|`▶▼ ]' || line =~# '^$'
             return {}
         endif
     endif
@@ -159,9 +159,9 @@ endfunction
 
 "FUNCTION: s:UI._indentLevelFor(line) {{{2
 function! s:UI._indentLevelFor(line)
-    let level = match(a:line, '[^ \-+~▸▾`|]') / nerdtree#treeWid()
+    let level = match(a:line, '[^ \-+~▶▼`|]') / nerdtree#treeWid()
     " check if line includes arrows
-    if match(a:line, '[▸▾]') > -1
+    if match(a:line, '[▶▼]') > -1
         " decrement level as arrow uses 3 ascii chars
         let level = level - 1
     endif
