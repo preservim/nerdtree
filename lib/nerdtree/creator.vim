@@ -42,6 +42,11 @@ endfunction
 "name: the name of a bookmark or a directory
 function! s:Creator.createPrimary(name)
     let path = self._pathForString(a:name)
+    
+    "abort if exception was thrown (bookmark/dir doesn't exist)
+    if empty(path)
+        return
+    endif
 
     "if instructed to, then change the vim CWD to the dir the NERDTree is
     "inited in
