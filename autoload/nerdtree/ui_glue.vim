@@ -312,7 +312,7 @@ function! s:handleLeftClick()
         endfor
 
         if currentNode.path.isDirectory
-            if startToCur =~# nerdtree#treeMarkupReg() && startToCur =~# '[+~▾▸] \?$'
+            if startToCur =~# nerdtree#treeMarkupReg() && startToCur =~# '[+~▶▼] \?$'
                 call currentNode.activate()
                 return
             endif
