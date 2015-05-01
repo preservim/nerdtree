@@ -247,49 +247,63 @@ function! s:displayHelp()
 endfunction
 
 " FUNCTION: s:findAndRevealPath() {{{1
-function! s:findAndRevealPath()
-    try
-        let p = g:NERDTreePath.New(expand("%:p"))
-    catch /^NERDTree.InvalidArgumentsError/
-        call nerdtree#echo("no file for the current buffer")
-        return
-    endtry
+function! s:findAndRevealPath(file)
+
+    if empty(a:file)
+        try
+            let p = g:NERDTreePath.New(expand("%:p"))
+        catch /^NERDTree.InvalidArgumentsError/
+            call nerdtree#echo("no file for the current buffer")
+            return
+        endtry
+    else 
+        try
+            let p = g:NERDTreePath.New(a:file)
+        catch /^NERDTree.InvalidArgumentsError/
+            call nerdtree#echo("invalid filename")
+            return
+        endtry
+    endif
 
     if p.isUnixHiddenPath()
         let showhidden=g:NERDTreeShowHidden
         let g:NERDTreeShowHidden = 1
     endif
 
-    if !g:NERDTree.ExistsForTab()
-        try
-            let cwd = g:NERDTreePath.New(getcwd())
-        catch /^NERDTree.InvalidArgumentsError/
-            call nerdtree#echo("current directory does not exist.")
-            let cwd = p.getParent()
-        endtry
-
-        if p.isUnder(cwd)
-            call g:NERDTreeCreator.CreatePrimary(cwd.str())
-        else
-            call g:NERDTreeCreator.CreatePrimary(p.getParent().str())
-        endif
+    if &filetype == 'nerdtree'
+        call b:NERDTreeRoot.reveal(p)
     else
-        if !p.isUnder(g:NERDTreeFileNode.GetRootForTab().path)
-            if !nerdtree#isTreeOpen()
-                call g:NERDTreeCreator.TogglePrimary('')
+        if !g:NERDTree.ExistsForTab()
+            try
+                let cwd = g:NERDTreePath.New(getcwd())
+            catch /^NERDTree.InvalidArgumentsError/
+                call nerdtree#echo("current directory does not exist.")
+                let cwd = p.getParent()
+            endtry
+
+            if p.isUnder(cwd)
+                call g:NERDTreeCreator.CreatePrimary(cwd.str())
             else
-                call nerdtree#putCursorInTreeWin()
+                call g:NERDTreeCreator.CreatePrimary(p.getParent().str())
             endif
-            let b:NERDTreeShowHidden = g:NERDTreeShowHidden
-            call s:chRoot(g:NERDTreeDirNode.New(p.getParent()))
         else
-            if !nerdtree#isTreeOpen()
-                call g:NERDTreeCreator.TogglePrimary("")
+            if !p.isUnder(g:NERDTreeFileNode.GetRootForTab().path)
+                if !nerdtree#isTreeOpen()
+                    call g:NERDTreeCreator.TogglePrimary('')
+                else
+                    call nerdtree#putCursorInTreeWin()
+                endif
+                let b:NERDTreeShowHidden = g:NERDTreeShowHidden
+                call s:chRoot(g:NERDTreeDirNode.New(p.getParent()))
+            else
+                if !nerdtree#isTreeOpen()
+                    call g:NERDTreeCreator.TogglePrimary("")
+                endif
             endif
         endif
+        call nerdtree#putCursorInTreeWin()
+        call b:NERDTreeRoot.reveal(p)
     endif
-    call nerdtree#putCursorInTreeWin()
-    call b:NERDTreeRoot.reveal(p)
 
     if p.isUnixHiddenFile()
         let g:NERDTreeShowHidden = showhidden
@@ -550,7 +564,7 @@ function! nerdtree#ui_glue#setupCommands()
     command! -n=0 -bar NERDTreeClose :call nerdtree#closeTreeIfOpen()
     command! -n=1 -complete=customlist,nerdtree#completeBookmarks -bar NERDTreeFromBookmark call g:NERDTreeCreator.CreatePrimary('<args>')
     command! -n=0 -bar NERDTreeMirror call g:NERDTreeCreator.CreateMirror()
-    command! -n=0 -bar NERDTreeFind call s:findAndRevealPath()
+    command! -n=? -complete=file -bar NERDTreeFind call s:findAndRevealPath('<args>')
     command! -n=0 -bar NERDTreeFocus call NERDTreeFocus()
     command! -n=0 -bar NERDTreeCWD call NERDTreeCWD()
 endfunction
