@@ -40,7 +40,7 @@ function! s:Opener._checkToCloseTree(newtab)
     endif
 
     if (a:newtab && self._where == 't') || !a:newtab
-        call nerdtree#closeTreeIfQuitOnOpen()
+        call g:NERDTree.CloseIfQuitOnOpen()
     endif
 endfunction
 
@@ -189,7 +189,7 @@ function! s:Opener._newSplit()
     try
         exec(splitMode." sp ")
     catch /^Vim\%((\a\+)\)\=:E37/
-        call nerdtree#putCursorInTreeWin()
+        call g:NERDTree.CursorToTreeWin()
         throw "NERDTree.FileAlreadyOpenAndModifiedError: ". self._path.str() ." is already open and modified."
     catch /^Vim\%((\a\+)\)\=:/
         "do nothing
@@ -219,7 +219,7 @@ function! s:Opener._newVSplit()
     vnew
 
     "resize the nerd tree back to the original size
-    call nerdtree#putCursorInTreeWin()
+    call g:NERDTree.CursorToTreeWin()
     exec("silent vertical resize ". winwidth)
     call nerdtree#exec('wincmd p')
 endfunction
@@ -288,7 +288,7 @@ function! s:Opener._previousWindow()
                 call nerdtree#exec('wincmd p')
             endif
         catch /^Vim\%((\a\+)\)\=:E37/
-            call nerdtree#putCursorInTreeWin()
+            call g:NERDTree.CursorToTreeWin()
             throw "NERDTree.FileAlreadyOpenAndModifiedError: ". self._path.str() ." is already open and modified."
         catch /^Vim\%((\a\+)\)\=:/
             echo v:exception
