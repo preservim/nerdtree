@@ -85,7 +85,7 @@ endfunction
 "FUNCTION: s:activateAll() {{{1
 "handle the user activating the updir line
 function! s:activateAll()
-    if getline(".") ==# nerdtree#treeUpDirLine()
+    if getline(".") ==# g:NERDTreeUI.UpDirLine()
         return nerdtree#ui_glue#upDir(0)
     endif
 endfunction
@@ -312,7 +312,7 @@ function! s:handleLeftClick()
         endfor
 
         if currentNode.path.isDirectory
-            if startToCur =~# nerdtree#treeMarkupReg() && startToCur =~# '[+~▾▸] \?$'
+            if startToCur =~# g:NERDTreeUI.MarkupReg() && startToCur =~# '[+~▾▸] \?$'
                 call currentNode.activate()
                 return
             endif
@@ -320,7 +320,7 @@ function! s:handleLeftClick()
 
         if (g:NERDTreeMouseMode ==# 2 && currentNode.path.isDirectory) || g:NERDTreeMouseMode ==# 3
             let char = strpart(startToCur, strlen(startToCur)-1, 1)
-            if char !~# nerdtree#treeMarkupReg()
+            if char !~# g:NERDTreeUI.MarkupReg()
                 if currentNode.path.isDirectory
                     call currentNode.activate()
                 else

@@ -95,25 +95,6 @@ function! nerdtree#runningWindows()
     return has("win16") || has("win32") || has("win64")
 endfunction
 
-"FUNCTION: nerdtree#treeMarkupReg(dir) {{{2
-function! nerdtree#treeMarkupReg()
-    if g:NERDTreeDirArrows
-        return '^\([▾▸] \| \+[▾▸] \| \+\)'
-    endif
-
-    return '^[ `|]*[\-+~]'
-endfunction
-
-"FUNCTION: nerdtree#treeUpDirLine(dir) {{{2
-function! nerdtree#treeUpDirLine()
-    return '.. (up a dir)'
-endfunction
-
-"FUNCTION: nerdtree#treeWid(dir) {{{2
-function! nerdtree#treeWid()
-    return 2
-endfunction
-
 " SECTION: View Functions {{{1
 "============================================================
 
@@ -374,7 +355,7 @@ endfunction
 function! nerdtree#stripMarkupFromLine(line, removeLeadingSpaces)
     let line = a:line
     "remove the tree parts and the leading space
-    let line = substitute (line, nerdtree#treeMarkupReg(),"","")
+    let line = substitute (line, g:NERDTreeUI.MarkupReg(),"","")
 
     "strip off any read only flag
     let line = substitute (line, ' \[RO\]', "","")

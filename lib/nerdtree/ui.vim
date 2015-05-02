@@ -56,7 +56,7 @@ function! s:UI.getPath(ln)
         endif
     endif
 
-    if line ==# nerdtree#treeUpDirLine()
+    if line ==# s:UI.UpDirLine()
         return b:NERDTreeRoot.path.getParent()
     endif
 
@@ -146,7 +146,6 @@ function! s:UI.getLineNum(file_node)
     return -1
 endfunction
 
-
 "FUNCTION: s:UI.getRootLineNum(){{{1
 "gets the line number of the root node
 function! s:UI.getRootLineNum()
@@ -157,9 +156,9 @@ function! s:UI.getRootLineNum()
     return rootLine
 endfunction
 
-"FUNCTION: s:UI._indentLevelFor(line) {{{2
+"FUNCTION: s:UI._indentLevelFor(line) {{{1
 function! s:UI._indentLevelFor(line)
-    let level = match(a:line, '[^ \-+~▸▾`|]') / nerdtree#treeWid()
+    let level = match(a:line, '[^ \-+~▸▾`|]') / s:UI.IndentWid()
     " check if line includes arrows
     if match(a:line, '[▸▾]') > -1
         " decrement level as arrow uses 3 ascii chars
@@ -168,8 +167,21 @@ function! s:UI._indentLevelFor(line)
     return level
 endfunction
 
+"FUNCTION: s:UI.IndentWid() {{{1
+function! s:UI.IndentWid()
+    return 2
+endfunction
 
-"FUNCTION: s:UI.restoreScreenState() {{{2
+"FUNCTION: s:UI.MarkupReg() {{{1
+function! s:UI.MarkupReg()
+    if g:NERDTreeDirArrows
+        return '^\([▾▸] \| \+[▾▸] \| \+\)'
+    endif
+
+    return '^[ `|]*[\-+~]'
+endfunction
+
+"FUNCTION: s:UI.restoreScreenState() {{{1
 "
 "Sets the screen state back to what it was when nerdtree#saveScreenState was last
 "called.
@@ -189,7 +201,7 @@ function! s:UI.restoreScreenState()
     let &scrolloff=old_scrolloff
 endfunction
 
-"FUNCTION: s:UI.saveScreenState() {{{2
+"FUNCTION: s:UI.saveScreenState() {{{1
 "Saves the current cursor position in the current buffer and the window
 "scroll position
 function! s:UI.saveScreenState()
@@ -205,7 +217,7 @@ function! s:UI.saveScreenState()
     endtry
 endfunction
 
-"FUNCTION: s:UI.render() {{{2
+"FUNCTION: s:UI.render() {{{1
 function! s:UI.render()
     setlocal modifiable
 
@@ -232,7 +244,7 @@ function! s:UI.render()
 
     "add the 'up a dir' line
     if !g:NERDTreeMinimalUI
-        call setline(line(".")+1, nerdtree#treeUpDirLine())
+        call setline(line(".")+1, s:UI.UpDirLine())
         call cursor(line(".")+1, col("."))
     endif
 
@@ -329,4 +341,9 @@ function! s:UI.toggleZoom()
         exec "vertical resize"
         let b:NERDTreeZoomed = 1
     endif
+endfunction
+
+"FUNCTION: s:UI.UpDirLine() {{{1
+function! s:UI.UpDirLine()
+    return '.. (up a dir)'
 endfunction
