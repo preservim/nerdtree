@@ -55,7 +55,7 @@ function! s:Creator.createPrimary(name)
     endif
 
     if g:NERDTree.ExistsForTab()
-        if nerdtree#isTreeOpen()
+        if g:NERDTree.IsOpen()
             call nerdtree#closeTree()
         endif
         unlet t:NERDTreeBufName
@@ -168,7 +168,7 @@ function! s:Creator.createMirror()
         return
     endif
 
-    if g:NERDTree.ExistsForTab() && nerdtree#isTreeOpen()
+    if g:NERDTree.ExistsForTab() && g:NERDTree.IsOpen()
         call nerdtree#closeTree()
     endif
 
@@ -333,7 +333,7 @@ endfunction
 "initialized.
 function! s:Creator.togglePrimary(dir)
     if g:NERDTree.ExistsForTab()
-        if !nerdtree#isTreeOpen()
+        if !g:NERDTree.IsOpen()
             call self._createTreeWin()
             if !&hidden
                 call b:NERDTree.render()

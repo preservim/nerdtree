@@ -33,6 +33,19 @@ function! s:NERDTree.GetWinNum()
     endif
 endfunction
 
+"FUNCTION: s:NERDTree.IsOpen() {{{1
+function! s:NERDTree.IsOpen()
+    return s:NERDTree.GetWinNum() != -1
+endfunction
+
+"FUNCTION: s:NERDTree.MustBeOpen() {{{1
+function! s:NERDTree.MustBeOpen()
+    if !s:NERDTree.IsOpen()
+        throw "NERDTree.TreeNotOpen"
+    endif
+endfunction
+
+"FUNCTION: s:NERDTree.New() {{{1
 function! s:NERDTree.New(path)
     let newObj = copy(self)
     let newObj.ui = g:NERDTreeUI.New(newObj)

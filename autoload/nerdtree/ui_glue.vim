@@ -275,7 +275,7 @@ function! s:findAndRevealPath()
         endif
     else
         if !p.isUnder(g:NERDTreeFileNode.GetRootForTab().path)
-            if !nerdtree#isTreeOpen()
+            if !g:NERDTree.IsOpen()
                 call g:NERDTreeCreator.TogglePrimary('')
             else
                 call nerdtree#putCursorInTreeWin()
@@ -283,7 +283,7 @@ function! s:findAndRevealPath()
             let b:NERDTreeShowHidden = g:NERDTreeShowHidden
             call s:chRoot(g:NERDTreeDirNode.New(p.getParent()))
         else
-            if !nerdtree#isTreeOpen()
+            if !g:NERDTree.IsOpen()
                 call g:NERDTreeCreator.TogglePrimary("")
             endif
         endif

@@ -101,9 +101,7 @@ endfunction
 "FUNCTION: nerdtree#closeTree() {{{2
 "Closes the primary NERD tree window for this tab
 function! nerdtree#closeTree()
-    if !nerdtree#isTreeOpen()
-        throw "NERDTree.NoTreeFoundError: no NERDTree is open"
-    endif
+    call g:NERDTree.MustBeOpen()
 
     if winnr("$") != 1
         if winnr() == g:NERDTree.GetWinNum()
@@ -125,7 +123,7 @@ endfunction
 "FUNCTION: nerdtree#closeTreeIfOpen() {{{2
 "Closes the NERD tree window if it is open
 function! nerdtree#closeTreeIfOpen()
-   if nerdtree#isTreeOpen()
+   if g:NERDTree.IsOpen()
       call nerdtree#closeTree()
    endif
 endfunction
@@ -133,7 +131,7 @@ endfunction
 "FUNCTION: nerdtree#closeTreeIfQuitOnOpen() {{{2
 "Closes the NERD tree window if the close on open option is set
 function! nerdtree#closeTreeIfQuitOnOpen()
-    if g:NERDTreeQuitOnOpen && nerdtree#isTreeOpen()
+    if g:NERDTreeQuitOnOpen && g:NERDTree.IsOpen()
         call nerdtree#closeTree()
     endif
 endfunction
@@ -275,11 +273,6 @@ function! nerdtree#echoWarning(msg)
     echohl normal
 endfunction
 
-"FUNCTION: nerdtree#isTreeOpen() {{{2
-function! nerdtree#isTreeOpen()
-    return g:NERDTree.GetWinNum() != -1
-endfunction
-
 "FUNCTION: nerdtree#putCursorOnBookmarkTable(){{{2
 "Places the cursor at the top of the bookmarks table
 function! nerdtree#putCursorOnBookmarkTable()
@@ -306,10 +299,7 @@ endfunction
 "FUNCTION: nerdtree#putCursorInTreeWin(){{{2
 "Places the cursor in the nerd tree window
 function! nerdtree#putCursorInTreeWin()
-    if !nerdtree#isTreeOpen()
-        throw "NERDTree.InvalidOperationError: cant put cursor in NERD tree window, no window exists"
-    endif
-
+    call g:NERDTree.MustBeOpen()
     call nerdtree#exec(g:NERDTree.GetWinNum() . "wincmd w")
 endfunction
 
