@@ -3,6 +3,11 @@
 let s:NERDTree = {}
 let g:NERDTree = s:NERDTree
 
+"FUNCTION: s:NERDTree.AddPathFilter() {{{1
+function! s:NERDTree.AddPathFilter(callback)
+    call add(s:NERDTree.PathFilters(), a:callback)
+endfunction
+
 "FUNCTION: s:NERDTree.Close() {{{1
 "Closes the primary NERD tree window for this tab
 function! s:NERDTree.Close()
@@ -115,6 +120,15 @@ function! s:NERDTree.New(path)
 
     return newObj
 endfunction
+
+"FUNCTION: s:NERDTree.PathFilters() {{{1
+function! s:NERDTree.PathFilters()
+    if !exists('s:NERDTree._PathFilters')
+        let s:NERDTree._PathFilters = []
+    endif
+    return s:NERDTree._PathFilters
+endfunction
+
 
 "FUNCTION: s:NERDTree.render() {{{1
 "A convenience function - since this is called often
