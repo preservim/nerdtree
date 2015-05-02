@@ -278,7 +278,7 @@ function! s:findAndRevealPath()
             if !g:NERDTree.IsOpen()
                 call g:NERDTreeCreator.TogglePrimary('')
             else
-                call nerdtree#putCursorInTreeWin()
+                call g:NERDTree.CursorToTreeWin()
             endif
             let b:NERDTreeShowHidden = g:NERDTreeShowHidden
             call s:chRoot(g:NERDTreeDirNode.New(p.getParent()))
@@ -288,7 +288,7 @@ function! s:findAndRevealPath()
             endif
         endif
     endif
-    call nerdtree#putCursorInTreeWin()
+    call g:NERDTree.CursorToTreeWin()
     call b:NERDTreeRoot.reveal(p)
 
     if p.isUnixHiddenFile()

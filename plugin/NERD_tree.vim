@@ -186,7 +186,7 @@ endfunction
 
 function! NERDTreeFocus()
     if g:NERDTree.IsOpen()
-        call nerdtree#putCursorInTreeWin()
+        call g:NERDTree.CursorToTreeWin()
     else
         call g:NERDTreeCreator.TogglePrimary("")
     endif

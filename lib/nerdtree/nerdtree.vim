@@ -35,6 +35,36 @@ function! s:NERDTree.CloseIfQuitOnOpen()
     endif
 endfunction
 
+"FUNCTION: s:NERDTree.CursorToBookmarkTable(){{{1
+"Places the cursor at the top of the bookmarks table
+function! s:NERDTree.CursorToBookmarkTable()
+    if !b:NERDTreeShowBookmarks
+        throw "NERDTree.IllegalOperationError: cant find bookmark table, bookmarks arent active"
+    endif
+
+    if g:NERDTreeMinimalUI
+        return cursor(1, 2)
+    endif
+
+    let rootNodeLine = b:NERDTree.ui.getRootLineNum()
+
+    let line = 1
+    while getline(line) !~# '^>-\+Bookmarks-\+$'
+        let line = line + 1
+        if line >= rootNodeLine
+            throw "NERDTree.BookmarkTableNotFoundError: didnt find the bookmarks table"
+        endif
+    endwhile
+    call cursor(line, 2)
+endfunction
+
+"FUNCTION: s:NERDTree.CursorToTreeWin(){{{1
+"Places the cursor in the nerd tree window
+function! s:NERDTree.CursorToTreeWin()
+    call g:NERDTree.MustBeOpen()
+    call nerdtree#exec(g:NERDTree.GetWinNum() . "wincmd w")
+endfunction
+
 " Function: s:NERDTree.ExistsForBuffer()   {{{1
 " Returns 1 if a nerd tree root exists in the current buffer
 function! s:NERDTree.ExistsForBuf()

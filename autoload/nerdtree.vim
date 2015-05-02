@@ -128,96 +128,9 @@ function! nerdtree#echoWarning(msg)
     echohl normal
 endfunction
 
-"FUNCTION: nerdtree#putCursorOnBookmarkTable(){{{2
-"Places the cursor at the top of the bookmarks table
-function! nerdtree#putCursorOnBookmarkTable()
-    if !b:NERDTreeShowBookmarks
-        throw "NERDTree.IllegalOperationError: cant find bookmark table, bookmarks arent active"
-    endif
-
-    if g:NERDTreeMinimalUI
-        return cursor(1, 2)
-    endif
-
-    let rootNodeLine = b:NERDTree.ui.getRootLineNum()
-
-    let line = 1
-    while getline(line) !~# '^>-\+Bookmarks-\+$'
-        let line = line + 1
-        if line >= rootNodeLine
-            throw "NERDTree.BookmarkTableNotFoundError: didnt find the bookmarks table"
-        endif
-    endwhile
-    call cursor(line, 2)
-endfunction
-
-"FUNCTION: nerdtree#putCursorInTreeWin(){{{2
-"Places the cursor in the nerd tree window
-function! nerdtree#putCursorInTreeWin()
-    call g:NERDTree.MustBeOpen()
-    call nerdtree#exec(g:NERDTree.GetWinNum() . "wincmd w")
-endfunction
-
-"FUNCTION: nerdtree#renderBookmarks {{{2
-function! nerdtree#renderBookmarks()
-
-    if g:NERDTreeMinimalUI == 0
-        call setline(line(".")+1, ">----------Bookmarks----------")
-        call cursor(line(".")+1, col("."))
-    endif
-
-    for i in g:NERDTreeBookmark.Bookmarks()
-        call setline(line(".")+1, i.str())
-        call cursor(line(".")+1, col("."))
-    endfor
-
-    call setline(line(".")+1, '')
-    call cursor(line(".")+1, col("."))
-endfunction
-
 "FUNCTION: nerdtree#renderView {{{2
 function! nerdtree#renderView()
     call b:NERDTree.render()
-endfunction
-"
-"FUNCTION: nerdtree#stripMarkupFromLine(line, removeLeadingSpaces){{{2
-"returns the given line with all the tree parts stripped off
-"
-"Args:
-"line: the subject line
-"removeLeadingSpaces: 1 if leading spaces are to be removed (leading spaces =
-"any spaces before the actual text of the node)
-function! nerdtree#stripMarkupFromLine(line, removeLeadingSpaces)
-    let line = a:line
-    "remove the tree parts and the leading space
-    let line = substitute (line, g:NERDTreeUI.MarkupReg(),"","")
-
-    "strip off any read only flag
-    let line = substitute (line, ' \[RO\]', "","")
-
-    "strip off any bookmark flags
-    let line = substitute (line, ' {[^}]*}', "","")
-
-    "strip off any executable flags
-    let line = substitute (line, '*\ze\($\| \)', "","")
-
-    "strip off any generic flags
-    let line = substitute (line, '\[[^]]*\]', "","")
-
-    let wasdir = 0
-    if line =~# '/$'
-        let wasdir = 1
-    endif
-    let line = substitute (line,' -> .*',"","") " remove link to
-    if wasdir ==# 1
-        let line = substitute (line, '/\?$', '/', "")
-    endif
-
-    if a:removeLeadingSpaces
-        let line = substitute (line, '^ *', '', '')
-    endif
-
-    return line
 endfunction
 
 " vim: set sw=4 sts=4 et fdm=marker:
