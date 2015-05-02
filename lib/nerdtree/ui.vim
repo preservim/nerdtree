@@ -3,11 +3,6 @@
 let s:UI = {}
 let g:NERDTreeUI = s:UI
 
-
-function! s:UI.lolcats()
-    echomsg "lolcats"
-endfunction
-
 "FUNCTION: s:UI.centerView() {{{2
 "centers the nerd tree window around the cursor (provided the nerd tree
 "options permit)
