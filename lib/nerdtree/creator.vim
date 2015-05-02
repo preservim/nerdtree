@@ -56,7 +56,7 @@ function! s:Creator.createPrimary(name)
 
     if g:NERDTree.ExistsForTab()
         if g:NERDTree.IsOpen()
-            call nerdtree#closeTree()
+            call g:NERDTree.Close()
         endif
         unlet t:NERDTreeBufName
     endif
@@ -169,7 +169,7 @@ function! s:Creator.createMirror()
     endif
 
     if g:NERDTree.ExistsForTab() && g:NERDTree.IsOpen()
-        call nerdtree#closeTree()
+        call g:NERDTree.Close()
     endif
 
     let t:NERDTreeBufName = bufferName
@@ -340,7 +340,7 @@ function! s:Creator.togglePrimary(dir)
             endif
             call b:NERDTree.ui.restoreScreenState()
         else
-            call nerdtree#closeTree()
+            call g:NERDTree.Close()
         endif
     else
         call self.createPrimary(a:dir)

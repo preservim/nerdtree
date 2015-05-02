@@ -98,44 +98,6 @@ endfunction
 " SECTION: View Functions {{{1
 "============================================================
 
-"FUNCTION: nerdtree#closeTree() {{{2
-"Closes the primary NERD tree window for this tab
-function! nerdtree#closeTree()
-    call g:NERDTree.MustBeOpen()
-
-    if winnr("$") != 1
-        if winnr() == g:NERDTree.GetWinNum()
-            call nerdtree#exec("wincmd p")
-            let bufnr = bufnr("")
-            call nerdtree#exec("wincmd p")
-        else
-            let bufnr = bufnr("")
-        endif
-
-        call nerdtree#exec(g:NERDTree.GetWinNum() . " wincmd w")
-        close
-        call nerdtree#exec(bufwinnr(bufnr) . " wincmd w")
-    else
-        close
-    endif
-endfunction
-
-"FUNCTION: nerdtree#closeTreeIfOpen() {{{2
-"Closes the NERD tree window if it is open
-function! nerdtree#closeTreeIfOpen()
-   if g:NERDTree.IsOpen()
-      call nerdtree#closeTree()
-   endif
-endfunction
-
-"FUNCTION: nerdtree#closeTreeIfQuitOnOpen() {{{2
-"Closes the NERD tree window if the close on open option is set
-function! nerdtree#closeTreeIfQuitOnOpen()
-    if g:NERDTreeQuitOnOpen && g:NERDTree.IsOpen()
-        call nerdtree#closeTree()
-    endif
-endfunction
-
 "FUNCTION: nerdtree#dumpHelp  {{{2
 "prints out the quick help
 function! nerdtree#dumpHelp()

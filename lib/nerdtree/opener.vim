@@ -40,7 +40,7 @@ function! s:Opener._checkToCloseTree(newtab)
     endif
 
     if (a:newtab && self._where == 't') || !a:newtab
-        call nerdtree#closeTreeIfQuitOnOpen()
+        call g:NERDTree.CloseIfQuitOnOpen()
     endif
 endfunction
 

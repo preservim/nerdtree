@@ -3,6 +3,38 @@
 let s:NERDTree = {}
 let g:NERDTree = s:NERDTree
 
+"FUNCTION: s:NERDTree.Close() {{{1
+"Closes the primary NERD tree window for this tab
+function! s:NERDTree.Close()
+    if !s:NERDTree.IsOpen()
+        return
+    endif
+
+    if winnr("$") != 1
+        if winnr() == s:NERDTree.GetWinNum()
+            call nerdtree#exec("wincmd p")
+            let bufnr = bufnr("")
+            call nerdtree#exec("wincmd p")
+        else
+            let bufnr = bufnr("")
+        endif
+
+        call nerdtree#exec(s:NERDTree.GetWinNum() . " wincmd w")
+        close
+        call nerdtree#exec(bufwinnr(bufnr) . " wincmd w")
+    else
+        close
+    endif
+endfunction
+
+"FUNCTION: s:NERDTree.CloseIfQuitOnOpen() {{{1
+"Closes the NERD tree window if the close on open option is set
+function! s:NERDTree.CloseIfQuitOnOpen()
+    if g:NERDTreeQuitOnOpen && s:NERDTree.IsOpen()
+        call s:NERDTree.Close()
+    endif
+endfunction
+
 " Function: s:NERDTree.ExistsForBuffer()   {{{1
 " Returns 1 if a nerd tree root exists in the current buffer
 function! s:NERDTree.ExistsForBuf()
@@ -59,4 +91,3 @@ endfunction
 function! s:NERDTree.render()
     call self.ui.render()
 endfunction
-
