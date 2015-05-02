@@ -106,7 +106,7 @@ function! nerdtree#closeTree()
     endif
 
     if winnr("$") != 1
-        if winnr() == nerdtree#getTreeWinNum()
+        if winnr() == g:NERDTree.GetWinNum()
             call nerdtree#exec("wincmd p")
             let bufnr = bufnr("")
             call nerdtree#exec("wincmd p")
@@ -114,7 +114,7 @@ function! nerdtree#closeTree()
             let bufnr = bufnr("")
         endif
 
-        call nerdtree#exec(nerdtree#getTreeWinNum() . " wincmd w")
+        call nerdtree#exec(g:NERDTree.GetWinNum() . " wincmd w")
         close
         call nerdtree#exec(bufwinnr(bufnr) . " wincmd w")
     else
@@ -275,19 +275,9 @@ function! nerdtree#echoWarning(msg)
     echohl normal
 endfunction
 
-"FUNCTION: nerdtree#getTreeWinNum() {{{2
-"gets the nerd tree window number for this tab
-function! nerdtree#getTreeWinNum()
-    if exists("t:NERDTreeBufName")
-        return bufwinnr(t:NERDTreeBufName)
-    else
-        return -1
-    endif
-endfunction
-
 "FUNCTION: nerdtree#isTreeOpen() {{{2
 function! nerdtree#isTreeOpen()
-    return nerdtree#getTreeWinNum() != -1
+    return g:NERDTree.GetWinNum() != -1
 endfunction
 
 "FUNCTION: nerdtree#putCursorOnBookmarkTable(){{{2
@@ -320,7 +310,7 @@ function! nerdtree#putCursorInTreeWin()
         throw "NERDTree.InvalidOperationError: cant put cursor in NERD tree window, no window exists"
     endif
 
-    call nerdtree#exec(nerdtree#getTreeWinNum() . "wincmd w")
+    call nerdtree#exec(g:NERDTree.GetWinNum() . "wincmd w")
 endfunction
 
 "FUNCTION: nerdtree#renderBookmarks {{{2

@@ -23,6 +23,16 @@ function! s:NERDTree.ForCurrentBuf()
     endif
 endfunction
 
+"FUNCTION: s:NERDTree.GetWinNum() {{{1
+"gets the nerd tree window number for this tab
+function! s:NERDTree.GetWinNum()
+    if exists("t:NERDTreeBufName")
+        return bufwinnr(t:NERDTreeBufName)
+    else
+        return -1
+    endif
+endfunction
+
 function! s:NERDTree.New(path)
     let newObj = copy(self)
     let newObj.ui = g:NERDTreeUI.New(newObj)

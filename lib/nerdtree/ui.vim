@@ -15,7 +15,7 @@ function! s:UI.centerView()
     if g:NERDTreeAutoCenter
         let current_line = winline()
         let lines_to_top = current_line
-        let lines_to_bottom = winheight(nerdtree#getTreeWinNum()) - current_line
+        let lines_to_bottom = winheight(g:NERDTree.GetWinNum()) - current_line
         if lines_to_top < g:NERDTreeAutoCenterThreshold || lines_to_bottom < g:NERDTreeAutoCenterThreshold
             normal! zz
         endif
