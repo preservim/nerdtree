@@ -325,13 +325,6 @@ endfunction
 "Saves the current cursor position in the current buffer and the window
 "scroll position
 function! s:UI.saveScreenState()
-
-    "FIXME: b:NERDTreeType should really me moved to b:NERDTree.type. Update
-    "this when that refactor is done
-    if b:NERDTreeType == "secondary"
-        return
-    endif
-
     let win = winnr()
     call g:NERDTree.CursorToTreeWin()
     let self._screenState = {}
