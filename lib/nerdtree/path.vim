@@ -392,6 +392,9 @@ function! s:Path.ignore()
                 return 1
             endif
         endfor
+        if g:NERDTreePathEvaluator.EvaluateEvaluators('ignore', self, {})
+            return 1
+        endif
     endif
 
     "dont show hidden files unless instructed to
