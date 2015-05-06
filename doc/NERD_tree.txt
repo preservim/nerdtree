@@ -683,6 +683,9 @@ NERD tree. These options should be set in your vimrc.
                                 a buffer when a file is being deleted or renamed
                                 via a context menu command.
 
+|'NERDTreeNoSwitchTabs'|        Tells the NERD tree whether to reuse a window
+                                in another tab.
+
 ------------------------------------------------------------------------------
 3.2. Customisation details                             *NERDTreeOptionDetails*
 
@@ -1026,6 +1029,19 @@ then it worths to set this option to 1. Use one of the follow lines to set this
 option: >
     let NERDTreeAutoDeleteBuffer=0
     let NERDTreeAutoDeleteBuffer=1
+<
+
+------------------------------------------------------------------------------
+                                          *'NERDTreeNoSwitchTabs'*
+Values: 0 or 1
+Default: 0.
+
+When you open a file node, NERDTree also checks if that file is already open
+in another tab and switches to that tab, if so. If you want to prevent
+NERDTree from switching tabs, set this option to 1. Use one of the follow
+lines to set this option: >
+    let NERDTreeNoSwitchTabs=0
+    let NERDTreeNoSwitchTabs=1
 <
 
 ==============================================================================

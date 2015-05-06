@@ -313,8 +313,8 @@ function! s:Opener._reuseWindow()
         call nerdtree#exec(winnr . "wincmd w")
         call self._checkToCloseTree(0)
         return 1
-    else
-        "check other tabs
+    elseif g:NERDTreeNoSwitchTabs ==# 0
+        "check other tabs unless NERDTreeNoSwitchTabs is enabled
         let tabnr = self._path.tabnr()
         if tabnr
             call self._checkToCloseTree(1)
