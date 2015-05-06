@@ -392,6 +392,12 @@ function! s:Path.ignore()
                 return 1
             endif
         endfor
+
+        for callback in g:NERDTree.PathFilters()
+            if {callback}({'path': self, 'nerdtree': b:NERDTree})
+                return 1
+            endif
+        endfor
     endif
 
     "dont show hidden files unless instructed to
@@ -400,10 +406,6 @@ function! s:Path.ignore()
     endif
 
     if b:NERDTreeShowFiles ==# 0 && self.isDirectory ==# 0
-        return 1
-    endif
-
-    if exists("*NERDTreeCustomIgnoreFilter") && NERDTreeCustomIgnoreFilter(self)
         return 1
     endif
 

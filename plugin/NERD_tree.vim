@@ -196,6 +196,11 @@ function! NERDTreeCWD()
     call NERDTreeFocus()
     call nerdtree#ui_glue#chRootCwd()
 endfunction
+
+function! NERDTreeAddPathFilter(callback)
+    call g:NERDTree.AddPathFilter(a:callback)
+endfunction
+
 " SECTION: Post Source Actions {{{1
 call nerdtree#postSourceActions()
 
