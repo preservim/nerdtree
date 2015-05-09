@@ -89,6 +89,7 @@ function! s:UI._dumpHelp()
         let @h=@h."\" Tree filtering mappings~\n"
         let @h=@h."\" ". g:NERDTreeMapToggleHidden .": hidden files (" . (b:NERDTreeShowHidden ? "on" : "off") . ")\n"
         let @h=@h."\" ". g:NERDTreeMapToggleFilters .": file filters (" . (b:NERDTreeIgnoreEnabled ? "on" : "off") . ")\n"
+        call s:showCustomIgnoreFilters()
         let @h=@h."\" ". g:NERDTreeMapToggleFiles .": files (" . (b:NERDTreeShowFiles ? "on" : "off") . ")\n"
         let @h=@h."\" ". g:NERDTreeMapToggleBookmarks .": bookmarks (" . (b:NERDTreeShowBookmarks ? "on" : "off") . ")\n"
 
@@ -124,6 +125,11 @@ function! s:UI._dumpHelp()
     let @h = old_h
 endfunction
 
+function! s:showCustomIgnoreFilters()
+    for customMap in values(g:CustomIgnoreMappings) 
+        let @h=@h."\" ". customMap["key"] .": " . customMap["description"] ." (" . (customMap["enabled"] ? "on" : "off") . ")\n"
+    endfor
+endfunction
 
 "FUNCTION: s:UI.new(nerdtree) {{{1
 function! s:UI.New(nerdtree)
