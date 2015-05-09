@@ -504,7 +504,24 @@ endfunction
 "directory priority.
 "
 function! s:TreeDirNode.sortChildren()
-    let CompareFunc = function("nerdtree#compareNodes")
+    let CompareFunc = function("nerdtree#compareNodesBySortingToken")
+    " To optimize sorting, let's generate the sorting token for comparison
+
+    " calculate how large number is needed to represent " order index
+    let digit = ceil(log10(len(g:NERDTreeSortOrder)))
+    let format = "%0" . float2nr(digit) . "d"         " e.g. '%04d'
+
+    for child in self.children
+        let path = child.path.getLastPathComponent(1)
+        if !g:NERDTreeSortHiddenFirst
+            let path = substitute(path, '^[._]', '', '')
+        endif
+        if !g:NERDTreeCaseSensitiveSort
+            let path = tolower(path)
+        endif
+        let child.sorting_token = printf(format, child.path.getSortOrderIndex()) . path
+    endfor
+
     call sort(self.children, CompareFunc)
 endfunction
 
