@@ -34,6 +34,18 @@ function! nerdtree#compareNodes(n1, n2)
     return a:n1.path.compareTo(a:n2.path)
 endfunction
 
+"FUNCTION: nerdtree#compareNodesBySortingToken(n1, n2) {{{2
+function! nerdtree#compareNodesBySortingToken(n1, n2)
+    return a:n1.path.compareTo(a:n2.path)
+    if a:n1.sorting_token < a:n2.sorting_token
+        return -1
+    elseif a:n1.sorting_token > a:n2.sorting_token
+        return 1
+    else
+        return 0
+    endif
+endfunction
+
 " FUNCTION: nerdtree#deprecated(func, [msg]) {{{2
 " Issue a deprecation warning for a:func. If a second arg is given, use this
 " as the deprecation message
