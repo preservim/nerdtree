@@ -1,6 +1,9 @@
 "we need to use this number many times for sorting... so we calculate it only
 "once here
 let s:NERDTreeSortStarIndex = index(g:NERDTreeSortOrder, '*')
+" used in formating sortKey, e.g. '%04d'
+let s:format = "%0" . float2nr(ceil(log10(len(g:NERDTreeSortOrder)))) . "d"
+
 
 "CLASS: Path
 "============================================================
@@ -360,6 +363,24 @@ function! s:Path.getSortOrderIndex()
     endwhile
     return s:NERDTreeSortStarIndex
 endfunction
+
+"FUNCTION: Path.getSortKey() {{{1
+"returns a string used in compare function for sorting
+function! s:Path.getSortKey()
+    if !exists("self.sortKey")
+        let path = self.getLastPathComponent(1)
+        if !g:NERDTreeSortHiddenFirst
+            let path = substitute(path, '^[._]', '', '')
+        endif
+        if !g:NERDTreeCaseSensitiveSort
+            let path = tolower(path)
+        endif
+        let self.sortKey = printf(s:format, self.getSortOrderIndex()) . path
+    endif
+
+    return self.sortKey
+endfunction
+
 
 "FUNCTION: Path.isUnixHiddenFile() {{{1
 "check for unix hidden files

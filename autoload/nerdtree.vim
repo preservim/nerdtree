@@ -34,11 +34,11 @@ function! nerdtree#compareNodes(n1, n2)
     return a:n1.path.compareTo(a:n2.path)
 endfunction
 
-"FUNCTION: nerdtree#compareNodesBySortingToken(n1, n2) {{{2
-function! nerdtree#compareNodesBySortingToken(n1, n2)
-    if a:n1.sorting_token < a:n2.sorting_token
+"FUNCTION: nerdtree#compareNodesBySortKey(n1, n2) {{{2
+function! nerdtree#compareNodesBySortKey(n1, n2)
+    if a:n1.path.getSortKey() < a:n2.path.getSortKey()
         return -1
-    elseif a:n1.sorting_token > a:n2.sorting_token
+    elseif a:n1.path.getSortKey() > a:n2.path.getSortKey()
         return 1
     else
         return 0

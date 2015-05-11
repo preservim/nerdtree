@@ -246,8 +246,13 @@ function! s:TreeDirNode._initChildren(silent)
         "filter out the .. and . directories
         "Note: we must match .. AND ../ cos sometimes the globpath returns
         "../ for path with strange chars (eg $)
-        if i !~# '\/\.\.\/\?$' && i !~# '\/\.\/\?$'
-
+"        if i !~# '\/\.\.\/\?$' && i !~# '\/\.\/\?$'
+"
+        " 20150511
+        " Regular expression is too expensive. Use simply string comparison
+        " instead
+        if i[len(i)-3:2] != ".." && i[len(i)-2:2] != ".." && 
+         \ i[len(i)-2:1] != "." && i[len(i)-1] != "."
             "put the next file in a new node and attach it
             try
                 let path = g:NERDTreePath.New(i)
@@ -405,8 +410,13 @@ function! s:TreeDirNode.refresh()
             "filter out the .. and . directories
             "Note: we must match .. AND ../ cos sometimes the globpath returns
             "../ for path with strange chars (eg $)
-            if i !~# '\/\.\.\/\?$' && i !~# '\/\.\/\?$'
+            "if i !~# '\/\.\.\/\?$' && i !~# '\/\.\/\?$'
 
+            " 20150511
+            " Regular expression is too expensive. Use simply string comparison
+            " instead
+            if i[len(i)-3:2] != ".." && i[len(i)-2:2] != ".." && 
+             \ i[len(i)-2:1] != "." && i[len(i)-1] != "."
                 try
                     "create a new path and see if it exists in this nodes children
                     let path = g:NERDTreePath.New(i)
@@ -504,24 +514,7 @@ endfunction
 "directory priority.
 "
 function! s:TreeDirNode.sortChildren()
-    let CompareFunc = function("nerdtree#compareNodesBySortingToken")
-    " To optimize sorting, let's generate the sorting token for comparison
-
-    " calculate how large number is needed to represent " order index
-    let digit = ceil(log10(len(g:NERDTreeSortOrder)))
-    let format = "%0" . float2nr(digit) . "d"         " e.g. '%04d'
-
-    for child in self.children
-        let path = child.path.getLastPathComponent(1)
-        if !g:NERDTreeSortHiddenFirst
-            let path = substitute(path, '^[._]', '', '')
-        endif
-        if !g:NERDTreeCaseSensitiveSort
-            let path = tolower(path)
-        endif
-        let child.sorting_token = printf(format, child.path.getSortOrderIndex()) . path
-    endfor
-
+    let CompareFunc = function("nerdtree#compareNodesBySortKey")
     call sort(self.children, CompareFunc)
 endfunction
 
