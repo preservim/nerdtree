@@ -248,7 +248,6 @@ function! s:TreeDirNode._initChildren(silent)
         "../ for path with strange chars (eg $)
 "        if i !~# '\/\.\.\/\?$' && i !~# '\/\.\/\?$'
 "
-        " 20150511
         " Regular expression is too expensive. Use simply string comparison
         " instead
         if i[len(i)-3:2] != ".." && i[len(i)-2:2] != ".." && 
@@ -412,7 +411,6 @@ function! s:TreeDirNode.refresh()
             "../ for path with strange chars (eg $)
             "if i !~# '\/\.\.\/\?$' && i !~# '\/\.\/\?$'
 
-            " 20150511
             " Regular expression is too expensive. Use simply string comparison
             " instead
             if i[len(i)-3:2] != ".." && i[len(i)-2:2] != ".." && 
