@@ -35,6 +35,7 @@ CONTENTS                                                   *NERDTree-contents*
         4.1.Key map API.......................|NERDTreeKeymapAPI|
         4.2.Menu API..........................|NERDTreeMenuAPI|
         4.3.Menu API..........................|NERDTreeAddPathFilter()|
+        4.4.Path Listener API.................|NERDTreePathListenerAPI|
     5.About...................................|NERDTreeAbout|
     6.Changelog...............................|NERDTreeChangelog|
     7.Credits.................................|NERDTreeCredits|
@@ -1191,6 +1192,26 @@ checked against when the decision to ignore them is made. Example >
         "return 1 to ignore params['path'] or 0 otherwise
     endfunction
 <
+------------------------------------------------------------------------------
+4.4 Path Listener API                              *NERDTreePathListenerAPI*
+
+Use this API if you want to run a callback for events on Path objects. E.G >
+
+    call g:NERDTreePathNotifier.AddListener("init", "MyListener")
+
+    "....
+
+    function! MyListener(event)
+        "This function will be called whenever a Path object is created.
+
+        "a:event is an object that contains a bunch of relevant info -
+        "including the path in question. See lib/event.vim for details.
+    endfunction
+<
+Current events supported:
+  init ~
+  refresh ~
+  refreshFlags ~
 
 ------------------------------------------------------------------------------
 NERDTreeRender()                                            *NERDTreeRender()*
@@ -1223,6 +1244,7 @@ Next
     - add NERDTreeCustomIgnoreFilter hook - needs doc
     - add magic [[dir]] and [[file]] flags to NERDTreeIgnore
     - add support for custom path filters. See :help NERDTreeAddPathFilter()
+    - add path listener API. See :help NERDTreePathListenerAPI.
 
 4.2.0
     - Add NERDTreeDirArrows option to make the UI use pretty arrow chars
