@@ -101,3 +101,7 @@ Stick this in your vimrc to open NERDTree with `Ctrl+n` (you can set whatever ke
 Stick this in your vimrc:
 
    `autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTreeType") && b:NERDTreeType == "primary") | q | endif`
+
+> Can I have different highlighting for different file extensions?
+
+See here: https://github.com/scrooloose/nerdtree/issues/433#issuecomment-92590696
