@@ -94,13 +94,13 @@ Stick this in your vimrc
 
 Stick this in your vimrc to open NERDTree with `Ctrl+n` (you can set whatever key you want):
 
-`map <C-n> :NERDTreeToggle<CR>`
+    map <C-n> :NERDTreeToggle<CR>
 
 > How can I close vim if the only window left open is a NERDTree?
 
 Stick this in your vimrc:
 
-   `autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTreeType") && b:NERDTreeType == "primary") | q | endif`
+    autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTreeType") && b:NERDTreeType == "primary") | q | endif
 
 > Can I have different highlighting for different file extensions?
 
