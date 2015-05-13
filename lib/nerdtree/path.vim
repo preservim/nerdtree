@@ -2,7 +2,7 @@
 "once here
 let s:NERDTreeSortStarIndex = index(g:NERDTreeSortOrder, '*')
 " used in formating sortKey, e.g. '%04d'
-let s:format = "%0" . float2nr(ceil(log10(len(g:NERDTreeSortOrder)))) . "d"
+let s:sortKeyFormat = "%0" . float2nr(ceil(log10(len(g:NERDTreeSortOrder)))) . "d"
 
 
 "CLASS: Path
@@ -367,7 +367,7 @@ endfunction
 "FUNCTION: Path.getSortKey() {{{1
 "returns a string used in compare function for sorting
 function! s:Path.getSortKey()
-    if !exists("self.sortKey")
+    if !exists("self._sortKey")
         let path = self.getLastPathComponent(1)
         if !g:NERDTreeSortHiddenFirst
             let path = substitute(path, '^[._]', '', '')
@@ -375,10 +375,10 @@ function! s:Path.getSortKey()
         if !g:NERDTreeCaseSensitiveSort
             let path = tolower(path)
         endif
-        let self.sortKey = printf(s:format, self.getSortOrderIndex()) . path
+        let self._sortKey = printf(s:sortKeyFormat, self.getSortOrderIndex()) . path
     endif
 
-    return self.sortKey
+    return self._sortKey
 endfunction
 
 
