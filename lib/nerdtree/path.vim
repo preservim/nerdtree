@@ -634,7 +634,7 @@ function! s:Path.str(...)
         if has_key(self, '_strFor' . format)
             exec 'let toReturn = self._strFor' . format . '()'
         else
-            raise 'NERDTree.UnknownFormatError: unknown format "'. format .'"'
+            throw 'NERDTree.UnknownFormatError: unknown format "'. format .'"'
         endif
     else
         let toReturn = self._str()
