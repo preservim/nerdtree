@@ -3,6 +3,7 @@
 "buffer options and key mappings etc.
 "============================================================
 let s:Creator = {}
+let g:CustomIgnoreMappings = {}
 let g:NERDTreeCreator = s:Creator
 
 "FUNCTION: s:Creator._bindMappings() {{{1
