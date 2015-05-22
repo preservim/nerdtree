@@ -2,8 +2,11 @@
 "once here
 let s:NERDTreeSortStarIndex = index(g:NERDTreeSortOrder, '*')
 " used in formating sortKey, e.g. '%04d'
-let s:sortKeyFormat = "%0" . float2nr(ceil(log10(len(g:NERDTreeSortOrder)))) . "d"
-
+if exists("log10")
+    let s:sortKeyFormat = "%0" . float2nr(ceil(log10(len(g:NERDTreeSortOrder)))) . "d"
+else
+    let s:sortKeyFormat = "%04d"
+endif
 
 "CLASS: Path
 "============================================================
