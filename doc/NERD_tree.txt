@@ -1040,6 +1040,19 @@ tree window using `silent keepalt keepjumps edit`:
     let NERDTreeCreatePrefix='silent keepalt keepjumps'
 <
 
+------------------------------------------------------------------------------
+                                          *'NERDTreeOpenTabAtTheEnd'*
+Values: 0 or 1
+Default: 0.
+
+When opening a file in a new tab, usually the tab is put after the current
+tab. If the option is set to 1, the tab will be opened after the last tab.
+Use one of the follow lines to set this option: >
+    let NERDTreeOpenTabAtTheEnd=0
+    let NERDTreeOpenTabAtTheEnd=1
+<
+
+
 ==============================================================================
 4. The NERD tree API                                             *NERDTreeAPI*
 

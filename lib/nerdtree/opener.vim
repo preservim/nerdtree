@@ -70,7 +70,11 @@ function! s:Opener._gotoTargetWin()
         elseif self._where == 'h'
             split
         elseif self._where == 't'
-            tabnew
+            if g:NERDTreeOpenTabAtTheEnd
+                $tabnew
+            else
+                tabnew
+            endif
         endif
     else
         call self._checkToCloseTree(1)
@@ -80,7 +84,11 @@ function! s:Opener._gotoTargetWin()
         elseif self._where == 'h'
             call self._newSplit()
         elseif self._where == 't'
-            tabnew
+            if g:NERDTreeOpenTabAtTheEnd
+                $tabnew
+            else
+                tabnew
+            endif
         elseif self._where == 'p'
             call self._previousWindow()
         endif
