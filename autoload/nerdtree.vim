@@ -36,9 +36,9 @@ endfunction
 
 "FUNCTION: nerdtree#compareNodesBySortKey(n1, n2) {{{2
 function! nerdtree#compareNodesBySortKey(n1, n2)
-    if a:n1.path.getSortKey() < a:n2.path.getSortKey()
+    if a:n1.path.getSortKey() <# a:n2.path.getSortKey()
         return -1
-    elseif a:n1.path.getSortKey() > a:n2.path.getSortKey()
+    elseif a:n1.path.getSortKey() ># a:n2.path.getSortKey()
         return 1
     else
         return 0
