@@ -1205,7 +1205,7 @@ Use this API if you want to run a callback for events on Path objects. E.G >
         "This function will be called whenever a Path object is created.
 
         "a:event is an object that contains a bunch of relevant info -
-        "including the path in question. See lib/event.vim for details.
+        "including the path in question. See lib/nerdtree/event.vim for details.
     endfunction
 <
 Current events supported:
