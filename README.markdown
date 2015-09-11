@@ -112,4 +112,4 @@ Use these variables in your vimrc. Note that below are default arrow symbols
 
     let g:NERDTreeDirArrows = 1
     let g:NERDTreeDirArrowExpandable = '▸'
-    let g:NERDTreeDirArrowCollapsable = '▾'
+    let g:NERDTreeDirArrowCollapsible = '▾'
