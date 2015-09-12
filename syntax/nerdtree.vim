@@ -23,12 +23,13 @@ syn match NERDTreeLinkDir #.*/ ->#me=e-3 containedin=NERDTreeDir
 syn match NERDTreeDirSlash #/# containedin=NERDTreeDir
 
 if g:NERDTreeDirArrows
-    syn match NERDTreeClosable #▾# containedin=NERDTreeDir,NERDTreeFile
-    syn match NERDTreeOpenable #▸# containedin=NERDTreeDir,NERDTreeFile
+    exec 'syn match NERDTreeClosable #'.g:NERDTreeDirArrowCollapsible.'# containedin=NERDTreeDir,NERDTreeFile'
+    exec 'syn match NERDTreeOpenable #'.g:NERDTreeDirArrowExpandable.'# containedin=NERDTreeDir,NERDTreeFile'
 
-    syn match NERDTreeDir #[^▾▸ ].*/#
+    let s:dirArrows = g:NERDTreeDirArrowCollapsible.g:NERDTreeDirArrowExpandable
+    exec 'syn match NERDTreeDir #[^'.s:dirArrows.' ].*/#'
     syn match NERDTreeExecFile  #^ .*\*\($\| \)# contains=NERDTreeRO,NERDTreeBookmark
-    syn match NERDTreeFile  #^[^"\.▾▸] *[^▾▸]*# contains=NERDTreeLink,NERDTreeRO,NERDTreeBookmark,NERDTreeExecFile
+    exec 'syn match NERDTreeFile  #^[^"\.'.s:dirArrows.'] *[^'.s:dirArrows.']*# contains=NERDTreeLink,NERDTreeRO,NERDTreeBookmark,NERDTreeExecFile'
 
     "highlighting for readonly files
     syn match NERDTreeRO # *\zs.*\ze \[RO\]# contains=NERDTreeIgnore,NERDTreeBookmark,NERDTreeFile

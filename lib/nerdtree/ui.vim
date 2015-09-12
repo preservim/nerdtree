@@ -154,7 +154,7 @@ function! s:UI.getPath(ln)
 
     if !g:NERDTreeDirArrows
         " in case called from outside the tree
-        if line !~# '^ *[|`▸▾ ]' || line =~# '^$'
+        if line !~# '^ *[|`'.g:NERDTreeDirArrowExpandable.g:NERDTreeDirArrowCollapsible.' ]' || line =~# '^$'
             return {}
         endif
     endif
@@ -261,9 +261,9 @@ endfunction
 
 "FUNCTION: s:UI._indentLevelFor(line) {{{1
 function! s:UI._indentLevelFor(line)
-    let level = match(a:line, '[^ \-+~▸▾`|]') / s:UI.IndentWid()
+    let level = match(a:line, '[^ \-+~'.g:NERDTreeDirArrowExpandable.g:NERDTreeDirArrowCollapsible.'`|]') / s:UI.IndentWid()
     " check if line includes arrows
-    if match(a:line, '[▸▾]') > -1
+    if match(a:line, '['.g:NERDTreeDirArrowExpandable.g:NERDTreeDirArrowCollapsible.']') > -1
         " decrement level as arrow uses 3 ascii chars
         let level = level - 1
     endif
@@ -278,7 +278,7 @@ endfunction
 "FUNCTION: s:UI.MarkupReg() {{{1
 function! s:UI.MarkupReg()
     if g:NERDTreeDirArrows
-        return '^\([▾▸] \| \+[▾▸] \| \+\)'
+        return '^\(['.g:NERDTreeDirArrowExpandable.g:NERDTreeDirArrowCollapsible.'] \| \+['.g:NERDTreeDirArrowExpandable.g:NERDTreeDirArrowCollapsible.'] \| \+\)'
     endif
 
     return '^[ `|]*[\-+~]'

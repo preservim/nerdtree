@@ -312,7 +312,7 @@ function! s:handleLeftClick()
         endfor
 
         if currentNode.path.isDirectory
-            if startToCur =~# g:NERDTreeUI.MarkupReg() && startToCur =~# '[+~▾▸] \?$'
+            if startToCur =~# g:NERDTreeUI.MarkupReg() && startToCur =~# '[+~'.g:NERDTreeDirArrowExpandable.g:NERDTreeDirArrowCollapsible.'] \?$'
                 call currentNode.activate()
                 return
             endif

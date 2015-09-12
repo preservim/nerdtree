@@ -105,3 +105,11 @@ Stick this in your vimrc:
 > Can I have different highlighting for different file extensions?
 
 See here: https://github.com/scrooloose/nerdtree/issues/433#issuecomment-92590696
+
+> How can I change default arrows?
+
+Use these variables in your vimrc. Note that below are default arrow symbols
+
+    let g:NERDTreeDirArrows = 1
+    let g:NERDTreeDirArrowExpandable = '▸'
+    let g:NERDTreeDirArrowCollapsible = '▾'

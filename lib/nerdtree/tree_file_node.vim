@@ -383,13 +383,13 @@ function! s:TreeFileNode._renderToString(depth, drawText, vertMap, isLastChild)
         if self.path.isDirectory
             if self.isOpen
                 if g:NERDTreeDirArrows
-                    let treeParts = treeParts . '▾ '
+                    let treeParts = treeParts . g:NERDTreeDirArrowCollapsible . ' '
                 else
                     let treeParts = treeParts . '~'
                 endif
             else
                 if g:NERDTreeDirArrows
-                    let treeParts = treeParts . '▸ '
+                    let treeParts = treeParts . g:NERDTreeDirArrowExpandable . ' '
                 else
                     let treeParts = treeParts . '+'
                 endif
