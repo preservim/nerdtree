@@ -23,10 +23,10 @@ syn match NERDTreeLinkDir #.*/ ->#me=e-3 containedin=NERDTreeDir
 syn match NERDTreeDirSlash #/# containedin=NERDTreeDir
 
 if g:NERDTreeDirArrows
-    exec 'syn match NERDTreeClosable #'.g:NERDTreeDirArrowCollapsible.'# containedin=NERDTreeDir,NERDTreeFile'
-    exec 'syn match NERDTreeOpenable #'.g:NERDTreeDirArrowExpandable.'# containedin=NERDTreeDir,NERDTreeFile'
+    exec 'syn match NERDTreeClosable #'.escape(g:NERDTreeDirArrowCollapsible, '~').'# containedin=NERDTreeDir,NERDTreeFile'
+    exec 'syn match NERDTreeOpenable #'.escape(g:NERDTreeDirArrowExpandable, '~').'# containedin=NERDTreeDir,NERDTreeFile'
 
-    let s:dirArrows = g:NERDTreeDirArrowCollapsible.g:NERDTreeDirArrowExpandable
+    let s:dirArrows = escape(g:NERDTreeDirArrowCollapsible, '~').escape(g:NERDTreeDirArrowExpandable, '~')
     exec 'syn match NERDTreeDir #[^'.s:dirArrows.' ].*/#'
     syn match NERDTreeExecFile  #^ .*\*\($\| \)# contains=NERDTreeRO,NERDTreeBookmark
     exec 'syn match NERDTreeFile  #^[^"\.'.s:dirArrows.'] *[^'.s:dirArrows.']*# contains=NERDTreeLink,NERDTreeRO,NERDTreeBookmark,NERDTreeExecFile'
