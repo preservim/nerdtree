@@ -34,7 +34,7 @@ if g:NERDTreeDirArrows
     "highlighting for readonly files
     syn match NERDTreeRO # *\zs.*\ze \[RO\]# contains=NERDTreeIgnore,NERDTreeBookmark,NERDTreeFile
 
-    syn match NERDTreeFlags #^ *\zs\[.\]# containedin=NERDTreeFile
+    syn match NERDTreeFlags #^ *\zs\[.\]# containedin=NERDTreeFile,NERDTreeExecFile
     syn match NERDTreeFlags #\[.\]# containedin=NERDTreeDir
 else
     "highlighting for the ~/+ symbols for the directory nodes
