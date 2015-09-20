@@ -34,6 +34,10 @@ if g:NERDTreePath.CopyingSupported()
     call NERDTreeAddMenuItem({'text': '(c)opy the current node', 'shortcut': 'c', 'callback': 'NERDTreeCopyNode'})
 endif
 
+if has("unix")
+    call NERDTreeAddMenuItem({'text': '(l)ist the current node', 'shortcut': 'l', 'callback': 'NERDTreeListNode'})
+endif
+
 "FUNCTION: s:echo(msg){{{1
 function! s:echo(msg)
     redraw
@@ -264,6 +268,14 @@ function! NERDTreeExecuteFile()
     let treenode = g:NERDTreeFileNode.GetSelected()
     if treenode != {}
         let x = system("open '" . treenode.path.str() . "'")
+    endif
+endfunction
+
+function! NERDTreeListNode()
+    let treenode = g:NERDTreeFileNode.GetSelected()
+    if treenode != {}
+        let metadata = split(system('ls -ld ' . shellescape(treenode.path.str())), '\n')
+        call s:echo(metadata[0])
     endif
 endfunction
 
