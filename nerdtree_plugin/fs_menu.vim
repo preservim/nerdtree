@@ -23,6 +23,8 @@ endif
 call NERDTreeAddMenuItem({'text': '(a)dd a childnode', 'shortcut': 'a', 'callback': 'NERDTreeAddNode'})
 call NERDTreeAddMenuItem({'text': '(m)ove the current node', 'shortcut': 'm', 'callback': 'NERDTreeMoveNode'})
 call NERDTreeAddMenuItem({'text': '(d)elete the current node', 'shortcut': 'd', 'callback': 'NERDTreeDeleteNode'})
+call NERDTreeAddMenuItem({'text': '(b)uffer the current node path', 'shortcut': 'b', 'callback': 'NERDTreeBufferNode'})
+call NERDTreeAddMenuItem({'text': '(p)aste buffered node', 'shortcut': 'p', 'callback': 'NERDTreePasteBufferedNode'})
 
 if has("gui_mac") || has("gui_macvim")
     call NERDTreeAddMenuItem({'text': '(r)eveal in Finder the current node', 'shortcut': 'r', 'callback': 'NERDTreeRevealInFinder'})
@@ -97,6 +99,32 @@ function! s:promptToRenameBuffer(bufnum, msg, newFileName)
         exec "bwipeout! " . a:bufnum
     endif
 endfunction
+
+"FUNCTION: NERDTreeBufferNode(){{{1
+function! NERDTreeBufferNode()
+    let curFileNode = g:NERDTreeFileNode.GetSelected()
+    call system("echo " . curFileNode.path.str() . " > ~/tmp/nerdtreebuffer")
+    call s:echo("Buffered: " . curFileNode.path.str())
+endfunction
+
+"FUNCTION:NERDTreePasteBufferedNode(){{{1
+function! NERDTreePasteBufferedNode()
+    let curDirNode = g:NERDTreeDirNode.GetSelected().path.str()
+    let bufferedFileName = system("cat ~/tmp/nerdtreebuffer | tr -d '\n'")
+    let filetype = system("file ".bufferedFileName."| grep -oE ': [^ ]+' | tr -d '\n'") 
+    let command = ""
+    if(filetype == ": directory")
+        let command = "cp -R " . bufferedFileName . " " . curDirNode
+    elseif(filetype != ": cannot")
+        let command = "cp " . bufferedFileName . " " . curDirNode  
+    else
+        return
+    endif
+    call system(command)
+    call g:NERDTreeDirNode.GetSelected().path.refresh() 
+    call s:echo("called " . command)
+endfunction
+
 "FUNCTION: NERDTreeAddNode(){{{1
 function! NERDTreeAddNode()
     let curDirNode = g:NERDTreeDirNode.GetSelected()
