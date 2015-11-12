@@ -37,6 +37,8 @@ endif
 
 if has("unix") || has("osx")
     call NERDTreeAddMenuItem({'text': '(l)ist the current node', 'shortcut': 'l', 'callback': 'NERDTreeListNode'})
+else
+    call NERDTreeAddMenuItem({'text': '(l)ist the current node', 'shortcut': 'l', 'callback': 'NERDTreeListNodeWin32'})
 endif
 
 "FUNCTION: s:echo(msg){{{1
@@ -212,8 +214,8 @@ function! NERDTreeDeleteNode()
 
 endfunction
 
-" FUNCTION: NERDTreeNodeProperties() {{{1
-function! NERDTreeNodeProperties()
+" FUNCTION: NERDTreeListNodeWin32() {{{1
+function! NERDTreeListNodeWin32
     let currentNode = g:NERDTreeFileNode.GetSelected()
     call s:echo(getfsize(currentNode.path.str())." bytes     modified on ".strftime("%A %Y-%m-%d %H:%M:%S", getftime(currentNode.path.str())))
 endfunction
