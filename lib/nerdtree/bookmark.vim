@@ -87,6 +87,7 @@ function! s:Bookmark.CacheBookmarks(silent)
 
                 let name = substitute(i, '^\(.\{-}\) .*$', '\1', '')
                 let path = substitute(i, '^.\{-} \(.*\)$', '\1', '')
+                let path = fnamemodify(path, ':p')
 
                 try
                     let bookmark = s:Bookmark.New(name, g:NERDTreePath.New(path))
@@ -253,7 +254,7 @@ endfunction
 " FUNCTION: Bookmark.str()   {{{1
 " Get the string that should be rendered in the view for this bookmark
 function! s:Bookmark.str()
-    let pathStrMaxLen = winwidth(nerdtree#getTreeWinNum()) - 4 - len(self.name)
+    let pathStrMaxLen = winwidth(g:NERDTree.GetWinNum()) - 4 - len(self.name)
     if &nu
         let pathStrMaxLen = pathStrMaxLen - &numberwidth
     endif
@@ -304,7 +305,7 @@ endfunction
 function! s:Bookmark.Write()
     let bookmarkStrings = []
     for i in s:Bookmark.Bookmarks()
-        call add(bookmarkStrings, i.name . ' ' . i.path.str())
+        call add(bookmarkStrings, i.name . ' ' . fnamemodify(i.path.str(), ':~'))
     endfor
 
     "add a blank line before the invalid ones

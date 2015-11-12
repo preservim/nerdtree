@@ -23,17 +23,18 @@ syn match NERDTreeLinkDir #.*/ ->#me=e-3 containedin=NERDTreeDir
 syn match NERDTreeDirSlash #/# containedin=NERDTreeDir
 
 if g:NERDTreeDirArrows
-    syn match NERDTreeClosable #▾# containedin=NERDTreeDir,NERDTreeFile
-    syn match NERDTreeOpenable #▸# containedin=NERDTreeDir,NERDTreeFile
+    exec 'syn match NERDTreeClosable #'.escape(g:NERDTreeDirArrowCollapsible, '~').'# containedin=NERDTreeDir,NERDTreeFile'
+    exec 'syn match NERDTreeOpenable #'.escape(g:NERDTreeDirArrowExpandable, '~').'# containedin=NERDTreeDir,NERDTreeFile'
 
-    syn match NERDTreeDir #[^▾▸ ].*/#
+    let s:dirArrows = escape(g:NERDTreeDirArrowCollapsible, '~').escape(g:NERDTreeDirArrowExpandable, '~')
+    exec 'syn match NERDTreeDir #[^'.s:dirArrows.' ].*/#'
     syn match NERDTreeExecFile  #^ .*\*\($\| \)# contains=NERDTreeRO,NERDTreeBookmark
-    syn match NERDTreeFile  #^[^"\.▾▸] *[^▾▸]*# contains=NERDTreeLink,NERDTreeRO,NERDTreeBookmark,NERDTreeExecFile
+    exec 'syn match NERDTreeFile  #^[^"\.'.s:dirArrows.'] *[^'.s:dirArrows.']*# contains=NERDTreeLink,NERDTreeRO,NERDTreeBookmark,NERDTreeExecFile'
 
     "highlighting for readonly files
     syn match NERDTreeRO # *\zs.*\ze \[RO\]# contains=NERDTreeIgnore,NERDTreeBookmark,NERDTreeFile
 
-    syn match NERDTreeFlags #^ *\zs\[.\]# containedin=NERDTreeFile
+    syn match NERDTreeFlags #^ *\zs\[.\]# containedin=NERDTreeFile,NERDTreeExecFile
     syn match NERDTreeFlags #\[.\]# containedin=NERDTreeDir
 else
     "highlighting for the ~/+ symbols for the directory nodes

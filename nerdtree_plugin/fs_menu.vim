@@ -25,7 +25,7 @@ call NERDTreeAddMenuItem({'text': '(m)ove the current node', 'shortcut': 'm', 'c
 call NERDTreeAddMenuItem({'text': '(d)elete the current node', 'shortcut': 'd', 'callback': 'NERDTreeDeleteNode'})
 call NERDTreeAddMenuItem({'text': 'show (p)roperties of the current node', 'shortcut': 'p', 'callback': 'NERDTreeNodeProperties'})
 
-if has("gui_mac") || has("gui_macvim") 
+if has("gui_mac") || has("gui_macvim") || has("mac")
     call NERDTreeAddMenuItem({'text': '(r)eveal in Finder the current node', 'shortcut': 'r', 'callback': 'NERDTreeRevealInFinder'})
     call NERDTreeAddMenuItem({'text': '(o)pen the current node with system editor', 'shortcut': 'o', 'callback': 'NERDTreeExecuteFile'})
     call NERDTreeAddMenuItem({'text': '(q)uicklook the current node', 'shortcut': 'q', 'callback': 'NERDTreeQuickLook'})
@@ -33,6 +33,10 @@ endif
 
 if g:NERDTreePath.CopyingSupported()
     call NERDTreeAddMenuItem({'text': '(c)opy the current node', 'shortcut': 'c', 'callback': 'NERDTreeCopyNode'})
+endif
+
+if has("unix") || has("osx")
+    call NERDTreeAddMenuItem({'text': '(l)ist the current node', 'shortcut': 'l', 'callback': 'NERDTreeListNode'})
 endif
 
 "FUNCTION: s:echo(msg){{{1
@@ -87,10 +91,11 @@ function! s:promptToRenameBuffer(bufnum, msg, newFileName)
         " 1. ensure that a new buffer is loaded
         exec "badd " . quotedFileName
         " 2. ensure that all windows which display the just deleted filename
-        " display a buffer for a new filename. 
+        " display a buffer for a new filename.
         let s:originalTabNumber = tabpagenr()
         let s:originalWindowNumber = winnr()
-        exec "tabdo windo if winbufnr(0) == " . a:bufnum . " | exec \":e! " . quotedFileName . "\" | endif"
+        let editStr = g:NERDTreePath.New(a:newFileName).str({'format': 'Edit'})
+        exec "tabdo windo if winbufnr(0) == " . a:bufnum . " | exec ':e! " . editStr . "' | endif"
         exec "tabnext " . s:originalTabNumber
         exec s:originalWindowNumber . "wincmd w"
         " 3. We don't need a previous buffer anymore
@@ -270,6 +275,16 @@ function! NERDTreeExecuteFile()
     let treenode = g:NERDTreeFileNode.GetSelected()
     if treenode != {}
         let x = system("open '" . treenode.path.str() . "'")
+    endif
+endfunction
+
+function! NERDTreeListNode()
+    let treenode = g:NERDTreeFileNode.GetSelected()
+    if treenode != {}
+        let metadata = split(system('ls -ld ' . shellescape(treenode.path.str())), '\n')
+        call s:echo(metadata[0])
+    else
+        call s:echo("No information avaialable")
     endif
 endfunction
 
