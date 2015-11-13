@@ -244,13 +244,9 @@ function! s:TreeDirNode._initChildren(silent)
     for i in files
 
         "filter out the .. and . directories
-        "Note: we must match .. AND ../ cos sometimes the globpath returns
+        "Note: we must match .. AND ../ since sometimes the globpath returns
         "../ for path with strange chars (eg $)
-"        if i !~# '\/\.\.\/\?$' && i !~# '\/\.\/\?$'
-"
-        " Regular expression is too expensive. Use simply string comparison
-        " instead
-        if i[len(i)-3:2] != ".." && i[len(i)-2:2] != ".." && 
+        if i[len(i)-3:2] != ".." && i[len(i)-2:2] != ".." &&
          \ i[len(i)-2:1] != "." && i[len(i)-1] != "."
             "put the next file in a new node and attach it
             try
