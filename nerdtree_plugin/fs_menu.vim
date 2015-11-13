@@ -287,7 +287,7 @@ endfunction
 function! NERDTreeRevealInFinder()
     let treenode = g:NERDTreeFileNode.GetSelected()
     if treenode != {}
-        let x = system("open -R '" . treenode.path.str() . "'")
+        call system("open -R '" . treenode.path.str() . "'")
     endif
 endfunction
 
@@ -295,7 +295,7 @@ endfunction
 function! NERDTreeExecuteFile()
     let treenode = g:NERDTreeFileNode.GetSelected()
     if treenode != {}
-        let x = system("open '" . treenode.path.str() . "'")
+        call system("open '" . treenode.path.str() . "'")
     endif
 endfunction
 " vim: set sw=4 sts=4 et fdm=marker:
