@@ -213,6 +213,17 @@ function! NERDTreeDeleteNode()
 
 endfunction
 
+" FUNCTION: NERDTreeListNode() {{{1
+function! NERDTreeListNode()
+    let treenode = g:NERDTreeFileNode.GetSelected()
+    if treenode != {}
+        let metadata = split(system('ls -ld ' . shellescape(treenode.path.str())), '\n')
+        call s:echo(metadata[0])
+    else
+        call s:echo("No information avaialable")
+    endif
+endfunction
+
 " FUNCTION: NERDTreeListNodeWin32() {{{1
 function! NERDTreeListNodeWin32()
     let treenode = g:NERDTreeFileNode.GetSelected()
@@ -287,16 +298,4 @@ function! NERDTreeExecuteFile()
         let x = system("open '" . treenode.path.str() . "'")
     endif
 endfunction
-
-" FUNCTION: NERDTreeListNode() {{{1
-function! NERDTreeListNode()
-    let treenode = g:NERDTreeFileNode.GetSelected()
-    if treenode != {}
-        let metadata = split(system('ls -ld ' . shellescape(treenode.path.str())), '\n')
-        call s:echo(metadata[0])
-    else
-        call s:echo("No information avaialable")
-    endif
-endfunction
-
 " vim: set sw=4 sts=4 et fdm=marker:
