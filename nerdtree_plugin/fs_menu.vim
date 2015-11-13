@@ -23,7 +23,6 @@ endif
 call NERDTreeAddMenuItem({'text': '(a)dd a childnode', 'shortcut': 'a', 'callback': 'NERDTreeAddNode'})
 call NERDTreeAddMenuItem({'text': '(m)ove the current node', 'shortcut': 'm', 'callback': 'NERDTreeMoveNode'})
 call NERDTreeAddMenuItem({'text': '(d)elete the current node', 'shortcut': 'd', 'callback': 'NERDTreeDeleteNode'})
-call NERDTreeAddMenuItem({'text': 'show (p)roperties of the current node', 'shortcut': 'p', 'callback': 'NERDTreeNodeProperties'})
 
 if has("gui_mac") || has("gui_macvim") || has("mac")
     call NERDTreeAddMenuItem({'text': '(r)eveal in Finder the current node', 'shortcut': 'r', 'callback': 'NERDTreeRevealInFinder'})
@@ -215,9 +214,15 @@ function! NERDTreeDeleteNode()
 endfunction
 
 " FUNCTION: NERDTreeListNodeWin32() {{{1
-function! NERDTreeListNodeWin32
-    let currentNode = g:NERDTreeFileNode.GetSelected()
-    call s:echo(getfsize(currentNode.path.str())." bytes     modified on ".strftime("%A %Y-%m-%d %H:%M:%S", getftime(currentNode.path.str())))
+function! NERDTreeListNodeWin32()
+    let treenode = g:NERDTreeFileNode.GetSelected()
+    if treenode != {}
+        let metadata = split(system('dir /q ' . shellescape(treenode.path.str()) . ' | FINDSTR "^[012][0-9]/[0-3][0-9]/[12][0-9][0-9][0-9]"'), '\n')
+        call s:echo(metadata[0])
+    else
+        call s:echo("No information avaialable")
+    endif
+
 endfunction
 
 " FUNCTION: NERDTreeCopyNode() {{{1
@@ -259,6 +264,7 @@ function! NERDTreeCopyNode()
     redraw
 endfunction
 
+" FUNCTION: NERDTreeQuickLook() {{{1
 function! NERDTreeQuickLook()
     let treenode = g:NERDTreeFileNode.GetSelected()
     if treenode != {}
@@ -266,6 +272,7 @@ function! NERDTreeQuickLook()
     endif
 endfunction
 
+" FUNCTION: NERDTreeRevealInFinder() {{{1
 function! NERDTreeRevealInFinder()
     let treenode = g:NERDTreeFileNode.GetSelected()
     if treenode != {}
@@ -273,6 +280,7 @@ function! NERDTreeRevealInFinder()
     endif
 endfunction
 
+" FUNCTION: NERDTreeExecuteFile() {{{1
 function! NERDTreeExecuteFile()
     let treenode = g:NERDTreeFileNode.GetSelected()
     if treenode != {}
@@ -280,6 +288,7 @@ function! NERDTreeExecuteFile()
     endif
 endfunction
 
+" FUNCTION: NERDTreeListNode() {{{1
 function! NERDTreeListNode()
     let treenode = g:NERDTreeFileNode.GetSelected()
     if treenode != {}
