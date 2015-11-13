@@ -1240,11 +1240,52 @@ The latest dev versions are on github
 6. Changelog                                               *NERDTreeChangelog*
 
 Next
-    - add 'scope' argument to the key map API
-    - add NERDTreeCustomIgnoreFilter hook - needs doc
+    - Refactor the code significantly:
+        * Break the classes out into their own files.
+        * Make the majority of the code OO - previously large parts were
+          effectively a tangle of "global" methods.
+    - Add an API to assign flags to nodes. This allows VCS plugins like
+      https://github.com/Xuyuanp/nerdtree-git-plugin to exist. Thanks to
+      Xuyuanp for helping design/test/build said API.
+    - add 'scope' argument to the key map API see :help NERDTreeAddKeyMap()
     - add magic [[dir]] and [[file]] flags to NERDTreeIgnore
     - add support for custom path filters. See :help NERDTreeAddPathFilter()
     - add path listener API. See :help NERDTreePathListenerAPI.
+    - expand the fs menu functionality to list file properties (PhilRunninger,
+      apbarrero, JESii)
+    - make bookmarks work with `~` home shortcuts (hiberabyss)
+    - show OSX specific fsmenu options in regular vim on mac (evindor)
+    - make dir arrow icons configurable (PickRelated)
+    - optimise node sorting performance when opening large dirs (vtsang)
+    - make the root note render prettier by truncating it at a path slash (gcmt)
+    - remove NERDChristmasTree option - its always christmas now
+    - add "cascade" open and closing for dirs containing only another single
+      dir. See :help NERDTreeCascadeOpenSingleChildDir (pendulm)
+
+    Many other fixes, doc updates and contributions from:
+    actionshrimp
+    SchDen
+    egalpin
+    cperl82 - many small fixes
+    toiffel
+    WoLpH
+    handcraftedbits
+    devmanhinton
+    xiaodili
+    zhangoose
+    gastropoda
+    mixvin
+    alvan
+    lucascaton
+    kelaban
+    shanesmith
+    staeff
+    pendulm
+    stephenprater
+    franksort
+    agrussellknives
+    AndrewRadev
+    Twinside
 
 4.2.0
     - Add NERDTreeDirArrows option to make the UI use pretty arrow chars
