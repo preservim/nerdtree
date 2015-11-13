@@ -2,7 +2,6 @@
 " File:        fs_menu.vim
 " Description: plugin for the NERD Tree that provides a file system menu
 " Maintainer:  Martin Grenfell <martin.grenfell at gmail dot com>
-" Last Change: 17 July, 2009
 " License:     This program is free software. It comes without any warranty,
 "              to the extent permitted by applicable law. You can redistribute
 "              it and/or modify it under the terms of the Do What The Fuck You
