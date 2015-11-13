@@ -36,6 +36,8 @@ endif
 
 if has("unix") || has("osx")
     call NERDTreeAddMenuItem({'text': '(l)ist the current node', 'shortcut': 'l', 'callback': 'NERDTreeListNode'})
+else
+    call NERDTreeAddMenuItem({'text': '(l)ist the current node', 'shortcut': 'l', 'callback': 'NERDTreeListNodeWin32'})
 endif
 
 "FUNCTION: s:echo(msg){{{1
@@ -211,6 +213,18 @@ function! NERDTreeDeleteNode()
 
 endfunction
 
+" FUNCTION: NERDTreeListNodeWin32() {{{1
+function! NERDTreeListNodeWin32()
+    let treenode = g:NERDTreeFileNode.GetSelected()
+    if treenode != {}
+        let metadata = split(system('DIR /Q ' . shellescape(treenode.path.str()) . ' | FINDSTR "^[012][0-9]/[0-3][0-9]/[12][0-9][0-9][0-9]"'), '\n')
+        call s:echo(metadata[0])
+    else
+        call s:echo("No information avaialable")
+    endif
+
+endfunction
+
 " FUNCTION: NERDTreeCopyNode() {{{1
 function! NERDTreeCopyNode()
     let currentNode = g:NERDTreeFileNode.GetSelected()
@@ -250,6 +264,7 @@ function! NERDTreeCopyNode()
     redraw
 endfunction
 
+" FUNCTION: NERDTreeQuickLook() {{{1
 function! NERDTreeQuickLook()
     let treenode = g:NERDTreeFileNode.GetSelected()
     if treenode != {}
@@ -257,6 +272,7 @@ function! NERDTreeQuickLook()
     endif
 endfunction
 
+" FUNCTION: NERDTreeRevealInFinder() {{{1
 function! NERDTreeRevealInFinder()
     let treenode = g:NERDTreeFileNode.GetSelected()
     if treenode != {}
@@ -264,6 +280,7 @@ function! NERDTreeRevealInFinder()
     endif
 endfunction
 
+" FUNCTION: NERDTreeExecuteFile() {{{1
 function! NERDTreeExecuteFile()
     let treenode = g:NERDTreeFileNode.GetSelected()
     if treenode != {}
@@ -271,6 +288,7 @@ function! NERDTreeExecuteFile()
     endif
 endfunction
 
+" FUNCTION: NERDTreeListNode() {{{1
 function! NERDTreeListNode()
     let treenode = g:NERDTreeFileNode.GetSelected()
     if treenode != {}
