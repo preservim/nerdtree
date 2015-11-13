@@ -217,7 +217,7 @@ endfunction
 function! NERDTreeListNodeWin32()
     let treenode = g:NERDTreeFileNode.GetSelected()
     if treenode != {}
-        let metadata = split(system('dir /q ' . shellescape(treenode.path.str()) . ' | FINDSTR "^[012][0-9]/[0-3][0-9]/[12][0-9][0-9][0-9]"'), '\n')
+        let metadata = split(system('DIR /Q ' . shellescape(treenode.path.str()) . ' | FINDSTR "^[012][0-9]/[0-3][0-9]/[12][0-9][0-9][0-9]"'), '\n')
         call s:echo(metadata[0])
     else
         call s:echo("No information avaialable")
