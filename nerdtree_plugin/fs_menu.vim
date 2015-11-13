@@ -40,19 +40,6 @@ else
     call NERDTreeAddMenuItem({'text': '(l)ist the current node', 'shortcut': 'l', 'callback': 'NERDTreeListNodeWin32'})
 endif
 
-"FUNCTION: s:echo(msg){{{1
-function! s:echo(msg)
-    redraw
-    echomsg "NERDTree: " . a:msg
-endfunction
-
-"FUNCTION: s:echoWarning(msg){{{1
-function! s:echoWarning(msg)
-    echohl warningmsg
-    call s:echo(a:msg)
-    echohl normal
-endfunction
-
 "FUNCTION: s:promptToDelBuffer(bufnum, msg){{{1
 "prints out the given msg and, if the user responds by pushing 'y' then the
 "buffer with the given bufnum is deleted
@@ -113,7 +100,7 @@ function! NERDTreeAddNode()
                           \ "", curDirNode.path.str() . g:NERDTreePath.Slash(), "file")
 
     if newNodeName ==# ''
-        call s:echo("Node Creation Aborted.")
+        call nerdtree#echo("Node Creation Aborted.")
         return
     endif
 
@@ -131,7 +118,7 @@ function! NERDTreeAddNode()
             call newTreeNode.putCursorHere(1, 0)
         endif
     catch /^NERDTree/
-        call s:echoWarning("Node Not Created.")
+        call nerdtree#echoWarning("Node Not Created.")
     endtry
 endfunction
 
@@ -144,7 +131,7 @@ function! NERDTreeMoveNode()
                           \ "", curNode.path.str(), "file")
 
     if newNodePath ==# ''
-        call s:echo("Node Renaming Aborted.")
+        call nerdtree#echo("Node Renaming Aborted.")
         return
     endif
 
@@ -165,7 +152,7 @@ function! NERDTreeMoveNode()
 
         redraw
     catch /^NERDTree/
-        call s:echoWarning("Node Not Renamed.")
+        call nerdtree#echoWarning("Node Not Renamed.")
     endtry
 endfunction
 
@@ -205,10 +192,10 @@ function! NERDTreeDeleteNode()
 
             redraw
         catch /^NERDTree/
-            call s:echoWarning("Could not remove node")
+            call nerdtree#echoWarning("Could not remove node")
         endtry
     else
-        call s:echo("delete aborted")
+        call nerdtree#echo("delete aborted")
     endif
 
 endfunction
@@ -218,9 +205,9 @@ function! NERDTreeListNode()
     let treenode = g:NERDTreeFileNode.GetSelected()
     if treenode != {}
         let metadata = split(system('ls -ld ' . shellescape(treenode.path.str())), '\n')
-        call s:echo(metadata[0])
+        call nerdtree#echo(metadata[0])
     else
-        call s:echo("No information avaialable")
+        call nerdtree#echo("No information avaialable")
     endif
 endfunction
 
@@ -229,9 +216,9 @@ function! NERDTreeListNodeWin32()
     let treenode = g:NERDTreeFileNode.GetSelected()
     if treenode != {}
         let metadata = split(system('DIR /Q ' . shellescape(treenode.path.str()) . ' | FINDSTR "^[012][0-9]/[0-3][0-9]/[12][0-9][0-9][0-9]"'), '\n')
-        call s:echo(metadata[0])
+        call nerdtree#echo(metadata[0])
     else
-        call s:echo("No information avaialable")
+        call nerdtree#echo("No information avaialable")
     endif
 
 endfunction
@@ -250,7 +237,7 @@ function! NERDTreeCopyNode()
 
         let confirmed = 1
         if currentNode.path.copyingWillOverwrite(newNodePath)
-            call s:echo("Warning: copying may overwrite files! Continue? (yN)")
+            call nerdtree#echo("Warning: copying may overwrite files! Continue? (yN)")
             let choice = nr2char(getchar())
             let confirmed = choice ==# 'y'
         endif
@@ -266,11 +253,11 @@ function! NERDTreeCopyNode()
                     call newNode.putCursorHere(0, 0)
                 endif
             catch /^NERDTree/
-                call s:echoWarning("Could not copy node")
+                call nerdtree#echoWarning("Could not copy node")
             endtry
         endif
     else
-        call s:echo("Copy aborted.")
+        call nerdtree#echo("Copy aborted.")
     endif
     redraw
 endfunction
