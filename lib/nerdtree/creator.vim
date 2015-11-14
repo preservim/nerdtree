@@ -42,7 +42,7 @@ endfunction
 "name: the name of a bookmark or a directory
 function! s:Creator.createTabTree(name)
     let path = self._pathForString(a:name)
-    
+
     "abort if exception was thrown (bookmark/dir doesn't exist)
     if empty(path)
         return
@@ -66,8 +66,7 @@ function! s:Creator.createTabTree(name)
     endif
 
     call self._createTreeWin()
-    call self._createNERDTree(path)
-    let b:NERDTreeType = "tab"
+    call self._createNERDTree(path, "tab")
     let b:treeShowHelp = 0
     let b:NERDTreeIgnoreEnabled = 1
     let b:NERDTreeShowFiles = g:NERDTreeShowFiles
@@ -105,9 +104,8 @@ function! s:Creator.createWindowTree(dir)
     exec "silent edit " . self._nextBufferName()
 
     let b:NERDTreePreviousBuf = bufnr(previousBuf)
-    call self._createNERDTree(path)
+    call self._createNERDTree(path, "window")
     call self._setCommonBufOptions()
-    let b:NERDTreeType = "window"
 
     call b:NERDTree.render()
 
@@ -115,8 +113,8 @@ function! s:Creator.createWindowTree(dir)
 endfunction
 
 " FUNCTION: s:Creator._createNERDTree(path) {{{1
-function! s:Creator._createNERDTree(path)
-    let b:NERDTree = g:NERDTree.New(a:path)
+function! s:Creator._createNERDTree(path, type)
+    let b:NERDTree = g:NERDTree.New(a:path, a:type)
     "TODO: This is kept for compatability only since many things use
     "b:NERDTreeRoot instead of the new NERDTree.root
     "Remove this one day

@@ -105,6 +105,16 @@ function! s:NERDTree.IsOpen()
     return s:NERDTree.GetWinNum() != -1
 endfunction
 
+"FUNCTION: s:NERDTree.isTabTree() {{{1
+function! s:NERDTree.isTabTree()
+    return self._type == "tab"
+endfunction
+
+"FUNCTION: s:NERDTree.isWinTree() {{{1
+function! s:NERDTree.isWinTree()
+    return self._type == "window"
+endfunction
+
 "FUNCTION: s:NERDTree.MustBeOpen() {{{1
 function! s:NERDTree.MustBeOpen()
     if !s:NERDTree.IsOpen()
@@ -113,10 +123,11 @@ function! s:NERDTree.MustBeOpen()
 endfunction
 
 "FUNCTION: s:NERDTree.New() {{{1
-function! s:NERDTree.New(path)
+function! s:NERDTree.New(path, type)
     let newObj = copy(self)
     let newObj.ui = g:NERDTreeUI.New(newObj)
     let newObj.root = g:NERDTreeDirNode.New(a:path)
+    let newObj._type = a:type
 
     return newObj
 endfunction
