@@ -776,13 +776,13 @@ Default: 1.
 If set to 1, doing a >
     :edit <some directory>
 <
-will open up a "secondary" NERD tree instead of a netrw in the target window.
+will open up a window level NERD tree instead of a netrw in the target window.
 
-Secondary NERD trees behaves slightly different from a regular trees in the
+Window level trees behaves slightly different from a regular trees in the
 following respects:
     1. 'o' will open the selected file in the same window as the tree,
        replacing it.
-    2. you can have as many secondary tree as you want in the same tab.
+    2. you can have one tree per window - instead of per tab.
 
 ------------------------------------------------------------------------------
                                                             *'NERDTreeIgnore'*

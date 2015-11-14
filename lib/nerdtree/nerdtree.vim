@@ -9,7 +9,7 @@ function! s:NERDTree.AddPathFilter(callback)
 endfunction
 
 "FUNCTION: s:NERDTree.Close() {{{1
-"Closes the primary NERD tree window for this tab
+"Closes the tab tree window for this tab
 function! s:NERDTree.Close()
     if !s:NERDTree.IsOpen()
         return

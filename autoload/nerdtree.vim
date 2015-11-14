@@ -11,10 +11,10 @@ endfunction
 "============================================================
 
 "FUNCTION: nerdtree#checkForBrowse(dir) {{{2
-"inits a secondary nerd tree in the current buffer if appropriate
+"inits a window tree in the current buffer if appropriate
 function! nerdtree#checkForBrowse(dir)
     if a:dir != '' && isdirectory(a:dir)
-        call g:NERDTreeCreator.CreateSecondary(a:dir)
+        call g:NERDTreeCreator.CreateWindowTree(a:dir)
     endif
 endfunction
 

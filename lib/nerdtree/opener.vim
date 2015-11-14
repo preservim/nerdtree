@@ -64,7 +64,7 @@ endfunction
 
 "FUNCTION: Opener._gotoTargetWin() {{{1
 function! s:Opener._gotoTargetWin()
-    if b:NERDTreeType ==# "secondary"
+    if b:NERDTreeType ==# "window"
         if self._where == 'v'
             vsplit
         elseif self._where == 'h'
@@ -248,7 +248,7 @@ function! s:Opener._openFile()
 
     call self._gotoTargetWin()
 
-    if self._treetype ==# "secondary"
+    if self._treetype ==# "window"
         call self._path.edit()
     else
         call self._path.edit()
@@ -262,9 +262,9 @@ endfunction
 
 "FUNCTION: Opener._openDirectory(node) {{{1
 function! s:Opener._openDirectory(node)
-    if self._treetype ==# "secondary"
+    if self._treetype ==# "window"
         call self._gotoTargetWin()
-        call g:NERDTreeCreator.CreateSecondary(a:node.path.str())
+        call g:NERDTreeCreator.CreateWindow(a:node.path.str())
     else
         call self._gotoTargetWin()
         if empty(self._where)
@@ -272,9 +272,9 @@ function! s:Opener._openDirectory(node)
             call b:NERDTree.render()
             call a:node.putCursorHere(0, 0)
         elseif self._where == 't'
-            call g:NERDTreeCreator.CreatePrimary(a:node.path.str())
+            call g:NERDTreeCreator.CreateTabTree(a:node.path.str())
         else
-            call g:NERDTreeCreator.CreateSecondary(a:node.path.str())
+            call g:NERDTreeCreator.CreateWindow(a:node.path.str())
         endif
     endif
 
