@@ -103,8 +103,8 @@ function! s:Creator.createWindowTree(dir)
     "all independent
     exec "silent edit " . self._nextBufferName()
 
-    let b:NERDTreePreviousBuf = bufnr(previousBuf)
     call self._createNERDTree(path, "window")
+    let b:NERDTree._previousBuf = bufnr(previousBuf)
     call self._setCommonBufOptions()
 
     call b:NERDTree.render()

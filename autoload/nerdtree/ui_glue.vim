@@ -208,8 +208,8 @@ endfunction
 " FUNCTION: s:closeTreeWindow() {{{1
 " close the tree window
 function! s:closeTreeWindow()
-    if b:NERDTree.isWinTree() && b:NERDTreePreviousBuf != -1
-        exec "buffer " . b:NERDTreePreviousBuf
+    if b:NERDTree.isWinTree() && b:NERDTree.previousBuf() != -1
+        exec "buffer " . b:NERDTree.previousBuf()
     else
         if winnr("$") > 1
             call g:NERDTree.Close()
