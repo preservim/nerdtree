@@ -67,12 +67,6 @@ function! s:Creator.createTabTree(name)
 
     call self._createTreeWin()
     call self._createNERDTree(path, "tab")
-    let b:treeShowHelp = 0
-    let b:NERDTreeIgnoreEnabled = 1
-    let b:NERDTreeShowFiles = g:NERDTreeShowFiles
-    let b:NERDTreeShowHidden = g:NERDTreeShowHidden
-    let b:NERDTreeShowBookmarks = g:NERDTreeShowBookmarks
-
     call b:NERDTree.render()
     call b:NERDTreeRoot.putCursorHere(0, 0)
 
@@ -285,12 +279,6 @@ function! s:Creator._setCommonBufOptions()
     endif
 
     call self._setupStatusline()
-
-    let b:treeShowHelp = 0
-    let b:NERDTreeIgnoreEnabled = 1
-    let b:NERDTreeShowFiles = g:NERDTreeShowFiles
-    let b:NERDTreeShowHidden = g:NERDTreeShowHidden
-    let b:NERDTreeShowBookmarks = g:NERDTreeShowBookmarks
     call self._bindMappings()
     setlocal filetype=nerdtree
 endfunction

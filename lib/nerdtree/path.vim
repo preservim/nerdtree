@@ -410,7 +410,7 @@ endfunction
 "returns true if this path should be ignored
 function! s:Path.ignore()
     "filter out the user specified paths to ignore
-    if b:NERDTreeIgnoreEnabled
+    if b:NERDTree.ui.isIgnoreFilterEnabled()
         for i in g:NERDTreeIgnore
             if self._ignorePatternMatches(i)
                 return 1
@@ -425,11 +425,11 @@ function! s:Path.ignore()
     endif
 
     "dont show hidden files unless instructed to
-    if b:NERDTreeShowHidden ==# 0 && self.isUnixHiddenFile()
+    if !b:NERDTree.ui.getShowHidden() && self.isUnixHiddenFile()
         return 1
     endif
 
-    if b:NERDTreeShowFiles ==# 0 && self.isDirectory ==# 0
+    if b:NERDTree.ui.getShowFiles() ==# 0 && self.isDirectory ==# 0
         return 1
     endif
 

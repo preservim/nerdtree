@@ -241,7 +241,7 @@ endfunction
 " FUNCTION: s:displayHelp() {{{1
 " toggles the help display
 function! s:displayHelp()
-    let b:treeShowHelp = b:treeShowHelp ? 0 : 1
+    call b:NERDTree.ui.toggleHelp()
     call b:NERDTree.render()
     call b:NERDTree.ui.centerView()
 endfunction
@@ -280,7 +280,7 @@ function! s:findAndRevealPath()
             else
                 call g:NERDTree.CursorToTreeWin()
             endif
-            let b:NERDTreeShowHidden = g:NERDTreeShowHidden
+            call b:NERDTree.setShowHidden(g:NERDTreeShowHidden)
             call s:chRoot(g:NERDTreeDirNode.New(p.getParent()))
         else
             if !g:NERDTree.IsOpen()

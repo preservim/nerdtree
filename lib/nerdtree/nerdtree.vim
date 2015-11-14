@@ -43,7 +43,7 @@ endfunction
 "FUNCTION: s:NERDTree.CursorToBookmarkTable(){{{1
 "Places the cursor at the top of the bookmarks table
 function! s:NERDTree.CursorToBookmarkTable()
-    if !b:NERDTreeShowBookmarks
+    if !b:NERDTree.ui.getShowBookmarks()
         throw "NERDTree.IllegalOperationError: cant find bookmark table, bookmarks arent active"
     endif
 
@@ -128,7 +128,6 @@ function! s:NERDTree.New(path, type)
     let newObj.ui = g:NERDTreeUI.New(newObj)
     let newObj.root = g:NERDTreeDirNode.New(a:path)
     let newObj._type = a:type
-
     return newObj
 endfunction
 
