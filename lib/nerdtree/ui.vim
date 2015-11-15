@@ -212,7 +212,7 @@ endfunction
 function! s:UI.getLineNum(file_node)
     "if the node is the root then return the root line no.
     if a:file_node.isRoot()
-        return b:NERDTree.ui.getRootLineNum()
+        return self.getRootLineNum()
     endif
 
     let totalLines = line("$")
@@ -224,7 +224,7 @@ function! s:UI.getLineNum(file_node)
 
     let fullpath = a:file_node.path.str({'format': 'UI'})
 
-    let lnum = b:NERDTree.ui.getRootLineNum()
+    let lnum = self.getRootLineNum()
     while lnum > 0
         let lnum = lnum + 1
         "have we reached the bottom of the tree?
@@ -479,7 +479,7 @@ function! s:UI.renderViewSavingPosition()
         let currentNode = currentNode.parent
     endwhile
 
-    call b:NERDTree.render()
+    call self.render()
 
     if currentNode != {}
         call currentNode.putCursorHere(0, 0)
@@ -495,8 +495,8 @@ endfunction
 " toggles the use of the NERDTreeIgnore option
 function! s:UI.toggleIgnoreFilter()
     let self._ignoreEnabled = !self._ignoreEnabled
-    call b:NERDTree.ui.renderViewSavingPosition()
-    call b:NERDTree.ui.centerView()
+    Vall self.renderViewSavingPosition()
+    call self.centerView()
 endfunction
 
 " FUNCTION: s:UI.toggleShowBookmarks() {{{1
@@ -507,24 +507,24 @@ function! s:UI.toggleShowBookmarks()
         call b:NERDTree.render()
         call g:NERDTree.CursorToBookmarkTable()
     else
-        call b:NERDTree.ui.renderViewSavingPosition()
+        call self.renderViewSavingPosition()
     endif
-    call b:NERDTree.ui.centerView()
+    call self.centerView()
 endfunction
 
 " FUNCTION: s:UI.toggleShowFiles() {{{1
 " toggles the display of hidden files
 function! s:UI.toggleShowFiles()
     let self._showFiles = !self._showFiles
-    call b:NERDTree.ui.renderViewSavingPosition()
-    call b:NERDTree.ui.centerView()
+    call self.renderViewSavingPosition()
+    call self.centerView()
 endfunction
 
 " FUNCTION: s:UI.toggleShowHidden() {{{1
 " toggles the display of hidden files
 function! s:UI.toggleShowHidden()
     let self._showHidden = !self._showHidden
-    call b:NERDTree.ui.renderViewSavingPosition()
+    call self.renderViewSavingPosition()
     call self.centerView()
 endfunction
 
