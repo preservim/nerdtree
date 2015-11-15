@@ -1,3 +1,7 @@
+Next
+    - Rename "primary" and "secondary" trees to "tab" and "window" trees.
+    - Move a bunch of buffer level variables into the NERDTree and UI classes.
+
 5.0.0
     - Refactor the code significantly:
         * Break the classes out into their own files.
