@@ -171,6 +171,12 @@ function! s:TreeDirNode.getChildIndex(path)
     return -1
 endfunction
 
+"FUNCTION: TreeDirNode.getDirChildren() {{{1
+"Get all children that are directories
+function! s:TreeDirNode.getDirChildren()
+    return filter(self.children, 'v:val.path.isDirectory == 1')
+endfunction
+
 "FUNCTION: TreeDirNode.GetSelected() {{{1
 "Returns the current node if it is a dir node, or else returns the current
 "nodes parent
