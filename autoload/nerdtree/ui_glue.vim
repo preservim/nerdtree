@@ -289,7 +289,9 @@ function! s:findAndRevealPath()
         endif
     endif
     call g:NERDTree.CursorToTreeWin()
-    call b:NERDTreeRoot.reveal(p)
+    let node = b:NERDTreeRoot.reveal(p)
+    call b:NERDTree.render()
+    call node.putCursorHere(1,0)
 
     if p.isUnixHiddenFile()
         let g:NERDTreeShowHidden = showhidden

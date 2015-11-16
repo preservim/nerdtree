@@ -460,7 +460,10 @@ endfunction
 "FUNCTION: TreeDirNode.reveal(path) {{{1
 "reveal the given path, i.e. cache and open all treenodes needed to display it
 "in the UI
-function! s:TreeDirNode.reveal(path)
+"Returns the revealed node
+function! s:TreeDirNode.reveal(path, ...)
+    let opts = a:0 ? a:1 : {}
+
     if !a:path.isUnder(self.path)
         throw "NERDTree.InvalidArgumentsError: " . a:path.str() . " should be under " . self.path.str()
     endif
@@ -469,9 +472,10 @@ function! s:TreeDirNode.reveal(path)
 
     if self.path.equals(a:path.getParent())
         let n = self.findNode(a:path)
-        call b:NERDTree.render()
-        call n.putCursorHere(1,0)
-        return
+        if has_key(opts, "open")
+            call n.open()
+        endif
+        return n
     endif
 
     let p = a:path
@@ -480,7 +484,7 @@ function! s:TreeDirNode.reveal(path)
     endwhile
 
     let n = self.findNode(p)
-    call n.reveal(a:path)
+    return n.reveal(a:path, opts)
 endfunction
 
 "FUNCTION: TreeDirNode.removeChild(treenode) {{{1
