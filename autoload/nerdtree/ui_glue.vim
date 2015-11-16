@@ -140,9 +140,7 @@ endfunction
 " FUNCTION: s:chRoot(node) {{{1
 " changes the current root to the selected one
 function! s:chRoot(node)
-    call a:node.makeRoot()
-    call b:NERDTree.render()
-    call b:NERDTree.root.putCursorHere(0, 0)
+    call b:NERDTree.changeRoot(a:node)
 endfunction
 
 " FUNCTION: s:nerdtree#ui_glue#chRootCwd() {{{1

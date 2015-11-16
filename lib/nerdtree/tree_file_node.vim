@@ -218,26 +218,6 @@ function! s:TreeFileNode.isRoot()
     return self.equals(b:NERDTree.root)
 endfunction
 
-"FUNCTION: TreeFileNode.makeRoot() {{{1
-"Make this node the root of the tree
-function! s:TreeFileNode.makeRoot()
-    if self.path.isDirectory
-        let b:NERDTree.root = self
-    else
-        call self.cacheParent()
-        let b:NERDTree.root = self.parent
-    endif
-
-    call b:NERDTree.root.open()
-
-    "change dir to the dir of the new root if instructed to
-    if g:NERDTreeChDirMode ==# 2
-        exec "cd " . b:NERDTree.root.path.str({'format': 'Edit'})
-    endif
-
-    silent doautocmd User NERDTreeNewRoot
-endfunction
-
 "FUNCTION: TreeFileNode.New(path) {{{1
 "Returns a new TreeNode object with the given path and parent
 "

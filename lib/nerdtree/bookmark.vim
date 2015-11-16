@@ -275,9 +275,7 @@ function! s:Bookmark.toRoot()
         catch /^NERDTree.BookmarkedNodeNotFoundError/
             let targetNode = g:NERDTreeFileNode.New(s:Bookmark.BookmarkFor(self.name).path)
         endtry
-        call targetNode.makeRoot()
-        call b:NERDTree.render()
-        call targetNode.putCursorHere(0, 0)
+        call b:NERDTree.changeRoot(targetNode)
     endif
 endfunction
 

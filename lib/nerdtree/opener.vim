@@ -268,9 +268,7 @@ function! s:Opener._openDirectory(node)
     else
         call self._gotoTargetWin()
         if empty(self._where)
-            call a:node.makeRoot()
-            call b:NERDTree.render()
-            call a:node.putCursorHere(0, 0)
+            call b:NERDTree.changeRoot(a:node)
         elseif self._where == 't'
             call g:NERDTreeCreator.CreateTabTree(a:node.path.str())
         else

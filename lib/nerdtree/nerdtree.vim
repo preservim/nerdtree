@@ -8,6 +8,28 @@ function! s:NERDTree.AddPathFilter(callback)
     call add(s:NERDTree.PathFilters(), a:callback)
 endfunction
 
+"FUNCTION: s:NERDTree.changeRoot(node) {{{1
+function! s:NERDTree.changeRoot(node)
+    if a:node.path.isDirectory
+        let self.root = a:node
+    else
+        call a:node.cacheParent()
+        let self.root = self.parent
+    endif
+
+    call self.root.open()
+
+    "change dir to the dir of the new root if instructed to
+    if g:NERDTreeChDirMode ==# 2
+        exec "cd " . self.root.path.str({'format': 'Edit'})
+    endif
+
+    call self.render()
+    call self.root.putCursorHere(0, 0)
+
+    silent doautocmd User NERDTreeNewRoot
+endfunction
+
 "FUNCTION: s:NERDTree.Close() {{{1
 "Closes the tab tree window for this tab
 function! s:NERDTree.Close()
