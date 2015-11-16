@@ -73,7 +73,7 @@ endfunction
 " Function: s:NERDTree.ExistsForBuffer()   {{{1
 " Returns 1 if a nerd tree root exists in the current buffer
 function! s:NERDTree.ExistsForBuf()
-    return exists("b:NERDTreeRoot")
+    return exists("b:NERDTree")
 endfunction
 
 " Function: s:NERDTree.ExistsForTab()   {{{1

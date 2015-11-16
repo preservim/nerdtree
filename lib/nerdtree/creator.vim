@@ -68,7 +68,7 @@ function! s:Creator.createTabTree(name)
     call self._createTreeWin()
     call self._createNERDTree(path, "tab")
     call b:NERDTree.render()
-    call b:NERDTreeRoot.putCursorHere(0, 0)
+    call b:NERDTree.root.putCursorHere(0, 0)
 
     call self._broadcastInitEvent()
 endfunction
@@ -141,7 +141,7 @@ function! s:Creator.createMirror()
     let i = 0
     while i < len(treeBufNames)
         let bufName = treeBufNames[i]
-        let treeRoot = getbufvar(bufName, "NERDTreeRoot")
+        let treeRoot = getbufvar(bufName, "NERDTree").root
         let options[i+1 . '. ' . treeRoot.path.str() . '  (buf name: ' . bufName . ')'] = bufName
         let i = i + 1
     endwhile

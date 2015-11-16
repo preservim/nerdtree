@@ -142,7 +142,7 @@ endfunction
 function! s:chRoot(node)
     call a:node.makeRoot()
     call b:NERDTree.render()
-    call b:NERDTreeRoot.putCursorHere(0, 0)
+    call b:NERDTree.root.putCursorHere(0, 0)
 endfunction
 
 " FUNCTION: s:nerdtree#ui_glue#chRootCwd() {{{1
@@ -289,7 +289,7 @@ function! s:findAndRevealPath()
         endif
     endif
     call g:NERDTree.CursorToTreeWin()
-    let node = b:NERDTreeRoot.reveal(p)
+    let node = b:NERDTree.root.reveal(p)
     call b:NERDTree.render()
     call node.putCursorHere(1,0)
 
@@ -411,7 +411,7 @@ endfunction
 " FUNCTION: s:jumpToRoot() {{{1
 " moves the cursor to the root node
 function! s:jumpToRoot()
-    call b:NERDTreeRoot.putCursorHere(1, 0)
+    call b:NERDTree.root.putCursorHere(1, 0)
     call b:NERDTree.ui.centerView()
 endfunction
 
@@ -524,7 +524,7 @@ endfunction
 " will be reloaded.
 function! s:refreshRoot()
     call nerdtree#echo("Refreshing the root node. This could take a while...")
-    call b:NERDTreeRoot.refresh()
+    call b:NERDTree.root.refresh()
     call b:NERDTree.render()
     redraw
     call nerdtree#echo("Refreshing the root node. This could take a while... DONE")
@@ -604,28 +604,28 @@ endfunction
 "keepState: 1 if the current root should be left open when the tree is
 "re-rendered
 function! nerdtree#ui_glue#upDir(keepState)
-    let cwd = b:NERDTreeRoot.path.str({'format': 'UI'})
+    let cwd = b:NERDTree.root.path.str({'format': 'UI'})
     if cwd ==# "/" || cwd =~# '^[^/]..$'
         call nerdtree#echo("already at top dir")
     else
         if !a:keepState
-            call b:NERDTreeRoot.close()
+            call b:NERDTree.root.close()
         endif
 
-        let oldRoot = b:NERDTreeRoot
+        let oldRoot = b:NERDTree.root
 
-        if empty(b:NERDTreeRoot.parent)
-            let path = b:NERDTreeRoot.path.getParent()
+        if empty(b:NERDTree.root.parent)
+            let path = b:NERDTree.root.path.getParent()
             let newRoot = g:NERDTreeDirNode.New(path)
             call newRoot.open()
-            call newRoot.transplantChild(b:NERDTreeRoot)
-            let b:NERDTreeRoot = newRoot
+            call newRoot.transplantChild(b:NERDTree.root)
+            let b:NERDTree.root = newRoot
         else
-            let b:NERDTreeRoot = b:NERDTreeRoot.parent
+            let b:NERDTree.root = b:NERDTree.root.parent
         endif
 
         if g:NERDTreeChDirMode ==# 2
-            call b:NERDTreeRoot.path.changeToDir()
+            call b:NERDTree.root.path.changeToDir()
         endif
 
         call b:NERDTree.render()

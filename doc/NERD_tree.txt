@@ -945,7 +945,7 @@ Other examples: >
 ------------------------------------------------------------------------------
                                                         *'NERDTreeStatusline'*
 Values: Any valid statusline setting.
-Default: %{b:NERDTreeRoot.path.strForOS(0)}
+Default: %{b:NERDTree.root.path.strForOS(0)}
 
 Tells the script what to use as the |'statusline'| setting for NERD tree
 windows.

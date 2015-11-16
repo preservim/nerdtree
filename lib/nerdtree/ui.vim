@@ -155,7 +155,7 @@ function! s:UI.getPath(ln)
 
     "check to see if we have the root node
     if a:ln == rootLine
-        return b:NERDTreeRoot.path
+        return self.nerdtree.root.path
     endif
 
     if !g:NERDTreeDirArrows
@@ -166,7 +166,7 @@ function! s:UI.getPath(ln)
     endif
 
     if line ==# s:UI.UpDirLine()
-        return b:NERDTreeRoot.path.getParent()
+        return self.nerdtree.root.path.getParent()
     endif
 
     let indent = self._indentLevelFor(line)
@@ -189,7 +189,7 @@ function! s:UI.getPath(ln)
 
         "have we reached the top of the tree?
         if lnum == rootLine
-            let dir = b:NERDTreeRoot.path.str({'format': 'UI'}) . dir
+            let dir = self.nerdtree.root.path.str({'format': 'UI'}) . dir
             break
         endif
         if curLineStripped =~# '/$'
@@ -202,7 +202,7 @@ function! s:UI.getPath(ln)
             endif
         endif
     endwhile
-    let curFile = b:NERDTreeRoot.path.drive . dir . curFile
+    let curFile = self.nerdtree.root.path.drive . dir . curFile
     let toReturn = g:NERDTreePath.New(curFile)
     return toReturn
 endfunction
@@ -218,7 +218,7 @@ function! s:UI.getLineNum(file_node)
     let totalLines = line("$")
 
     "the path components we have matched so far
-    let pathcomponents = [substitute(b:NERDTreeRoot.path.str({'format': 'UI'}), '/ *$', '', '')]
+    let pathcomponents = [substitute(self.nerdtree.root.path.str({'format': 'UI'}), '/ *$', '', '')]
     "the index of the component we are searching for
     let curPathComponent = 1
 
@@ -442,13 +442,13 @@ function! s:UI.render()
     endif
 
     "draw the header line
-    let header = b:NERDTreeRoot.path.str({'format': 'UI', 'truncateTo': winwidth(0)})
+    let header = self.nerdtree.root.path.str({'format': 'UI', 'truncateTo': winwidth(0)})
     call setline(line(".")+1, header)
     call cursor(line(".")+1, col("."))
 
     "draw the tree
     let old_o = @o
-    let @o = b:NERDTreeRoot.renderToString()
+    let @o = self.nerdtree.root.renderToString()
     silent put o
     let @o = old_o
 
@@ -504,7 +504,7 @@ endfunction
 function! s:UI.toggleShowBookmarks()
     let self._showBookmarks = !self._showBookmarks
     if self.getShowBookmarks()
-        call b:NERDTree.render()
+        call self.nerdtree.render()
         call g:NERDTree.CursorToBookmarkTable()
     else
         call self.renderViewSavingPosition()

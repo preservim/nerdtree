@@ -59,7 +59,7 @@ endfunction
 function! s:TreeFileNode.copy(dest)
     call self.path.copy(a:dest)
     let newPath = g:NERDTreePath.New(a:dest)
-    let parent = b:NERDTreeRoot.findNode(newPath.getParent())
+    let parent = b:NERDTree.root.findNode(newPath.getParent())
     if !empty(parent)
         call parent.refresh()
         return parent.findNode(newPath)
@@ -182,7 +182,7 @@ endfunction
 "get the root node for this tab
 function! s:TreeFileNode.GetRootForTab()
     if g:NERDTree.ExistsForTab()
-        return getbufvar(t:NERDTreeBufName, 'NERDTreeRoot')
+        return getbufvar(t:NERDTreeBufName, 'NERDTree').root
     end
     return {}
 endfunction
@@ -195,7 +195,7 @@ function! s:TreeFileNode.GetSelected()
         if path ==# {}
             return {}
         endif
-        return b:NERDTreeRoot.findNode(path)
+        return b:NERDTree.root.findNode(path)
     catch /^NERDTree/
         return {}
     endtry
@@ -209,30 +209,30 @@ function! s:TreeFileNode.isVisible()
 endfunction
 
 "FUNCTION: TreeFileNode.isRoot() {{{1
-"returns 1 if this node is b:NERDTreeRoot
+"returns 1 if this node is b:NERDTree.root
 function! s:TreeFileNode.isRoot()
     if !g:NERDTree.ExistsForBuf()
         throw "NERDTree.NoTreeError: No tree exists for the current buffer"
     endif
 
-    return self.equals(b:NERDTreeRoot)
+    return self.equals(b:NERDTree.root)
 endfunction
 
 "FUNCTION: TreeFileNode.makeRoot() {{{1
 "Make this node the root of the tree
 function! s:TreeFileNode.makeRoot()
     if self.path.isDirectory
-        let b:NERDTreeRoot = self
+        let b:NERDTree.root = self
     else
         call self.cacheParent()
-        let b:NERDTreeRoot = self.parent
+        let b:NERDTree.root = self.parent
     endif
 
-    call b:NERDTreeRoot.open()
+    call b:NERDTree.root.open()
 
     "change dir to the dir of the new root if instructed to
     if g:NERDTreeChDirMode ==# 2
-        exec "cd " . b:NERDTreeRoot.path.str({'format': 'Edit'})
+        exec "cd " . b:NERDTree.root.path.str({'format': 'Edit'})
     endif
 
     silent doautocmd User NERDTreeNewRoot
@@ -326,7 +326,7 @@ function! s:TreeFileNode.rename(newName)
     call self.parent.removeChild(self)
 
     let parentPath = self.path.getParent()
-    let newParent = b:NERDTreeRoot.findNode(parentPath)
+    let newParent = b:NERDTree.root.findNode(parentPath)
 
     if newParent != {}
         call newParent.createChild(self.path, 1)

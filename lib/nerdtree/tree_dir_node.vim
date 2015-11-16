@@ -9,7 +9,7 @@ let g:NERDTreeDirNode = s:TreeDirNode
 "FUNCTION: TreeDirNode.AbsoluteTreeRoot(){{{1
 "class method that returns the highest cached ancestor of the current root
 function! s:TreeDirNode.AbsoluteTreeRoot()
-    let currentNode = b:NERDTreeRoot
+    let currentNode = b:NERDTree.root
     while currentNode.parent != {}
         let currentNode = currentNode.parent
     endwhile
