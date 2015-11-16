@@ -27,12 +27,12 @@ function! s:UI._dumpHelp()
         let @h=@h."\" File node mappings~\n"
         let @h=@h."\" ". (g:NERDTreeMouseMode ==# 3 ? "single" : "double") ."-click,\n"
         let @h=@h."\" <CR>,\n"
-        if b:NERDTree.isTabTree()
+        if self.nerdtree.isTabTree()
             let @h=@h."\" ". g:NERDTreeMapActivateNode .": open in prev window\n"
         else
             let @h=@h."\" ". g:NERDTreeMapActivateNode .": open in current window\n"
         endif
-        if b:NERDTree.isTabTree()
+        if self.nerdtree.isTabTree()
             let @h=@h."\" ". g:NERDTreeMapPreview .": preview\n"
         endif
         let @h=@h."\" ". g:NERDTreeMapOpenInTab.": open in new tab\n"
