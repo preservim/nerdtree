@@ -62,7 +62,8 @@ function! s:Creator.createTabTree(name)
         if g:NERDTree.IsOpen()
             call g:NERDTree.Close()
         endif
-        unlet t:NERDTreeBufName
+
+        call self._removeTreeBufForTab()
     endif
 
     call self._createTreeWin()
@@ -197,6 +198,15 @@ function! s:Creator._createTreeWin()
     call self._setCommonBufOptions()
 endfunction
 
+"FUNCTION: s:Creator._isBufHidden(nr) {{{1
+function! s:Creator._isBufHidden(nr)
+    redir => bufs
+    ls!
+    redir END
+
+    return bufs =~ a:nr . '..h'
+endfunction
+
 "FUNCTION: s:Creator.New() {{{1
 function! s:Creator.New()
     let newCreator = copy(self)
@@ -249,6 +259,23 @@ function! s:Creator._pathForString(str)
     endif
 
     return path
+endfunction
+
+" Function: s:Creator._removeTreeBufForTab()   {{{1
+function! s:Creator._removeTreeBufForTab()
+    let buf = bufnr(t:NERDTreeBufName)
+
+    "if &hidden is not set then it will already be gone
+    if buf != -1
+
+        "nerdtree buf may be mirrored/displayed elsewhere
+        if self._isBufHidden(buf)
+            exec "bwipeout " . buf
+        endif
+
+    endif
+
+    unlet t:NERDTreeBufName
 endfunction
 
 "FUNCTION: s:Creator._setCommonBufOptions() {{{1
