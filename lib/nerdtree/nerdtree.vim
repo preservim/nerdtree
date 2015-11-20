@@ -122,6 +122,11 @@ function! s:NERDTree.ForCurrentTab()
     return getbufvar(bufnr, "NERDTree")
 endfunction
 
+"FUNCTION: s:NERDTree.getRoot() {{{1
+function! s:NERDTree.getRoot()
+    return self.root
+endfunction
+
 "FUNCTION: s:NERDTree.GetWinNum() {{{1
 "gets the nerd tree window number for this tab
 function! s:NERDTree.GetWinNum()
