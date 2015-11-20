@@ -495,7 +495,7 @@ endfunction
 " toggles the use of the NERDTreeIgnore option
 function! s:UI.toggleIgnoreFilter()
     let self._ignoreEnabled = !self._ignoreEnabled
-    Vall self.renderViewSavingPosition()
+    call self.renderViewSavingPosition()
     call self.centerView()
 endfunction
 
