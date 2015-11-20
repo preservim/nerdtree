@@ -112,6 +112,16 @@ function! s:NERDTree.ForCurrentBuf()
     endif
 endfunction
 
+"FUNCTION: s:NERDTree.ForCurrentTab() {{{1
+function! s:NERDTree.ForCurrentTab()
+    if !s:NERDTree.ExistsForTab()
+        return
+    endif
+
+    let bufnr = bufnr(t:NERDTreeBufName)
+    return getbufvar(bufnr, "NERDTree")
+endfunction
+
 "FUNCTION: s:NERDTree.GetWinNum() {{{1
 "gets the nerd tree window number for this tab
 function! s:NERDTree.GetWinNum()
