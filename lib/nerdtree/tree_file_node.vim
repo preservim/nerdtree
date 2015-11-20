@@ -288,7 +288,7 @@ function! s:TreeFileNode.putCursorHere(isJump, recurseUpward)
                 let node = node.parent
                 call node.open()
             endwhile
-            call self.getNerdtree().render()
+            call self._nerdtree.render()
             call node.putCursorHere(a:isJump, 0)
         endif
     endif
