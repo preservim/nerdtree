@@ -406,11 +406,11 @@ function! s:Path.isUnixHiddenPath()
     endif
 endfunction
 
-"FUNCTION: Path.ignore() {{{1
+"FUNCTION: Path.ignore(nerdtree) {{{1
 "returns true if this path should be ignored
-function! s:Path.ignore()
+function! s:Path.ignore(nerdtree)
     "filter out the user specified paths to ignore
-    if b:NERDTree.ui.isIgnoreFilterEnabled()
+    if a:nerdtree.ui.isIgnoreFilterEnabled()
         for i in g:NERDTreeIgnore
             if self._ignorePatternMatches(i)
                 return 1
@@ -418,18 +418,18 @@ function! s:Path.ignore()
         endfor
 
         for callback in g:NERDTree.PathFilters()
-            if {callback}({'path': self, 'nerdtree': b:NERDTree})
+            if {callback}({'path': self, 'nerdtree': a:nerdtree})
                 return 1
             endif
         endfor
     endif
 
     "dont show hidden files unless instructed to
-    if !b:NERDTree.ui.getShowHidden() && self.isUnixHiddenFile()
+    if !a:nerdtree.ui.getShowHidden() && self.isUnixHiddenFile()
         return 1
     endif
 
-    if b:NERDTree.ui.getShowFiles() ==# 0 && self.isDirectory ==# 0
+    if a:nerdtree.ui.getShowFiles() ==# 0 && self.isDirectory ==# 0
         return 1
     endif
 
@@ -572,16 +572,16 @@ function! s:Path.readInfoFromDisk(fullpath)
     endif
 endfunction
 
-"FUNCTION: Path.refresh() {{{1
-function! s:Path.refresh()
+"FUNCTION: Path.refresh(nerdtree) {{{1
+function! s:Path.refresh(nerdtree)
     call self.readInfoFromDisk(self.str())
-    call g:NERDTreePathNotifier.NotifyListeners('refresh', self, {})
+    call g:NERDTreePathNotifier.NotifyListeners('refresh', self, a:nerdtree, {})
     call self.cacheDisplayString()
 endfunction
 
-"FUNCTION: Path.refreshFlags() {{{1
-function! s:Path.refreshFlags()
-    call g:NERDTreePathNotifier.NotifyListeners('refreshFlags', self, {})
+"FUNCTION: Path.refreshFlags(nerdtree) {{{1
+function! s:Path.refreshFlags(nerdtree)
+    call g:NERDTreePathNotifier.NotifyListeners('refreshFlags', self, a:nerdtree, {})
     call self.cacheDisplayString()
 endfunction
 

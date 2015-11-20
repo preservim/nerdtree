@@ -19,7 +19,7 @@ function! s:TreeFileNode.bookmark(name)
     "it so we can update its display string
     let oldMarkedNode = {}
     try
-        let oldMarkedNode = g:NERDTreeBookmark.GetNodeForName(a:name, 1)
+        let oldMarkedNode = g:NERDTreeBookmark.GetNodeForName(a:name, 1, self.getNerdtree())
     catch /^NERDTree.BookmarkNotFoundError/
     catch /^NERDTree.BookmarkedNodeNotFoundError/
     endtry
@@ -41,7 +41,7 @@ function! s:TreeFileNode.cacheParent()
         if parentPath.equals(self.path)
             throw "NERDTree.CannotCacheParentError: already at root"
         endif
-        let self.parent = s:TreeFileNode.New(parentPath)
+        let self.parent = s:TreeFileNode.New(parentPath, self.getNerdtree())
     endif
 endfunction
 
@@ -59,7 +59,7 @@ endfunction
 function! s:TreeFileNode.copy(dest)
     call self.path.copy(a:dest)
     let newPath = g:NERDTreePath.New(a:dest)
-    let parent = b:NERDTree.root.findNode(newPath.getParent())
+    let parent = self.getNerdtree().root.findNode(newPath.getParent())
     if !empty(parent)
         call parent.refresh()
         return parent.findNode(newPath)
@@ -165,7 +165,7 @@ function! s:TreeFileNode.findSibling(direction)
 
                 "if the next node is not an ignored node (i.e. wont show up in the
                 "view) then return it
-                if self.parent.children[siblingIndx].path.ignore() ==# 0
+                if self.parent.children[siblingIndx].path.ignore(self.getNerdtree()) ==# 0
                     return self.parent.children[siblingIndx]
                 endif
 
@@ -176,6 +176,11 @@ function! s:TreeFileNode.findSibling(direction)
     endif
 
     return {}
+endfunction
+
+"FUNCTION: TreeFileNode.getNerdtree(){{{1
+function! s:TreeFileNode.getNerdtree()
+    return self._nerdtree
 endfunction
 
 "FUNCTION: TreeFileNode.GetRootForTab(){{{1
@@ -205,31 +210,32 @@ endfunction
 "returns 1 if this node should be visible according to the tree filters and
 "hidden file filters (and their on/off status)
 function! s:TreeFileNode.isVisible()
-    return !self.path.ignore()
+    return !self.path.ignore(self.getNerdtree())
 endfunction
 
 "FUNCTION: TreeFileNode.isRoot() {{{1
-"returns 1 if this node is b:NERDTree.root
 function! s:TreeFileNode.isRoot()
     if !g:NERDTree.ExistsForBuf()
         throw "NERDTree.NoTreeError: No tree exists for the current buffer"
     endif
 
-    return self.equals(b:NERDTree.root)
+    return self.equals(self.getNerdtree().root)
 endfunction
 
-"FUNCTION: TreeFileNode.New(path) {{{1
+"FUNCTION: TreeFileNode.New(path, nerdtree) {{{1
 "Returns a new TreeNode object with the given path and parent
 "
 "Args:
-"path: a path object representing the full filesystem path to the file/dir that the node represents
-function! s:TreeFileNode.New(path)
+"path: file/dir that the node represents
+"nerdtree: the tree the node belongs to
+function! s:TreeFileNode.New(path, nerdtree)
     if a:path.isDirectory
-        return g:NERDTreeDirNode.New(a:path)
+        return g:NERDTreeDirNode.New(a:path, a:nerdtree)
     else
         let newTreeNode = copy(self)
         let newTreeNode.path = a:path
         let newTreeNode.parent = {}
+        let newTreeNode._nerdtree = a:nerdtree
         return newTreeNode
     endif
 endfunction
@@ -269,7 +275,7 @@ endfunction
 "recurseUpward: try to put the cursor on the parent if the this node isnt
 "visible
 function! s:TreeFileNode.putCursorHere(isJump, recurseUpward)
-    let ln = b:NERDTree.ui.getLineNum(self)
+    let ln = self.getNerdtree().ui.getLineNum(self)
     if ln != -1
         if a:isJump
             mark '
@@ -278,11 +284,11 @@ function! s:TreeFileNode.putCursorHere(isJump, recurseUpward)
     else
         if a:recurseUpward
             let node = self
-            while node != {} && b:NERDTree.ui.getLineNum(node) ==# -1
+            while node != {} && self.getNerdtree().ui.getLineNum(node) ==# -1
                 let node = node.parent
                 call node.open()
             endwhile
-            call b:NERDTree.render()
+            call self.getNerdtree().render()
             call node.putCursorHere(a:isJump, 0)
         endif
     endif
@@ -290,12 +296,12 @@ endfunction
 
 "FUNCTION: TreeFileNode.refresh() {{{1
 function! s:TreeFileNode.refresh()
-    call self.path.refresh()
+    call self.path.refresh(self.getNerdtree())
 endfunction
 
 "FUNCTION: TreeFileNode.refreshFlags() {{{1
 function! s:TreeFileNode.refreshFlags()
-    call self.path.refreshFlags()
+    call self.path.refreshFlags(self.getNerdtree())
 endfunction
 
 "FUNCTION: TreeFileNode.rename() {{{1
@@ -306,7 +312,7 @@ function! s:TreeFileNode.rename(newName)
     call self.parent.removeChild(self)
 
     let parentPath = self.path.getParent()
-    let newParent = b:NERDTree.root.findNode(parentPath)
+    let newParent = self.getNerdtree().root.findNode(parentPath)
 
     if newParent != {}
         call newParent.createChild(self.path, 1)

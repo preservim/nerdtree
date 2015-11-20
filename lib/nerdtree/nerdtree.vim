@@ -148,7 +148,7 @@ endfunction
 function! s:NERDTree.New(path, type)
     let newObj = copy(self)
     let newObj.ui = g:NERDTreeUI.New(newObj)
-    let newObj.root = g:NERDTreeDirNode.New(a:path)
+    let newObj.root = g:NERDTreeDirNode.New(a:path, newObj)
     let newObj._type = a:type
     return newObj
 endfunction

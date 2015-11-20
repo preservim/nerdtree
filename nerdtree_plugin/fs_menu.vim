@@ -107,7 +107,7 @@ function! NERDTreeAddNode()
         let newPath = g:NERDTreePath.Create(newNodeName)
         let parentNode = b:NERDTree.root.findNode(newPath.getParent())
 
-        let newTreeNode = g:NERDTreeFileNode.New(newPath)
+        let newTreeNode = g:NERDTreeFileNode.New(newPath, b:NERDTree)
         if empty(parentNode)
             call b:NERDTree.root.refresh()
             call b:NERDTree.render()
