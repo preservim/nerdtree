@@ -455,10 +455,22 @@ function! s:Path._ignorePatternMatches(pattern)
     return self.getLastPathComponent(0) =~# pat
 endfunction
 
-"FUNCTION: Path.isUnder(path) {{{1
-"return 1 if this path is somewhere under the given path in the filesystem.
+"FUNCTION: Path.isAncestor(path) {{{1
+"return 1 if this path is somewhere above the given path in the filesystem.
 "
 "a:path should be a dir
+function! s:Path.isAncestor(path)
+    if !self.isDirectory
+        return 0
+    endif
+
+    let this = self.str()
+    let that = a:path.str()
+    return stridx(that, this) == 0
+endfunction
+
+"FUNCTION: Path.isUnder(path) {{{1
+"return 1 if this path is somewhere under the given path in the filesystem.
 function! s:Path.isUnder(path)
     if a:path.isDirectory == 0
         return 0
