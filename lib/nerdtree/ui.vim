@@ -116,7 +116,7 @@ function! s:UI._dumpHelp()
         let @h=@h."\" :ClearBookmarks [<names>]\n"
         let @h=@h."\" :ClearAllBookmarks\n"
         silent! put h
-    elseif g:NERDTreeMinimalUI == 0
+    elseif !self.isMinimal()
         let @h="\" Press ". g:NERDTreeMapHelp ." for help\n"
         silent! put h
     endif
@@ -306,6 +306,11 @@ function! s:UI.isIgnoreFilterEnabled()
     return self._ignoreEnabled == 1
 endfunction
 
+"FUNCTION: s:UI.isMinimal() {{{1
+function! s:UI.isMinimal()
+    return g:NERDTreeMinimalUI
+endfunction
+
 "FUNCTION: s:UI.MarkupReg() {{{1
 function! s:UI.MarkupReg()
     if g:NERDTreeDirArrows
@@ -318,7 +323,7 @@ endfunction
 "FUNCTION: s:UI._renderBookmarks {{{1
 function! s:UI._renderBookmarks()
 
-    if g:NERDTreeMinimalUI == 0
+    if !self.isMinimal()
         call setline(line(".")+1, ">----------Bookmarks----------")
         call cursor(line(".")+1, col("."))
     endif
@@ -426,7 +431,7 @@ function! s:UI.render()
     call self._dumpHelp()
 
     "delete the blank line before the help and add one after it
-    if g:NERDTreeMinimalUI == 0
+    if !self.isMinimal()
         call setline(line(".")+1, "")
         call cursor(line(".")+1, col("."))
     endif
@@ -436,7 +441,7 @@ function! s:UI.render()
     endif
 
     "add the 'up a dir' line
-    if !g:NERDTreeMinimalUI
+    if !self.isMinimal()
         call setline(line(".")+1, s:UI.UpDirLine())
         call cursor(line(".")+1, col("."))
     endif
