@@ -73,6 +73,24 @@ function! s:TreeDirNode.createChild(path, inOrder)
     return newTreeNode
 endfunction
 
+"FUNCTION: TreeDirNode.displayString() {{{1
+unlet s:TreeDirNode.displayString
+function! s:TreeDirNode.displayString()
+    let vc = self.getVisibleChildren()
+    if len(vc) != 1
+        return self.path.displayString()
+    endif
+
+    let visChild = vc[0]
+
+    "TODO: optimize
+    if !visChild.path.isDirectory
+        return self.path.displayString()
+    endif
+
+    return self.path.getLastPathComponent(1) . visChild.displayString()
+endfunction
+
 "FUNCTION: TreeDirNode.findNode(path) {{{1
 "Will find one of the children (recursively) that has the given path
 "
@@ -216,6 +234,13 @@ endfunction
 "returns 1 if this node has any childre, 0 otherwise..
 function! s:TreeDirNode.hasVisibleChildren()
     return self.getVisibleChildCount() != 0
+endfunction
+
+"FUNCTION: TreeDirNode.isCascadable() {{{1
+"true if this dir has only one visible child - which is also a dir
+function! s:TreeDirNode.isCascadable()
+    let c = self.getVisibleChildren()
+    return len(c) == 1 && c[0].path.isDirectory
 endfunction
 
 "FUNCTION: TreeDirNode._initChildren() {{{1

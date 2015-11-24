@@ -323,70 +323,27 @@ endfunction
 "FUNCTION: TreeFileNode.renderToString {{{1
 "returns a string representation for this tree to be rendered in the view
 function! s:TreeFileNode.renderToString()
-    return self._renderToString(0, 0, [], self.getChildCount() ==# 1)
+    return self._renderToString(0, 0)
 endfunction
 
 "Args:
 "depth: the current depth in the tree for this call
 "drawText: 1 if we should actually draw the line for this node (if 0 then the
 "child nodes are rendered only)
-"vertMap: a binary array that indicates whether a vertical bar should be draw
 "for each depth in the tree
-"isLastChild:true if this curNode is the last child of its parent
-function! s:TreeFileNode._renderToString(depth, drawText, vertMap, isLastChild)
+function! s:TreeFileNode._renderToString(depth, drawText)
     let output = ""
     if a:drawText ==# 1
 
-        let treeParts = ''
+        let treeParts = repeat('  ', a:depth - 1)
 
-        "get all the leading spaces and vertical tree parts for this line
-        if a:depth > 1
-            for j in a:vertMap[0:-2]
-                if g:NERDTreeDirArrows
-                    let treeParts = treeParts . '  '
-                else
-                    if j ==# 1
-                        let treeParts = treeParts . '| '
-                    else
-                        let treeParts = treeParts . '  '
-                    endif
-                endif
-            endfor
-        endif
-
-        "get the last vertical tree part for this line which will be different
-        "if this node is the last child of its parent
-        if !g:NERDTreeDirArrows
-            if a:isLastChild
-                let treeParts = treeParts . '`'
-            else
-                let treeParts = treeParts . '|'
-            endif
-        endif
-
-        "smack the appropriate dir/file symbol on the line before the file/dir
-        "name itself
         if self.path.isDirectory
-            if self.isOpen
-                if g:NERDTreeDirArrows
-                    let treeParts = treeParts . g:NERDTreeDirArrowCollapsible . ' '
-                else
-                    let treeParts = treeParts . '~'
-                endif
-            else
-                if g:NERDTreeDirArrows
-                    let treeParts = treeParts . g:NERDTreeDirArrowExpandable . ' '
-                else
-                    let treeParts = treeParts . '+'
-                endif
-            endif
+            let sym = self.isOpen ? g:NERDTreeDirArrowCollapsible : g:NERDTreeDirArrowExpandable
+            let treeParts = treeParts . sym . ' '
         else
-            if g:NERDTreeDirArrows
-                let treeParts = treeParts . '  '
-            else
-                let treeParts = treeParts . '-'
-            endif
+            let treeParts = treeParts . '  '
         endif
+
         let line = treeParts . self.displayString()
 
         let output = output . line . "\n"
@@ -396,18 +353,15 @@ function! s:TreeFileNode._renderToString(depth, drawText, vertMap, isLastChild)
     if self.path.isDirectory ==# 1 && self.isOpen ==# 1
 
         let childNodesToDraw = self.getVisibleChildren()
-        if len(childNodesToDraw) > 0
 
-            "draw all the nodes children except the last
-            let lastIndx = len(childNodesToDraw)-1
-            if lastIndx > 0
-                for i in childNodesToDraw[0:lastIndx-1]
-                    let output = output . i._renderToString(a:depth + 1, 1, add(copy(a:vertMap), 1), 0)
-                endfor
-            endif
+        if self.isCascadable() && a:depth > 0
 
-            "draw the last child, indicating that it IS the last
-            let output = output . childNodesToDraw[lastIndx]._renderToString(a:depth + 1, 1, add(copy(a:vertMap), 0), 1)
+            let output = output . childNodesToDraw[0]._renderToString(a:depth, 0)
+
+        elseif len(childNodesToDraw) > 0
+            for i in childNodesToDraw
+                let output = output . i._renderToString(a:depth + 1, 1)
+            endfor
         endif
     endif
 
