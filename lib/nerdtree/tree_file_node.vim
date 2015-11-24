@@ -337,10 +337,7 @@ function! s:TreeFileNode._renderToString(depth, drawText)
 
         let treeParts = repeat('  ', a:depth - 1)
 
-        if self.path.isDirectory
-            let sym = self.isOpen ? g:NERDTreeDirArrowCollapsible : g:NERDTreeDirArrowExpandable
-            let treeParts = treeParts . sym . ' '
-        else
+        if !self.path.isDirectory
             let treeParts = treeParts . '  '
         endif
 

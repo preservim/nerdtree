@@ -76,19 +76,15 @@ endfunction
 "FUNCTION: TreeDirNode.displayString() {{{1
 unlet s:TreeDirNode.displayString
 function! s:TreeDirNode.displayString()
-    let vc = self.getVisibleChildren()
-    if len(vc) != 1
-        return self.path.displayString()
-    endif
+    let cascade = self.getCascade()
+    let rv = ""
+    for node in cascade
+        let rv = rv . node.path.displayString()
+    endfor
 
-    let visChild = vc[0]
+    let sym = cascade[-1].isOpen ? g:NERDTreeDirArrowCollapsible : g:NERDTreeDirArrowExpandable
 
-    "TODO: optimize
-    if !visChild.path.isDirectory
-        return self.path.displayString()
-    endif
-
-    return self.path.getLastPathComponent(1) . visChild.displayString()
+    return sym . ' ' . rv
 endfunction
 
 "FUNCTION: TreeDirNode.findNode(path) {{{1
@@ -114,6 +110,33 @@ function! s:TreeDirNode.findNode(path)
         endfor
     endif
     return {}
+endfunction
+
+"FUNCTION: TreeDirNode.getCascade() {{{1
+"Return an array of dir nodes (starting from self) that can be cascade opened.
+function! s:TreeDirNode.getCascade()
+
+    let rv = [self]
+    let node = self
+
+    while 1
+        let vc = node.getVisibleChildren()
+        if len(vc) != 1
+            break
+        endif
+
+        let visChild = vc[0]
+
+        "TODO: optimize
+        if !visChild.path.isDirectory
+            break
+        endif
+
+        call add(rv, visChild)
+        let node = visChild
+    endwhile
+
+    return rv
 endfunction
 
 "FUNCTION: TreeDirNode.getChildCount() {{{1
