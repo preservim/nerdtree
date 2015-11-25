@@ -65,9 +65,14 @@ call s:initVariable("g:NERDTreeShowFiles", 1)
 call s:initVariable("g:NERDTreeShowHidden", 0)
 call s:initVariable("g:NERDTreeShowLineNumbers", 0)
 call s:initVariable("g:NERDTreeSortDirs", 1)
-call s:initVariable("g:NERDTreeDirArrows", !nerdtree#runningWindows())
-call s:initVariable("g:NERDTreeDirArrowExpandable", "▸")
-call s:initVariable("g:NERDTreeDirArrowCollapsible", "▾")
+
+if !nerdtree#runningWindows()
+    call s:initVariable("g:NERDTreeDirArrowExpandable", "▸")
+    call s:initVariable("g:NERDTreeDirArrowCollapsible", "▾")
+else
+    call s:initVariable("g:NERDTreeDirArrowExpandable", "+")
+    call s:initVariable("g:NERDTreeDirArrowCollapsible", "~")
+endif
 call s:initVariable("g:NERDTreeCascadeOpenSingleChildDir", 1)
 
 if !exists("g:NERDTreeSortOrder")

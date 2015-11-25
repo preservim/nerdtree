@@ -287,13 +287,11 @@ endfunction
 
 "FUNCTION: s:UI._indentLevelFor(line) {{{1
 function! s:UI._indentLevelFor(line)
-    let level = match(a:line, '[^ \-+~'.g:NERDTreeDirArrowExpandable.g:NERDTreeDirArrowCollapsible.'`|]') / s:UI.IndentWid()
-    " check if line includes arrows
-    if match(a:line, '['.g:NERDTreeDirArrowExpandable.g:NERDTreeDirArrowCollapsible.']') > -1
-        " decrement level as arrow uses 3 ascii chars
-        let level = level - 1
-    endif
-    return level
+    "have to do this work around because match() returns bytes, not chars
+    let numLeadBytes = match(a:line, '\M\[^ '.g:NERDTreeDirArrowExpandable.g:NERDTreeDirArrowCollapsible.']')
+    let leadChars = strchars(a:line[0:numLeadBytes-1])
+
+    return leadChars / s:UI.IndentWid()
 endfunction
 
 "FUNCTION: s:UI.IndentWid() {{{1

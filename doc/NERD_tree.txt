@@ -671,9 +671,6 @@ NERD tree. These options should be set in your vimrc.
 |'NERDTreeMinimalUI'|           Disables display of the 'Bookmarks' label and 
                                 'Press ? for help' text.
 
-|'NERDTreeDirArrows'|           Tells the NERD tree to use arrows instead of
-                                + ~ chars when displaying directories.
-
 |'NERDTreeCascadeOpenSingleChildDir'|
                                 Cascade open while selected directory has only
                                 one child that also is a directory.
@@ -984,19 +981,6 @@ This options disables the 'Bookmarks' label 'Press ? for help' text. Use one
 of the following lines to set this option: >
     let NERDTreeMinimalUI=0
     let NERDTreeMinimalUI=1
-<
-
-------------------------------------------------------------------------------
-                                                           *'NERDTreeDirArrows'*
-Values: 0 or 1
-Default: 0.
-
-This option is used to change the default look of directory nodes displayed in
-the tree. When set to 0 it shows old-school bars (|), + and ~ chars. If set to
-1 it shows right and down arrows.  Use one of the follow lines to set this
-option: >
-    let NERDTreeDirArrows=0
-    let NERDTreeDirArrows=1
 <
 
 ------------------------------------------------------------------------------
