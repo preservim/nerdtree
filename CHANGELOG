@@ -1,6 +1,10 @@
 Next
     - Rename "primary" and "secondary" trees to "tab" and "window" trees.
     - Move a bunch of buffer level variables into the NERDTree and UI classes.
+    - Display cascading dirs on one line to save vertical/horizontal space (@matt-gardner: brainstorming/testing)
+    - Remove the old style UI - Remove 'NERDTreeDirArrows' option.
+    - On windows default to + and ~ for expand/collapse directory symbols.
+    - Lots more refactoring. Move a bunch of b: level vars into b:NERDTree and friends.
 
 5.0.0
     - Refactor the code significantly:
