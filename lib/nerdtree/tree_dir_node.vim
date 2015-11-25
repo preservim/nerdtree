@@ -84,7 +84,9 @@ function! s:TreeDirNode.displayString()
 
     let sym = cascade[-1].isOpen ? g:NERDTreeDirArrowCollapsible : g:NERDTreeDirArrowExpandable
 
-    return sym . ' ' . rv
+    let flags = cascade[-1].path.flagSet.renderToString()
+
+    return sym . ' ' . flags . rv
 endfunction
 
 "FUNCTION: TreeDirNode.findNode(path) {{{1

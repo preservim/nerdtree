@@ -40,9 +40,7 @@ endfunction
 
 "FUNCTION: Path.cacheDisplayString() {{{1
 function! s:Path.cacheDisplayString() abort
-    let self.cachedDisplayString = self.flagSet.renderToString()
-
-    let self.cachedDisplayString .= self.getLastPathComponent(1)
+    let self.cachedDisplayString = self.getLastPathComponent(1)
 
     if self.isExecutable
         let self.cachedDisplayString = self.cachedDisplayString . '*'

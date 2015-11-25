@@ -83,7 +83,7 @@ endfunction
 "Return:
 "a string that can be used in the view to represent this node
 function! s:TreeFileNode.displayString()
-    return self.path.displayString()
+    return self.path.flagSet.renderToString() . self.path.displayString()
 endfunction
 
 "FUNCTION: TreeFileNode.equals(treenode) {{{1
