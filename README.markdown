@@ -116,6 +116,5 @@ See here: https://github.com/scrooloose/nerdtree/issues/433#issuecomment-9259069
 
 Use these variables in your vimrc. Note that below are default arrow symbols
 
-    let g:NERDTreeDirArrows = 1
     let g:NERDTreeDirArrowExpandable = '▸'
     let g:NERDTreeDirArrowCollapsible = '▾'

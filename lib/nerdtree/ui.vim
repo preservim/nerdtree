@@ -158,13 +158,6 @@ function! s:UI.getPath(ln)
         return self.nerdtree.root.path
     endif
 
-    if !g:NERDTreeDirArrows
-        " in case called from outside the tree
-        if line !~# '^ *[|`'.g:NERDTreeDirArrowExpandable.g:NERDTreeDirArrowCollapsible.' ]' || line =~# '^$'
-            return {}
-        endif
-    endif
-
     if line ==# s:UI.UpDirLine()
         return self.nerdtree.root.path.getParent()
     endif
@@ -311,11 +304,7 @@ endfunction
 
 "FUNCTION: s:UI.MarkupReg() {{{1
 function! s:UI.MarkupReg()
-    if g:NERDTreeDirArrows
-        return '^\(['.g:NERDTreeDirArrowExpandable.g:NERDTreeDirArrowCollapsible.'] \| \+['.g:NERDTreeDirArrowExpandable.g:NERDTreeDirArrowCollapsible.'] \| \+\)'
-    endif
-
-    return '^[ `|]*[\-+~]'
+    return '^\(['.g:NERDTreeDirArrowExpandable.g:NERDTreeDirArrowCollapsible.'] \| \+['.g:NERDTreeDirArrowExpandable.g:NERDTreeDirArrowCollapsible.'] \| \+\)'
 endfunction
 
 "FUNCTION: s:UI._renderBookmarks {{{1
