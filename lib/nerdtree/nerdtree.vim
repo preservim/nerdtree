@@ -101,7 +101,12 @@ endfunction
 " Function: s:NERDTree.ExistsForTab()   {{{1
 " Returns 1 if a nerd tree root exists in the current tab
 function! s:NERDTree.ExistsForTab()
-    return exists("t:NERDTreeBufName")
+    if !exists("t:NERDTreeBufName")
+        return
+    end
+
+    "check b:NERDTree is still there and hasn't been e.g. :bdeleted
+    return !empty(getbufvar(bufnr(t:NERDTreeBufName), 'NERDTree'))
 endfunction
 
 function! s:NERDTree.ForCurrentBuf()
@@ -132,9 +137,9 @@ endfunction
 function! s:NERDTree.GetWinNum()
     if exists("t:NERDTreeBufName")
         return bufwinnr(t:NERDTreeBufName)
-    else
-        return -1
     endif
+
+    return -1
 endfunction
 
 "FUNCTION: s:NERDTree.IsOpen() {{{1
