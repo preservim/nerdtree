@@ -272,7 +272,7 @@ function! s:Opener._openDirectory(node)
         elseif self._where == 't'
             call g:NERDTreeCreator.CreateTabTree(a:node.path.str())
         else
-            call g:NERDTreeCreator.CreateWindow(a:node.path.str())
+            call g:NERDTreeCreator.CreateWindowTree(a:node.path.str())
         endif
     endif
 
