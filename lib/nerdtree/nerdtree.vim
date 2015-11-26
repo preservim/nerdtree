@@ -14,7 +14,7 @@ function! s:NERDTree.changeRoot(node)
         let self.root = a:node
     else
         call a:node.cacheParent()
-        let self.root = self.parent
+        let self.root = a:node.parent
     endif
 
     call self.root.open()
