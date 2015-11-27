@@ -201,7 +201,7 @@ endfunction
 "FUNCTION: s:Creator._isBufHidden(nr) {{{1
 function! s:Creator._isBufHidden(nr)
     redir => bufs
-    ls!
+    silent ls!
     redir END
 
     return bufs =~ a:nr . '..h'
