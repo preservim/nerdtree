@@ -506,13 +506,15 @@ function! s:previewNodeHSplit(node)
 endfunction
 
 "FUNCTION: s:NERDTreeBufDelete(fileNode) {{{1
-" This is a modified version of the function found here:
+" This is a modified version of s:Bclose found here:
 " http://vim.wikia.com/wiki/Deleting_a_buffer_without_closing_the_window
 function! s:NERDTreeBufDelete(fileNode)
     let bufferNumber = bufnr(a:fileNode.path.str())
     if bufferNumber < 0 || !buflisted(bufferNumber)
+        call nerdtree#echo(a:fileNode.path.displayString(). " is not open.")
         return
     endif
+
     " Numbers of windows that view target buffer which we will delete.
     let wnums = filter(range(1, winnr('$')), 'winbufnr(v:val) == bufferNumber')
     let wcurrent = winnr()
@@ -536,6 +538,7 @@ function! s:NERDTreeBufDelete(fileNode)
 
     execute 'confirm bdelete'.' '.bufferNumber
     execute wcurrent.'wincmd w'
+    call nerdtree#echo("buffer ". bufferNumber ." was deleted.")
 endfunction
 
 "FUNCTION: s:previewNodeVSplit(node) {{{1
