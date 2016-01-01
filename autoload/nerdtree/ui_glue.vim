@@ -511,7 +511,7 @@ endfunction
 function! s:NERDTreeBufDelete(fileNode)
     let bufferNumber = bufnr(a:fileNode.path.str())
     if bufferNumber < 0 || !buflisted(bufferNumber)
-        call nerdtree#echo(a:fileNode.path.displayString(). " is not open.")
+        call nerdtree#echo(a:fileNode.path.displayString(). " is not open in any buffer.")
         return
     endif
 
@@ -538,7 +538,7 @@ function! s:NERDTreeBufDelete(fileNode)
 
     execute 'confirm bdelete'.' '.bufferNumber
     execute wcurrent.'wincmd w'
-    call nerdtree#echo("buffer ". bufferNumber ." was deleted.")
+    call nerdtree#echo("buffer ". bufferNumber ." (containing ". a:fileNode.path.displayString() .") was deleted.")
 endfunction
 
 "FUNCTION: s:previewNodeVSplit(node) {{{1
