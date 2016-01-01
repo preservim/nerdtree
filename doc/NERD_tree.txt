@@ -229,6 +229,7 @@ O.......Recursively open the selected directory..................|NERDTree-O|
 x.......Close the current nodes parent...........................|NERDTree-x|
 X.......Recursively close all children of the current node.......|NERDTree-X|
 e.......Edit the current dir.....................................|NERDTree-e|
+gd......Delete the open buffer of the current node...............|NERDTree-gd|
 
 <CR>...............same as |NERDTree-o|.
 double-click.......same as the |NERDTree-o| map.
@@ -392,6 +393,15 @@ Applies to: files and directories.
 |:edit|s the selected directory, or the selected file's directory. This could
 result in a NERD tree or a netrw being opened, depending on
 |'NERDTreeHijackNetrw'|.
+
+------------------------------------------------------------------------------
+                                                                 *NERDTree-gd*
+Default key: gd
+Map option: NERDTreeMapDeleteBuffer
+Applies to: files.
+
+|:bdelete|s the selected file's open buffer. This is helpful to quickly
+preview |NERDTree-go| and then close the file.
 
 ------------------------------------------------------------------------------
                                                                   *NERDTree-D*
