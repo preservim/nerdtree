@@ -466,7 +466,7 @@ function! s:TreeDirNode.refresh()
 
             " Regular expression is too expensive. Use simply string comparison
             " instead
-            if i[len(i)-3:2] != ".." && i[len(i)-2:2] != ".." && 
+            if i[len(i)-3:2] != ".." && i[len(i)-2:2] != ".." &&
              \ i[len(i)-2:1] != "." && i[len(i)-1] != "."
                 try
                     "create a new path and see if it exists in this nodes children
