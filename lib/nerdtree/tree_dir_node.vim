@@ -117,28 +117,14 @@ endfunction
 "FUNCTION: TreeDirNode.getCascade() {{{1
 "Return an array of dir nodes (starting from self) that can be cascade opened.
 function! s:TreeDirNode.getCascade()
+    if !self.isCascadable()
+        return [self]
+    endif
 
-    let rv = [self]
-    let node = self
+    let vc = self.getVisibleChildren()
+    let visChild = vc[0]
 
-    while 1
-        let vc = node.getVisibleChildren()
-        if len(vc) != 1
-            break
-        endif
-
-        let visChild = vc[0]
-
-        "TODO: optimize
-        if !visChild.path.isDirectory
-            break
-        endif
-
-        call add(rv, visChild)
-        let node = visChild
-    endwhile
-
-    return rv
+    return [self] + visChild.getCascade()
 endfunction
 
 "FUNCTION: TreeDirNode.getChildCount() {{{1
