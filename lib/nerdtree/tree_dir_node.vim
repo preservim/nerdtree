@@ -250,6 +250,10 @@ endfunction
 "FUNCTION: TreeDirNode.isCascadable() {{{1
 "true if this dir has only one visible child - which is also a dir
 function! s:TreeDirNode.isCascadable()
+    if g:NERDTreeCascadeSingleChildDir == 0
+        return 0
+    endif
+
     let c = self.getVisibleChildren()
     return len(c) == 1 && c[0].path.isDirectory
 endfunction
