@@ -85,6 +85,8 @@ else
     endif
 endif
 
+call s:initVariable("g:NERDTreeGlyphReadOnly", "RO")
+
 if !exists('g:NERDTreeStatusline')
 
     "the exists() crap here is a hack to stop vim spazzing out when
