@@ -96,8 +96,7 @@ function! s:Creator.createWindowTree(dir)
 
     "we need a unique name for each window tree buffer to ensure they are
     "all independent
-    let prefix = get(g:, "NERDTreeCreatePrefix", "silent")
-    exec prefix . " edit " . self._nextBufferName()
+    exec g:NERDTreeCreatePrefix . " edit " . self._nextBufferName()
 
     call self._createNERDTree(path, "window")
     let b:NERDTree._previousBuf = bufnr(previousBuf)
