@@ -57,8 +57,7 @@ Installation
 
 ####[pathogen.vim](https://github.com/tpope/vim-pathogen)
 
-    cd ~/.vim/bundle
-    git clone https://github.com/scrooloose/nerdtree.git
+    git clone https://github.com/scrooloose/nerdtree.git ~/.vim/bundle/nerdtree
 
 Then reload vim, run `:Helptags`, and check out `:help NERD_tree.txt`.
 
