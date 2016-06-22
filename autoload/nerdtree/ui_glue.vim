@@ -191,8 +191,8 @@ function! s:closeCurrentDir(node)
         call nerdtree#echo("cannot close tree root")
     else
         while g:NERDTreeCascadeOpenSingleChildDir && !parent.parent.isRoot()
-            if parent.parent.getVisibleChildCount() == 1
-                call parent.close()
+            let childNodes = parent.getVisibleChildren()
+            if len(childNodes) == 1 && childNodes[0].path.isDirectory
                 let parent = parent.parent
             else
                 break
