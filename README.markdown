@@ -102,6 +102,16 @@ Stick this in your vimrc:
 Note: Now start vim with plain `vim`, not `vim .`
 
 ---
+> How can I open NERDTree on startup, and have my cursor start in the other window?
+
+Stick this in your vimrc:
+
+    autocmd vimenter * NERDTree
+    autocmd vimenter * wincmd p
+
+ *via [stackoverflow/Yohann](http://stackoverflow.com/questions/4277808/nerdtree-auto-focus-to-file-when-opened-in-new-tab/19330023#19330023)*
+ 
+---
 > How can I map a specific key or shortcut to open NERDTree?
 
 Stick this in your vimrc to open NERDTree with `Ctrl+n` (you can set whatever key you want):
