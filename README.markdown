@@ -60,7 +60,7 @@ Installation
     cd ~/.vim/bundle
     git clone https://github.com/scrooloose/nerdtree.git
 
-Then reload vim, run `:Helptags`, and check out `:help NERD_tree.txt`.
+Then reload vim, run `:helptags`, and check out `:help NERD_tree.txt`.
 
 
 ####[apt-vim](https://github.com/egalpin/apt-vim)
