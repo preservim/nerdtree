@@ -174,23 +174,13 @@ function! s:Path.copy(dest)
 
     call s:Path.createParentDirectories(a:dest)
 
-    if !nerdtree#runningWindows()
-        let dest = s:Path.WinToUnixPath(a:dest)
-    else
-        let dest = a:dest
-    endif
-
-    if !exists('g:NERDTreeCopyCmd')
-        if self.isDirectory
-            let cmd_prefix = g:NERDTreeCopyDirCmd
-        else
-            let cmd_prefix = g:NERDTreeCopyFileCmd
-        endif
-    else
+    if exists('g:NERDTreeCopyCmd')
         let cmd_prefix = g:NERDTreeCopyCmd
+    else
+        let cmd_prefix = (self.isDirectory ? g:NERDTreeCopyDirCmd : g:NERDTreeCopyFileCmd)
     endif
 
-    let cmd = cmd_prefix . " " . escape(self.str(), self._escChars()) . " " . escape(dest, self._escChars())
+    let cmd = cmd_prefix . " " . escape(self.str(), self._escChars()) . " " . escape(a:dest, self._escChars())
     let success = system(cmd)
     if v:shell_error != 0
         throw "NERDTree.CopyError: Could not copy ''". self.str() ."'' to: '" . a:dest . "'"
@@ -201,11 +191,7 @@ endfunction
 "
 "returns 1 if copying is supported for this OS
 function! s:Path.CopyingSupported()
-    if !exists('g:NERDTreeCopyCmd')
-        return exists('g:NERDTreeCopyDirCmd') && exists('g:NERDTreeCopyFileCmd')
-    endif
-
-    return 1
+    return exists('g:NERDTreeCopyCmd') || (exists('g:NERDTreeCopyDirCmd') && exists('g:NERDTreeCopyFileCmd'))
 endfunction
 
 "FUNCTION: Path.copyingWillOverwrite(dest) {{{1
@@ -231,7 +217,7 @@ endfunction
 "FUNCTION: Path.createParentDirectories(path) {{{1
 "
 "create parent directories for this path if needed
-"without throwing any errors is those directories already exist
+"without throwing any errors if those directories already exist
 "
 "Args:
 "path: full path of the node whose parent directories may need to be created
@@ -244,8 +230,7 @@ endfunction
 
 "FUNCTION: Path.delete() {{{1
 "
-"Deletes the file represented by this path.
-"Deletion of directories is not supported
+"Deletes the file or directory represented by this path.
 "
 "Throws NERDTree.Path.Deletion exceptions
 function! s:Path.delete()
