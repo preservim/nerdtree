@@ -679,6 +679,9 @@ NERD tree. These options should be set in your vimrc.
                                 a buffer when a file is being deleted or renamed
                                 via a context menu command.
 
+|'NERDTreeActivateFileMode'|    Sets the default behaviour, when activating a
+                                file node in the tree window.
+
 |'NERDTreeCreatePrefix'|        Specify a prefix to be used when creating the
                                 NERDTree window.
 
@@ -1023,6 +1026,21 @@ display its tree view. You can augment this behavior by specifying a prefix
 string such as "keepalt" or similar. For example, to have NERDTree create its
 tree window using `silent keepalt keepjumps edit`:
     let NERDTreeCreatePrefix='silent keepalt keepjumps'
+<
+
+------------------------------------------------------------------------------
+                                          *'NERDTreeActivateFileMode'*
+Values: 'p', 'h', 'v' or 't'
+Default: 'p'.
+
+You may want to change the default behaviour when activating a file node from
+the tree. 'p' will replace the content of the current file buffer, 'h' will
+perform a horzintal split, 'v' will perform a vertical split and 't' will open
+a new tab. Use one of the follow lines to set this option: >
+    let NERDTreeActivateFileMode='p'
+    let NERDTreeActivateFileMode='h'
+    let NERDTreeActivateFileMode='v'
+    let NERDTreeActivateFileMode='t'
 <
 
 ==============================================================================

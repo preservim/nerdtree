@@ -75,6 +75,7 @@ else
     call s:initVariable("g:NERDTreeDirArrowCollapsible", "~")
 endif
 call s:initVariable("g:NERDTreeCascadeOpenSingleChildDir", 1)
+call s:initVariable("g:NERDTreeActivateFileMode", 'p')
 
 if !exists("g:NERDTreeSortOrder")
     let g:NERDTreeSortOrder = ['\/$', '*', '\.swp$',  '\.bak$', '\~$']
