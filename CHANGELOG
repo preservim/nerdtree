@@ -1,4 +1,8 @@
 Next
+    - Added NERDTreeCascadeSingleChildDir option (juanibiapina) #558
+    - Replace strchars() with backward compatible workaround.
+    - Add support for copy command in Windows (SkylerLipthay) #231
+    - Fixed typo in README.markdown - :Helptags -> :helptags
     - Rename "primary" and "secondary" trees to "tab" and "window" trees.
     - Move a bunch of buffer level variables into the NERDTree and UI classes.
     - Display cascading dirs on one line to save vertical/horizontal space (@matt-gardner: brainstorming/testing)
