@@ -163,7 +163,7 @@ function! NERDTreeDeleteNode()
     if currentNode.path.isDirectory && currentNode.getChildCount() > 0
         let choice =input("Delete the current node\n" .
                          \ "==========================================================\n" .
-                         \ "STOP! To delete this entire directory, type 'yes'\n" .
+                         \ "STOP! Directory is not empty! To delete, type 'yes'\n" .
                          \ "" . currentNode.path.str() . ": ")
         let confirmed = choice ==# 'yes'
     else
