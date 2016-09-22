@@ -1,4 +1,5 @@
 Next
+    - Fixed incomplete escaping of folder arrows (adityanatraj) #548
     - Added NERDTreeCascadeSingleChildDir option (juanibiapina) #558
     - Replace strchars() with backward compatible workaround.
     - Add support for copy command in Windows (SkylerLipthay) #231
