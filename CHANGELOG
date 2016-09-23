@@ -1,7 +1,7 @@
 Next
     - Shorten delete confimration of empty directory to 'y' (mikeperri) #530
     - Fix API call to open directory tree in window (devm33) #533
-    - Change default arrows to ones available in more Windows fonts (gwilk) #546
+    - Change default arrows on non-Windows platforms (gwilk) #546
     - Update to README - combine cd and git clone (zwhitchcox) #584
     - Update to README - Tip: start NERDTree when vim starts (therealplato) #593 
     - Escape filename when moving an open buffer (zacharyvoase) #595
