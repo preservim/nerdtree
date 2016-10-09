@@ -100,6 +100,11 @@ Stick this in your vimrc:
 
 Note: Now start vim with plain `vim`, not `vim .`
 
+Or use the following directives if you prefer using `vim .`:
+
+    autocmd StdinReadPre * let s:std_in=1
+    autocmd VimEnter * if argc() == 1 && argv()[0] == '.' && !exists("s:std_in") | NERDTree | wincmd p | ene | endif
+
 ---
 > How can I open NERDTree on startup, and have my cursor start in the other window?
 
