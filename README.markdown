@@ -100,16 +100,15 @@ Stick this in your vimrc:
 
 Note: Now start vim with plain `vim`, not `vim .`
 
+
 ---
-> How can I open NERDTree on startup, and have my cursor start in the other window?
+> How can I open NERDTree as a window automatically when vim starts up on opening a directory?
 
-Stick this in your vimrc:
+    autocmd StdinReadPre * let s:std_in=1
+    autocmd VimEnter * if argc() == 1 && isdirectory(argv()[0]) && !exists("s:std_in") | exe 'NERDTree' argv()[0] | wincmd p | ene | endif
 
-    autocmd vimenter * NERDTree
-    autocmd vimenter * wincmd p
+This trick also prevents NERDTree from hiding when first select a file.
 
- *via [stackoverflow/Yohann](http://stackoverflow.com/questions/4277808/nerdtree-auto-focus-to-file-when-opened-in-new-tab/19330023#19330023)*
- 
 ---
 > How can I map a specific key or shortcut to open NERDTree?
 
