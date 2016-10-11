@@ -834,6 +834,18 @@ Default: $HOME/.NERDTreeBookmarks
 This is where bookmarks are saved. See |NERDTreeBookmarkCommands|.
 
 ------------------------------------------------------------------------------
+                                                     *'NERDTreeBookmarksFileFS'*
+Values: a character
+Default: ' '
+
+The field separator between a bookmark's name and the directory it leads to.
+Useful option when using the same bookmarks file for NERDTree and ranger
+(~/.config/ranger/bookmarks). In ranger's bookmarks file, The field separator
+is ':', so if you set this variable to ':' you will be able to link
+~/.config/ranger/bookmarks and NERDTreeBookmarksFile and both program's
+bookmarks will be shared.
+
+------------------------------------------------------------------------------
                                                      *'NERDTreeBookmarksSort'*
 Values: 0 or 1
 Default: 1
