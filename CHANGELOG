@@ -1,4 +1,5 @@
 Next
+    - Change color of arrow (Leeiio) #630
     - Improved a tip in README.markdown (ggicci) #628
     - Shorten delete confimration of empty directory to 'y' (mikeperri) #530
     - Fix API call to open directory tree in window (devm33) #533
