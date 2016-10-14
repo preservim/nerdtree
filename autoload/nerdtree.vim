@@ -13,9 +13,33 @@ endfunction
 "FUNCTION: nerdtree#checkForBrowse(dir) {{{2
 "inits a window tree in the current buffer if appropriate
 function! nerdtree#checkForBrowse(dir)
-    if a:dir != '' && isdirectory(a:dir)
-        call g:NERDTreeCreator.CreateWindowTree(a:dir)
+    if !isdirectory(a:dir)
+        return
     endif
+
+    if s:reuseWin(a:dir)
+        return
+    endif
+
+    call g:NERDTreeCreator.CreateWindowTree(a:dir)
+endfunction
+
+function! s:reuseWin(dir) abort
+    let path = g:NERDTreePath.New(fnamemodify(a:dir, ":p"))
+
+    for i in range(1, bufnr("$"))
+        let nt = getbufvar(i, "NERDTree")
+        if empty(nt)
+            continue
+        endif
+
+        if nt.isWinTree() && nt.root.path.equals(path)
+            exec "buffer " . i
+            return 1
+        endif
+    endfor
+
+    return 0
 endfunction
 
 " FUNCTION: nerdtree#completeBookmarks(A,L,P) {{{2
