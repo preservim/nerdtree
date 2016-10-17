@@ -24,10 +24,13 @@ function! nerdtree#checkForBrowse(dir)
     call g:NERDTreeCreator.CreateWindowTree(a:dir)
 endfunction
 
+"FUNCTION: s:reuseWin(dir) {{{2
+"finds a NERDTree buffer with root of dir, and opens it.
 function! s:reuseWin(dir) abort
     let path = g:NERDTreePath.New(fnamemodify(a:dir, ":p"))
 
     for i in range(1, bufnr("$"))
+        unlet! nt
         let nt = getbufvar(i, "NERDTree")
         if empty(nt)
             continue
