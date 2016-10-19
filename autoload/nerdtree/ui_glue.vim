@@ -207,14 +207,15 @@ endfunction
 " FUNCTION: s:closeTreeWindow() {{{1
 " close the tree window
 function! s:closeTreeWindow()
-    if b:NERDTree.isWinTree() && b:NERDTree.previousBuf() != -1
-        exec "buffer " . b:NERDTree.previousBuf()
+    if b:NERDTree.isWinTree()
+        bp
+        return
+    endif
+
+    if winnr("$") > 1
+        call g:NERDTree.Close()
     else
-        if winnr("$") > 1
-            call g:NERDTree.Close()
-        else
-            call nerdtree#echo("Cannot close last window")
-        endif
+        call nerdtree#echo("Cannot close last window")
     endif
 endfunction
 

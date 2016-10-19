@@ -181,11 +181,6 @@ function! s:NERDTree.PathFilters()
     return s:NERDTree._PathFilters
 endfunction
 
-"FUNCTION: s:NERDTree.previousBuf() {{{1
-function! s:NERDTree.previousBuf()
-    return self._previousBuf
-endfunction
-
 "FUNCTION: s:NERDTree.render() {{{1
 "A convenience function - since this is called often
 function! s:NERDTree.render()
