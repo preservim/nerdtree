@@ -37,6 +37,7 @@ function! s:reuseWin(dir) abort
         endif
 
         if nt.isWinTree() && nt.root.path.equals(path)
+            call nt.setPreviousBuf(bufnr("#"))
             exec "buffer " . i
             return 1
         endif
