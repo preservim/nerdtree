@@ -42,6 +42,7 @@ function! s:UI._dumpHelp()
         let @h=@h."\" ". g:NERDTreeMapPreviewSplit .": preview split\n"
         let @h=@h."\" ". g:NERDTreeMapOpenVSplit .": open vsplit\n"
         let @h=@h."\" ". g:NERDTreeMapPreviewVSplit .": preview vsplit\n"
+        let @h=@h."\" ". g:NERDTreeMapDeleteBuffer .": delete open buffer\n"
 
         let @h=@h."\"\n\" ----------------------------\n"
         let @h=@h."\" Directory node mappings~\n"
