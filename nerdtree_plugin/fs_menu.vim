@@ -203,7 +203,7 @@ endfunction
 function! NERDTreeListNode()
     let treenode = g:NERDTreeFileNode.GetSelected()
     if treenode != {}
-        let metadata = split(system('ls -ld ' . shellescape(treenode.path.str())), '\n')
+        let metadata = split(system('ls -ldh ' . shellescape(treenode.path.str())), '\n')
         call nerdtree#echo(metadata[0])
     else
         call nerdtree#echo("No information avaialable")
