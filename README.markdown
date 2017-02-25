@@ -128,6 +128,19 @@ Stick this in your vimrc:
 See here: https://github.com/scrooloose/nerdtree/issues/433#issuecomment-92590696
 
 ---
+
+> How can I shift between nerdtree tab and my working tab in vim?
+
+Use `Ctrl-n` to switch to nerdtree tab and `q` to switch to working tab
+
+---
+
+> Where can I access help in nerdtree?
+
+Press `?` when you are in nerdtree tab
+
+---
+
 > How can I change default arrows?
 
 Use these variables in your vimrc. Note that below are default arrow symbols
