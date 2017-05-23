@@ -133,7 +133,7 @@ endfunction
 
 "FUNCTION: nerdtree#runningWindows(dir) {{{2
 function! nerdtree#runningWindows()
-    return has("win16") || has("win32") || has("win64") || has("win32unix")
+    return has("win16") || has("win32") || has("win64")
 endfunction
 
 " SECTION: View Functions {{{1
