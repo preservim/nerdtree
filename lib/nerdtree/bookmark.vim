@@ -10,15 +10,22 @@ endfunction
 
 " FUNCTION: Bookmark.AddBookmark(name, path) {{{1
 " Class method to add a new bookmark to the list, if a previous bookmark exists
-" with the same name, just update the path for that bookmark
+" with the same name, just update the path for that bookmark.
+" If no name is provided then default to the directory name of the current root.
 function! s:Bookmark.AddBookmark(name, path)
+    if exists(a:name)
+        let l:name=a:name
+    else
+        let l:name=b:NERDTreeRoot.path['pathSegments'][-1]
+    endif
+
     for i in s:Bookmark.Bookmarks()
-        if i.name ==# a:name
+        if i.name ==# l:name
             let i.path = a:path
             return
         endif
     endfor
-    call add(s:Bookmark.Bookmarks(), s:Bookmark.New(a:name, a:path))
+    call add(s:Bookmark.Bookmarks(), s:Bookmark.New(l:name, a:path))
     if g:NERDTreeBookmarksSort ==# 1
         call s:Bookmark.Sort()
     endif
