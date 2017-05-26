@@ -711,7 +711,7 @@ function! s:Path._strForEdit()
         let p = '.'
     endif
 
-    return p
+    return fnamemodify(p, ':.')
 endfunction
 
 "FUNCTION: Path._strForGlob() {{{1
