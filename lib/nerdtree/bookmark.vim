@@ -24,7 +24,7 @@ function! s:Bookmark.AddBookmark(name, path)
     endif
 endfunction
 
-" FUNCTION: Bookmark.Bookmarks()   {{{1
+" FUNCTION: Bookmark.Bookmarks() {{{1
 " Class method to get all bookmarks. Lazily initializes the bookmarks global
 " variable
 function! s:Bookmark.Bookmarks()
@@ -34,7 +34,7 @@ function! s:Bookmark.Bookmarks()
     return g:NERDTreeBookmarks
 endfunction
 
-" FUNCTION: Bookmark.BookmarkExistsFor(name)   {{{1
+" FUNCTION: Bookmark.BookmarkExistsFor(name) {{{1
 " class method that returns 1 if a bookmark with the given name is found, 0
 " otherwise
 function! s:Bookmark.BookmarkExistsFor(name)
@@ -46,7 +46,7 @@ function! s:Bookmark.BookmarkExistsFor(name)
     endtry
 endfunction
 
-" FUNCTION: Bookmark.BookmarkFor(name)   {{{1
+" FUNCTION: Bookmark.BookmarkFor(name) {{{1
 " Class method to get the bookmark that has the given name. {} is return if no
 " bookmark is found
 function! s:Bookmark.BookmarkFor(name)
@@ -58,7 +58,7 @@ function! s:Bookmark.BookmarkFor(name)
     throw "NERDTree.BookmarkNotFoundError: no bookmark found for name: \"". a:name  .'"'
 endfunction
 
-" FUNCTION: Bookmark.BookmarkNames()   {{{1
+" FUNCTION: Bookmark.BookmarkNames() {{{1
 " Class method to return an array of all bookmark names
 function! s:Bookmark.BookmarkNames()
     let names = []
@@ -170,7 +170,7 @@ function! s:Bookmark.GetSelected()
     return {}
 endfunction
 
-" FUNCTION: Bookmark.InvalidBookmarks()   {{{1
+" FUNCTION: Bookmark.InvalidBookmarks() {{{1
 " Class method to get all invalid bookmark strings read from the bookmarks
 " file
 function! s:Bookmark.InvalidBookmarks()
@@ -233,20 +233,20 @@ function! s:Bookmark.openInNewTab(options)
     call self.open(a:options)
 endfunction
 
-" FUNCTION: Bookmark.setPath(path)   {{{1
+" FUNCTION: Bookmark.setPath(path) {{{1
 " makes this bookmark point to the given path
 function! s:Bookmark.setPath(path)
     let self.path = a:path
 endfunction
 
-" FUNCTION: Bookmark.Sort()   {{{1
+" FUNCTION: Bookmark.Sort() {{{1
 " Class method that sorts all bookmarks
 function! s:Bookmark.Sort()
     let CompareFunc = function("nerdtree#compareBookmarks")
     call sort(s:Bookmark.Bookmarks(), CompareFunc)
 endfunction
 
-" FUNCTION: Bookmark.str()   {{{1
+" FUNCTION: Bookmark.str() {{{1
 " Get the string that should be rendered in the view for this bookmark
 function! s:Bookmark.str()
     let pathStrMaxLen = winwidth(g:NERDTree.GetWinNum()) - 4 - len(self.name)
@@ -292,7 +292,7 @@ function! s:Bookmark.validate()
     endif
 endfunction
 
-" FUNCTION: Bookmark.Write()   {{{1
+" FUNCTION: Bookmark.Write() {{{1
 " Class method to write all bookmarks to the bookmarks file
 function! s:Bookmark.Write()
     let bookmarkStrings = []
