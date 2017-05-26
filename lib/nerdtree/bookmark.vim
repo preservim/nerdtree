@@ -20,7 +20,7 @@ function! s:Bookmark.AddBookmark(name, path)
     endfor
     call add(s:Bookmark.Bookmarks(), s:Bookmark.New(a:name, a:path))
     if g:NERDTreeBookmarksSort ==# 1
-        call s:Bookmark.Sort()
+        call s:Bookmark.SortBookmarksList()
     endif
 endfunction
 
@@ -105,7 +105,7 @@ function! s:Bookmark.CacheBookmarks(silent)
             endif
         endif
         if g:NERDTreeBookmarksSort ==# 1
-            call s:Bookmark.Sort()
+            call s:Bookmark.SortBookmarksList()
         endif
     endif
 endfunction
@@ -239,9 +239,9 @@ function! s:Bookmark.setPath(path)
     let self.path = a:path
 endfunction
 
-" FUNCTION: Bookmark.Sort() {{{1
-" Class method that sorts all bookmarks
-function! s:Bookmark.Sort()
+" FUNCTION: Bookmark.SortBookmarksList() {{{1
+" Class method that sorts the global list of bookmarks by name.
+function! s:Bookmark.SortBookmarksList()
     let CompareFunc = function("nerdtree#compareBookmarks")
     call sort(s:Bookmark.Bookmarks(), CompareFunc)
 endfunction
