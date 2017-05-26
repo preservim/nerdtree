@@ -52,11 +52,6 @@ function! nerdtree#completeBookmarks(A,L,P)
     return filter(g:NERDTreeBookmark.BookmarkNames(), 'v:val =~# "^' . a:A . '"')
 endfunction
 
-"FUNCTION: nerdtree#compareBookmarks(dir) {{{2
-function! nerdtree#compareBookmarks(first, second)
-    return a:first.compareTo(a:second)
-endfunction
-
 "FUNCTION: nerdtree#compareNodes(dir) {{{2
 function! nerdtree#compareNodes(n1, n2)
     return a:n1.path.compareTo(a:n2.path)

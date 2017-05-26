@@ -19,7 +19,7 @@ function! s:Bookmark.AddBookmark(name, path)
         endif
     endfor
     call add(s:Bookmark.Bookmarks(), s:Bookmark.New(a:name, a:path))
-    if g:NERDTreeBookmarksSort ==# 1
+    if g:NERDTreeBookmarksSort == 1 || g:NERDTreeBookmarksSort == 2
         call s:Bookmark.SortBookmarksList()
     endif
 endfunction
@@ -104,17 +104,34 @@ function! s:Bookmark.CacheBookmarks(silent)
                 call nerdtree#echo(invalidBookmarksFound . " invalid bookmarks were read. See :help NERDTreeInvalidBookmarks for info.")
             endif
         endif
-        if g:NERDTreeBookmarksSort ==# 1
+        if g:NERDTreeBookmarksSort == 1 || g:NERDTreeBookmarksSort == 2
             call s:Bookmark.SortBookmarksList()
         endif
     endif
 endfunction
 
-" FUNCTION: Bookmark.compareTo(otherbookmark) {{{1
-" Compare these two bookmarks for sorting purposes
-function! s:Bookmark.compareTo(otherbookmark)
-    return a:otherbookmark.name < self.name
+" FUNCTION: Bookmark.CompareBookmarksByName(firstBookmark, secondBookmark) {{{1
+" Class method that indicates the relative position of two bookmarks when
+" placed in alphabetical order by name. Case-sensitivity is determined by an
+" option. Supports the "s:Bookmark.SortBookmarksList()" method.
+function! s:Bookmark.CompareBookmarksByName(firstBookmark, secondBookmark)
+    let l:result = 0
+    if g:NERDTreeBookmarksSort == 1
+        if a:firstBookmark.name <? a:secondBookmark.name
+            let l:result = -1
+        elseif a:firstBookmark.name >? a:secondBookmark.name
+            let l:result = 1
+        endif
+    elseif g:NERDTreeBookmarksSort == 2
+        if a:firstBookmark.name <# a:secondBookmark.name
+            let l:result = -1
+        elseif a:firstBookmark.name ># a:secondBookmark.name
+            let l:result = 1
+        endif
+    endif
+    return l:result
 endfunction
+
 " FUNCTION: Bookmark.ClearAll() {{{1
 " Class method to delete all bookmarks.
 function! s:Bookmark.ClearAll()
@@ -240,10 +257,10 @@ function! s:Bookmark.setPath(path)
 endfunction
 
 " FUNCTION: Bookmark.SortBookmarksList() {{{1
-" Class method that sorts the global list of bookmarks by name.
+" Class method that sorts the global list of bookmarks alphabetically by name.
+" Note that case-sensitivity is determined by a user option.
 function! s:Bookmark.SortBookmarksList()
-    let CompareFunc = function("nerdtree#compareBookmarks")
-    call sort(s:Bookmark.Bookmarks(), CompareFunc)
+    call sort(s:Bookmark.Bookmarks(), s:Bookmark.CompareBookmarksByName)
 endfunction
 
 " FUNCTION: Bookmark.str() {{{1
