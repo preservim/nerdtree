@@ -19,9 +19,6 @@ function! s:Bookmark.AddBookmark(name, path)
         endif
     endfor
     call add(s:Bookmark.Bookmarks(), s:Bookmark.New(a:name, a:path))
-    if g:NERDTreeBookmarksSort == 1 || g:NERDTreeBookmarksSort == 2
-        call s:Bookmark.SortBookmarksList()
-    endif
 endfunction
 
 " FUNCTION: Bookmark.Bookmarks() {{{1
@@ -103,9 +100,6 @@ function! s:Bookmark.CacheBookmarks(silent)
             if !a:silent
                 call nerdtree#echo(invalidBookmarksFound . " invalid bookmarks were read. See :help NERDTreeInvalidBookmarks for info.")
             endif
-        endif
-        if g:NERDTreeBookmarksSort == 1 || g:NERDTreeBookmarksSort == 2
-            call s:Bookmark.SortBookmarksList()
         endif
     endif
 endfunction
