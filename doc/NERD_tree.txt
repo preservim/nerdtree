@@ -835,11 +835,15 @@ This is where bookmarks are saved. See |NERDTreeBookmarkCommands|.
 
 ------------------------------------------------------------------------------
                                                      *'NERDTreeBookmarksSort'*
-Values: 0 or 1
+Values: 0, 1, or 2
 Default: 1
 
-If set to 0 then the bookmarks list is not sorted.
-If set to 1 the bookmarks list is sorted.
+This option controls the method by which the list of user bookmarks is
+sorted. When sorted, bookmarks will render in alphabetical order by name.
+
+If set to 0, the bookmarks list is not sorted.
+If set to 1, the bookmarks list is sorted in a case-insensitive manner.
+If set to 2, the bookmarks list is sorted in a case-sensitive manner.
 
 ------------------------------------------------------------------------------
                                                        *'NERDTreeMouseMode'*
