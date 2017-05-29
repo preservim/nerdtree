@@ -184,9 +184,13 @@ function! s:closeChildren(node)
 endfunction
 
 " FUNCTION: s:closeCurrentDir(node) {{{1
-" closes the parent dir of the current node
+" closes the current DirNode or the parent DirNode of the current FileNode
 function! s:closeCurrentDir(node)
-    let parent = a:node.parent
+    if a:node.path.isDirectory
+        let parent = a:node
+    else
+        let parent = a:node.parent
+    endif
     while g:NERDTreeCascadeOpenSingleChildDir && !parent.isRoot()
         let childNodes = parent.getVisibleChildren()
         if len(childNodes) == 1 && childNodes[0].path.isDirectory
