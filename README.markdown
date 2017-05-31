@@ -26,6 +26,7 @@ The following features and functionality are provided by the NERD tree:
     * Mappings to navigate around the tree
     * ...
   * Directories and files can be bookmarked.
+  * Bookmark file can be shared with [ranger](https://github.com/ranger/ranger) the console file manager.
   * Most NERD tree navigation can also be done with the mouse
   * Filtering of tree content (can be toggled at runtime)
     * custom file filters to prevent e.g. vim backup files being displayed

@@ -203,7 +203,7 @@ endfunction
 " FUNCTION: Bookmark.New(name, path) {{{1
 " Create a new bookmark object with the given name and path object
 function! s:Bookmark.New(name, path)
-    if a:name =~# ' '
+    if a:name =~# g:NERDTreeBookmarksFileFS
         throw "NERDTree.IllegalBookmarkNameError: illegal name:" . a:name
     endif
 
@@ -269,7 +269,7 @@ function! s:Bookmark.str()
     if len(pathStr) > pathStrMaxLen
         let pathStr = '<' . strpart(pathStr, len(pathStr) - pathStrMaxLen)
     endif
-    return '>' . self.name . ' ' . pathStr
+    return '>' . self.name . g:NERDTreeBookmarksFileFS . pathStr
 endfunction
 
 " FUNCTION: Bookmark.toRoot(nerdtree) {{{1
@@ -308,7 +308,7 @@ endfunction
 function! s:Bookmark.Write()
     let bookmarkStrings = []
     for i in s:Bookmark.Bookmarks()
-        call add(bookmarkStrings, i.name . ' ' . fnamemodify(i.path.str(), ':~'))
+        call add(bookmarkStrings, i.name . g:NERDTreeBookmarksFileFS . fnamemodify(i.path.str(), ':~'))
     endfor
 
     "add a blank line before the invalid ones
