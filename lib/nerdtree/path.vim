@@ -42,7 +42,7 @@ endfunction
 function! s:Path.cacheDisplayString() abort
     let self.cachedDisplayString = self.getLastPathComponent(1)
 
-    if self.isExecutable
+    if self.isExecutable && g:NERDTreeShowExecutableFlag
         let self.cachedDisplayString = self.cachedDisplayString . '*'
     endif
 

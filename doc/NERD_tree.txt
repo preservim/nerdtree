@@ -593,7 +593,9 @@ file explorers have.
 The script comes with two default menu plugins: exec_menuitem.vim and
 fs_menu.vim. fs_menu.vim adds some basic filesystem operations to the menu for
 creating/deleting/moving/copying files and dirs. exec_menuitem.vim provides a
-menu item to execute executable files.
+menu item to execute executable files. (By default, executable files are
+displayed with a trailing asterisk. This can be turned off by setting the
+|'NERDTreeShowExecutableFlag'| option to 0.)
 
 Related tags: |NERDTree-m| |NERDTreeApi|
 
@@ -653,6 +655,9 @@ NERD tree. These options should be set in your vimrc.
 
 |'NERDTreeShowHidden'|          Tells the NERD tree whether to display hidden
                                 files on startup.
+
+|'NERDTreeShowExecutableFlag'|  Tells the NERD tree whether to display the
+                                trailing '*' on executable files.
 
 |'NERDTreeShowLineNumbers'|     Tells the NERD tree whether to display line
                                 numbers in the tree window.
@@ -904,6 +909,18 @@ can be dynamically toggled, per tree, with the |NERDTree-I| mapping.  Use one
 of the follow lines to set this option: >
     let NERDTreeShowHidden=0
     let NERDTreeShowHidden=1
+<
+
+------------------------------------------------------------------------------
+                                                *'NERDTreeShowExecutableFlag'*
+Values: 0 or 1.
+Default: 1.
+
+This option tells the NERD tree whether to display the trailing '*' on
+executable files. This option cannot be dynamically toggled. Use one of the
+following lines to set this option: >
+    let NERDTreeShowExecutableFlag=0
+    let NERDTreeShowExecutableFlag=1
 <
 
 ------------------------------------------------------------------------------
