@@ -282,13 +282,13 @@ previous window.
 ------------------------------------------------------------------------------
                                                                  *NERDTree-go*
 Default key: go
-Map option: None
+Map option: NERDTreeMapPreview
 Applies to: files.
 
 If a file node is selected, it is opened in the previous window, but the
 cursor does not move.
 
-The key combo for this mapping is always "g" + NERDTreeMapActivateNode (see
+The default key combo for this mapping is "g" + NERDTreeMapActivateNode (see
 |NERDTree-o|).
 
 ------------------------------------------------------------------------------
@@ -324,12 +324,12 @@ window.
 ------------------------------------------------------------------------------
                                                                  *NERDTree-gi*
 Default key: gi
-Map option: None
+Map option: NERDTreeMapPreviewSplit
 Applies to: files.
 
 The same as |NERDTree-i| except that the cursor is not moved.
 
-The key combo for this mapping is always "g" + NERDTreeMapOpenSplit (see
+The default key combo for this mapping is "g" + NERDTreeMapOpenSplit (see
 |NERDTree-i|).
 
 ------------------------------------------------------------------------------
@@ -344,12 +344,12 @@ the new window.
 ------------------------------------------------------------------------------
                                                                  *NERDTree-gs*
 Default key: gs
-Map option: None
+Map option: NERDTreeMapPreviewVSplit
 Applies to: files.
 
 The same as |NERDTree-s| except that the cursor is not moved.
 
-The key combo for this mapping is always "g" + NERDTreeMapOpenVSplit (see
+The default key combo for this mapping is "g" + NERDTreeMapOpenVSplit (see
 |NERDTree-s|).
 
 ------------------------------------------------------------------------------
