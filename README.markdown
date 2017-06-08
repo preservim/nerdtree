@@ -19,7 +19,7 @@ The following features and functionality are provided by the NERD tree:
     * windows .lnk files
     * read-only files
     * executable files
-  * Many (customisable) mappings are provided to manipulate the tree:
+  * Many (customizable) mappings are provided to manipulate the tree:
     * Mappings to open/close/explore directory nodes
     * Mappings to open files in new/existing windows/tabs
     * Mappings to change the current root of the tree
@@ -31,8 +31,8 @@ The following features and functionality are provided by the NERD tree:
     * custom file filters to prevent e.g. vim backup files being displayed
     * optional displaying of hidden files (. files)
     * files can be "turned off" so that only directories are displayed
-  * The position and size of the NERD tree window can be customised
-  * The order in which the nodes in the tree are listed can be customised.
+  * The position and size of the NERD tree window can be customized
+  * The order in which the nodes in the tree are listed can be customized.
   * A model of your filesystem is created/maintained as you explore it. This
     has several advantages:
     * All filesystem information is cached and is only re-read on demand
@@ -44,13 +44,13 @@ The following features and functionality are provided by the NERD tree:
     as you left it
   * You can have a separate NERD tree for each tab, share trees across tabs,
     or a mix of both.
-  * By default the script overrides the default file browser (netrw), so if
-    you :edit a directory a (slightly modified) NERD tree will appear in the
+  * By default, the script overrides the default file browser (netrw), so if
+    you : edit a directory a (slightly modified) NERD tree will appear in the
     current window
   * A programmable menu system is provided (simulates right clicking on a node)
     * one default menu plugin is provided to perform basic filesystem
       operations (create/delete/move/copy files/directories)
-  * There's an API for adding your own keymappings
+  * There's an API for adding your keymappings
 
 Installation
 ------------
