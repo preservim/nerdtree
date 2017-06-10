@@ -44,15 +44,20 @@ function! s:Bookmark.BookmarkExistsFor(name)
 endfunction
 
 " FUNCTION: Bookmark.BookmarkFor(name) {{{1
-" Class method to get the bookmark that has the given name. {} is return if no
-" bookmark is found
+" Class method that returns the Bookmark object having the specified name.
+" Throws "NERDTree.BookmarkNotFoundError" if no Bookmark is found.
 function! s:Bookmark.BookmarkFor(name)
-    for i in s:Bookmark.Bookmarks()
-        if i.name ==# a:name
-            return i
+    let l:result = {}
+    for l:bookmark in s:Bookmark.Bookmarks()
+        if l:bookmark.name ==# a:name
+            let l:result = l:bookmark
+            break
         endif
     endfor
-    throw "NERDTree.BookmarkNotFoundError: no bookmark found for name: \"". a:name  .'"'
+    if empty(l:result)
+        throw 'NERDTree.BookmarkNotFoundError: "' . a:name  . '" not found'
+    endif
+    return l:result
 endfunction
 
 " FUNCTION: Bookmark.BookmarkNames() {{{1
