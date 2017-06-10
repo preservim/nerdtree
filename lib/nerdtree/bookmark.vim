@@ -157,18 +157,23 @@ function! s:Bookmark.delete()
 endfunction
 
 " FUNCTION: Bookmark.getNode(nerdtree, searchFromAbsoluteRoot) {{{1
-" Gets the treenode for this bookmark
+" Returns the tree node object associated with this Bookmark.
+" Throws "NERDTree.BookmarkedNodeNotFoundError" if the node is not found.
 "
 " Args:
-" searchFromAbsoluteRoot: specifies whether we should search from the current
-" tree root, or the highest cached node
+" searchFromAbsoluteRoot: boolean flag, search from the highest cached node
+"   if true and from the current tree root if false
 function! s:Bookmark.getNode(nerdtree, searchFromAbsoluteRoot)
-    let searchRoot = a:searchFromAbsoluteRoot ? a:nerdtree.root.AbsoluteTreeRoot() : a:nerdtree.root
-    let targetNode = searchRoot.findNode(self.path)
-    if empty(targetNode)
-        throw "NERDTree.BookmarkedNodeNotFoundError: no node was found for bookmark: " . self.name
+    if a:searchFromAbsoluteRoot
+        let l:searchRoot = a:nerdtree.root.AbsoluteTreeRoot()
+    else
+        let l:searchRoot = a:nerdtree.root
     endif
-    return targetNode
+    let l:targetNode = l:searchRoot.findNode(self.path)
+    if empty(l:targetNode)
+        throw 'NERDTree.BookmarkedNodeNotFoundError: node for bookmark "' . self.name . '" not found'
+    endif
+    return l:targetNode
 endfunction
 
 " FUNCTION: Bookmark.GetNodeForName(name, searchFromAbsoluteRoot, nerdtree) {{{1
