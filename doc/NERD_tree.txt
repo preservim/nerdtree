@@ -846,6 +846,15 @@ If set to 1, the bookmarks list is sorted in a case-insensitive manner.
 If set to 2, the bookmarks list is sorted in a case-sensitive manner.
 
 ------------------------------------------------------------------------------
+                                                     *'NERDTreeMarkBookmarks'*
+Values: 0 or 1
+Default: 1
+
+If set to 1, Bookmarks will be specially marked whenever the NERDTree is
+rendered. Users of the |'NERDTreeMinimalUI'| setting may prefer to disable
+this setting for even less visual clutter.
+
+------------------------------------------------------------------------------
                                                        *'NERDTreeMouseMode'*
 Values: 1, 2 or 3.
 Default: 1.
