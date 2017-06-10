@@ -1,5 +1,13 @@
-"CLASS: Bookmark
-"============================================================
+" ============================================================================
+" CLASS: Bookmark
+"
+" The Bookmark class serves two purposes:
+"   (1) It is the top-level prototype for new, concrete Bookmark objects.
+"   (2) It provides an interface for client code to query and manipulate the
+"       global list of Bookmark objects within the current Vim session.
+" ============================================================================
+
+
 let s:Bookmark = {}
 let g:NERDTreeBookmark = s:Bookmark
 
