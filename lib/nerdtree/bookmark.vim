@@ -172,11 +172,13 @@ function! s:Bookmark.getNode(nerdtree, searchFromAbsoluteRoot)
 endfunction
 
 " FUNCTION: Bookmark.GetNodeForName(name, searchFromAbsoluteRoot, nerdtree) {{{1
-" Class method that finds the bookmark with the given name and returns the
-" treenode for it.
+" Class method that returns the tree node object for the Bookmark with the
+" given name. Throws "NERDTree.BookmarkNotFoundError" if a Bookmark with the
+" name does not exist. Throws "NERDTree.BookmarkedNodeNotFoundError" if a
+" tree node for the named Bookmark could not be found.
 function! s:Bookmark.GetNodeForName(name, searchFromAbsoluteRoot, nerdtree)
-    let bookmark = s:Bookmark.BookmarkFor(a:name)
-    return bookmark.getNode(nerdtree, a:searchFromAbsoluteRoot)
+    let l:bookmark = s:Bookmark.BookmarkFor(a:name)
+    return l:bookmark.getNode(a:nerdtree, a:searchFromAbsoluteRoot)
 endfunction
 
 " FUNCTION: Bookmark.GetSelected() {{{1
