@@ -158,7 +158,7 @@ click bookmarks or use the |NERDTree-o| mapping to activate them. See also,
 ------------------------------------------------------------------------------
 2.2.2. Bookmark commands                            *NERDTreeBookmarkCommands*
 
-Note that the following commands are only available in the NERD tree buffer.
+Note: The following commands are only available within the NERDTree buffer.
 
 :Bookmark [<name>]
     Bookmark the current node as <name>. If there is already a <name>
@@ -178,10 +178,11 @@ Note that the following commands are only available in the NERD tree buffer.
     (i.e. directory nodes above it will be opened) and the cursor will be
     placed on it.
 
-:OpenBookmark <bookmark>
-    <bookmark> must point to a file. The file is opened as though |NERDTree-o|
-    was applied. If the node is cached under the current root then it will be
-    revealed and the cursor will be placed on it.
+:OpenBookmark <name>
+    The Bookmark named <name> is opened as if |NERDTree-o| was applied to
+    its entry in the Bookmark table. If the Bookmark points to a directory,
+    it is made the new root of the current NERDTree. If the Bookmark points
+    to a file, that file is opened for editing in another window.
 
 :ClearBookmarks [<bookmarks>]
     Remove all the given bookmarks. If no bookmarks are given then remove all
