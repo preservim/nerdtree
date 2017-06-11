@@ -637,11 +637,11 @@ NERD tree. These options should be set in your vimrc.
 
 |'NERDTreeBookmarksFile'|       Where the bookmarks are stored.
 
-|'NERDTreeBookmarksSort'|       Whether the bookmarks list is sorted on
-                                display.
+|'NERDTreeBookmarksSort'|       Control how the Bookmark table is sorted.
 
-|'NERDTreeMouseMode'|           Tells the NERD tree how to handle mouse
-                                clicks.
+|'NERDTreeMarkBookmarks'|       Render bookmarked nodes with markers.
+
+|'NERDTreeMouseMode'|           Manage the interpretation of mouse clicks.
 
 |'NERDTreeQuitOnOpen'|          Closes the tree window after opening a file.
 
