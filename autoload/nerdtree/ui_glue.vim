@@ -441,21 +441,19 @@ function! s:jumpToSibling(currentNode, forward)
 endfunction
 
 " FUNCTION: nerdtree#ui_glue#openBookmark(name) {{{1
-" put the cursor on the given bookmark and, if its a file, open it
+" Open the Bookmark that has the specified name. This function provides the
+" implementation for the ":OpenBookmark" command.
 function! nerdtree#ui_glue#openBookmark(name)
     try
-        let targetNode = g:NERDTreeBookmark.GetNodeForName(a:name, 0, b:NERDTree)
-        call targetNode.putCursorHere(0, 1)
-        redraw!
-    catch /^NERDTree.BookmarkedNodeNotFoundError/
-        call nerdtree#echo("note - target node is not cached")
-        let bookmark = g:NERDTreeBookmark.BookmarkFor(a:name)
-        let targetNode = g:NERDTreeFileNode.New(bookmark.path, b:NERDTree)
+        let l:bookmark = g:NERDTreeBookmark.BookmarkFor(a:name)
+    catch /^NERDTree.BookmarkNotFoundError/
+        call nerdtree#echoError('bookmark "' . a:name . '" not found')
+        return
     endtry
-    if targetNode.path.isDirectory
-        call targetNode.openExplorer()
+    if l:bookmark.path.isDirectory
+        call l:bookmark.open(b:NERDTree)
     else
-        call targetNode.open({'where': 'p'})
+        call l:bookmark.open(b:NERDTree, {'where': 'p'})
     endif
 endfunction
 
