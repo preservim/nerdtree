@@ -52,7 +52,7 @@ function! s:Path.cacheDisplayString() abort
             call add(self._bookmarkNames, i.name)
         endif
     endfor
-    if !empty(self._bookmarkNames)
+    if !empty(self._bookmarkNames) && g:NERDTreeMarkBookmarks == 1
         let self.cachedDisplayString .= ' {' . join(self._bookmarkNames) . '}'
     endif
 
