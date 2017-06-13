@@ -272,7 +272,9 @@ function! s:TreeDirNode._initChildren(silent)
 
     "get an array of all the files in the nodes dir
     let dir = self.path
-    let globDir = dir.str({'format': 'Glob'})
+
+    "use a relative globDir so that relative wildignore rules will be obeyed
+    let globDir = fnamemodify(dir.str({'format': 'Glob'}), ':.')
 
     if version >= 703
         let filesStr = globpath(globDir, '*', !g:NERDTreeRespectWildIgnore) . "\n" . globpath(globDir, '.*', !g:NERDTreeRespectWildIgnore)
@@ -445,7 +447,7 @@ function! s:TreeDirNode.refresh()
         let newChildNodes = []
         let invalidFilesFound = 0
         let dir = self.path
-        let globDir = dir.str({'format': 'Glob'})
+        let globDir = fnamemodify(dir.str({'format': 'Glob'}), ':.')
         let filesStr = globpath(globDir, '*') . "\n" . globpath(globDir, '.*')
         let files = split(filesStr, "\n")
         for i in files
