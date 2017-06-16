@@ -117,6 +117,10 @@ The following features and functionality are provided by the NERD tree:
     again.  If no NERD tree exists for this tab then this command acts the
     same as the |:NERDTree| command.
 
+:NERDTreeFocus                                                *:NERDTreeFocus*
+    Opens (or reopens) the NERD Tree if it is not currently visible;
+    otherwise, the cursor is moved to the already-open NERD Tree.
+
 :NERDTreeMirror                                              *:NERDTreeMirror*
     Shares an existing NERD tree, from another tab, in the current tab.
     Changes made to one tree are reflected in both as they are actually the
