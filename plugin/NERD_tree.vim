@@ -205,8 +205,12 @@ function! NERDTreeFocus()
 endfunction
 
 function! NERDTreeCWD()
-    call NERDTreeFocus()
-    call nerdtree#ui_glue#chRootCwd()
+   if g:NERDTree.IsOpen()
+       call g:NERDTreeCreator.ToggleTabTree("")
+   else
+       call g:NERDTreeCreator.ToggleTabTree("")
+       call nerdtree#ui_glue#chRootCwd()
+   endif
 endfunction
 
 function! NERDTreeAddPathFilter(callback)
