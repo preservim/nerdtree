@@ -147,6 +147,11 @@ function! s:NERDTree.IsOpen()
     return s:NERDTree.GetWinNum() != -1
 endfunction
 
+"FUNCTION: s:NERDTree.IsFocused() {{{1
+function! s:NERDTree.IsFocused()
+    return s:NERDTree.GetWinNum() == winnr()
+endfunction
+
 "FUNCTION: s:NERDTree.isTabTree() {{{1
 function! s:NERDTree.isTabTree()
     return self._type == "tab"

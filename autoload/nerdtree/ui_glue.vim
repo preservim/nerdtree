@@ -552,6 +552,7 @@ function! nerdtree#ui_glue#setupCommands()
     command! -n=0 -bar NERDTreeMirror call g:NERDTreeCreator.CreateMirror()
     command! -n=0 -bar NERDTreeFind call s:findAndRevealPath()
     command! -n=0 -bar NERDTreeFocus call NERDTreeFocus()
+    command! -n=0 -bar NERDTreeFocusClose call NERDTreeFocusClose()
     command! -n=0 -bar NERDTreeCWD call NERDTreeCWD()
 endfunction
 

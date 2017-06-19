@@ -18,7 +18,7 @@ if v:version < 700
     echoerr "NERDTree: this plugin requires vim >= 7. DOWNLOAD IT! You'll thank me later!"
     finish
 endif
-let loaded_nerd_tree = 1
+
 
 "for line continuation - i.e dont want C in &cpo
 let s:old_cpo = &cpo
@@ -199,6 +199,18 @@ endfunction
 function! NERDTreeFocus()
     if g:NERDTree.IsOpen()
         call g:NERDTree.CursorToTreeWin()
+    else
+        call g:NERDTreeCreator.ToggleTabTree("")
+    endif
+endfunction
+
+function! NERDTreeFocusClose()
+    if g:NERDTree.IsOpen()
+        if g:NERDTree.IsFocused()
+            call g:NERDTree.Close()
+        else
+            call g:NERDTree.CursorToTreeWin()
+        endif
     else
         call g:NERDTreeCreator.ToggleTabTree("")
     endif
