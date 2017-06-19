@@ -206,6 +206,25 @@ function! s:TreeDirNode.getDirChildren()
     return filter(self.children, 'v:val.path.isDirectory == 1')
 endfunction
 
+"FUNCTION: TreeDirNode._getGlobDir() {{{1
+"Return a string giving the pathname related to this TreeDirNode. The returned
+"pathname is in a glob-friendly format and is relative to the current working
+"directory, if this TreeDirNode's path is under the current working directory.
+function! s:TreeDirNode._getGlobDir()
+    " Gets a relative path, if possible. This ensures that 'wildignore' rules
+    " for relative paths will be obeyed.
+    let l:globDir = fnamemodify(self.path.str({'format': 'Glob'}), ':.')
+
+    " Calling fnamemodify() with ':.' on Windows systems strips the leading
+    " drive letter from paths that aren't under the working directory. Here,
+    " the drive letter is added back to the pathname.
+    if nerdtree#runningWindows() && l:globDir[0] == '\'
+        let l:globDir = self.path.drive . l:globDir
+    endif
+
+    return l:globDir
+endfunction
+
 "FUNCTION: TreeDirNode.GetSelected() {{{1
 "Returns the current node if it is a dir node, or else returns the current
 "nodes parent
@@ -271,10 +290,7 @@ function! s:TreeDirNode._initChildren(silent)
     let self.children = []
 
     "get an array of all the files in the nodes dir
-    let dir = self.path
-
-    "use a relative globDir so that relative wildignore rules will be obeyed
-    let globDir = fnamemodify(dir.str({'format': 'Glob'}), ':.')
+    let globDir = self._getGlobDir()
 
     if version >= 703
         let filesStr = globpath(globDir, '*', !g:NERDTreeRespectWildIgnore) . "\n" . globpath(globDir, '.*', !g:NERDTreeRespectWildIgnore)
@@ -446,8 +462,7 @@ function! s:TreeDirNode.refresh()
         "go thru all the files/dirs under this node
         let newChildNodes = []
         let invalidFilesFound = 0
-        let dir = self.path
-        let globDir = fnamemodify(dir.str({'format': 'Glob'}), ':.')
+        let globDir = self._getGlobDir()
         let filesStr = globpath(globDir, '*') . "\n" . globpath(globDir, '.*')
         let files = split(filesStr, "\n")
         for i in files
