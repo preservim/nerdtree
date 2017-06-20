@@ -86,10 +86,10 @@ endfunction
 " FUNCTION: nerdtree#exec(cmd) {{{2
 " Same as :exec cmd but with eventignore set for the duration
 " to disable the autocommands used by NERDTree (BufEnter,
-" BufLeave and VimEnter)
+" BufLeave, VimEnter, WinEnter and WinLeave)
 function! nerdtree#exec(cmd)
     let old_ei = &ei
-    set ei=BufEnter,BufLeave,VimEnter
+    set ei=BufEnter,BufLeave,VimEnter,WinEnter,WinLeave
     exec a:cmd
     let &ei = old_ei
 endfunction
