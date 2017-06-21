@@ -117,11 +117,11 @@ function! s:Bookmark.CacheBookmarks(silent)
     endif
 endfunction
 
-" FUNCTION: Bookmark.CompareBookmarksByName(firstBookmark, secondBookmark) {{{1
-" Class method that indicates the relative position of two bookmarks when
+" FUNCTION: CompareBookmarksByName(firstBookmark, secondBookmark) {{{1
+" Function that indicates the relative position of two bookmarks when
 " placed in alphabetical order by name. Case-sensitivity is determined by an
 " option. Supports the "s:Bookmark.SortBookmarksList()" method.
-function! s:Bookmark.CompareBookmarksByName(firstBookmark, secondBookmark)
+function! s:CompareBookmarksByName(firstBookmark, secondBookmark)
     let l:result = 0
     if g:NERDTreeBookmarksSort == 1
         if a:firstBookmark.name <? a:secondBookmark.name
@@ -274,7 +274,7 @@ endfunction
 " Class method that sorts the global list of bookmarks alphabetically by name.
 " Note that case-sensitivity is determined by a user option.
 function! s:Bookmark.SortBookmarksList()
-    call sort(s:Bookmark.Bookmarks(), s:Bookmark.CompareBookmarksByName)
+    call sort(s:Bookmark.Bookmarks(), function("s:CompareBookmarksByName"))
 endfunction
 
 " FUNCTION: Bookmark.str() {{{1
