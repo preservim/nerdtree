@@ -623,6 +623,9 @@ NERD tree. These options should be set in your vimrc.
 |'NERDTreeCaseSensitiveSort'|   Tells the NERD tree whether to be case
                                 sensitive or not when sorting nodes.
 
+|'NERDTreeNaturalSort'|         Tells the NERD tree whether to use
+                                natural sort order or not when sorting nodes.
+
 |'NERDTreeSortHiddenFirst'|     Tells the NERD tree whether to take the dot
                                 at the beginning of the hidden file names
                                 into account when sorting nodes.
@@ -745,6 +748,33 @@ account. The above nodes would then be sorted like this: >
     bar.c
     blarg.c
     boner.c
+<
+------------------------------------------------------------------------------
+                                                       *'NERDTreeNaturalSort'*
+Values: 0 or 1.
+Default: 0.
+
+By default the NERD tree does not sort nodes in natural sort order, i.e. nodes
+could appear like this: >
+    z1.txt
+    z10.txt
+    z100.txt
+    z11.txt
+    z110.txt
+    z2.txt
+    z20.txt
+    z3.txt
+<
+But if you set this option to 1 then the natural sort order will be used. The
+above nodes would then be sorted like this: >
+    z1.txt
+    z2.txt
+    z3.txt
+    z10.txt
+    z11.txt
+    z20.txt
+    z100.txt
+    z110.txt
 <
 ------------------------------------------------------------------------------
                                                          *'NERDTreeChDirMode'*
