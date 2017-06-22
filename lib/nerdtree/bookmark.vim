@@ -274,7 +274,7 @@ endfunction
 " Class method that sorts the global list of bookmarks alphabetically by name.
 " Note that case-sensitivity is determined by a user option.
 function! s:Bookmark.SortBookmarksList()
-    call sort(s:Bookmark.Bookmarks(), s:Bookmark.CompareBookmarksByName)
+    call sort(s:Bookmark.Bookmarks(), s:Bookmark.CompareBookmarksByName, s:Bookmark)
 endfunction
 
 " FUNCTION: Bookmark.str() {{{1
