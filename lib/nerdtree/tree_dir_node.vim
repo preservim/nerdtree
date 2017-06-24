@@ -206,15 +206,23 @@ function! s:TreeDirNode.getDirChildren()
     return filter(self.children, 'v:val.path.isDirectory == 1')
 endfunction
 
-" FUNCTION: TreeDirNode._getGlobDir() {{{1
-" Return a path specification for this TreeDirNode that is suitable as an
-" argument to "globpath()".
+" FUNCTION: TreeDirNode._glob(pattern, all) {{{1
+" Return a list of strings naming the descendants of the directory in this
+" TreeDirNode object that match the specified glob pattern.
 "
-" Note: The result is constructed such that "globpath()" will return paths
-" relative to the working directory, if possible. This is necessary to ensure
-" that 'wildignore' rules for relative paths are obeyed.
-function! s:TreeDirNode._getGlobDir()
+" Args:
+" pattern: (string) the glob pattern to apply
+" all: (0 or 1) if 1, include "." and ".." if they match "pattern"; if 0,
+"      always exclude them
+"
+" Note: If the pathnames in the result list are below the working directory,
+" they are returned as pathnames relative to that directory. This is because
+" this function, internally, attempts to obey 'wildignore' rules that use
+" relative paths.
+function! s:TreeDirNode._glob(pattern, all)
 
+    " Construct a path specification such that "globpath()" will return
+    " relative pathnames, if possible.
     if self.path.str() == getcwd()
         let l:pathSpec = ','
     else
@@ -226,7 +234,48 @@ function! s:TreeDirNode._getGlobDir()
         endif
     endif
 
-    return l:pathSpec
+    let l:globList = []
+
+    " See ":h version7.txt" for the details of the progression of the "glob()"
+    " and "globpath()" functions.
+    if v:version >= 704
+        let l:globList = globpath(l:pathSpec, a:pattern, !g:NERDTreeRespectWildIgnore, 1)
+    elseif v:version >= 703
+        let l:globString = globpath(l:pathSpec, a:pattern, !g:NERDTreeRespectWildIgnore)
+        let l:globList = split(l:globString, "\n")
+    else
+        let l:globString = globpath(l:pathSpec, a:pattern)
+        let l:globList = split(l:globString, "\n")
+    endif
+
+    " If "a:all" is false, filter "." and ".." from the output.
+    if !a:all
+
+        let l:toRemove = []
+
+        for l:file in l:globList
+            let l:tail = fnamemodify(l:file, ':t')
+
+            " Double the modifier if only a separator was stripped.
+            if l:tail == ''
+                let l:tail = fnamemodify(l:file, ':t:t')
+            endif
+
+            if l:tail == '.' || l:tail == '..'
+                call add(l:toRemove, l:file)
+                if len(l:toRemove) == 2
+                    break
+                endif
+            endif
+        endfor
+
+        if !empty(l:toRemove)
+            call remove(l:globList, index(l:globList, l:toRemove[0]))
+            call remove(l:globList, index(l:globList, l:toRemove[1]))
+        endif
+    endif
+
+    return l:globList
 endfunction
 
 "FUNCTION: TreeDirNode.GetSelected() {{{1
@@ -293,16 +342,7 @@ function! s:TreeDirNode._initChildren(silent)
     "remove all the current child nodes
     let self.children = []
 
-    "get an array of all the files in the nodes dir
-    let globDir = self._getGlobDir()
-
-    if version >= 703
-        let filesStr = globpath(globDir, '*', !g:NERDTreeRespectWildIgnore) . "\n" . globpath(globDir, '.*', !g:NERDTreeRespectWildIgnore)
-    else
-        let filesStr = globpath(globDir, '*') . "\n" . globpath(globDir, '.*')
-    endif
-
-    let files = split(filesStr, "\n")
+    let files = self._glob('*', 1) + self._glob('.*', 0)
 
     if !a:silent && len(files) > g:NERDTreeNotificationThreshold
         call nerdtree#echo("Please wait, caching a large dir ...")
@@ -310,21 +350,13 @@ function! s:TreeDirNode._initChildren(silent)
 
     let invalidFilesFound = 0
     for i in files
-
-        "filter out the .. and . directories
-        "Note: we must match .. AND ../ since sometimes the globpath returns
-        "../ for path with strange chars (eg $)
-        if i[len(i)-3:2] != ".." && i[len(i)-2:2] != ".." &&
-         \ i[len(i)-2:1] != "." && i[len(i)-1] != "."
-            "put the next file in a new node and attach it
-            try
-                let path = g:NERDTreePath.New(i)
-                call self.createChild(path, 0)
-                call g:NERDTreePathNotifier.NotifyListeners('init', path, self.getNerdtree(), {})
-            catch /^NERDTree.\(InvalidArguments\|InvalidFiletype\)Error/
-                let invalidFilesFound += 1
-            endtry
-        endif
+        try
+            let path = g:NERDTreePath.New(i)
+            call self.createChild(path, 0)
+            call g:NERDTreePathNotifier.NotifyListeners('init', path, self.getNerdtree(), {})
+        catch /^NERDTree.\(InvalidArguments\|InvalidFiletype\)Error/
+            let invalidFilesFound += 1
+        endtry
     endfor
 
     call self.sortChildren()
@@ -457,48 +489,32 @@ function! s:TreeDirNode._openRecursively2(forceOpen)
 endfunction
 
 "FUNCTION: TreeDirNode.refresh() {{{1
-unlet s:TreeDirNode.refresh
 function! s:TreeDirNode.refresh()
     call self.path.refresh(self.getNerdtree())
 
     "if this node was ever opened, refresh its children
     if self.isOpen || !empty(self.children)
-        "go thru all the files/dirs under this node
+        let files = self._glob('*', 1) + self._glob('.*', 0)
         let newChildNodes = []
         let invalidFilesFound = 0
-        let globDir = self._getGlobDir()
-        let filesStr = globpath(globDir, '*') . "\n" . globpath(globDir, '.*')
-        let files = split(filesStr, "\n")
         for i in files
-            "filter out the .. and . directories
-            "Note: we must match .. AND ../ cos sometimes the globpath returns
-            "../ for path with strange chars (eg $)
-            "if i !~# '\/\.\.\/\?$' && i !~# '\/\.\/\?$'
+            try
+                "create a new path and see if it exists in this nodes children
+                let path = g:NERDTreePath.New(i)
+                let newNode = self.getChild(path)
+                if newNode != {}
+                    call newNode.refresh()
+                    call add(newChildNodes, newNode)
 
-            " Regular expression is too expensive. Use simply string comparison
-            " instead
-            if i[len(i)-3:2] != ".." && i[len(i)-2:2] != ".." &&
-             \ i[len(i)-2:1] != "." && i[len(i)-1] != "."
-                try
-                    "create a new path and see if it exists in this nodes children
-                    let path = g:NERDTreePath.New(i)
-                    let newNode = self.getChild(path)
-                    if newNode != {}
-                        call newNode.refresh()
-                        call add(newChildNodes, newNode)
-
-                    "the node doesnt exist so create it
-                    else
-                        let newNode = g:NERDTreeFileNode.New(path, self.getNerdtree())
-                        let newNode.parent = self
-                        call add(newChildNodes, newNode)
-                    endif
-
-
-                catch /^NERDTree.\(InvalidArguments\|InvalidFiletype\)Error/
-                    let invalidFilesFound = 1
-                endtry
-            endif
+                "the node doesnt exist so create it
+                else
+                    let newNode = g:NERDTreeFileNode.New(path, self.getNerdtree())
+                    let newNode.parent = self
+                    call add(newChildNodes, newNode)
+                endif
+            catch /^NERDTree.\(InvalidArguments\|InvalidFiletype\)Error/
+                let invalidFilesFound = 1
+            endtry
         endfor
 
         "swap this nodes children out for the children we just read/refreshed
