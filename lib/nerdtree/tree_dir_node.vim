@@ -206,23 +206,27 @@ function! s:TreeDirNode.getDirChildren()
     return filter(self.children, 'v:val.path.isDirectory == 1')
 endfunction
 
-"FUNCTION: TreeDirNode._getGlobDir() {{{1
-"Return a string giving the pathname related to this TreeDirNode. The returned
-"pathname is in a glob-friendly format and is relative to the current working
-"directory, if this TreeDirNode's path is under the current working directory.
+" FUNCTION: TreeDirNode._getGlobDir() {{{1
+" Return a path specification for this TreeDirNode that is suitable as an
+" argument to "globpath()".
+"
+" Note: The result is constructed such that "globpath()" will return paths
+" relative to the working directory, if possible. This is necessary to ensure
+" that 'wildignore' rules for relative paths are obeyed.
 function! s:TreeDirNode._getGlobDir()
-    " Gets a relative path, if possible. This ensures that 'wildignore' rules
-    " for relative paths will be obeyed.
-    let l:globDir = fnamemodify(self.path.str({'format': 'Glob'}), ':.')
 
-    " Calling fnamemodify() with ':.' on Windows systems strips the leading
-    " drive letter from paths that aren't under the working directory. Here,
-    " the drive letter is added back to the pathname.
-    if nerdtree#runningWindows() && l:globDir[0] == '\'
-        let l:globDir = self.path.drive . l:globDir
+    if self.path.str() == getcwd()
+        let l:pathSpec = ','
+    else
+        let l:pathSpec = fnamemodify(self.path.str({'format': 'Glob'}), ':.')
+
+        " On Windows, the drive letter may be removed by "fnamemodify()".
+        if nerdtree#runningWindows() && l:pathSpec[0] == '\'
+            let l:pathSpec = self.path.drive . l:pathSpec
+        endif
     endif
 
-    return l:globDir
+    return l:pathSpec
 endfunction
 
 "FUNCTION: TreeDirNode.GetSelected() {{{1
