@@ -256,7 +256,6 @@ function! s:TreeDirNode._glob(pattern, all)
 
     " If "a:all" is false, filter "." and ".." from the output.
     if !a:all
-
         let l:toRemove = []
 
         for l:file in l:globList
@@ -275,10 +274,9 @@ function! s:TreeDirNode._glob(pattern, all)
             endif
         endfor
 
-        if !empty(l:toRemove)
-            call remove(l:globList, index(l:globList, l:toRemove[0]))
-            call remove(l:globList, index(l:globList, l:toRemove[1]))
-        endif
+        for l:file in l:toRemove
+            call remove(l:globList, index(l:globList, l:file))
+        endfor
     endif
 
     return l:globList
