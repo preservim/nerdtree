@@ -78,19 +78,29 @@ function! s:TreeDirNode.createChild(path, inOrder)
 endfunction
 
 " FUNCTION: TreeDirNode.displayString() {{{1
-unlet s:TreeDirNode.displayString
+" Assemble and return a string that can represent this TreeDirNode object in
+" the NERDTree window.
 function! s:TreeDirNode.displayString()
-    let cascade = self.getCascade()
-    let rv = ""
-    for node in cascade
-        let rv = rv . node.path.displayString()
+    let l:result = ''
+
+    " Build a label that identifies this TreeDirNode.
+    let l:label = ''
+    let l:cascade = self.getCascade()
+    for l:dirNode in l:cascade
+        let l:label .= l:dirNode.path.displayString()
     endfor
 
-    let sym = cascade[-1].isOpen ? g:NERDTreeDirArrowCollapsible : g:NERDTreeDirArrowExpandable
+    " Select the appropriate open/closed status indicator symbol.
+    if l:cascade[-1].isOpen
+        let l:symbol = g:NERDTreeDirArrowCollapsible
+    else
+        let l:symbol = g:NERDTreeDirArrowExpandable
+    endif
 
-    let flags = cascade[-1].path.flagSet.renderToString()
+    let l:flags = l:cascade[-1].path.flagSet.renderToString()
 
-    return sym . ' ' . flags . rv
+    let l:result = l:symbol . ' ' . l:flags . l:label
+    return l:result
 endfunction
 
 " FUNCTION: TreeDirNode.findNode(path) {{{1
