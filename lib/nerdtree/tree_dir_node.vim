@@ -242,11 +242,13 @@ function! s:TreeDirNode._glob(pattern, all)
 
     let l:globList = []
 
-    " See ":h version7.txt" for the details of the progression of the "glob()"
-    " and "globpath()" functions.
-    if v:version >= 704
+    " See ":h version7.txt" and ":h version8.txt" for details on the
+    " development of the "glob()" and "globpath()" functions.
+    if v:version > 704 || (v:version == 704 && has('patch654'))
+        let l:globList = globpath(l:pathSpec, a:pattern, !g:NERDTreeRespectWildIgnore, 1, 0)
+    elseif v:version == 704 && has('patch279')
         let l:globList = globpath(l:pathSpec, a:pattern, !g:NERDTreeRespectWildIgnore, 1)
-    elseif v:version >= 703
+    elseif v:version > 702 || (v:version == 702 && has('patch051'))
         let l:globString = globpath(l:pathSpec, a:pattern, !g:NERDTreeRespectWildIgnore)
         let l:globList = split(l:globString, "\n")
     else
