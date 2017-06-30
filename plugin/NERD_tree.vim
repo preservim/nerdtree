@@ -78,6 +78,7 @@ else
 endif
 call s:initVariable("g:NERDTreeCascadeOpenSingleChildDir", 1)
 call s:initVariable("g:NERDTreeCascadeSingleChildDir", 1)
+call s:initVariable("g:NERDTreeOpenTabAtTheEnd", 0)
 
 if !exists("g:NERDTreeSortOrder")
     let g:NERDTreeSortOrder = ['\/$', '*', '\.swp$',  '\.bak$', '\~$']
