@@ -45,9 +45,14 @@ function! s:TreeDirNode.addChild(treenode, inOrder)
 endfunction
 
 " FUNCTION: TreeDirNode.close() {{{1
-" Closes this directory
+" Mark this TreeDirNode as closed.
 function! s:TreeDirNode.close()
-    let self.isOpen = 0
+
+    " Close all directories in this directory node's cascade. This is
+    " necessary to ensure consistency when cascades are rendered.
+    for l:dirNode in self.getCascade()
+        let l:dirNode.isOpen = 0
+    endfor
 endfunction
 
 " FUNCTION: TreeDirNode.closeChildren() {{{1
