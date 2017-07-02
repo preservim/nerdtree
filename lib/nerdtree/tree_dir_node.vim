@@ -410,25 +410,39 @@ function! s:TreeDirNode.New(path, nerdtree)
     return newTreeNode
 endfunction
 
-" FUNCTION: TreeDirNode.open([opts]) {{{1
-" Open the dir in the current tree or in a new tree elsewhere.
-"
-" If opening in the current tree, return the number of cached nodes.
-unlet s:TreeDirNode.open
+" FUNCTION: TreeDirNode.open([options]) {{{1
+" Open this directory node in the current tree or elsewhere if special options
+" are provided. Return 0 if options were processed. Otherwise, return the
+" number of new cached nodes.
 function! s:TreeDirNode.open(...)
-    let opts = a:0 ? a:1 : {}
+    let l:options = a:0 ? a:1 : {}
 
-    if has_key(opts, 'where') && !empty(opts['where'])
-        let opener = g:NERDTreeOpener.New(self.path, opts)
-        call opener.open(self)
-    else
-        let self.isOpen = 1
-        if self.children ==# []
-            return self._initChildren(0)
-        else
-            return 0
-        endif
+    " If special options were specified, process them and return.
+    if has_key(l:options, 'where') && !empty(l:options['where'])
+        let l:opener = g:NERDTreeOpener.New(self.path, l:options)
+        call l:opener.open(self)
+        return 0
     endif
+
+    " Open any ancestors of this node that render within the same cascade.
+    let l:parent = self.parent
+    while l:parent != b:NERDTree.root && !empty(l:parent)
+        if index(l:parent.getCascade(), self) >= 0
+            let l:parent.isOpen = 1
+            let l:parent = l:parent.parent
+        else
+            break
+        endif
+    endwhile
+
+    let self.isOpen = 1
+
+    let l:numChildrenCached = 0
+    if empty(self.children)
+        let l:numChildrenCached = self._initChildren(0)
+    endif
+
+    return l:numChildrenCached
 endfunction
 
 " FUNCTION: TreeDirNode.openAlong([opts]) {{{1
