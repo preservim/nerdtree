@@ -431,7 +431,7 @@ function! s:TreeDirNode.open(...)
 
     " Open any ancestors of this node that render within the same cascade.
     let l:parent = self.parent
-    while l:parent != b:NERDTree.root && !empty(l:parent)
+    while !empty(l:parent) && !l:parent.isRoot()
         if index(l:parent.getCascade(), self) >= 0
             let l:parent.isOpen = 1
             let l:parent = l:parent.parent
