@@ -492,35 +492,16 @@ function! s:TreeDirNode._openInNewTab()
 endfunction
 
 " FUNCTION: TreeDirNode.openRecursively() {{{1
-" Opens this treenode and all of its children whose paths arent 'ignored'
-" because of the file filters.
-"
-" This method is actually a wrapper for the OpenRecursively2 method which does
-" the work.
+" Open this directory node and any descendant directory nodes whose pathnames
+" are not ignored.
 function! s:TreeDirNode.openRecursively()
-    call self._openRecursively2(1)
-endfunction
+    silent call self.open()
 
-" FUNCTION: TreeDirNode._openRecursively2() {{{1
-" Opens this all children of this treenode recursively if either:
-"   *they arent filtered by file filters
-"   *a:forceOpen is 1
-"
-" Args:
-" forceOpen: 1 if this node should be opened regardless of file filters
-function! s:TreeDirNode._openRecursively2(forceOpen)
-    if self.path.ignore(self.getNerdtree()) ==# 0 || a:forceOpen
-        let self.isOpen = 1
-        if self.children ==# []
-            call self._initChildren(1)
+    for l:child in self.children
+        if l:child.path.isDirectory && !l:child.path.ignore(l:child.getNerdtree())
+            call l:child.openRecursively()
         endif
-
-        for i in self.children
-            if i.path.isDirectory ==# 1
-                call i._openRecursively2(0)
-            endif
-        endfor
-    endif
+    endfor
 endfunction
 
 " FUNCTION: TreeDirNode.refresh() {{{1
