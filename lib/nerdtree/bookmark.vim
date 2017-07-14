@@ -308,10 +308,11 @@ function! s:Bookmark.toRoot(nerdtree)
 endfunction
 
 " FUNCTION: Bookmark.ToRoot(name, nerdtree) {{{1
-" Make the node for this bookmark the new tree root
+" Class method that makes the Bookmark with the given name the root of
+" specified NERDTree.
 function! s:Bookmark.ToRoot(name, nerdtree)
-    let bookmark = s:Bookmark.BookmarkFor(a:name)
-    call bookmark.toRoot(a:nerdtree)
+    let l:bookmark = s:Bookmark.BookmarkFor(a:name)
+    call l:bookmark.toRoot(a:nerdtree)
 endfunction
 
 " FUNCTION: Bookmark.validate() {{{1
