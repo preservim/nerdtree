@@ -56,12 +56,12 @@ function! s:TreeDirNode.close()
 endfunction
 
 " FUNCTION: TreeDirNode.closeChildren() {{{1
-" Closes all the child dir nodes of this node
+" Recursively close any directory nodes that are descendants of this node.
 function! s:TreeDirNode.closeChildren()
-    for i in self.children
-        if i.path.isDirectory
-            call i.close()
-            call i.closeChildren()
+    for l:child in self.children
+        if l:child.path.isDirectory
+            call l:child.close()
+            call l:child.closeChildren()
         endif
     endfor
 endfunction
