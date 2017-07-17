@@ -56,12 +56,12 @@ function! s:TreeDirNode.close()
 endfunction
 
 " FUNCTION: TreeDirNode.closeChildren() {{{1
-" Closes all the child dir nodes of this node
+" Recursively close any directory nodes that are descendants of this node.
 function! s:TreeDirNode.closeChildren()
-    for i in self.children
-        if i.path.isDirectory
-            call i.close()
-            call i.closeChildren()
+    for l:child in self.children
+        if l:child.path.isDirectory
+            call l:child.close()
+            call l:child.closeChildren()
         endif
     endfor
 endfunction
@@ -218,13 +218,6 @@ function! s:TreeDirNode.getChildIndex(path)
         endif
     endwhile
     return -1
-endfunction
-
-" FUNCTION: TreeDirNode.getDirChildren() {{{1
-" Return a list of all child nodes from "self.children" that are of type
-" TreeDirNode.
-function! s:TreeDirNode.getDirChildren()
-    return filter(self.children, 'v:val.path.isDirectory == 1')
 endfunction
 
 " FUNCTION: TreeDirNode._glob(pattern, all) {{{1
