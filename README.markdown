@@ -96,7 +96,7 @@ Stick this in your vimrc: `autocmd vimenter * NERDTree`
 Stick this in your vimrc:
 
     autocmd StdinReadPre * let s:std_in=1
-    autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
+    autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | exe 'NERDTree' | endif
 
 Note: Now start vim with plain `vim`, not `vim .`
 
