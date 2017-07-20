@@ -14,7 +14,14 @@ function! s:callback_name()
 endfunction
 
 function! s:callback()
-    if exists('*vimproc#open')
+    if !exists("g:netrw_nogx") 
+	let oldpwd = getcwd()
+        let ret = g:NERDTreeFileNode.GetSelected().path.changeToDir()
+	if !ret
+	    exe "normal gx"
+	    exe "cd" . oldpwd 
+	endif
+    elseif exists('*vimproc#open')
         call vimproc#open(g:NERDTreeFileNode.GetSelected().path.str())
     else
         let path = g:NERDTreeFileNode.GetSelected().path.str({'escape': 1})
@@ -24,8 +31,10 @@ function! s:callback()
             echoerr "or install vimproc from 'https://github.com/Shougo/vimproc'"
             return
         endif
-        let cmd = g:nerdtree_plugin_open_cmd . " " . path
-        call system(cmd)
+
+	let cmd = g:nerdtree_plugin_open_cmd . " " . path
+	call system(cmd)
+
     endif
 endfunction
 
