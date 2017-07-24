@@ -225,10 +225,12 @@ function! s:Opener._newVSplit()
     call nerdtree#exec("wincmd p")
     vnew
 
+    let currentWin = winnr()
+
     "resize the nerd tree back to the original size
     call g:NERDTree.CursorToTreeWin()
     exec("silent vertical resize ". winwidth)
-    call nerdtree#exec('wincmd p')
+    exe currentWin . "wincmd w"
 endfunction
 
 "FUNCTION: Opener.open(target) {{{1
