@@ -5,10 +5,12 @@ Introduction
 ------------
 
 The NERDTree is a file system explorer for the Vim editor. Using this plugin,
-you can visually browse complex directory hierarchies, quickly open files for
-reading or editing, and perform basic file system operations. This plugin can
-also be extended with custom mappings using a special API. The details of this
-API and other NERDTree features is described in the included documentation.
+users can visually browse complex directory hierarchies, quickly open files for
+reading or editing, and perform basic file system operations.
+
+This plugin can also be extended with custom mappings using a special API. The
+details of this API and of other NERDTree features are described in the
+included documentation.
 
 ![NERDTree Screenshot](https://github.com/scrooloose/nerdtree/raw/master/screenshot.png)
 
