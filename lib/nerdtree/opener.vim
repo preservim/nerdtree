@@ -222,20 +222,22 @@ endfunction
 
 " FUNCTION: Opener._newVSplit() {{{1
 function! s:Opener._newVSplit()
-    let winwidth = winwidth(".")
-    if winnr("$")==#1
-        let winwidth = g:NERDTreeWinSize
+    let l:winwidth = winwidth('.')
+
+    if winnr('$') == 1
+        let l:winwidth = g:NERDTreeWinSize
     endif
 
-    call nerdtree#exec("wincmd p")
+    call nerdtree#exec('wincmd p')
     vnew
 
-    let currentWin = winnr()
+    let l:currentWindowNumber = winnr()
 
-    "resize the nerd tree back to the original size
+    " Restore the NERDTree to its original width.
     call g:NERDTree.CursorToTreeWin()
-    exec("silent vertical resize ". winwidth)
-    exe currentWin . "wincmd w"
+    execute 'silent vertical resize ' . l:winwidth
+
+    call nerdtree#exec(l:currentWindowNumber . 'wincmd w')
 endfunction
 
 " FUNCTION: Opener.open(target) {{{1
