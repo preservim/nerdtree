@@ -134,6 +134,13 @@ function! s:Creator.createMirror()
             call add(treeBufNames, nextName)
         endif
     endfor
+
+    for i in range(1, bufnr('$'))
+        let nextName = bufname(i)
+        if bufexists(i) && getbufvar(i, '&filetype') == 'nerdtree' && (!exists("t:NERDTreeBufName") || nextName != t:NERDTreeBufName)
+            call add(treeBufNames, nextName)
+        endif
+    endfor
     let treeBufNames = self._uniq(treeBufNames)
 
     "map the option names (that the user will be prompted with) to the nerd
