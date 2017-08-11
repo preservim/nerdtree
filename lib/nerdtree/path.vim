@@ -705,10 +705,10 @@ function! s:Path._strForUI()
 endfunction
 
 " FUNCTION: Path._strForCd() {{{1
-"
-" returns a string that can be used with :cd
+" Return a string representation of this Path that is suitable for use as an
+" argument to Vim's internal ":cd" command.
 function! s:Path._strForCd()
-    return escape(self.str(), self._escChars())
+    return fnameescape(self.str())
 endfunction
 
 " FUNCTION: Path._strForEdit() {{{1
