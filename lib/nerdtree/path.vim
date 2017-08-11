@@ -762,19 +762,17 @@ function! s:Path._strForGlob()
 endfunction
 
 " FUNCTION: Path._str() {{{1
-"
-" Gets the string path for this path object that is appropriate for the OS.
-" EG, in windows c:\foo\bar
-"    in *nix  /foo/bar
+" Return the absolute pathname associated with this Path object.  The pathname
+" returned is appropriate for the underlying file system.
 function! s:Path._str()
-    let lead = s:Path.Slash()
+    let l:separator = s:Path.Slash()
+    let l:leader = l:separator
 
-    "if we are running windows then slap a drive letter on the front
     if nerdtree#runningWindows()
-        let lead = self.drive . '\'
+        let l:leader = self.drive . l:separator
     endif
 
-    return lead . join(self.pathSegments, s:Path.Slash())
+    return l:leader . join(self.pathSegments, l:separator)
 endfunction
 
 " FUNCTION: Path.strTrunk() {{{1
