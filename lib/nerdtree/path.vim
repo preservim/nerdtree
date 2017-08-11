@@ -536,9 +536,20 @@ function! s:Path.New(path)
 endfunction
 
 " FUNCTION: Path.Slash() {{{1
-" return the slash to use for the current OS
+" Return the path separator used by the underlying file system.  Special
+" consideration is taken for the use of the 'shellslash' option on Windows
+" systems.
 function! s:Path.Slash()
-    return nerdtree#runningWindows() ? '\' : '/'
+
+    if nerdtree#runningWindows()
+        if exists('+shellslash') && &shellslash
+            return '/'
+        endif
+
+        return '\'
+    endif
+
+    return '/'
 endfunction
 
 " FUNCTION: Path.Resolve() {{{1
