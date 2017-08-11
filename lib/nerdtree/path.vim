@@ -640,27 +640,27 @@ function! s:Path.rename(newPath)
 endfunction
 
 " FUNCTION: Path.str() {{{1
+" Return a string representation of this Path object.
 "
-" Returns a string representation of this Path
+" Args:
+" This function takes a single dictionary (optional) with keys and values that
+" specify how the returned pathname should be formatted.
 "
-" Takes an optional dictionary param to specify how the output should be
-" formatted.
-"
-" The dict may have the following keys:
+" The dictionary may have the following keys:
 "  'format'
 "  'escape'
 "  'truncateTo'
 "
 " The 'format' key may have a value of:
-"  'Cd' - a string to be used with the :cd command
-"  'Edit' - a string to be used with :e :sp :new :tabedit etc
-"  'UI' - a string used in the NERD tree UI
+"  'Cd' - a string to be used with ":cd" and similar commands
+"  'Edit' - a string to be used with ":edit" and similar commands
+"  'UI' - a string to be displayed in the NERDTree user interface
 "
-" The 'escape' key, if specified will cause the output to be escaped with
-" shellescape()
+" The 'escape' key, if specified, will cause the output to be escaped with
+" Vim's internal "shellescape()" function.
 "
-" The 'truncateTo' key causes the resulting string to be truncated to the value
-" 'truncateTo' maps to. A '<' char will be prepended.
+" The 'truncateTo' key shortens the length of the path to that given by the
+" value associated with 'truncateTo'. A '<' is prepended.
 function! s:Path.str(...)
     let options = a:0 ? a:1 : {}
     let toReturn = ""
@@ -712,9 +712,8 @@ function! s:Path._strForCd()
 endfunction
 
 " FUNCTION: Path._strForEdit() {{{1
-"
-" Return: the string for this path that is suitable to be used with the :edit
-" command
+" Return a string representation of this Path that is suitable for use as an
+" argument to Vim's internal ":edit" command.
 function! s:Path._strForEdit()
     let p = escape(self.str(), self._escChars())
 
