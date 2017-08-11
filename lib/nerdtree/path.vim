@@ -726,22 +726,23 @@ endfunction
 " Return a string representation of this Path that is suitable for use as an
 " argument to Vim's internal ":edit" command.
 function! s:Path._strForEdit()
-    let p = escape(self.str(), self._escChars())
 
-    "make it relative
-    let p = fnamemodify(p, ':.')
+    " Make the path relative to the current working directory, if possible.
+    let l:result = fnamemodify(self.str(), ':.')
 
-    "handle the edge case where the file begins with a + (vim interprets
-    "the +foo in `:e +foo` as an option to :edit)
-    if p[0] == "+"
-        let p = '\' . p
+    " On Windows, the drive letter may be removed by "fnamemodify()".  Add it
+    " back, if necessary.
+    if nerdtree#runningWindows() && l:result[0] == s:Path.Slash()
+        let l:result = self.drive . l:result
     endif
 
-    if p ==# ''
-        let p = '.'
+    let l:result = fnameescape(l:result)
+
+    if empty(l:result)
+        let l:result = '.'
     endif
 
-    return p
+    return l:result
 endfunction
 
 " FUNCTION: Path._strForGlob() {{{1
