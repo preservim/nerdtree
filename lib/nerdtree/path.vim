@@ -1,9 +1,16 @@
-" we need to use this number many times for sorting... so we calculate it only
-" once here
-let s:NERDTreeSortStarIndex = index(g:NERDTreeSortOrder, '*')
-
+" ============================================================================
 " CLASS: Path
-" ============================================================
+"
+" The Path class provides an abstracted representation of a file system
+" pathname.  Various operations on pathnames are provided and a number of
+" representations of a given path name can be accessed here.
+" ============================================================================
+
+
+" This constant is used throughout this script for sorting purposes.
+let s:NERDTreeSortStarIndex = index(g:NERDTreeSortOrder, '*')
+lockvar s:NERDTreeSortStarIndex
+
 let s:Path = {}
 let g:NERDTreePath = s:Path
 
