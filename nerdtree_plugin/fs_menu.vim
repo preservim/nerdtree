@@ -228,7 +228,7 @@ function! NERDTreeListNodeWin32()
                     \ . shellescape(l:node.path.str())
                     \ . ' | FINDSTR "^[012][0-9]/[0-3][0-9]/[12][0-9][0-9][0-9]"'
 
-        let l:metadata = systemlist(l:command)
+        let l:metadata = split(system(l:command), "\n")
 
         if v:shell_error == 0
             call nerdtree#echo(l:metadata[0])
@@ -238,7 +238,7 @@ function! NERDTreeListNodeWin32()
 
         let &shell = l:save_shell
 
-        if exists('+shellslash')
+        if exists('l:save_shellslash')
             let &shellslash = l:save_shellslash
         endif
 
