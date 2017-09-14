@@ -246,6 +246,15 @@ function! s:displayHelp()
     call b:NERDTree.ui.centerView()
 endfunction
 
+" FUNCTION: s:ToggleTabHere() {{{1
+function! s:ToggleTabHere()
+    if g:NERDTree.IsOpen()
+        call g:NERDTree.Close()
+    else
+        call s:findAndRevealPath()
+    endif
+endfunction
+
 " FUNCTION: s:findAndRevealPath() {{{1
 function! s:findAndRevealPath()
     try
@@ -567,6 +576,7 @@ endfunction
 function! nerdtree#ui_glue#setupCommands()
     command! -n=? -complete=dir -bar NERDTree :call g:NERDTreeCreator.CreateTabTree('<args>')
     command! -n=? -complete=dir -bar NERDTreeToggle :call g:NERDTreeCreator.ToggleTabTree('<args>')
+    command! -n=0 -bar NERDTreeToggleHere call s:ToggleTabHere()
     command! -n=0 -bar NERDTreeClose :call g:NERDTree.Close()
     command! -n=1 -complete=customlist,nerdtree#completeBookmarks -bar NERDTreeFromBookmark call g:NERDTreeCreator.CreateTabTree('<args>')
     command! -n=0 -bar NERDTreeMirror call g:NERDTreeCreator.CreateMirror()
