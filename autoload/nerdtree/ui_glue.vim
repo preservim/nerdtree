@@ -141,6 +141,9 @@ endfunction
 " changes the current root to the selected one
 function! s:chRoot(node)
     call b:NERDTree.changeRoot(a:node)
+    if g:NERDTreeChDirMode ==# 2
+        call b:NERDTree.root.path.changeToDir()
+    endif
 endfunction
 
 " FUNCTION: s:nerdtree#ui_glue#chRootCwd() {{{1
@@ -474,6 +477,10 @@ function! nerdtree#ui_glue#openBookmark(name)
         call l:bookmark.open(b:NERDTree)
     else
         call l:bookmark.open(b:NERDTree, {'where': 'p'})
+    endif
+
+    if g:NERDTreeChDirMode ==# 2
+        call b:NERDTree.root.path.changeToDir()
     endif
 endfunction
 
