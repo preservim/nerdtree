@@ -21,7 +21,7 @@ function! s:NERDTree.changeRoot(node)
 
     "change dir to the dir of the new root if instructed to
     if g:NERDTreeChDirMode ==# 2
-		call self.root.path.changeToDir()
+	    call self.root.path.changeToDir()
     endif
 
     call self.render()
