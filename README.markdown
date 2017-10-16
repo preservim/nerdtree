@@ -94,3 +94,11 @@ Use these variables in your vimrc. Note that below are default arrow symbols
 
     let g:NERDTreeDirArrowExpandable = '▸'
     let g:NERDTreeDirArrowCollapsible = '▾'
+
+---
+> How can I make NERDTree restore to the initial size automatically the next time I toggle it on after it is resized?
+
+You can use this to stop nerdtree from keeping the changed window size:
+```vim
+let NERDTreeKeepWinSize = 0
+```

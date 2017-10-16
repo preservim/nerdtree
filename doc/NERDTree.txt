@@ -694,6 +694,8 @@ NERD tree. These options should be set in your vimrc.
 |'NERDTreeCreatePrefix'|        Specify a prefix to be used when creating the
                                 NERDTree window.
 
+|'NERDTreeKeepWinSize'|         Tell nerdtree should or should not to keep the
+                                window size user adjusted when toggled on again.
 ------------------------------------------------------------------------------
 3.2. Customisation details                             *NERDTreeOptionDetails*
 
@@ -1087,7 +1089,15 @@ string such as "keepalt" or similar. For example, to have NERDTree create its
 tree window using `silent keepalt keepjumps edit`:
     let NERDTreeCreatePrefix='silent keepalt keepjumps'
 <
-
+------------------------------------------------------------------------------
+                                          *'NERDTreeKeepWinSize*
+Values: 0 or 1
+Default: 1.
+Tell nerdtree should or not to keep the window size user adjusted when toggled
+on again. By default it's set to 1 and nerdtree will remember the window size
+that user adjusted when toggled on again. If set to 0, nerdtree will always
+restore window size to the value users specified in the vimrc file.
+<
 ==============================================================================
 4. The NERD tree API                                             *NERDTreeAPI*
 
