@@ -31,6 +31,10 @@ Then reload Vim, run `:helptags ~/.vim/bundle/nerdtree/doc/`, and check out `:he
 F.A.Q.
 ------
 
+> How do I switch between the different windows?
+
+Press `Ctrl+ww`.
+
 > Is there any support for `git` flags?
 
 Yes, install [nerdtree-git-plugin](https://github.com/Xuyuanp/nerdtree-git-plugin).
