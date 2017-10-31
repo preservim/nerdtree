@@ -202,7 +202,7 @@ endfunction
 " FUNCTION: NERDTreeListNode() {{{1
 function! NERDTreeListNode()
     let treenode = g:NERDTreeFileNode.GetSelected()
-    if treenode != {}
+    if !empty(treenode)
         if has("osx")
             let stat_cmd = 'stat -f "%z" '
         else
@@ -215,7 +215,7 @@ function! NERDTreeListNode()
         \         'unset size && ' .
         \         'unset size_with_commas'
 
-        let metadata = split(system(cmd),'\n')
+        let metadata = systemlist(cmd)
         call nerdtree#echo(metadata[0])
     else
         call nerdtree#echo("No information available")
