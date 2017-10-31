@@ -213,7 +213,7 @@ function! NERDTreeListNode()
         \         'size_with_commas=$(echo $size | sed -e :a -e "s/\(.*[0-9]\)\([0-9]\{3\}\)/\1,\2/;ta") && ' .
         \         'ls -ld ' . shellescape(treenode.path.str()) . ' | sed -e "s/ $size / $size_with_commas /"'
 
-        let metadata = systemlist(cmd)
+        let metadata = split(system(cmd),'\n')
         call nerdtree#echo(metadata[0])
     else
         call nerdtree#echo("No information available")
