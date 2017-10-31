@@ -211,9 +211,7 @@ function! NERDTreeListNode()
 
         let cmd = 'size=$(' . stat_cmd . shellescape(treenode.path.str()) . ') && ' .
         \         'size_with_commas=$(echo $size | sed -e :a -e "s/\(.*[0-9]\)\([0-9]\{3\}\)/\1,\2/;ta") && ' .
-        \         'ls -ld ' . shellescape(treenode.path.str()) . ' | sed -e "s/ $size / $size_with_commas /" && ' .
-        \         'unset size && ' .
-        \         'unset size_with_commas'
+        \         'ls -ld ' . shellescape(treenode.path.str()) . ' | sed -e "s/ $size / $size_with_commas /"'
 
         let metadata = systemlist(cmd)
         call nerdtree#echo(metadata[0])
