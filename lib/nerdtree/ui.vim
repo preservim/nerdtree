@@ -355,7 +355,14 @@ function! s:UI.saveScreenState()
     let self._screenState = {}
     let self._screenState['oldPos'] = getpos(".")
     let self._screenState['oldTopLine'] = line("w0")
-    let self._screenState['oldWindowSize']= winwidth("")
+    let size = exists("b:NERDTreeOldWindowSize") ? b:NERDTreeOldWindowSize : g:NERDTreeWinSize
+    let s:keepsize = exists("g:NERDTreeKeepWinSize") ? g:NERDTreeKeepWinSize : 1
+    if s:keepsize
+        let self._screenState['oldWindowSize']= winwidth("")
+    else
+        let self._screenState['oldWindowSize']= g:NERDTreeWinSize
+    endif
+    " -------
     call nerdtree#exec(win . "wincmd w")
 endfunction
 
