@@ -55,9 +55,17 @@ function! s:promptToDelBuffer(bufnum, msg)
         " Is not it better to close single tabs with this file only ?
         let s:originalTabNumber = tabpagenr()
         let s:originalWindowNumber = winnr()
-        let s:listedBufferCount = len(getbufinfo({'buflisted':1}))
         " Go to the next buffer in buffer list if at least one extra buffer is listed
         " Otherwise open a new empty buffer
+        if v:version >= 800
+            let s:listedBufferCount = len(getbufinfo({'buflisted':1}))
+        elseif v:version >= 702
+            let s:listedBufferCount = len(filter(range(1, bufnr('$')), 'buflisted(v:val)'))
+        else
+            " Ignore buffer count in this case to make sure we keep the old
+            " behavior
+            let s:listedBufferCount = 0
+        endif
         if s:listedBufferCount > 1
             exec "tabdo windo if winbufnr(0) == " . a:bufnum . " | exec ':bnext! ' | endif"
         else
