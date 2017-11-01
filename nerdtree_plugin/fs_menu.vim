@@ -55,7 +55,14 @@ function! s:promptToDelBuffer(bufnum, msg)
         " Is not it better to close single tabs with this file only ?
         let s:originalTabNumber = tabpagenr()
         let s:originalWindowNumber = winnr()
-        exec "tabdo windo if winbufnr(0) == " . a:bufnum . " | exec ':bnext! ' | endif"
+        let s:listedBufferCount = len(getbufinfo({'buflisted':1}))
+        " Go to the next buffer in buffer list if at least one extra buffer is listed
+        " Otherwise open a new empty buffer
+        if s:listedBufferCount > 1
+            exec "tabdo windo if winbufnr(0) == " . a:bufnum . " | exec ':bnext! ' | endif"
+        else
+            exec "tabdo windo if winbufnr(0) == " . a:bufnum . " | exec ':enew! ' | endif"
+        endif
         exec "tabnext " . s:originalTabNumber
         exec s:originalWindowNumber . "wincmd w"
         " 3. We don't need a previous buffer anymore
