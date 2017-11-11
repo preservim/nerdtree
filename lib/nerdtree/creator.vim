@@ -109,11 +109,6 @@ endfunction
 " FUNCTION: s:Creator._createNERDTree(path) {{{1
 function! s:Creator._createNERDTree(path, type)
     let b:NERDTree = g:NERDTree.New(a:path, a:type)
-    "TODO: This is kept for compatability only since many things use
-    "b:NERDTreeRoot instead of the new NERDTree.root
-    "Remove this one day
-    let b:NERDTreeRoot = b:NERDTree.root
-
     call b:NERDTree.root.open()
 endfunction
 
