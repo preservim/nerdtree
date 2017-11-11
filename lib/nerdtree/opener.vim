@@ -233,11 +233,13 @@ endfunction
 
 " FUNCTION: Opener.open(target) {{{1
 function! s:Opener.open(target)
+
     if self._path.isDirectory
         call self._openDirectory(a:target)
-    else
-        call self._openFile()
+        return
     endif
+
+    call self._openFile()
 endfunction
 
 " FUNCTION: Opener._openFile() {{{1
