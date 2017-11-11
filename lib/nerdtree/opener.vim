@@ -244,15 +244,20 @@ endfunction
 
 " FUNCTION: Opener._openFile() {{{1
 function! s:Opener._openFile()
+
     if self._reuseWindow()
         return
     endif
 
     call self._gotoTargetWin()
-    call self._path.edit()
+
     if self._stay
+        silent call self._path.edit()
         call self._restoreCursorPos()
+        return
     endif
+
+    call self._path.edit()
 endfunction
 
 " FUNCTION: Opener._openDirectory(node) {{{1
