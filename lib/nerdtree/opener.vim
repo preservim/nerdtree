@@ -257,11 +257,11 @@ endfunction
 
 " FUNCTION: Opener._openDirectory(node) {{{1
 function! s:Opener._openDirectory(node)
+    call self._gotoTargetWin()
+
     if self._nerdtree.isWinTree()
-        call self._gotoTargetWin()
         call g:NERDTreeCreator.CreateWindowTree(a:node.path.str())
     else
-        call self._gotoTargetWin()
         if empty(self._where)
             call b:NERDTree.changeRoot(a:node)
         elseif self._where == 't'
