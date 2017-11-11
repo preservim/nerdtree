@@ -47,33 +47,26 @@ endfunction
 " FUNCTION: s:Creator.createTabTree(a:name) {{{1
 " name: the name of a bookmark or a directory
 function! s:Creator.createTabTree(name)
-    let path = self._pathForString(a:name)
+    let l:path = self._pathForString(a:name)
 
-    "abort if exception was thrown (bookmark/dir doesn't exist)
-    if empty(path)
+    " Abort if an exception was thrown (i.e., if the bookmark or directory
+    " does not exist).
+    if empty(l:path)
         return
     endif
 
-    if path == {}
-        return
-    endif
-
-    "if instructed to, then change the vim CWD to the dir the NERDTree is
-    "inited in
+    " Obey the user's preferences for changing the working directory.
     if g:NERDTreeChDirMode != 0
-        call path.changeToDir()
+        call l:path.changeToDir()
     endif
 
     if g:NERDTree.ExistsForTab()
-        if g:NERDTree.IsOpen()
-            call g:NERDTree.Close()
-        endif
-
+        call g:NERDTree.Close()
         call self._removeTreeBufForTab()
     endif
 
     call self._createTreeWin()
-    call self._createNERDTree(path, "tab")
+    call self._createNERDTree(l:path, 'tab')
     call b:NERDTree.render()
     call b:NERDTree.root.putCursorHere(0, 0)
 
