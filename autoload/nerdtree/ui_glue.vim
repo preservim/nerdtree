@@ -68,10 +68,10 @@ function! nerdtree#ui_glue#createDefaultBindings()
     call NERDTreeAddKeyMap({ 'key': g:NERDTreeMapJumpNextSibling, 'scope': "Node", 'callback': s."jumpToNextSibling" })
     call NERDTreeAddKeyMap({ 'key': g:NERDTreeMapJumpPrevSibling, 'scope': "Node", 'callback': s."jumpToPrevSibling" })
 
-    call NERDTreeAddKeyMap({ 'key': g:NERDTreeMapOpenInTab, 'scope': "Node", 'callback': s."openInNewTab" })
-    call NERDTreeAddKeyMap({ 'key': g:NERDTreeMapOpenInTabSilent, 'scope': "Node", 'callback': s."openInNewTabSilent" })
-    call NERDTreeAddKeyMap({ 'key': g:NERDTreeMapOpenInTab, 'scope': "Bookmark", 'callback': s."openInNewTab" })
-    call NERDTreeAddKeyMap({ 'key': g:NERDTreeMapOpenInTabSilent, 'scope': "Bookmark", 'callback': s."openInNewTabSilent" })
+    call NERDTreeAddKeyMap({ 'key': g:NERDTreeMapOpenInTab, 'scope': 'Node', 'callback': s . 'openInNewTab' })
+    call NERDTreeAddKeyMap({ 'key': g:NERDTreeMapOpenInTabSilent, 'scope': 'Node', 'callback': s . 'openInNewTabSilent' })
+    call NERDTreeAddKeyMap({ 'key': g:NERDTreeMapOpenInTab, 'scope': 'Bookmark', 'callback': s . 'openInNewTab' })
+    call NERDTreeAddKeyMap({ 'key': g:NERDTreeMapOpenInTabSilent, 'scope': 'Bookmark', 'callback': s . 'openInNewTabSilent' })
 
     call NERDTreeAddKeyMap({ 'key': g:NERDTreeMapOpenExpl, 'scope': "DirNode", 'callback': s."openExplorer" })
 
@@ -494,12 +494,14 @@ endfunction
 
 " FUNCTION: s:openInNewTab(target) {{{1
 function! s:openInNewTab(target)
-    call a:target.activate({'where': 't'})
+    let l:opener = g:NERDTreeOpener.New(a:target.path, {'where': 't'})
+    call l:opener.open(a:target)
 endfunction
 
 " FUNCTION: s:openInNewTabSilent(target) {{{1
 function! s:openInNewTabSilent(target)
-    call a:target.activate({'where': 't', 'stay': 1})
+    let l:opener = g:NERDTreeOpener.New(a:target.path, {'where': 't', 'stay': 1})
+    call l:opener.open(a:target)
 endfunction
 
 " FUNCTION: s:openNodeRecursively(node) {{{1
