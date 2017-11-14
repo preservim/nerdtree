@@ -109,6 +109,12 @@ endfunction
 " FUNCTION: s:Creator._createNERDTree(path) {{{1
 function! s:Creator._createNERDTree(path, type)
     let b:NERDTree = g:NERDTree.New(a:path, a:type)
+
+    " TODO: This assignment is kept for compatibility reasons.  Many other
+    " plugins use "b:NERDTreeRoot" instead of "b:NERDTree.root".  Remove this
+    " assignment in the future.
+    let b:NERDTreeRoot = b:NERDTree.root
+
     call b:NERDTree.root.open()
 endfunction
 
