@@ -194,14 +194,14 @@ function! s:closeCurrentDir(node)
 
     let l:parent = a:node.parent
 
-    if empty(l:parent) || l:parent.isRoot()
-        call nerdtree#echo('cannot close tree root')
-        return
-    endif
-
     while l:parent.isCascadable()
         let l:parent = l:parent.parent
     endwhile
+
+    if l:parent.isRoot()
+        call nerdtree#echo('cannot close tree root')
+        return
+    endif
 
     call l:parent.close()
     call b:NERDTree.render()
