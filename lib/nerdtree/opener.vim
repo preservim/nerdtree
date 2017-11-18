@@ -75,7 +75,7 @@ function! s:Opener._gotoTargetWin()
         elseif self._where == 'h'
             split
         elseif self._where == 't'
-            $tabnew
+            tabnew
         endif
     else
         call self._checkToCloseTree(1)
@@ -85,7 +85,7 @@ function! s:Opener._gotoTargetWin()
         elseif self._where == 'h'
             call self._newSplit()
         elseif self._where == 't'
-            $tabnew
+            tabnew
         elseif self._where == 'p'
             call self._previousWindow()
         endif
