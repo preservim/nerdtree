@@ -184,24 +184,28 @@ function! s:closeChildren(node)
 endfunction
 
 " FUNCTION: s:closeCurrentDir(node) {{{1
-" closes the parent dir of the current node
+" Close the parent directory of the current node.
 function! s:closeCurrentDir(node)
-    let parent = a:node.parent
-    while g:NERDTreeCascadeOpenSingleChildDir && !parent.isRoot()
-        let childNodes = parent.getVisibleChildren()
-        if len(childNodes) == 1 && childNodes[0].path.isDirectory
-            let parent = parent.parent
-        else
-            break
-        endif
-    endwhile
-    if parent ==# {} || parent.isRoot()
-        call nerdtree#echo("cannot close tree root")
-    else
-        call parent.close()
-        call b:NERDTree.render()
-        call parent.putCursorHere(0, 0)
+
+    if a:node.isRoot()
+        call nerdtree#echo('cannot close parent of tree root')
+        return
     endif
+
+    let l:parent = a:node.parent
+
+    if empty(l:parent) || l:parent.isRoot()
+        call nerdtree#echo('cannot close tree root')
+        return
+    endif
+
+    while l:parent.isCascadable()
+        let l:parent = l:parent.parent
+    endwhile
+
+    call l:parent.close()
+    call b:NERDTree.render()
+    call l:parent.putCursorHere(0, 0)
 endfunction
 
 " FUNCTION: s:closeTreeWindow() {{{1
