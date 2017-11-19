@@ -90,10 +90,15 @@ function! s:activateAll()
     endif
 endfunction
 
-"FUNCTION: s:activateDirNode() {{{1
-"handle the user activating a tree node
-function! s:activateDirNode(node)
-    call a:node.activate()
+" FUNCTION: s:activateDirNode(directoryNode) {{{1
+function! s:activateDirNode(directoryNode)
+
+    if a:directoryNode.isRoot() && a:directoryNode.isOpen
+        call nerdtree#echo('cannot close tree root')
+        return
+    endif
+
+    call a:directoryNode.activate()
 endfunction
 
 "FUNCTION: s:activateFileNode() {{{1
