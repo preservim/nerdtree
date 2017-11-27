@@ -164,7 +164,7 @@ function! s:UI.getPath(ln)
     let indent = self._indentLevelFor(line)
 
     "remove the tree parts and the leading space
-    let curFile = self._stripMarkup(line, 0)
+    let curFile = self._stripMarkup(line)
 
     let wasdir = 0
     if curFile =~# '/$'
@@ -177,7 +177,7 @@ function! s:UI.getPath(ln)
     while lnum > 0
         let lnum = lnum - 1
         let curLine = getline(lnum)
-        let curLineStripped = self._stripMarkup(curLine, 1)
+        let curLineStripped = self._stripMarkup(curLine)
 
         "have we reached the top of the tree?
         if lnum == rootLine
@@ -228,7 +228,7 @@ function! s:UI.getLineNum(file_node)
 
         let indent = self._indentLevelFor(curLine)
         if indent ==# curPathComponent
-            let curLine = self._stripMarkup(curLine, 1)
+            let curLine = self._stripMarkup(curLine)
 
             let curPath =  join(pathcomponents, '/') . '/' . curLine
             if stridx(fullpath, curPath, 0) ==# 0
@@ -366,14 +366,12 @@ function! s:UI.setShowHidden(val)
     let self._showHidden = a:val
 endfunction
 
-"FUNCTION: s:UI._stripMarkup(line, removeLeadingSpaces){{{1
+"FUNCTION: s:UI._stripMarkup(line){{{1
 "returns the given line with all the tree parts stripped off
 "
 "Args:
 "line: the subject line
-"removeLeadingSpaces: 1 if leading spaces are to be removed (leading spaces =
-"any spaces before the actual text of the node)
-function! s:UI._stripMarkup(line, removeLeadingSpaces)
+function! s:UI._stripMarkup(line)
     let line = a:line
     "remove the tree parts and the leading space
     let line = substitute (line, g:NERDTreeUI.MarkupReg(),"","")
@@ -397,10 +395,6 @@ function! s:UI._stripMarkup(line, removeLeadingSpaces)
     let line = substitute (line,' -> .*',"","") " remove link to
     if wasdir ==# 1
         let line = substitute (line, '/\?$', '/', "")
-    endif
-
-    if a:removeLeadingSpaces
-        let line = substitute (line, '^ *', '', '')
     endif
 
     return line
