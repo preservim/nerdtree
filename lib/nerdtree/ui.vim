@@ -166,12 +166,6 @@ function! s:UI.getPath(ln)
     "remove the tree parts and the leading space
     let curFile = self._stripMarkup(line, 0)
 
-    let wasdir = 0
-    if curFile =~# '/$'
-        let wasdir = 1
-        let curFile = substitute(curFile, '/\?$', '/', "")
-    endif
-
     let dir = ""
     let lnum = a:ln
     while lnum > 0
@@ -390,14 +384,7 @@ function! s:UI._stripMarkup(line, removeLeadingSpaces)
     "strip off any generic flags
     let line = substitute (line, '\[[^]]*\]', "","")
 
-    let wasdir = 0
-    if line =~# '/$'
-        let wasdir = 1
-    endif
     let line = substitute (line,' -> .*',"","") " remove link to
-    if wasdir ==# 1
-        let line = substitute (line, '/\?$', '/', "")
-    endif
 
     if a:removeLeadingSpaces
         let line = substitute (line, '^ *', '', '')
