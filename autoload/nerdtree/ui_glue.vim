@@ -227,24 +227,30 @@ function! s:closeTreeWindow()
     endif
 endfunction
 
-" FUNCTION: s:deleteBookmark(bm) {{{1
-" if the cursor is on a bookmark, prompt to delete
-function! s:deleteBookmark(bm)
-    echo  "Are you sure you wish to delete the bookmark:\n\"" . a:bm.name . "\" (yN):"
+" FUNCTION: s:deleteBookmark(bookmark) {{{1
+" Prompt the user to confirm the deletion of the selected bookmark.
+function! s:deleteBookmark(bookmark)
+    let l:message = "Delete the bookmark \"" . a:bookmark.name
+                \ . "\" from the bookmark list?"
 
-    if  nr2char(getchar()) ==# 'y'
-        try
-            call a:bm.delete()
-            call b:NERDTree.root.refresh()
-            call b:NERDTree.render()
-            redraw
-        catch /^NERDTree/
-            call nerdtree#echoWarning("Could not remove bookmark")
-        endtry
-    else
-        call nerdtree#echo("delete aborted" )
+    let l:choices = "&Yes\n&No"
+
+    echo | redraw
+    let l:selection = confirm(l:message, l:choices, 1, 'Warning')
+
+    if l:selection != 1
+        call nerdtree#echo('bookmark not deleted')
+        return
     endif
 
+    try
+        call a:bookmark.delete()
+        silent call b:NERDTree.root.refresh()
+        call b:NERDTree.render()
+        echo | redraw
+    catch /^NERDTree/
+        call nerdtree#echoWarning('could not remove bookmark')
+    endtry
 endfunction
 
 " FUNCTION: s:displayHelp() {{{1
