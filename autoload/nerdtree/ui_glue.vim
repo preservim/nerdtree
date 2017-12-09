@@ -261,16 +261,16 @@ function! s:displayHelp()
     call b:NERDTree.ui.centerView()
 endfunction
 
-" FUNCTION: s:findAndRevealPath() {{{1
-function! s:findAndRevealPath(userPath)
-    if len(a:userPath) == 0
-        let s:userPath = expand("%:p")
-    else 
-        let s:userPath = a:userPath
+" FUNCTION: s:findAndRevealPath(path) {{{1
+function! s:findAndRevealPath(path)
+    let l:path = a:path
+
+    if empty(l:path)
+        let l:path = expand('%:p')
     endif
     
     try
-        let p = g:NERDTreePath.New(s:userPath)
+        let p = g:NERDTreePath.New(l:path)
     catch /^NERDTree.InvalidArgumentsError/
         call nerdtree#echo("no file for the current buffer")
         return
