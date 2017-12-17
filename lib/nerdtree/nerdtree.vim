@@ -195,3 +195,5 @@ endfunction
 function! s:NERDTree.render()
     call self.ui.render()
 endfunction
+
+" vim: set sw=4 sts=4 et fdm=marker:
