@@ -270,13 +270,13 @@ function! s:findAndRevealPath(path)
     endif
     
     try
-        let p = g:NERDTreePath.New(l:path)
+        let l:p = g:NERDTreePath.New(l:path)
     catch /^NERDTree.InvalidArgumentsError/
-        call nerdtree#echo("no file for the current buffer")
+        call nerdtree#echo('no file for the current buffer')
         return
     endtry
 
-    if p.isUnixHiddenPath()
+    if l:p.isUnixHiddenPath()
         let showhidden=g:NERDTreeShowHidden
         let g:NERDTreeShowHidden = 1
     endif
@@ -285,36 +285,29 @@ function! s:findAndRevealPath(path)
         try
             let cwd = g:NERDTreePath.New(getcwd())
         catch /^NERDTree.InvalidArgumentsError/
-            call nerdtree#echo("current directory does not exist.")
-            let cwd = p.getParent()
+            call nerdtree#echo('current directory does not exist.')
+            let cwd = l:p.getParent()
         endtry
 
-        if p.isUnder(cwd)
+        if l:p.isUnder(cwd)
             call g:NERDTreeCreator.CreateTabTree(cwd.str())
         else
-            call g:NERDTreeCreator.CreateTabTree(p.getParent().str())
+            call g:NERDTreeCreator.CreateTabTree(l:p.getParent().str())
         endif
     else
-        if !p.isUnder(g:NERDTreeFileNode.GetRootForTab().path)
-            if !g:NERDTree.IsOpen()
-                call g:NERDTreeCreator.ToggleTabTree('')
-            else
-                call g:NERDTree.CursorToTreeWin()
-            endif
+        NERDTreeFocus
+
+        if !l:p.isUnder(g:NERDTreeFileNode.GetRootForTab().path)
             call b:NERDTree.ui.setShowHidden(g:NERDTreeShowHidden)
-            call s:chRoot(g:NERDTreeDirNode.New(p.getParent(), b:NERDTree))
-        else
-            if !g:NERDTree.IsOpen()
-                call g:NERDTreeCreator.ToggleTabTree("")
-            endif
+            call s:chRoot(g:NERDTreeDirNode.New(l:p.getParent(), b:NERDTree))
         endif
     endif
-    call g:NERDTree.CursorToTreeWin()
-    let node = b:NERDTree.root.reveal(p)
+
+    let node = b:NERDTree.root.reveal(l:p)
     call b:NERDTree.render()
     call node.putCursorHere(1,0)
 
-    if p.isUnixHiddenFile()
+    if l:p.isUnixHiddenFile()
         let g:NERDTreeShowHidden = showhidden
     endif
 endfunction
