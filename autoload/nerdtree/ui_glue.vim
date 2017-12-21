@@ -270,45 +270,45 @@ function! s:findAndRevealPath(path)
     endif
     
     try
-        let l:p = g:NERDTreePath.New(l:path)
+        let l:pathObj = g:NERDTreePath.New(l:path)
     catch /^NERDTree.InvalidArgumentsError/
         call nerdtree#echo('no file for the current buffer')
         return
     endtry
 
-    if l:p.isUnixHiddenPath()
-        let showhidden=g:NERDTreeShowHidden
+    if l:pathObj.isUnixHiddenPath()
+        let l:showHidden = g:NERDTreeShowHidden
         let g:NERDTreeShowHidden = 1
     endif
 
     if !g:NERDTree.ExistsForTab()
         try
-            let cwd = g:NERDTreePath.New(getcwd())
+            let l:cwd = g:NERDTreePath.New(getcwd())
         catch /^NERDTree.InvalidArgumentsError/
             call nerdtree#echo('current directory does not exist.')
-            let cwd = l:p.getParent()
+            let l:cwd = l:pathObj.getParent()
         endtry
 
-        if l:p.isUnder(cwd)
-            call g:NERDTreeCreator.CreateTabTree(cwd.str())
+        if l:pathObj.isUnder(l:cwd)
+            call g:NERDTreeCreator.CreateTabTree(l:cwd.str())
         else
-            call g:NERDTreeCreator.CreateTabTree(l:p.getParent().str())
+            call g:NERDTreeCreator.CreateTabTree(l:pathObj.getParent().str())
         endif
     else
         NERDTreeFocus
 
-        if !l:p.isUnder(g:NERDTreeFileNode.GetRootForTab().path)
+        if !l:pathObj.isUnder(g:NERDTreeFileNode.GetRootForTab().path)
             call b:NERDTree.ui.setShowHidden(g:NERDTreeShowHidden)
-            call s:chRoot(g:NERDTreeDirNode.New(l:p.getParent(), b:NERDTree))
+            call s:chRoot(g:NERDTreeDirNode.New(l:pathObj.getParent(), b:NERDTree))
         endif
     endif
 
-    let node = b:NERDTree.root.reveal(l:p)
+    let l:node = b:NERDTree.root.reveal(l:pathObj)
     call b:NERDTree.render()
-    call node.putCursorHere(1,0)
+    call l:node.putCursorHere(1, 0)
 
-    if l:p.isUnixHiddenFile()
-        let g:NERDTreeShowHidden = showhidden
+    if l:pathObj.isUnixHiddenFile()
+        let g:NERDTreeShowHidden = l:showHidden
     endif
 endfunction
 
