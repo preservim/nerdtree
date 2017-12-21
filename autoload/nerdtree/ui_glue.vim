@@ -304,11 +304,6 @@ function! s:findAndRevealPath(path)
     endif
 
     let l:node = b:NERDTree.root.reveal(l:pathObj)
-
-    if empty(l:node)
-        echomsg 'l:node is totally empty...'
-    endif
-
     call b:NERDTree.render()
     call l:node.putCursorHere(1, 0)
 
