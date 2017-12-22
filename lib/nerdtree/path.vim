@@ -405,6 +405,25 @@ function! s:Path.getSortKey()
     return self._sortKey
 endfunction
 
+" FUNCTION: Path.isHiddenUnder(path) {{{1
+function! s:Path.isHiddenUnder(path)
+    
+    if !self.isUnder(a:path)
+        return 0
+    endif
+
+    let l:startIndex = len(a:path.pathSegments)
+    let l:segments = self.pathSegments[l:startIndex:]
+
+    for l:segment in l:segments
+        
+        if l:segment =~# '^\.'
+            return 1
+        endif
+    endfor
+
+    return 0
+endfunction
 
 " FUNCTION: Path.isUnixHiddenFile() {{{1
 " check for unix hidden files

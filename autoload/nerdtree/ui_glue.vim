@@ -277,11 +277,6 @@ function! s:findAndRevealPath(pathStr)
         return
     endtry
 
-    if l:pathObj.isUnixHiddenPath()
-        let l:showHidden = g:NERDTreeShowHidden
-        let g:NERDTreeShowHidden = 1
-    endif
-
     if !g:NERDTree.ExistsForTab()
         try
             let l:cwd = g:NERDTreePath.New(getcwd())
@@ -298,19 +293,18 @@ function! s:findAndRevealPath(pathStr)
     else
         NERDTreeFocus
 
-        if !l:pathObj.isUnder(g:NERDTreeFileNode.GetRootForTab().path)
-            call b:NERDTree.ui.setShowHidden(g:NERDTreeShowHidden)
+        if !l:pathObj.isUnder(b:NERDTree.root.path)
             call s:chRoot(g:NERDTreeDirNode.New(l:pathObj.getParent(), b:NERDTree))
         endif
+    endif
+
+    if l:pathObj.isHiddenUnder(b:NERDTree.root.path)
+        call b:NERDTree.ui.setShowHidden(1)
     endif
 
     let l:node = b:NERDTree.root.reveal(l:pathObj)
     call b:NERDTree.render()
     call l:node.putCursorHere(1, 0)
-
-    if l:pathObj.isUnixHiddenFile()
-        let g:NERDTreeShowHidden = l:showHidden
-    endif
 endfunction
 
 "FUNCTION: s:handleLeftClick() {{{1
