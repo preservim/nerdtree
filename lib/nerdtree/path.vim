@@ -413,7 +413,7 @@ function! s:Path.isHiddenUnder(path)
     endif
 
     let l:startIndex = len(a:path.pathSegments)
-    let l:segments = self.pathSegments[l:startIndex:]
+    let l:segments = self.pathSegments[l:startIndex : ]
 
     for l:segment in l:segments
         
