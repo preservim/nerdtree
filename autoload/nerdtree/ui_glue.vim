@@ -110,7 +110,7 @@ endfunction
 "FUNCTION: s:activateBookmark() {{{1
 "handle the user activating a bookmark
 function! s:activateBookmark(bm)
-    call a:bm.activate(b:NERDTree, !a:bm.path.isDirectory ? {'where': 'p'} : {})
+    call a:bm.activate(b:NERDTree, !a:bm.path.isDirectory ? {'reuse': 'all', 'where': 'p'} : {})
 endfunction
 
 " FUNCTION: nerdtree#ui_glue#bookmarkNode(name) {{{1
@@ -494,12 +494,12 @@ endfunction
 
 " FUNCTION: s:openHSplit(target) {{{1
 function! s:openHSplit(target)
-    call a:target.activate({'where': 'h'})
+    call a:target.activate({'reuse': 'all', 'where': 'h'})
 endfunction
 
 " FUNCTION: s:openVSplit(target) {{{1
 function! s:openVSplit(target)
-    call a:target.activate({'where': 'v'})
+    call a:target.activate({'reuse': 'all', 'where': 'v'})
 endfunction
 
 " FUNCTION: s:openExplorer(node) {{{1
@@ -509,7 +509,7 @@ endfunction
 
 " FUNCTION: s:openInNewTab(target) {{{1
 function! s:openInNewTab(target)
-    let l:opener = g:NERDTreeOpener.New(a:target.path, {'where': 't'})
+    let l:opener = g:NERDTreeOpener.New(a:target.path, {'reuse': 'all', 'where': 't'})
     call l:opener.open(a:target)
 endfunction
 
@@ -530,17 +530,17 @@ endfunction
 
 "FUNCTION: s:previewNodeCurrent(node) {{{1
 function! s:previewNodeCurrent(node)
-    call a:node.open({'stay': 1, 'where': 'p', 'keepopen': 1})
+    call a:node.open({'stay': 1, 'reuse': 'all', 'where': 'p', 'keepopen': 1})
 endfunction
 
 "FUNCTION: s:previewNodeHSplit(node) {{{1
 function! s:previewNodeHSplit(node)
-    call a:node.open({'stay': 1, 'where': 'h', 'keepopen': 1})
+    call a:node.open({'stay': 1, 'reuse': 'all', 'where': 'h', 'keepopen': 1})
 endfunction
 
 "FUNCTION: s:previewNodeVSplit(node) {{{1
 function! s:previewNodeVSplit(node)
-    call a:node.open({'stay': 1, 'where': 'v', 'keepopen': 1})
+    call a:node.open({'stay': 1, 'reuse': 'all', 'where': 'v', 'keepopen': 1})
 endfunction
 
 " FUNCTION: nerdtree#ui_glue#revealBookmark(name) {{{1
