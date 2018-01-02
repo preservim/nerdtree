@@ -25,7 +25,8 @@ CONTENTS                                                   *NERDTree-contents*
         2.2.Bookmarks.........................|NERDTreeBookmarks|
             2.2.1.The bookmark table..........|NERDTreeBookmarkTable|
             2.2.2.Bookmark commands...........|NERDTreeBookmarkCommands|
-            2.2.3.Invalid bookmarks...........|NERDTreeInvalidBookmarks|
+            2.2.3.Environment Variables.......|NERDTreeEnvironmentVariables|
+            2.2.4.Invalid bookmarks...........|NERDTreeInvalidBookmarks|
         2.3.NERD tree mappings................|NERDTreeMappings|
         2.4.The NERD tree menu................|NERDTreeMenu|
     3.Options.................................|NERDTreeOptions|
@@ -201,7 +202,28 @@ Note: The following commands are only available within the NERDTree buffer.
 See also |:NERDTree| and |:NERDTreeFromBookmark|.
 
 ------------------------------------------------------------------------------
-2.2.3. Invalid Bookmarks                            *NERDTreeInvalidBookmarks*
+2.2.3. Environment Variables                    *NERDTreeEnvironmentVariables*
+
+Operating system environment variables may be used in the path of entries in
+the NERDTree bookmarks file (|'NERDTreeBookmarksFile'|). If there are two
+versions of a project in different folders, development and production for
+instance, an environment variable can be used to specify which of the two
+folders to use.
+
+    export PROJ_ROOT=~/dev
+
+Then the NERDTree Bookmarks file manually can be edited to use the variable,
+and one bookmark can be used to refer to development in one shell and
+production in another shell.
+
+    foobar $PROJ_ROOT/foobar
+
+There is a caveat with this technique. If the environment variable is not set
+in the shell, NERDTree will be unable to find the target of the bookmark, and
+will consider it to be an invalid bookmark. See |'NERDTreeInvalidBookmarks'|.
+
+------------------------------------------------------------------------------
+2.2.4. Invalid Bookmarks                            *NERDTreeInvalidBookmarks*
 
 If invalid bookmarks are detected, the script will issue an error message and
 the invalid bookmarks will become unavailable for use.
