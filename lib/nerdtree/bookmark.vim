@@ -97,7 +97,7 @@ function! s:Bookmark.CacheBookmarks(silent)
 
                 let name = substitute(i, '^\(.\{-}\) .*$', '\1', '')
                 let path = substitute(i, '^.\{-} \(.*\)$', '\1', '')
-                let path = fnamemodify(path, ':p')
+                let path = fnamemodify(expand(path), ':p')
 
                 try
                     let bookmark = s:Bookmark.New(name, g:NERDTreePath.New(path))
