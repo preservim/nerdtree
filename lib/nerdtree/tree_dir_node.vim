@@ -568,13 +568,6 @@ function! s:TreeDirNode.reveal(path, ...)
         throw "NERDTree.InvalidArgumentsError: " . a:path.str() . " should be under " . self.path.str()
     endif
 
-    " Refresh "self.children" to avoid missing paths created after this node
-    " was last opened.  If "self.children" is empty, the call to "open()" will
-    " initialize the children.
-    if !empty(self.children)
-        " Silence messages/errors. They were seen on the first open.
-        silent! call self._initChildren(1)
-    endif
     call self.open()
 
     if self.path.equals(a:path.getParent())
