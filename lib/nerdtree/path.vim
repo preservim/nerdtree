@@ -541,17 +541,16 @@ function! s:Path.equals(path)
     return self.str() ==# a:path.str()
 endfunction
 
-" FUNCTION: Path.New() {{{1
-" The Constructor for the Path object
-function! s:Path.New(path)
-    let newPath = copy(self)
+" FUNCTION: Path.New(pathStr) {{{1
+function! s:Path.New(pathStr)
+    let l:newPath = copy(self)
 
-    call newPath.readInfoFromDisk(s:Path.AbsolutePathFor(a:path))
+    call l:newPath.readInfoFromDisk(s:Path.AbsolutePathFor(a:pathStr))
 
-    let newPath.cachedDisplayString = ""
-    let newPath.flagSet = g:NERDTreeFlagSet.New()
+    let l:newPath.cachedDisplayString = ''
+    let l:newPath.flagSet = g:NERDTreeFlagSet.New()
 
-    return newPath
+    return l:newPath
 endfunction
 
 " FUNCTION: Path.Slash() {{{1
