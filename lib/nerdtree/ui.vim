@@ -158,6 +158,10 @@ function! s:UI.getPath(ln)
         return self.nerdtree.root.path.getParent()
     endif
 
+    if a:ln < rootLine
+        return {}
+    endif
+
     let indent = self._indentLevelFor(line)
 
     " remove the tree parts and the leading space
