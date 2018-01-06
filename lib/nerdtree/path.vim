@@ -14,21 +14,23 @@ lockvar s:NERDTreeSortStarIndex
 let s:Path = {}
 let g:NERDTreePath = s:Path
 
-" FUNCTION: Path.AbsolutePathFor(str) {{{1
-function! s:Path.AbsolutePathFor(str)
-    let prependCWD = 0
+" FUNCTION: Path.AbsolutePathFor(pathStr) {{{1
+function! s:Path.AbsolutePathFor(pathStr)
+    let l:prependWorkingDir = 0
+
     if nerdtree#runningWindows()
-        let prependCWD = a:str !~# '^.:\(\\\|\/\)' && a:str !~# '^\(\\\\\|\/\/\)'
+        let l:prependWorkingDir = a:pathStr !~# '^.:\(\\\|\/\)' && a:pathStr !~# '^\(\\\\\|\/\/\)'
     else
-        let prependCWD = a:str !~# '^/'
+        let l:prependWorkingDir = a:pathStr !~# '^/'
     endif
 
-    let toReturn = a:str
-    if prependCWD
-        let toReturn = getcwd() . s:Path.Slash() . a:str
+    let l:result = a:pathStr
+
+    if l:prependWorkingDir
+        let l:result = getcwd() . s:Path.Slash() . a:pathStr
     endif
 
-    return toReturn
+    return l:result
 endfunction
 
 " FUNCTION: Path.bookmarkNames() {{{1
