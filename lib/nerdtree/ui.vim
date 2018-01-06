@@ -150,7 +150,6 @@ function! s:UI.getPath(ln)
 
     let rootLine = self.getRootLineNum()
 
-    " check to see if we have the root node
     if a:ln == rootLine
         return self.nerdtree.root.path
     endif
