@@ -141,15 +141,10 @@ function! s:UI.New(nerdtree)
 endfunction
 
 " FUNCTION: s:UI.getPath(ln) {{{1
-" Gets the full path to the node that is rendered on the given line number
-"
-" Args:
-" ln: the line number to get the path for
-"
-" Return:
-" A path if a node was selected, {} if nothing is selected.
-" If the 'up a dir' line was selected then the path to the parent of the
-" current root is returned
+" Return the "Path" object for the node that is rendered on the given line
+" number.  If the "up a dir" line is selected, return the "Path" object for
+" the parent of the root.  Return the empty dictionary if the given line
+" does not reference a tree node.
 function! s:UI.getPath(ln)
     let line = getline(a:ln)
 
