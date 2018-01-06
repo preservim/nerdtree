@@ -196,14 +196,18 @@ function! s:TreeFileNode.GetRootForTab()
 endfunction
 
 " FUNCTION: TreeFileNode.GetSelected() {{{1
-" gets the treenode that the cursor is currently over
+" If the cursor is currently positioned on a tree node, return the node.
+" Otherwise, return the empty dictionary.
 function! s:TreeFileNode.GetSelected()
+
     try
-        let path = b:NERDTree.ui.getPath(line("."))
-        if path ==# {}
+        let l:path = b:NERDTree.ui.getPath(line('.'))
+
+        if empty(l:path)
             return {}
         endif
-        return b:NERDTree.root.findNode(path)
+
+        return b:NERDTree.root.findNode(l:path)
     catch /^NERDTree/
         return {}
     endtry
