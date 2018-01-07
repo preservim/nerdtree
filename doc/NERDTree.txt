@@ -996,17 +996,16 @@ Other examples: >
 
 ------------------------------------------------------------------------------
                                                         *'NERDTreeStatusline'*
-Values: Any valid statusline setting.
-Default: %{b:NERDTree.root.path.strForOS(0)}
+Values: Any valid |'statusline'| setting.
+Default: %{exists('b:NERDTree')?b:NERDTree.root.path.str():''}
 
-Tells the script what to use as the |'statusline'| setting for NERD tree
-windows.
+Defines the value for the |'statusline'| setting in NERDTree windows.
 
-Note that the statusline is set using |:let-&| not |:set| so escaping spaces
-isn't necessary.
+Note: The setting is actually applied using |:let-&|, not |:set|, so
+escaping spaces is not necessary.
 
 Setting this option to -1 will will deactivate it so that your global
-statusline setting is used instead.
+|'statusline'| setting is used.
 
 ------------------------------------------------------------------------------
                                                             *'NERDTreeWinPos'*
