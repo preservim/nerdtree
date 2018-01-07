@@ -14,21 +14,23 @@ lockvar s:NERDTreeSortStarIndex
 let s:Path = {}
 let g:NERDTreePath = s:Path
 
-" FUNCTION: Path.AbsolutePathFor(str) {{{1
-function! s:Path.AbsolutePathFor(str)
-    let prependCWD = 0
+" FUNCTION: Path.AbsolutePathFor(pathStr) {{{1
+function! s:Path.AbsolutePathFor(pathStr)
+    let l:prependWorkingDir = 0
+
     if nerdtree#runningWindows()
-        let prependCWD = a:str !~# '^.:\(\\\|\/\)' && a:str !~# '^\(\\\\\|\/\/\)'
+        let l:prependWorkingDir = a:pathStr !~# '^.:\(\\\|\/\)' && a:pathStr !~# '^\(\\\\\|\/\/\)'
     else
-        let prependCWD = a:str !~# '^/'
+        let l:prependWorkingDir = a:pathStr !~# '^/'
     endif
 
-    let toReturn = a:str
-    if prependCWD
-        let toReturn = getcwd() . s:Path.Slash() . a:str
+    let l:result = a:pathStr
+
+    if l:prependWorkingDir
+        let l:result = getcwd() . s:Path.Slash() . a:pathStr
     endif
 
-    return toReturn
+    return l:result
 endfunction
 
 " FUNCTION: Path.bookmarkNames() {{{1
@@ -541,17 +543,16 @@ function! s:Path.equals(path)
     return self.str() ==# a:path.str()
 endfunction
 
-" FUNCTION: Path.New() {{{1
-" The Constructor for the Path object
-function! s:Path.New(path)
-    let newPath = copy(self)
+" FUNCTION: Path.New(pathStr) {{{1
+function! s:Path.New(pathStr)
+    let l:newPath = copy(self)
 
-    call newPath.readInfoFromDisk(s:Path.AbsolutePathFor(a:path))
+    call l:newPath.readInfoFromDisk(s:Path.AbsolutePathFor(a:pathStr))
 
-    let newPath.cachedDisplayString = ""
-    let newPath.flagSet = g:NERDTreeFlagSet.New()
+    let l:newPath.cachedDisplayString = ''
+    let l:newPath.flagSet = g:NERDTreeFlagSet.New()
 
-    return newPath
+    return l:newPath
 endfunction
 
 " FUNCTION: Path.Slash() {{{1
