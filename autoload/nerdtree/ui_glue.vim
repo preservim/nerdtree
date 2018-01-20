@@ -23,16 +23,16 @@ function! nerdtree#ui_glue#createDefaultBindings()
     call NERDTreeAddKeyMap({ 'key': g:NERDTreeMapOpenSplit, 'scope': "Node", 'callback': s."openHSplit" })
     call NERDTreeAddKeyMap({ 'key': g:NERDTreeMapOpenVSplit, 'scope': "Node", 'callback': s."openVSplit" })
 
-    call NERDTreeAddKeyMap({ 'key': g:NERDTreeMapOpenSplit, 'scope': "Bookmark", 'callback': s."openHSplit" })
-    call NERDTreeAddKeyMap({ 'key': g:NERDTreeMapOpenVSplit, 'scope': "Bookmark", 'callback': s."openVSplit" })
+    call NERDTreeAddKeyMap({ 'key': g:NERDTreeMapOpenSplit, 'scope': "Bookmark", 'callback': s."openHSplitBookmark" })
+    call NERDTreeAddKeyMap({ 'key': g:NERDTreeMapOpenVSplit, 'scope': "Bookmark", 'callback': s."openVSplitBookmark" })
 
     call NERDTreeAddKeyMap({ 'key': g:NERDTreeMapPreview, 'scope': "Node", 'callback': s."previewNodeCurrent" })
     call NERDTreeAddKeyMap({ 'key': g:NERDTreeMapPreviewVSplit, 'scope': "Node", 'callback': s."previewNodeVSplit" })
     call NERDTreeAddKeyMap({ 'key': g:NERDTreeMapPreviewSplit, 'scope': "Node", 'callback': s."previewNodeHSplit" })
 
-    call NERDTreeAddKeyMap({ 'key': g:NERDTreeMapPreview, 'scope': "Bookmark", 'callback': s."previewNodeCurrent" })
-    call NERDTreeAddKeyMap({ 'key': g:NERDTreeMapPreviewVSplit, 'scope': "Bookmark", 'callback': s."previewNodeVSplit" })
-    call NERDTreeAddKeyMap({ 'key': g:NERDTreeMapPreviewSplit, 'scope': "Bookmark", 'callback': s."previewNodeHSplit" })
+    call NERDTreeAddKeyMap({ 'key': g:NERDTreeMapPreview, 'scope': "Bookmark", 'callback': s."previewNodeCurrentBookmark" })
+    call NERDTreeAddKeyMap({ 'key': g:NERDTreeMapPreviewVSplit, 'scope': "Bookmark", 'callback': s."previewNodeVSplitBookmark" })
+    call NERDTreeAddKeyMap({ 'key': g:NERDTreeMapPreviewSplit, 'scope': "Bookmark", 'callback': s."previewNodeHSplitBookmark" })
 
     call NERDTreeAddKeyMap({ 'key': g:NERDTreeMapOpenRecursively, 'scope': "DirNode", 'callback': s."openNodeRecursively" })
 
@@ -496,6 +496,16 @@ function! s:openVSplit(target)
     call a:target.activate({'where': 'v'})
 endfunction
 
+" FUNCTION: s:openHSplitBookmark(bm) {{{1
+function! s:openHSplitBookmark(bm)
+    call a:bm.activate(b:NERDTree, {'where': 'h'})
+endfunction
+
+" FUNCTION: s:openVSplitBookmark(bm) {{{1
+function! s:openVSplitBookmark(bm)
+    call a:bm.activate(b:NERDTree, {'where': 'v'})
+endfunction
+
 " FUNCTION: s:openExplorer(node) {{{1
 function! s:openExplorer(node)
     call a:node.openExplorer()
@@ -535,6 +545,21 @@ endfunction
 "FUNCTION: s:previewNodeVSplit(node) {{{1
 function! s:previewNodeVSplit(node)
     call a:node.open({'stay': 1, 'where': 'v', 'keepopen': 1})
+endfunction
+
+"FUNCTION: s:previewNodeCurrentBookmark(bm) {{{1
+function! s:previewNodeCurrentBookmark(bm)
+    call a:bm.activate(b:NERDTree, {'stay': 1, 'where': 'p', 'keepopen': 1})
+endfunction
+
+"FUNCTION: s:previewNodeHSplitBookmark(bm) {{{1
+function! s:previewNodeHSplitBookmark(bm)
+    call a:bm.activate(b:NERDTree, {'stay': 1, 'where': 'h', 'keepopen': 1})
+endfunction
+
+"FUNCTION: s:previewNodeVSplitBookmark(bm) {{{1
+function! s:previewNodeVSplitBookmark(bm)
+    call a:bm.activate(b:NERDTree, {'stay': 1, 'where': 'v', 'keepopen': 1})
 endfunction
 
 " FUNCTION: nerdtree#ui_glue#revealBookmark(name) {{{1
