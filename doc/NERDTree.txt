@@ -630,6 +630,9 @@ NERD tree. These options should be set in your vimrc.
                                 at the beginning of the hidden file names
                                 into account when sorting nodes.
 
+|'NERDTreeChDirCWD'|            Tells the NERD tree which command to use to
+                                change dir.
+
 |'NERDTreeChDirMode'|           Tells the NERD tree if/when it should change
                                 vim's current working directory.
 
@@ -776,6 +779,17 @@ above nodes would then be sorted like this: >
     z100.txt
     z110.txt
 <
+
+------------------------------------------------------------------------------
+                                                         *'NERDTreeChDirCMD'*
+Values: cd, lcd or tcd.
+Default: cd.
+
+Use this option to change the way NERDTree changes directory.
+Use cd to change vim's global directoy.
+Use lcd to change the directory for the curent window.
+Use tcd (neovim only) to change the directory for the current tab.
+
 ------------------------------------------------------------------------------
                                                          *'NERDTreeChDirMode'*
 
