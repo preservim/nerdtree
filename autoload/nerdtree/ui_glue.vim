@@ -104,6 +104,9 @@ endfunction
 "FUNCTION: s:activateFileNode() {{{1
 "handle the user activating a tree node
 function! s:activateFileNode(node)
+    let l:nerdwindow = win_getid()
+    call choosewin#start(range(1, winnr('$')))
+    call win_gotoid(l:nerdwindow)
     call a:node.activate({'reuse': 'all', 'where': 'p'})
 endfunction
 
