@@ -104,9 +104,16 @@ endfunction
 "FUNCTION: s:activateFileNode() {{{1
 "handle the user activating a tree node
 function! s:activateFileNode(node)
-    let l:nerdwindow = win_getid()
-    call choosewin#start(range(1, winnr('$')))
-    call win_gotoid(l:nerdwindow)
+    " Select the window where to open the file, if the 'choosewin' plugin is
+    " in the runtime path.
+    " It is necessary to jump back the NERDTree window, cause local buffer
+    " variables are required for the following procedure.
+    if &rtp =~ 'vim-choosewin'
+        let l:nerdwindow = win_getid()
+        call choosewin#start(range(1, winnr('$')))
+        call win_gotoid(l:nerdwindow) 
+    endif
+
     call a:node.activate({'reuse': 'all', 'where': 'p'})
 endfunction
 
