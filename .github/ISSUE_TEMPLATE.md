@@ -21,8 +21,6 @@
 ### Expected Result
 <!--- Describe what you would have expected from this process. -->
 
-## Optional
-
 ### Screenshot(s)
 
 ### Possible Fix
