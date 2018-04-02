@@ -175,7 +175,8 @@ function! NERDTreeDeleteNode()
     let currentNode = g:NERDTreeFileNode.GetSelected()
     let confirmed = 0
 
-    if currentNode.path.isDirectory && currentNode.getChildCount() > 0
+    if currentNode.path.isDirectory && ((currentNode.isOpen && currentNode.getChildCount() > 0) ||
+                                      \ (len(currentNode._glob('*', 1)) > 0))
         let choice =input("Delete the current node\n" .
                          \ "==========================================================\n" .
                          \ "STOP! Directory is not empty! To delete, type 'yes'\n" .
