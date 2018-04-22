@@ -23,13 +23,14 @@ function! s:MenuController.showMenu()
 
     try
         let self.selection = 0
+        let l:done = 0
 
-        let done = 0
-        while !done
+        while !l:done
             redraw!
             call self._echoPrompt()
-            let key = nr2char(getchar())
-            let done = self._handleKeypress(key)
+
+            let l:key = nr2char(getchar())
+            let l:done = self._handleKeypress(l:key)
         endwhile
     finally
         call self._restoreOptions()
@@ -41,8 +42,8 @@ function! s:MenuController.showMenu()
     endtry
 
     if self.selection != -1
-        let m = self._current()
-        call m.execute()
+        let l:m = self._current()
+        call l:m.execute()
     endif
 endfunction
 
