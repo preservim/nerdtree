@@ -15,9 +15,9 @@ function! s:MenuController.New(menuItems)
     return newMenuController
 endfunction
 
-"FUNCTION: MenuController.showMenu() {{{1
-"start the main loop of the menu and get the user to choose/execute a menu
-"item
+" FUNCTION: MenuController.showMenu() {{{1
+" Enter the main loop of the NERDTree menu, prompting the user to select
+" a menu item.
 function! s:MenuController.showMenu()
     call self._saveOptions()
 
