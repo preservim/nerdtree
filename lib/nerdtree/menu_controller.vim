@@ -33,6 +33,11 @@ function! s:MenuController.showMenu()
         endwhile
     finally
         call self._restoreOptions()
+
+        " Redraw when "Ctrl-C" or "Esc" is received.
+        if !l:done || self.selection == -1
+            redraw!
+        endif
     endtry
 
     if self.selection != -1
