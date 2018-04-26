@@ -721,7 +721,7 @@ function! s:Path.str(...)
         let limit = options['truncateTo']
         if strdisplaywidth(toReturn) > limit-1
             while strdisplaywidth(toReturn) > limit-1 && strchars(toReturn) > 0
-                let toReturn = substitute(toReturn, '.\{1}', '', '')
+                let toReturn = substitute(toReturn, '^.', '', '')
             endwhile
             if len(split(toReturn, '/')) > 1
                 let toReturn = '</' . join(split(toReturn, '/')[1:], '/') . '/'
