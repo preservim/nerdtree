@@ -287,14 +287,10 @@ function! s:Bookmark.str()
 
     let pathStr = self.path.str({'format': 'UI'})
     if strdisplaywidth(pathStr) > pathStrMaxLen
-        if exists("*strcharpart")
-            while strdisplaywidth(pathStr) > pathStrMaxLen && strchars(pathStr) > 0
-                let pathStr = strcharpart(pathStr, 1)
-            endwhile
-            let pathStr = '<' . pathStr
-        else
-            let pathStr = '<' . strpart(pathStr, len(pathStr) - pathStrMaxLen)
-        endif
+        while strdisplaywidth(pathStr) > pathStrMaxLen && strchars(pathStr) > 0
+            let pathStr = substitute(pathStr, '^.', '', '')
+        endwhile
+        let pathStr = '<' . pathStr
     endif
     return '>' . self.name . ' ' . pathStr
 endfunction
