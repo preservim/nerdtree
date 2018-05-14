@@ -270,7 +270,7 @@ function! s:findAndRevealPath(pathStr)
         return
     endtry
 
-    if !g:NERDTree.ExistsForTab()
+    if !g:NERDTree.ExistsForTab() && !g:NERDTreeUseCurrentWindow
         try
             let l:cwd = g:NERDTreePath.New(getcwd())
         catch /^NERDTree.InvalidArgumentsError/
@@ -569,14 +569,41 @@ endfunction
 
 " FUNCTION: nerdtree#ui_glue#setupCommands() {{{1
 function! nerdtree#ui_glue#setupCommands()
-    command! -n=? -complete=dir -bar NERDTree :call g:NERDTreeCreator.CreateTabTree('<args>')
-    command! -n=? -complete=dir -bar NERDTreeToggle :call g:NERDTreeCreator.ToggleTabTree('<args>')
-    command! -n=0 -bar NERDTreeClose :call g:NERDTree.Close()
-    command! -n=1 -complete=customlist,nerdtree#completeBookmarks -bar NERDTreeFromBookmark call g:NERDTreeCreator.CreateTabTree('<args>')
+    command! -n=? -complete=dir -bar NERDTree :call <SID>createTree('<args>')
+    command! -n=? -complete=dir -bar NERDTreeToggle :call <SID>toggleTree('<args>')
+    command! -n=0 -bar NERDTreeClose :call <SID>closeTree()
+    command! -n=1 -complete=customlist,nerdtree#completeBookmarks -bar NERDTreeFromBookmark call <SID>createTree('<args>')
     command! -n=0 -bar NERDTreeMirror call g:NERDTreeCreator.CreateMirror()
     command! -n=? -complete=file -bar NERDTreeFind call s:findAndRevealPath('<args>')
     command! -n=0 -bar NERDTreeFocus call NERDTreeFocus()
     command! -n=0 -bar NERDTreeCWD call NERDTreeCWD()
+endfunction
+
+" Function: s:createTree(name) {{{1
+function s:createTree(name)
+    if g:NERDTreeUseCurrentWindow
+        call g:NERDTreeCreator.CreateWindowTree(a:name)
+    else
+        call g:NERDTreeCreator.CreateTabTree(a:name)
+    endif
+endfunction
+
+" Function: s:toggleTree(name) {{{1
+function s:toggleTree(name)
+    if g:NERDTreeUseCurrentWindow
+        call g:NERDTreeCreator.ToggleWindowTree(a:name)
+    else
+        call g:NERDTreeCreator.ToggleTabTree(a:name)
+    endif
+endfunction
+
+" Function: s:closeTree() {{{1
+function s:closeTree()
+    if g:NERDTreeUseCurrentWindow
+        call g:NERDTree.CloseWindowTree()
+    else
+        call g:NERDTree.Close()
+    endif
 endfunction
 
 " Function: s:SID()   {{{1

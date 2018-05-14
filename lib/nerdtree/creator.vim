@@ -73,37 +73,63 @@ function! s:Creator.createTabTree(name)
     call self._broadcastInitEvent()
 endfunction
 
-" FUNCTION: s:Creator.CreateWindowTree(dir) {{{1
-function! s:Creator.CreateWindowTree(dir)
+" FUNCTION: s:Creator.CreateWindowTree(name) {{{1
+function! s:Creator.CreateWindowTree(name)
     let creator = s:Creator.New()
-    call creator.createWindowTree(a:dir)
+    call creator.createWindowTree(a:name)
 endfunction
 
-" FUNCTION: s:Creator.createWindowTree(dir) {{{1
-function! s:Creator.createWindowTree(dir)
-    try
-        let path = g:NERDTreePath.New(a:dir)
-    catch /^NERDTree.InvalidArgumentsError/
-        call nerdtree#echo("Invalid directory name:" . a:name)
+" FUNCTION: s:Creator.createWindowTree(name) {{{1
+function! s:Creator.createWindowTree(name)
+    let l:path = self._pathForString(a:name)
+
+    " Abort if an exception was thrown (i.e., if the bookmark or directory
+    " does not exist).
+    if empty(l:path)
         return
-    endtry
+    endif
 
-    "we want the directory buffer to disappear when we do the :edit below
-    setlocal bufhidden=wipe
+    if (self._reuseWin(l:path))
+        return
+    endif
 
-    let previousBuf = expand("#")
+    let previousBuf = bufnr("%")
 
-    "we need a unique name for each window tree buffer to ensure they are
-    "all independent
+    " We need a unique name for each window tree buffer to ensure they are all 
+    " independent
     exec g:NERDTreeCreatePrefix . " edit " . self._nextBufferName()
 
-    call self._createNERDTree(path, "window")
-    let b:NERDTree._previousBuf = bufnr(previousBuf)
+    call self._createNERDTree(l:path, "window")
+    call b:NERDTree.setPreviousBuf(previousBuf)
+    let w:NERDTreeBufName = bufname("%")
     call self._setCommonBufOptions()
 
     call b:NERDTree.render()
 
     call self._broadcastInitEvent()
+endfunction
+
+" FUNCTION: s:Creator._reuseWin(path) {{{1
+" finds a NERDTree buffer with root of dir, and opens it.
+function! s:Creator._reuseWin(path) abort
+    for i in range(1, bufnr("$"))
+        unlet! nt
+        let nt = getbufvar(i, "NERDTree")
+        if empty(nt)
+            continue
+        endif
+
+        if nt.isWinTree() && nt.root.path.equals(a:path)
+            if i != bufnr("%")
+                call nt.setPreviousBuf(bufnr("%"))
+                exec "buffer " . i
+                let w:NERDTreeBufName = bufname("%")
+            endif
+            return 1
+        endif
+    endfor
+
+    return 0
 endfunction
 
 " FUNCTION: s:Creator._createNERDTree(path) {{{1
@@ -361,6 +387,34 @@ function! s:Creator.toggleTabTree(dir)
         endif
     else
         call self.createTabTree(a:dir)
+    endif
+endfunction
+
+" FUNCTION: s:Creator.ToggleWindowTree(dir) {{{1
+function! s:Creator.ToggleWindowTree(dir)
+    let creator = s:Creator.New()
+    call creator.toggleWindowTree(a:dir)
+endfunction
+
+" FUNCTION: s:Creator.toggleWindowTree(dir) {{{1
+" Toggles the NERD tree in current window. I.e the NERD tree is open in the 
+" current window, it is closed, if it is closed it is restored or initialized 
+" (if it doesnt exist)
+"
+" Args:
+" dir: the full path for the root node (is only used if the NERD tree is being
+" initialized.
+function! s:Creator.toggleWindowTree(dir)
+    if g:NERDTree.IsWindowTreeOpen()
+        call g:NERDTree.CloseWindowTree()
+        return
+    endif
+    if g:NERDTree.ExistsForWindow()
+        let previousBuf = bufnr("%")
+        exec 'buffer ' . w:NERDTreeBufName
+        call b:NERDTree.setPreviousBuf(previousBuf)
+    else
+        call self.createWindowTree(a:dir)
     endif
 endfunction
 

@@ -68,6 +68,7 @@ call s:initVariable("g:NERDTreeShowFiles", 1)
 call s:initVariable("g:NERDTreeShowHidden", 0)
 call s:initVariable("g:NERDTreeShowLineNumbers", 0)
 call s:initVariable("g:NERDTreeSortDirs", 1)
+call s:initVariable("g:NERDTreeUseCurrentWindow", 0)
 
 if !nerdtree#runningWindows() && !nerdtree#runningCygwin()
     call s:initVariable("g:NERDTreeDirArrowExpandable", "▸")
@@ -198,6 +199,12 @@ function! NERDTreeRender()
 endfunction
 
 function! NERDTreeFocus()
+    if g:NERDTreeUseCurrentWindow
+        if !g:NERDTree.IsWindowTreeOpen()
+            call g:NERDTreeCreator.ToggleWindowTree("")
+        endif
+        return
+    endif
     if g:NERDTree.IsOpen()
         call g:NERDTree.CursorToTreeWin()
     else
