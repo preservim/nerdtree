@@ -71,6 +71,13 @@ function! s:NERDTree.CloseIfQuitOnOpen()
     endif
 endfunction
 
+" FUNCTION: s:NERDTree.CloseWindowTree() {{{1
+function! s:NERDTree.CloseWindowTree()
+    if s:NERDTree.IsWindowTreeOpen()
+        exec "buffer " . b:NERDTree.previousBuf()
+    endif
+endfunction
+
 "FUNCTION: s:NERDTree.CursorToBookmarkTable(){{{1
 "Places the cursor at the top of the bookmarks table
 function! s:NERDTree.CursorToBookmarkTable()
@@ -118,6 +125,17 @@ function! s:NERDTree.ExistsForTab()
     return !empty(getbufvar(bufnr(t:NERDTreeBufName), 'NERDTree'))
 endfunction
 
+" Function: s:NERDTree.ExistsForWindow()   {{{1
+" Returns 1 if a nerd tree root exists in the current window
+function! s:NERDTree.ExistsForWindow()
+    if !exists("w:NERDTreeBufName")
+        return
+    end
+
+    " check b:NERDTree is still there and hasn't been e.g. :bdeleted
+    return !empty(getbufvar(bufnr(w:NERDTreeBufName), 'NERDTree'))
+endfunction
+
 function! s:NERDTree.ForCurrentBuf()
     if s:NERDTree.ExistsForBuf()
         return b:NERDTree
@@ -154,6 +172,12 @@ endfunction
 "FUNCTION: s:NERDTree.IsOpen() {{{1
 function! s:NERDTree.IsOpen()
     return s:NERDTree.GetWinNum() != -1
+endfunction
+
+"FUNCTION: s:NERDTree.IsWindowTreeOpen() {{{1
+function! s:NERDTree.IsWindowTreeOpen()
+    let nerdtree = s:NERDTree.ForCurrentBuf()
+    return !empty(nerdtree) && nerdtree.isWinTree()
 endfunction
 
 "FUNCTION: s:NERDTree.isTabTree() {{{1

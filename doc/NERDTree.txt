@@ -639,6 +639,9 @@ NERD tree. These options should be set in your vimrc.
 |'NERDTreeHijackNetrw'|         Tell the NERD tree whether to replace the netrw
                                 autocommands for exploring local directories.
 
+|'NERDTreeUseCurrentWindow'|    Tells the NERD tree whether to render in side
+                                window or current window.
+
 |'NERDTreeIgnore'|              Tells the NERD tree which files to ignore.
 
 |'NERDTreeRespectWildIgnore'|   Tells the NERD tree to respect |'wildignore'|.
@@ -832,6 +835,14 @@ following respects:
     1. 'o' will open the selected file in the same window as the tree,
        replacing it.
     2. you can have one tree per window - instead of per tab.
+
+------------------------------------------------------------------------------
+                                                  *'NERDTreeUseCurrentWindow'*
+Values: 0 or 1.
+Default: 0.
+
+If set to 1, NERD tree will open in the current window instead of a side window.
+This option affects all NERD tree commands except |:NERDTreeMirror|.
 
 ------------------------------------------------------------------------------
                                                             *'NERDTreeIgnore'*
