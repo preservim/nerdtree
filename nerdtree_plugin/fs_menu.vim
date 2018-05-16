@@ -158,6 +158,7 @@ function! NERDTreeMoveNode()
         let bufnum = bufnr("^".curNode.path.str()."$")
 
         call curNode.rename(newNodePath)
+        call b:NERDTree.root.refresh()
         call NERDTreeRender()
 
         "if the node is open in a buffer, ask the user if they want to
