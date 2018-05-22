@@ -663,6 +663,8 @@ function! s:Path.rename(newPath)
         throw "NERDTree.InvalidArgumentsError: Invalid newPath for renaming = ". a:newPath
     endif
 
+    call s:Path.createParentDirectories(a:newPath)
+
     let success =  rename(self.str(), a:newPath)
     if success != 0
         throw "NERDTree.PathRenameError: Could not rename: '" . self.str() . "'" . 'to:' . a:newPath
