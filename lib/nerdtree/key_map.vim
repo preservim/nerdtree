@@ -5,10 +5,28 @@ let g:NERDTreeKeyMap = s:KeyMap
 
 "FUNCTION: KeyMap.All() {{{1
 function! s:KeyMap.All()
-    if !exists("s:keyMaps")
+
+    if !exists('s:keyMaps')
         let s:keyMaps = []
     endif
+
+    call sort(s:keyMaps, s:KeyMap.Compare, s:KeyMap)
+
     return s:keyMaps
+endfunction
+
+"FUNCTION: KeyMap.Compare(keyMap1, keyMap2) {{{1
+function! s:KeyMap.Compare(keyMap1, keyMap2)
+
+    if a:keyMap1.key >? a:keyMap2.key
+        return 1
+    endif
+
+    if a:keyMap1.key <? a:keyMap2.key
+        return -1
+    endif
+
+    return 0
 endfunction
 
 "FUNCTION: KeyMap.FindFor(key, scope) {{{1
