@@ -2,19 +2,11 @@
 "============================================================
 let s:KeyMap = {}
 let g:NERDTreeKeyMap = s:KeyMap
-
-"FUNCTION: KeyMap._all() {{{1
-function! s:KeyMap._all()
-    if !exists("s:keyMaps")
-        let s:keyMaps = {}
-    endif
-
-    return s:keyMaps
-endfunction
+let s:keyMaps = {}
 
 "FUNCTION: KeyMap.All() {{{1
 function! s:KeyMap.All()
-    let sortedKeyMaps = values(s:KeyMap._all())
+    let sortedKeyMaps = values(s:keyMaps)
     call sort(sortedKeyMaps, s:KeyMap.Compare, s:KeyMap)
 
     return sortedKeyMaps
@@ -36,12 +28,12 @@ endfunction
 
 "FUNCTION: KeyMap.FindFor(key, scope) {{{1
 function! s:KeyMap.FindFor(key, scope)
-    return get(s:KeyMap._all(), a:key . a:scope, {})
+    return get(s:keyMaps, a:key . a:scope, {})
 endfunction
 
 "FUNCTION: KeyMap.BindAll() {{{1
 function! s:KeyMap.BindAll()
-    for i in values(s:KeyMap._all())
+    for i in values(s:keyMaps)
         call i.bind()
     endfor
 endfunction
