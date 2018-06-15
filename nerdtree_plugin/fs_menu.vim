@@ -225,10 +225,12 @@ endfunction
 function! NERDTreeListNode()
     let treenode = g:NERDTreeFileNode.GetSelected()
     if !empty(treenode)
-        if has("osx")
-            let stat_cmd = 'stat -f "%z" '
-        else
-            let stat_cmd = 'stat -c "%s" '
+        if has("unix")
+            let s:uname = system("uname")
+            let stat_cmd = 'stat -c "%s" ' 
+            if s:uname == "Darwin\n"
+                let stat_cmd = 'stat -f "%z" '
+            endif
         endif
 
         let cmd = 'size=$(' . stat_cmd . shellescape(treenode.path.str()) . ') && ' .
