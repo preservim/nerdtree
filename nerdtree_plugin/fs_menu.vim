@@ -228,7 +228,7 @@ function! NERDTreeListNode()
         if has("unix")
             let s:uname = system("uname")
             let stat_cmd = 'stat -c "%s" ' 
-            if s:uname == "Darwin\n"
+            if s:uname =~? "Darwin"
                 let stat_cmd = 'stat -f "%z" '
             endif
         endif
