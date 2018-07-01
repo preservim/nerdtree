@@ -24,6 +24,15 @@ let loaded_nerd_tree = 1
 let s:old_cpo = &cpo
 set cpo&vim
 
+"Function: AddDefaultGroupToSortOrder() function {{{2
+"This function adds the default grouping '*' to the sort sequence if it's not
+"already in the list.
+function! AddDefaultGroupToSortOrder()
+    if count(g:NERDTreeSortOrder, '*') < 1
+        call add(g:NERDTreeSortOrder, '*')
+    endif
+endfunction
+
 "Function: s:initVariable() function {{{2
 "This function is used to initialise a given variable to a given value. The
 "variable is only initialised if it does not exist prior
@@ -82,10 +91,7 @@ call s:initVariable("g:NERDTreeCascadeSingleChildDir", 1)
 if !exists("g:NERDTreeSortOrder")
     let g:NERDTreeSortOrder = ['\/$', '*', '\.swp$',  '\.bak$', '\~$']
 else
-    "if there isnt a * in the sort sequence then add one
-    if count(g:NERDTreeSortOrder, '*') < 1
-        call add(g:NERDTreeSortOrder, '*')
-    endif
+    call AddDefaultGroupToSortOrder()
 endif
 
 call s:initVariable("g:NERDTreeGlyphReadOnly", "RO")
