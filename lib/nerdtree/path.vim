@@ -392,18 +392,18 @@ endfunction
 " FUNCTION: Path.getSortKey() {{{1
 " returns a key used in compare function for sorting
 function! s:Path.getSortKey()
-        let path = self.getLastPathComponent(1)
-        if !g:NERDTreeSortHiddenFirst
-            let path = substitute(path, '^[._]', '', '')
-        endif
-        if !g:NERDTreeCaseSensitiveSort
-            let path = tolower(path)
-        endif
-        if !g:NERDTreeNaturalSort
-            let self._sortKey = [self.getSortOrderIndex(), path]
-        else
-            let self._sortKey = [self.getSortOrderIndex()] + self._splitChunks(path)
-        endif
+    let path = self.getLastPathComponent(1)
+    if !g:NERDTreeSortHiddenFirst
+        let path = substitute(path, '^[._]', '', '')
+    endif
+    if !g:NERDTreeCaseSensitiveSort
+        let path = tolower(path)
+    endif
+    if !g:NERDTreeNaturalSort
+        let self._sortKey = [self.getSortOrderIndex(), path]
+    else
+        let self._sortKey = [self.getSortOrderIndex()] + self._splitChunks(path)
+    endif
 
     return self._sortKey
 endfunction
