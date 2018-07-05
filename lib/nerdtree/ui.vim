@@ -372,18 +372,21 @@ function! s:UI._stripMarkup(line)
     let line = substitute (line, g:NERDTreeUI.MarkupReg(),"","")
 
     " strip off any read only flag
-    let line = substitute (line, ' \['.g:NERDTreeGlyphReadOnly.'\]', "","")
+    let line = substitute (line, g:NERDTreeNodeDelimiter.'\['.g:NERDTreeGlyphReadOnly.'\]', "","")
 
     " strip off any bookmark flags
-    let line = substitute (line, ' {[^}]*}', "","")
+    let line = substitute (line, g:NERDTreeNodeDelimiter.'{[^}]*}', "","")
 
     " strip off any executable flags
-    let line = substitute (line, '*\ze\($\| \)', "","")
+    let line = substitute (line, '*\ze\('.g:NERDTreeNodeDelimiter.'$\| \)', "","")
 
     " strip off any generic flags
-    let line = substitute (line, '\[[^]]*\]', "","")
+    let line = substitute (line, '\[[^]]*\]'.g:NERDTreeNodeDelimiter, "","")
 
-    let line = substitute (line,' -> .*',"","") " remove link to
+    let line = substitute (line,g:NERDTreeNodeDelimiter.'-> .*',"","") " remove link to
+
+    " strip off any leading delimiter
+    let line = substitute (line, '^'.g:NERDTreeNodeDelimiter, "","")
 
     return line
 endfunction

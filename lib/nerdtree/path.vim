@@ -46,7 +46,7 @@ function! s:Path.cacheDisplayString() abort
     let self.cachedDisplayString = self.getLastPathComponent(1)
 
     if self.isExecutable
-        let self.cachedDisplayString = self.cachedDisplayString . '*'
+        let self.cachedDisplayString = self.cachedDisplayString . g:NERDTreeNodeDelimiter.'*'
     endif
 
     let self._bookmarkNames = []
@@ -56,15 +56,15 @@ function! s:Path.cacheDisplayString() abort
         endif
     endfor
     if !empty(self._bookmarkNames) && g:NERDTreeMarkBookmarks == 1
-        let self.cachedDisplayString .= ' {' . join(self._bookmarkNames) . '}'
+        let self.cachedDisplayString .= g:NERDTreeNodeDelimiter.'{' . join(self._bookmarkNames) . '}'
     endif
 
     if self.isSymLink
-        let self.cachedDisplayString .=  ' -> ' . self.symLinkDest
+        let self.cachedDisplayString .=  g:NERDTreeNodeDelimiter.'-> ' . self.symLinkDest
     endif
 
     if self.isReadOnly
-        let self.cachedDisplayString .=  ' ['.g:NERDTreeGlyphReadOnly.']'
+        let self.cachedDisplayString .=  g:NERDTreeNodeDelimiter.'['.g:NERDTreeGlyphReadOnly.']'
     endif
 endfunction
 
