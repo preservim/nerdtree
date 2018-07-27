@@ -612,6 +612,7 @@ function! s:TreeDirNode.sortChildren()
     endif
     let CompareFunc = function("nerdtree#compareNodesBySortKey")
     call sort(self.children, CompareFunc)
+    let g:NERDTreeOldSortOrder = g:NERDTreeSortOrder
 endfunction
 
 " FUNCTION: TreeDirNode.toggleOpen([options]) {{{1

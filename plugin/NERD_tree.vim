@@ -82,6 +82,7 @@ call s:initVariable("g:NERDTreeCascadeSingleChildDir", 1)
 if !exists("g:NERDTreeSortOrder")
     let g:NERDTreeSortOrder = ['\/$', '*', '\.swp$',  '\.bak$', '\~$']
 endif
+let g:NERDTreeOldSortOrder = []
 
 call s:initVariable("g:NERDTreeGlyphReadOnly", "RO")
 
