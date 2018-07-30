@@ -385,10 +385,8 @@ function! s:UI._stripMarkup(line)
     " strip off any generic flags
     let line = substitute (line, '\[[^]]*\]'.g:NERDTreeNodeDelimiter, "","")
 
-    let line = substitute (line,g:NERDTreeNodeDelimiter.'-> .*',"","") " remove link to
-
-    " strip off any leading delimiter
-    let line = substitute (line, '^'.g:NERDTreeNodeDelimiter, "","")
+    " strip off link to target file
+    let line = substitute (line,g:NERDTreeNodeDelimiter.'-> .*',"","")
 
     return line
 endfunction
