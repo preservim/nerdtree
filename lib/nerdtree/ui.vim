@@ -275,7 +275,7 @@ endfunction
 " FUNCTION: s:UI._indentLevelFor(line) {{{1
 function! s:UI._indentLevelFor(line)
     " have to do this work around because match() returns bytes, not chars
-    let numLeadBytes = match(a:line, '\M\[^ '.g:NERDTreeDirArrowExpandable.g:NERDTreeDirArrowCollapsible.']')
+    let numLeadBytes = match(a:line, '\M\[^ '.g:NERDTreeDirArrowExpandable.g:NERDTreeDirArrowCollapsible.g:NERDTreeNodeDelimiter.']')
     " The next line is a backward-compatible workaround for strchars(a:line(0:numLeadBytes-1]). strchars() is in 7.3+
     let leadChars = len(split(a:line[0:numLeadBytes-1], '\zs'))
 
@@ -299,7 +299,9 @@ endfunction
 
 " FUNCTION: s:UI.MarkupReg() {{{1
 function! s:UI.MarkupReg()
-    return '^\(['.g:NERDTreeDirArrowExpandable.g:NERDTreeDirArrowCollapsible.'] \| \+['.g:NERDTreeDirArrowExpandable.g:NERDTreeDirArrowCollapsible.'] \| \+\)'
+    return '^\(['.g:NERDTreeDirArrowExpandable.g:NERDTreeDirArrowCollapsible.']'.g:NERDTreeNodeDelimiter.
+         \ '\| \+['.g:NERDTreeDirArrowExpandable.g:NERDTreeDirArrowCollapsible.']'.g:NERDTreeNodeDelimiter.
+         \ '\| \+'.g:NERDTreeNodeDelimiter.'\?\)'
 endfunction
 
 " FUNCTION: s:UI._renderBookmarks {{{1
