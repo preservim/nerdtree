@@ -38,7 +38,7 @@ syn match NERDTreeFlags #\[.\]# containedin=NERDTreeDir
 
 "highlighing to conceal the delimiter around the file/dir name
 if has("conceal")
-    exec 'syn match NERDTreeNodeDelimiters #' . g:NERDTreeNodeDelimiter . '# conceal containedin=NERDTreeFile,NERDTreeDir'
+    exec 'syn match NERDTreeNodeDelimiters #' . g:NERDTreeNodeDelimiter . '# conceal containedin=NERDTreeFile,NERDTreeLinkFile,NERDTreeRO,NERDTreeDir'
     setlocal conceallevel=2 concealcursor=nvic
 endif
 
