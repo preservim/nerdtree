@@ -275,7 +275,7 @@ endfunction
 " FUNCTION: s:UI._indentLevelFor(line) {{{1
 function! s:UI._indentLevelFor(line)
     " have to do this work around because match() returns bytes, not chars
-    let numLeadBytes = match(a:line, '\M\[^ '.g:NERDTreeDirArrowExpandable.g:NERDTreeDirArrowCollapsible.g:NERDTreeNodeDelimiter.']')
+    let numLeadBytes = match(a:line, '\M\[^ '.g:NERDTreeDirArrowExpandable.g:NERDTreeDirArrowCollapsible.']')
     " The next line is a backward-compatible workaround for strchars(a:line(0:numLeadBytes-1]). strchars() is in 7.3+
     let leadChars = len(split(a:line[0:numLeadBytes-1], '\zs'))
 
@@ -299,9 +299,7 @@ endfunction
 
 " FUNCTION: s:UI.MarkupReg() {{{1
 function! s:UI.MarkupReg()
-    return '^\(['.g:NERDTreeDirArrowExpandable.g:NERDTreeDirArrowCollapsible.']'.g:NERDTreeNodeDelimiter.
-         \ '\| \+['.g:NERDTreeDirArrowExpandable.g:NERDTreeDirArrowCollapsible.']'.g:NERDTreeNodeDelimiter.
-         \ '\| \+'.g:NERDTreeNodeDelimiter.'\?\)'
+    return '^ *['.g:NERDTreeDirArrowExpandable.g:NERDTreeDirArrowCollapsible.' ] '
 endfunction
 
 " FUNCTION: s:UI._renderBookmarks {{{1
@@ -364,31 +362,12 @@ function! s:UI.setShowHidden(val)
 endfunction
 
 " FUNCTION: s:UI._stripMarkup(line){{{1
-" returns the given line with all the tree parts stripped off
+" find the filename in the given line, and return it.
 "
 " Args:
 " line: the subject line
 function! s:UI._stripMarkup(line)
-    let line = a:line
-    " remove the tree parts and the leading space
-    let line = substitute (line, g:NERDTreeUI.MarkupReg(),"","")
-
-    " strip off any read only flag
-    let line = substitute (line, g:NERDTreeNodeDelimiter.'\['.g:NERDTreeGlyphReadOnly.'\]', "","")
-
-    " strip off any bookmark flags
-    let line = substitute (line, g:NERDTreeNodeDelimiter.'{[^}]*}', "","")
-
-    " strip off any executable flags
-    let line = substitute (line, '*\ze\('.g:NERDTreeNodeDelimiter.'$\| \)', "","")
-
-    " strip off any generic flags
-    let line = substitute (line, '\[[^]]*\]'.g:NERDTreeNodeDelimiter, "","")
-
-    " strip off link to target file
-    let line = substitute (line,g:NERDTreeNodeDelimiter.'-> .*',"","")
-
-    return line
+    return substitute(a:line, '^.\{-}' . g:NERDTreeNodeDelimiter . '\(.*\)' . g:NERDTreeNodeDelimiter . '.*', '\1', '')
 endfunction
 
 " FUNCTION: s:UI.render() {{{1

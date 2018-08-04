@@ -111,7 +111,7 @@ function! s:TreeDirNode.displayString()
 
     let l:flags = l:cascade[-1].path.flagSet.renderToString()
 
-    let l:result = l:symbol . l:flags . g:NERDTreeNodeDelimiter . l:label
+    let l:result = l:symbol . ' ' . l:flags . l:label
     return l:result
 endfunction
 
