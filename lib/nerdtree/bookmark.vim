@@ -343,6 +343,12 @@ function! s:Bookmark.Write()
     for j in s:Bookmark.InvalidBookmarks()
         call add(bookmarkStrings, j)
     endfor
+
+    let path = fnamemodify(g:NERDTreeBookmarksFile, ':h')
+    if !isdirectory(path)
+        call mkdir(path, 'p')
+    endif
+
     call writefile(bookmarkStrings, g:NERDTreeBookmarksFile)
 endfunction
 
