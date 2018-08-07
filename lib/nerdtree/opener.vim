@@ -244,6 +244,9 @@ endfunction
 
 " FUNCTION: Opener._openFile() {{{1
 function! s:Opener._openFile()
+    if !self._stay && exists("b:NERDTreeZoomed") && b:NERDTreeZoomed
+        call b:NERDTree.ui.toggleZoom()
+    endif
 
     if self._reuseWindow()
         return
