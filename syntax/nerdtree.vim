@@ -40,6 +40,9 @@ syn match NERDTreeFlags #\[.\]# containedin=NERDTreeDir
 if has("conceal")
     exec 'syn match NERDTreeNodeDelimiters #' . g:NERDTreeNodeDelimiter . '# conceal containedin=NERDTreeFile,NERDTreeLinkFile,NERDTreeRO,NERDTreeDir'
     setlocal conceallevel=2 concealcursor=nvic
+else
+    exec 'syn match NERDTreeNodeDelimiters #' . g:NERDTreeNodeDelimiter . '# containedin=NERDTreeFile,NERDTreeLinkFile,NERDTreeRO,NERDTreeDir'
+    hi! link NERDTreeNodeDelimiters Ignore
 endif
 
 syn match NERDTreeCWD #^[</].*$#
