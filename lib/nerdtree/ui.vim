@@ -299,7 +299,7 @@ endfunction
 
 " FUNCTION: s:UI.MarkupReg() {{{1
 function! s:UI.MarkupReg()
-    return '^ *['.g:NERDTreeDirArrowExpandable.g:NERDTreeDirArrowCollapsible.' ] '
+    return '^ *['.g:NERDTreeDirArrowExpandable.g:NERDTreeDirArrowCollapsible.']\? '
 endfunction
 
 " FUNCTION: s:UI._renderBookmarks {{{1
