@@ -33,7 +33,7 @@ function! s:Creator._broadcastInitEvent()
     silent doautocmd User NERDTreeInit
 endfunction
 
-" FUNCTION: s:Creator.BufNamePrefix() {{{2
+" FUNCTION: s:Creator.BufNamePrefix() {{{1
 function! s:Creator.BufNamePrefix()
     return 'NERD_tree_'
 endfunction
@@ -42,6 +42,26 @@ endfunction
 function! s:Creator.CreateTabTree(name)
     let creator = s:Creator.New()
     call creator.createTabTree(a:name)
+endfunction
+
+" FUNCTION: s:Creator.CreateTabTreeVCS(a:name) {{{1
+function! s:Creator.CreateTabTreeVCS(name)
+    let l:path = self._pathForString(a:name)
+    while !empty(l:path) &&
+        \ l:path._str() !~ '^/$' &&
+        \ !isdirectory(l:path._str() . '/.git') &&
+        \ !isdirectory(l:path._str() . '/.svn') &&
+        \ !isdirectory(l:path._str() . '/.hg') &&
+        \ !isdirectory(l:path._str() . '/.bzr') &&
+        \ !isdirectory(l:path._str() . '/_darcs')
+        let l:path = l:path.getParent()
+    endwhile
+    let creator = s:Creator.New()
+    if empty(l:path) || l:path._str() =~ '^/$'
+        call creator.createTabTree(a:name)
+    else
+        call creator.createTabTree(l:path._str())
+    endif
 endfunction
 
 " FUNCTION: s:Creator.createTabTree(a:name) {{{1
