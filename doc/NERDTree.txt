@@ -113,6 +113,7 @@ The following features and functionality are provided by the NERD tree:
     works with Git, Subversion, Mercurial, Bazaar, and Darcs repositories. A
     couple of examples: >
         :NERDTreeVCS /home/marty/nerdtree/doc  (opens /home/marty/nerdtree)
+        :NERDTreeVCS              (opens root of repository containing CWD)
 <
 :NERDTreeFromBookmark <bookmark>                       *:NERDTreeFromBookmark*
     Opens a fresh NERD tree with the root initialized to the dir for
