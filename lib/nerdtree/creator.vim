@@ -49,7 +49,7 @@ function! s:Creator.CreateTabTreeVCS(name)
     let l:path = self._pathForString(a:name)
     let l:path = self._findParentVCSRoot(l:path)
     let creator = s:Creator.New()
-    call creator.createTabTree(l:path._str())
+    call creator.createTabTree(empty(l:path) ? "" : l:path._str())
 endfunction
 
 " FUNCTION: s:Creator.createTabTree(a:name) {{{1
