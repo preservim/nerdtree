@@ -304,9 +304,11 @@ function! s:TreeDirNode._glob(pattern, all)
         for l:file in l:globList
             let l:tail = fnamemodify(l:file, ':t')
 
-            " Double the modifier if only a separator was stripped.
+            " If l:file has a trailing slash, then its :tail will be ''. Use
+            " :h to drop the slash and the empty string after it; then use :t
+            " to get the directory name.
             if l:tail == ''
-                let l:tail = fnamemodify(l:file, ':t:t')
+                let l:tail = fnamemodify(l:file, ':h:t')
             endif
 
             if l:tail == '.' || l:tail == '..'
