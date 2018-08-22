@@ -190,7 +190,7 @@ endfunction
 " returns the Bookmark the cursor is over, or {}
 function! s:Bookmark.GetSelected()
     let line = getline(".")
-    let name = substitute(line, '^>\(.\{-}\) .\+$', '\1', '')
+    let name = substitute(line, '^' . g:NERDTreeBookmarksPrefix . '\(.\{-}\) .\+$', '\1', '')
     if name != line
         try
             return s:Bookmark.BookmarkFor(name)
@@ -292,7 +292,7 @@ function! s:Bookmark.str()
         endwhile
         let pathStr = '<' . pathStr
     endif
-    return '>' . self.name . ' ' . pathStr
+    return g:NERDTreeBookmarksPrefix . self.name . ' ' . pathStr
 endfunction
 
 " FUNCTION: Bookmark.toRoot(nerdtree) {{{1

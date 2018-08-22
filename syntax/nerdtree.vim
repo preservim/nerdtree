@@ -42,10 +42,10 @@ syn match NERDTreeCWD #^[</].*$#
 syn match NERDTreeBookmark # {.*}#hs=s+1
 
 "highlighting for the bookmarks table
-syn match NERDTreeBookmarksLeader #^>#
+exec 'syn match NERDTreeBookmarksLeader #^'.g:NERDTreeBookmarksPrefix.'>#'
 syn match NERDTreeBookmarksHeader #^>-\+Bookmarks-\+$# contains=NERDTreeBookmarksLeader
-syn match NERDTreeBookmarkName #^>.\{-} #he=e-1 contains=NERDTreeBookmarksLeader
-syn match NERDTreeBookmark #^>.*$# contains=NERDTreeBookmarksLeader,NERDTreeBookmarkName,NERDTreeBookmarksHeader
+exec 'syn match NERDTreeBookmarkName #^'.g:NERDTreeBookmarksPrefix.'.\{-} #he=e-1 contains=NERDTreeBookmarksLeader'
+exec 'syn match NERDTreeBookmark #^'.g:NERDTreeBookmarksPrefix.'.*$# contains=NERDTreeBookmarksLeader,NERDTreeBookmarkName,NERDTreeBookmarksHeader'
 
 hi def link NERDTreePart Special
 hi def link NERDTreePartFile Type
