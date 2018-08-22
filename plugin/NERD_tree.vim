@@ -56,6 +56,7 @@ if !exists("g:NERDTreeIgnore")
 endif
 call s:initVariable("g:NERDTreeBookmarksFile", expand('$HOME') . '/.NERDTreeBookmarks')
 call s:initVariable("g:NERDTreeBookmarksSort", 1)
+call s:initVariable("g:NERDTreeBookmarksPrefix", ">")
 call s:initVariable("g:NERDTreeHighlightCursorline", 1)
 call s:initVariable("g:NERDTreeHijackNetrw", 1)
 call s:initVariable('g:NERDTreeMarkBookmarks', 1)
