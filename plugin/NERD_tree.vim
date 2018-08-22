@@ -202,7 +202,11 @@ function! NERDTreeFocus()
 endfunction
 
 function! NERDTreeCWD()
+    let l:cwd = getcwd()
     call NERDTreeFocus()
+    if l:cwd != getcwd()
+        exec 'cd '.l:cwd
+    endif
     call nerdtree#ui_glue#chRootCwd()
 endfunction
 
