@@ -228,13 +228,12 @@ function! s:UI.getLineNum(node)
                 return l:lineNumber
             endif
 
-            if stridx(l:fullPath, l:currentPath) == 0
-
-                if strpart(l:fullPath, len(l:currentPath)-1,1) ==# '/'
-                    let l:currentLine = substitute(l:currentLine, '/ *$', '', '')
-                    call add(l:pathComponents, l:currentLine)
-                    let l:currentPathComponent += 1
-                endif
+            " Otherwise: If the full path starts with the current path and the
+            " current path is a directory, we add a new path component.
+            if stridx(l:fullPath, l:currentPath) == 0 && l:currentPath[-1:] ==# '/'
+                let l:currentLine = substitute(l:currentLine, '/\s*$', '', '')
+                call add(l:pathComponents, l:currentLine)
+                let l:currentPathComponent += 1
             endif
         endif
     endfor
