@@ -155,20 +155,30 @@ function! NERDTreeMoveNode()
     endif
 
     try
-        let bufnum = bufnr("^".curNode.path.str()."$")
-
-        call curNode.rename(newNodePath)
-        call b:NERDTree.root.refresh()
-        call NERDTreeRender()
-
-        "if the node is open in a buffer, ask the user if they want to
-        "close that buffer
-        if bufnum != -1
-            let prompt = "\nNode renamed.\n\nThe old file is open in buffer ". bufnum . (bufwinnr(bufnum) ==# -1 ? " (hidden)" : "") .". Replace this buffer with the new file? (yN)"
-            call s:promptToRenameBuffer(bufnum,  prompt, newNodePath)
+        if curNode.path.isDirectory
+            let l:buffers = filter(range(1,bufnr("$")),'bufexists(v:val) && fnamemodify(bufname(v:val),":p") =~# curNode.path.str()')
+            call map(l:buffers, '{fnamemodify(bufname(v:val),":p"): v:val}')
+        elseif bufnr("^".curNode.path.str()."$") != -1
+            let l:buffers = [{curNode.path.str(): bufnr("^".curNode.path.str()."$")}]
+        else
+            let l:buffers = []
         endif
 
-        call curNode.putCursorHere(1, 0)
+"        let bufnum = bufnr("^".curNode.path.str()."$")
+
+"        call curNode.rename(newNodePath)
+"        call b:NERDTree.root.refresh()
+"        call NERDTreeRender()
+
+        " If the file node is open, or files under the directory node are
+        " open, ask the user if they want to replace the file(s) with the
+        " renamed files.
+"        if !empty(l:buffers)
+"            let prompt = "\nNode renamed.\n\nThe old file is open in buffer ". bufnum . (bufwinnr(bufnum) ==# -1 ? " (hidden)" : "") .". Replace this buffer with the new file? (yN)"
+"            call s:promptToRenameBuffer(bufnum,  prompt, newNodePath)
+"        endif
+
+"        call curNode.putCursorHere(1, 0)
 
         redraw
     catch /^NERDTree/
