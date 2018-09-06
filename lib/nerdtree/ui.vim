@@ -219,15 +219,15 @@ function! s:UI.getLineNum(node)
         let l:currentLine = self._stripMarkup(l:currentLine)
         let l:currentPath =  join(l:pathComponents, '/') . '/' . l:currentLine
 
-        " Directories: If the current path "starts with" the full path,
-        " then either the paths are equal or the line is a cascade
-        " containing the full path.
+        " Directories: If the current path "starts with" the full path, then
+        " either the paths are equal or the line is a cascade containing the
+        " full path.
         if l:fullPath[-1:] == '/' && stridx(l:currentPath, l:fullPath) == 0
             return l:lineNumber
         endif
 
         " Files: The paths must exactly match.
-        if l:currentPath ==# l:fullPath
+        if l:fullPath ==# l:currentPath
             return l:lineNumber
         endif
 
