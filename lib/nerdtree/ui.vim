@@ -203,8 +203,6 @@ function! s:UI.getLineNum(file_node)
         return self.getRootLineNum()
     endif
 
-    let totalLines = line('$')
-
     " the path components we have matched so far
     let pathcomponents = [substitute(self.nerdtree.root.path.str({'format': 'UI'}), '/ *$', '', '')]
     " the index of the component we are searching for
@@ -212,17 +210,10 @@ function! s:UI.getLineNum(file_node)
 
     let fullpath = a:file_node.path.str({'format': 'UI'})
 
-    let l:lineNumber = self.getRootLineNum()
-    while l:lineNumber > 0
-        let l:lineNumber = l:lineNumber + 1
-        " have we reached the bottom of the tree?
-        if l:lineNumber ==# totalLines+1
-            return -1
-        endif
-
+    for l:lineNumber in range(self.getRootLineNum(), line('$'))
         let curLine = getline(l:lineNumber)
-
         let indent = self._indentLevelFor(curLine)
+
         if indent ==# curPathComponent
             let curLine = self._stripMarkup(curLine)
 
@@ -239,7 +230,8 @@ function! s:UI.getLineNum(file_node)
                 endif
             endif
         endif
-    endwhile
+    endfor
+
     return -1
 endfunction
 
