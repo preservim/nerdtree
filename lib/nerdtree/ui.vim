@@ -212,29 +212,31 @@ function! s:UI.getLineNum(node)
         let l:currentLine = getline(l:lineNumber)
         let l:indentLevel = self._indentLevelFor(l:currentLine)
 
-        if l:indentLevel == l:currentPathComponent
-            let l:currentLine = self._stripMarkup(l:currentLine)
-            let l:currentPath =  join(l:pathComponents, '/') . '/' . l:currentLine
+        if l:indentLevel != l:currentPathComponent
+            continue
+        endif
 
-            " Directories: If the current path "starts with" the full path,
-            " then either the paths are equal or the line is a cascade
-            " containing the full path.
-            if l:fullPath[-1:] ==# '/' && stridx(l:currentPath, l:fullPath) == 0
-                return l:lineNumber
-            endif
+        let l:currentLine = self._stripMarkup(l:currentLine)
+        let l:currentPath =  join(l:pathComponents, '/') . '/' . l:currentLine
 
-            " Files: The paths must exactly match.
-            if l:currentPath ==# l:fullPath
-                return l:lineNumber
-            endif
+        " Directories: If the current path "starts with" the full path,
+        " then either the paths are equal or the line is a cascade
+        " containing the full path.
+        if l:fullPath[-1:] == '/' && stridx(l:currentPath, l:fullPath) == 0
+            return l:lineNumber
+        endif
 
-            " Otherwise: If the full path starts with the current path and the
-            " current path is a directory, we add a new path component.
-            if stridx(l:fullPath, l:currentPath) == 0 && l:currentPath[-1:] ==# '/'
-                let l:currentLine = substitute(l:currentLine, '/\s*$', '', '')
-                call add(l:pathComponents, l:currentLine)
-                let l:currentPathComponent += 1
-            endif
+        " Files: The paths must exactly match.
+        if l:currentPath ==# l:fullPath
+            return l:lineNumber
+        endif
+
+        " Otherwise: If the full path starts with the current path and the
+        " current path is a directory, we add a new path component.
+        if stridx(l:fullPath, l:currentPath) == 0 && l:currentPath[-1:] == '/'
+            let l:currentLine = substitute(l:currentLine, '/\s*$', '', '')
+            call add(l:pathComponents, l:currentLine)
+            let l:currentPathComponent += 1
         endif
     endfor
 
