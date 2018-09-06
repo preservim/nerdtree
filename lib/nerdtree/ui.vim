@@ -204,9 +204,9 @@ function! s:UI.getLineNum(node)
     endif
 
     " the path components we have matched so far
-    let pathcomponents = [substitute(self.nerdtree.root.path.str({'format': 'UI'}), '/\s*$', '', '')]
+    let l:pathComponents = [substitute(self.nerdtree.root.path.str({'format': 'UI'}), '/\s*$', '', '')]
     " the index of the component we are searching for
-    let curPathComponent = 1
+    let l:currentPathComponent = 1
 
     let l:fullPath = a:node.path.str({'format': 'UI'})
 
@@ -214,9 +214,9 @@ function! s:UI.getLineNum(node)
         let l:currentLine = getline(l:lineNumber)
         let l:indentLevel = self._indentLevelFor(l:currentLine)
 
-        if l:indentLevel ==# curPathComponent
+        if l:indentLevel ==# l:currentPathComponent
             let l:currentLine = self._stripMarkup(l:currentLine)
-            let l:currentPath =  join(pathcomponents, '/') . '/' . l:currentLine
+            let l:currentPath =  join(l:pathComponents, '/') . '/' . l:currentLine
 
             " Directories: If the current path "starts with" the full path,
             " then either the paths are equal or the line is a cascade
@@ -234,8 +234,8 @@ function! s:UI.getLineNum(node)
 
                 if l:fullPath ==# l:currentPath || strpart(l:fullPath, len(l:currentPath)-1,1) ==# '/'
                     let l:currentLine = substitute(l:currentLine, '/ *$', '', '')
-                    call add(pathcomponents, l:currentLine)
-                    let curPathComponent = curPathComponent + 1
+                    call add(l:pathComponents, l:currentLine)
+                    let l:currentPathComponent += 1
                 endif
             endif
         endif
