@@ -216,15 +216,15 @@ function! s:UI.getLineNum(file_node)
 
         if indent ==# curPathComponent
             let l:currentLine = self._stripMarkup(l:currentLine)
+            let l:currentPath =  join(pathcomponents, '/') . '/' . l:currentLine
 
-            let curPath =  join(pathcomponents, '/') . '/' . l:currentLine
-            if stridx(fullpath, curPath, 0) ==# 0
-                if fullpath ==# curPath || strpart(fullpath, len(curPath)-1,1) ==# '/'
+            if stridx(fullpath, l:currentPath, 0) ==# 0
+                if fullpath ==# l:currentPath || strpart(fullpath, len(l:currentPath)-1,1) ==# '/'
                     let l:currentLine = substitute(l:currentLine, '/ *$', '', '')
                     call add(pathcomponents, l:currentLine)
                     let curPathComponent = curPathComponent + 1
 
-                    if fullpath ==# curPath
+                    if fullpath ==# l:currentPath
                         return l:lineNumber
                     endif
                 endif
