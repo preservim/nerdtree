@@ -212,7 +212,7 @@ function! s:UI.getLineNum(node)
         let l:currentLine = getline(l:lineNumber)
         let l:indentLevel = self._indentLevelFor(l:currentLine)
 
-        if l:indentLevel ==# l:currentPathComponent
+        if l:indentLevel == l:currentPathComponent
             let l:currentLine = self._stripMarkup(l:currentLine)
             let l:currentPath =  join(l:pathComponents, '/') . '/' . l:currentLine
 
@@ -228,7 +228,7 @@ function! s:UI.getLineNum(node)
                 return l:lineNumber
             endif
 
-            if stridx(l:fullPath, l:currentPath, 0) ==# 0
+            if stridx(l:fullPath, l:currentPath) == 0
 
                 if strpart(l:fullPath, len(l:currentPath)-1,1) ==# '/'
                     let l:currentLine = substitute(l:currentLine, '/ *$', '', '')
