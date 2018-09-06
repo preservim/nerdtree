@@ -211,17 +211,17 @@ function! s:UI.getLineNum(file_node)
     let fullpath = a:file_node.path.str({'format': 'UI'})
 
     for l:lineNumber in range(self.getRootLineNum(), line('$'))
-        let curLine = getline(l:lineNumber)
-        let indent = self._indentLevelFor(curLine)
+        let l:currentLine = getline(l:lineNumber)
+        let indent = self._indentLevelFor(l:currentLine)
 
         if indent ==# curPathComponent
-            let curLine = self._stripMarkup(curLine)
+            let l:currentLine = self._stripMarkup(l:currentLine)
 
-            let curPath =  join(pathcomponents, '/') . '/' . curLine
+            let curPath =  join(pathcomponents, '/') . '/' . l:currentLine
             if stridx(fullpath, curPath, 0) ==# 0
                 if fullpath ==# curPath || strpart(fullpath, len(curPath)-1,1) ==# '/'
-                    let curLine = substitute(curLine, '/ *$', '', '')
-                    call add(pathcomponents, curLine)
+                    let l:currentLine = substitute(l:currentLine, '/ *$', '', '')
+                    call add(pathcomponents, l:currentLine)
                     let curPathComponent = curPathComponent + 1
 
                     if fullpath ==# curPath
