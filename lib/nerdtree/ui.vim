@@ -218,8 +218,8 @@ function! s:UI.getLineNum(file_node)
             let l:currentLine = self._stripMarkup(l:currentLine)
             let l:currentPath =  join(pathcomponents, '/') . '/' . l:currentLine
 
-            " NOTE: If the current path "starts with" the full path, then the
-            " paths are equal or we have a cascade that has the full path.
+            " If the current path "starts with" the full path, then the paths
+            " are equal or we have a cascade containing the full path.
             if stridx(l:currentPath, l:fullPath) == 0
                 return l:lineNumber
             endif
