@@ -208,7 +208,7 @@ function! s:UI.getLineNum(file_node)
     " the index of the component we are searching for
     let curPathComponent = 1
 
-    let fullpath = a:file_node.path.str({'format': 'UI'})
+    let l:fullPath = a:file_node.path.str({'format': 'UI'})
 
     for l:lineNumber in range(self.getRootLineNum(), line('$'))
         let l:currentLine = getline(l:lineNumber)
@@ -218,13 +218,13 @@ function! s:UI.getLineNum(file_node)
             let l:currentLine = self._stripMarkup(l:currentLine)
             let l:currentPath =  join(pathcomponents, '/') . '/' . l:currentLine
 
-            if stridx(fullpath, l:currentPath, 0) ==# 0
-                if fullpath ==# l:currentPath || strpart(fullpath, len(l:currentPath)-1,1) ==# '/'
+            if stridx(l:fullPath, l:currentPath, 0) ==# 0
+                if l:fullPath ==# l:currentPath || strpart(l:fullPath, len(l:currentPath)-1,1) ==# '/'
                     let l:currentLine = substitute(l:currentLine, '/ *$', '', '')
                     call add(pathcomponents, l:currentLine)
                     let curPathComponent = curPathComponent + 1
 
-                    if fullpath ==# l:currentPath
+                    if l:fullPath ==# l:currentPath
                         return l:lineNumber
                     endif
                 endif
