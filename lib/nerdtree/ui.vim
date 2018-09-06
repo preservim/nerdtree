@@ -204,7 +204,7 @@ function! s:UI.getLineNum(file_node)
     endif
 
     " the path components we have matched so far
-    let pathcomponents = [substitute(self.nerdtree.root.path.str({'format': 'UI'}), '/ *$', '', '')]
+    let pathcomponents = [substitute(self.nerdtree.root.path.str({'format': 'UI'}), '/\s*$', '', '')]
     " the index of the component we are searching for
     let curPathComponent = 1
 
