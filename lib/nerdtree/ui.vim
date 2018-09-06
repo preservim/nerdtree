@@ -203,9 +203,7 @@ function! s:UI.getLineNum(node)
         return self.getRootLineNum()
     endif
 
-    " the path components we have matched so far
     let l:pathComponents = [substitute(self.nerdtree.root.path.str({'format': 'UI'}), '/\s*$', '', '')]
-    " the index of the component we are searching for
     let l:currentPathComponent = 1
 
     let l:fullPath = a:node.path.str({'format': 'UI'})
