@@ -212,15 +212,15 @@ function! s:UI.getLineNum(file_node)
 
     let fullpath = a:file_node.path.str({'format': 'UI'})
 
-    let lnum = self.getRootLineNum()
-    while lnum > 0
-        let lnum = lnum + 1
+    let l:lineNumber = self.getRootLineNum()
+    while l:lineNumber > 0
+        let l:lineNumber = l:lineNumber + 1
         " have we reached the bottom of the tree?
-        if lnum ==# totalLines+1
+        if l:lineNumber ==# totalLines+1
             return -1
         endif
 
-        let curLine = getline(lnum)
+        let curLine = getline(l:lineNumber)
 
         let indent = self._indentLevelFor(curLine)
         if indent ==# curPathComponent
@@ -234,7 +234,7 @@ function! s:UI.getLineNum(file_node)
                     let curPathComponent = curPathComponent + 1
 
                     if fullpath ==# curPath
-                        return lnum
+                        return l:lineNumber
                     endif
                 endif
             endif
