@@ -194,15 +194,16 @@ function! s:UI.getPath(ln)
     return toReturn
 endfunction
 
-" FUNCTION: s:UI.getLineNum(file_node){{{1
-" returns the line number this node is rendered on, or -1 if it isnt rendered
+" FUNCTION: s:UI.getLineNum(file_node) {{{1
+" Return the line number where the given node is rendered.  Return -1 if the
+" given node is not visible.
 function! s:UI.getLineNum(file_node)
-    " if the node is the root then return the root line no.
+
     if a:file_node.isRoot()
         return self.getRootLineNum()
     endif
 
-    let totalLines = line("$")
+    let totalLines = line('$')
 
     " the path components we have matched so far
     let pathcomponents = [substitute(self.nerdtree.root.path.str({'format': 'UI'}), '/ *$', '', '')]
