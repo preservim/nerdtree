@@ -194,12 +194,12 @@ function! s:UI.getPath(ln)
     return toReturn
 endfunction
 
-" FUNCTION: s:UI.getLineNum(file_node) {{{1
+" FUNCTION: s:UI.getLineNum(node) {{{1
 " Return the line number where the given node is rendered.  Return -1 if the
 " given node is not visible.
-function! s:UI.getLineNum(file_node)
+function! s:UI.getLineNum(node)
 
-    if a:file_node.isRoot()
+    if a:node.isRoot()
         return self.getRootLineNum()
     endif
 
@@ -208,7 +208,7 @@ function! s:UI.getLineNum(file_node)
     " the index of the component we are searching for
     let curPathComponent = 1
 
-    let l:fullPath = a:file_node.path.str({'format': 'UI'})
+    let l:fullPath = a:node.path.str({'format': 'UI'})
 
     for l:lineNumber in range(self.getRootLineNum(), line('$'))
         let l:currentLine = getline(l:lineNumber)
