@@ -230,7 +230,7 @@ function! s:UI.getLineNum(node)
 
             if stridx(l:fullPath, l:currentPath, 0) ==# 0
 
-                if l:fullPath ==# l:currentPath || strpart(l:fullPath, len(l:currentPath)-1,1) ==# '/'
+                if strpart(l:fullPath, len(l:currentPath)-1,1) ==# '/'
                     let l:currentLine = substitute(l:currentLine, '/ *$', '', '')
                     call add(l:pathComponents, l:currentLine)
                     let l:currentPathComponent += 1
