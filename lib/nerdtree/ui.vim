@@ -208,7 +208,7 @@ function! s:UI.getLineNum(node)
 
     let l:fullPath = a:node.path.str({'format': 'UI'})
 
-    for l:lineNumber in range(self.getRootLineNum(), line('$'))
+    for l:lineNumber in range(self.getRootLineNum() + 1, line('$'))
         let l:currentLine = getline(l:lineNumber)
         let l:indentLevel = self._indentLevelFor(l:currentLine)
 
