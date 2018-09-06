@@ -212,9 +212,9 @@ function! s:UI.getLineNum(file_node)
 
     for l:lineNumber in range(self.getRootLineNum(), line('$'))
         let l:currentLine = getline(l:lineNumber)
-        let indent = self._indentLevelFor(l:currentLine)
+        let l:indentLevel = self._indentLevelFor(l:currentLine)
 
-        if indent ==# curPathComponent
+        if l:indentLevel ==# curPathComponent
             let l:currentLine = self._stripMarkup(l:currentLine)
             let l:currentPath =  join(pathcomponents, '/') . '/' . l:currentLine
 
