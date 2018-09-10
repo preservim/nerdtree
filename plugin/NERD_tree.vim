@@ -218,6 +218,7 @@ function! NERDTreeCWD()
 
     let l:newRoot = g:NERDTreeFileNode.New(l:cwdPath, b:NERDTree)
     call b:NERDTree.changeRoot(l:newRoot)
+    normal! ^
 endfunction
 
 function! NERDTreeAddPathFilter(callback)
