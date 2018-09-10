@@ -202,7 +202,14 @@ function! NERDTreeFocus()
 endfunction
 
 function! NERDTreeCWD()
-    let l:cwdPath = g:NERDTreePath.New(getcwd())
+
+    try
+        let l:cwdPath = g:NERDTreePath.New(getcwd())
+    catch /^NERDTree.InvalidArgumentsError/
+        call nerdtree#echoWarning('current directory does not exist')
+        return
+    endtry
+
     call NERDTreeFocus()
 
     if b:NERDTree.root.path.equals(l:cwdPath)
