@@ -202,12 +202,15 @@ function! NERDTreeFocus()
 endfunction
 
 function! NERDTreeCWD()
-    let l:cwd = getcwd()
+    let l:cwdPath = g:NERDTreePath.New(getcwd())
     call NERDTreeFocus()
-    if l:cwd != getcwd()
-        exec 'cd '.l:cwd
+
+    if b:NERDTree.root.path.equals(l:cwdPath)
+        return
     endif
-    call nerdtree#ui_glue#chRootCwd()
+
+    let l:newRoot = g:NERDTreeFileNode.New(l:cwdPath, b:NERDTree)
+    call b:NERDTree.changeRoot(l:newRoot)
 endfunction
 
 function! NERDTreeAddPathFilter(callback)
