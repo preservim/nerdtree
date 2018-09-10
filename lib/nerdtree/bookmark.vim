@@ -344,12 +344,11 @@ function! s:Bookmark.Write()
         call add(bookmarkStrings, j)
     endfor
 
-    let path = fnamemodify(g:NERDTreeBookmarksFile, ':h')
-    if !isdirectory(path)
-        call mkdir(path, 'p')
-    endif
-
-    call writefile(bookmarkStrings, g:NERDTreeBookmarksFile)
+    try
+        call writefile(bookmarkStrings, g:NERDTreeBookmarksFile)
+    catch
+        call nerdtree#echoError("Failed to write bookmarks file. Make sure g:NERDTreeBookmarksFile points to a valid location.")
+    endtry
 endfunction
 
 " vim: set sw=4 sts=4 et fdm=marker:
