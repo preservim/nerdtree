@@ -203,6 +203,11 @@ endfunction
 
 function! NERDTreeCWD()
 
+    if empty(getcwd())
+        call nerdtree#echoWarning('current directory does not exist')
+        return
+    endif
+
     try
         let l:cwdPath = g:NERDTreePath.New(getcwd())
     catch /^NERDTree.InvalidArgumentsError/
