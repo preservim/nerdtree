@@ -142,18 +142,9 @@ function! s:chRoot(node)
 endfunction
 
 " FUNCTION: s:nerdtree#ui_glue#chRootCwd() {{{1
-" changes the current root to CWD
+" Change the NERDTree root to match the current working directory.
 function! nerdtree#ui_glue#chRootCwd()
-    try
-        let cwd = g:NERDTreePath.New(getcwd())
-    catch /^NERDTree.InvalidArgumentsError/
-        call nerdtree#echo("current directory does not exist.")
-        return
-    endtry
-    if cwd.str() == g:NERDTreeFileNode.GetRootForTab().path.str()
-       return
-    endif
-    call s:chRoot(g:NERDTreeDirNode.New(cwd, b:NERDTree))
+    NERDTreeCWD
 endfunction
 
 " FUNCTION: nnerdtree#ui_glue#clearBookmarks(bookmarks) {{{1
