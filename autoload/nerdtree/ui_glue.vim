@@ -432,19 +432,22 @@ function! s:jumpToPrevSibling(node)
     call s:jumpToSibling(a:node, 0)
 endfunction
 
-" FUNCTION: s:jumpToSibling(currentNode, forward) {{{2
-" moves the cursor to the sibling of the current node in the given direction
+" FUNCTION: s:jumpToSibling(node, forward) {{{2
+" Move the cursor to the next or previous node at the same file system level.
 "
 " Args:
-" forward: 1 if the cursor should move to the next sibling, 0 if it should
-" move back to the previous sibling
-function! s:jumpToSibling(currentNode, forward)
-    let sibling = a:currentNode.findSibling(a:forward)
+" node: the node on which the cursor currently sits
+" forward: 0 to jump to previous sibling, 1 to jump to next sibling
+function! s:jumpToSibling(node, forward)
+    let l:node = a:node.path.isDirectory ? a:node.getCascadeRoot() : a:node
+    let l:sibling = l:node.findSibling(a:forward)
 
-    if !empty(sibling)
-        call sibling.putCursorHere(1, 0)
-        call b:NERDTree.ui.centerView()
+    if empty(l:sibling)
+        return
     endif
+
+    call l:sibling.putCursorHere(1, 0)
+    call b:NERDTree.ui.centerView()
 endfunction
 
 " FUNCTION: nerdtree#ui_glue#openBookmark(name) {{{1
