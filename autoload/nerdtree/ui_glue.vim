@@ -384,14 +384,12 @@ function! nerdtree#ui_glue#invokeKeyMap(key)
     call g:NERDTreeKeyMap.Invoke(a:key)
 endfunction
 
-" FUNCTION: s:jumpToFirstChild() {{{1
-" wrapper for the jump to child method
+" FUNCTION: s:jumpToFirstChild(node) {{{1
 function! s:jumpToFirstChild(node)
     call s:jumpToChild(a:node, 0)
 endfunction
 
-" FUNCTION: s:jumpToLastChild() {{{1
-" wrapper for the jump to child method
+" FUNCTION: s:jumpToLastChild(node) {{{1
 function! s:jumpToLastChild(node)
     call s:jumpToChild(a:node, 1)
 endfunction
