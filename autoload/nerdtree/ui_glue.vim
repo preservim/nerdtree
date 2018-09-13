@@ -348,35 +348,6 @@ function! s:handleMiddleMouse()
     endif
 endfunction
 
-" FUNCTION: s:jumpToChild(direction) {{{2
-" Args:
-" direction: 0 if going to first child, 1 if going to last
-function! s:jumpToChild(currentNode, direction)
-    if a:currentNode.isRoot()
-        return nerdtree#echo("cannot jump to " . (a:direction ? "last" : "first") .  " child")
-    end
-    let dirNode = a:currentNode.parent
-    let childNodes = dirNode.getVisibleChildren()
-
-    let targetNode = childNodes[0]
-    if a:direction
-        let targetNode = childNodes[len(childNodes) - 1]
-    endif
-
-    if targetNode.equals(a:currentNode)
-        let siblingDir = a:currentNode.parent.findOpenDirSiblingWithVisibleChildren(a:direction)
-        if siblingDir != {}
-            let indx = a:direction ? siblingDir.getVisibleChildCount()-1 : 0
-            let targetNode = siblingDir.getChildByIndex(indx, 1)
-        endif
-    endif
-
-    call targetNode.putCursorHere(1, 0)
-
-    call b:NERDTree.ui.centerView()
-endfunction
-
-
 " FUNCTION: nerdtree#ui_glue#invokeKeyMap(key) {{{1
 "this is needed since I cant figure out how to invoke dict functions from a
 "key map
@@ -392,6 +363,28 @@ endfunction
 " FUNCTION: s:jumpToLastChild(node) {{{1
 function! s:jumpToLastChild(node)
     call s:jumpToChild(a:node, 1)
+endfunction
+
+" FUNCTION: s:jumpToChild(node, last) {{{2
+" Jump to the first or last child node at the same file system level.
+"
+" Args:
+" node: the node on which the cursor currently sits
+" last: 1 (true) if jumping to last child, 0 (false) if jumping to first
+function! s:jumpToChild(node, last)
+    let l:node = a:node.path.isDirectory ? a:node.getCascadeRoot() : a:node
+
+    if l:node.isRoot()
+        return
+    endif
+
+    let l:parent = l:node.parent
+    let l:children = l:parent.getVisibleChildren()
+
+    let l:target = a:last ? l:children[len(l:children) - 1] : l:children[0]
+
+    call l:target.putCursorHere(1, 0)
+    call b:NERDTree.ui.centerView()
 endfunction
 
 " FUNCTION: s:jumpToParent(node) {{{1
