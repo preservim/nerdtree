@@ -397,28 +397,22 @@ function! s:jumpToLastChild(node)
 endfunction
 
 " FUNCTION: s:jumpToParent(node) {{{1
-" Move the cursor to the parent of the specified node. For a cascade, move to
-" the parent of the cascade's highest node. At the root, do nothing.
+" Move the cursor to the parent of the specified node.  For a cascade, move to
+" the parent of the cascade's first node.  At the root node, do nothing.
 function! s:jumpToParent(node)
-    let l:parent = a:node.parent
+    let l:node = a:node.path.isDirectory ? a:node.getCascadeRoot() : a:node
 
-    " If "a:node" represents a directory, back out of its cascade.
-    if a:node.path.isDirectory
-        while !empty(l:parent) && !l:parent.isRoot()
-            if index(l:parent.getCascade(), a:node) >= 0
-                let l:parent = l:parent.parent
-            else
-                break
-            endif
-        endwhile
+    if l:node.isRoot()
+        return
     endif
 
-    if !empty(l:parent)
-        call l:parent.putCursorHere(1, 0)
-        call b:NERDTree.ui.centerView()
-    else
+    if empty(l:node.parent)
         call nerdtree#echo('could not jump to parent node')
+        return
     endif
+
+    call l:node.parent.putCursorHere(1, 0)
+    call b:NERDTree.ui.centerView()
 endfunction
 
 " FUNCTION: s:jumpToRoot() {{{1
