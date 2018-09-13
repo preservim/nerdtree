@@ -157,7 +157,13 @@ endfunction
 " Return the first directory node in the cascade in which this directory node
 " is rendered.
 function! s:TreeDirNode.getCascadeRoot()
-    let l:root = self
+
+    " Don't search above the current NERDTree root node.
+    if self.isRoot()
+        return self
+    endif
+
+    let l:cascadeRoot = self
     let l:parent = self.parent
 
     while !empty(l:parent) && !l:parent.isRoot()
@@ -166,11 +172,11 @@ function! s:TreeDirNode.getCascadeRoot()
             break
         endif
 
-        let l:root = l:parent
+        let l:cascadeRoot = l:parent
         let l:parent = l:parent.parent
     endwhile
 
-    return l:root
+    return l:cascadeRoot
 endfunction
 
 " FUNCTION: TreeDirNode.getChildCount() {{{1
