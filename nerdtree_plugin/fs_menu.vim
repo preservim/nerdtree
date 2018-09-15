@@ -259,8 +259,7 @@ function! NERDTreeListNodeWin32()
 
         let l:command = 'DIR /Q '
                     \ . shellescape(l:node.path.str())
-                    \ . ' | FINDSTR "^[012][0-9]/[0-3][0-9]/[12][0-9][0-9][0-9]"'
-
+                    \ . ' | FINDSTR /i "' . fnamemodify(l:node.path.str(), ':t') . '"'
         let l:metadata = split(system(l:command), "\n")
 
         if v:shell_error == 0
