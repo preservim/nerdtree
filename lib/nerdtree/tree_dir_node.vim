@@ -247,7 +247,7 @@ function! s:TreeDirNode._glob(pattern, all)
     if self.path.str() == getcwd()
         let l:pathSpec = ','
     else
-        let l:pathSpec = fnamemodify(self.path.str({'format': 'Glob'}), ':.')
+        let l:pathSpec = escape(fnamemodify(self.path.str({'format': 'Glob'}), ':.'), ',')
 
         " On Windows, the drive letter may be removed by "fnamemodify()".
         if nerdtree#runningWindows() && l:pathSpec[0] == g:NERDTreePath.Slash()
