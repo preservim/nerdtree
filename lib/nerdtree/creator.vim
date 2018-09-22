@@ -248,12 +248,12 @@ function! s:Creator._pathForString(str)
         return l:path.isDirectory ? l:path : l:path.getParent()
     endif
 
-    let l:dir = empty(a:str) ? getcwd() : a:str
-    let l:dir = fnamemodify(l:dir, ':p')
-    let l:dir = g:NERDTreePath.Resolve(l:dir)
+    let l:pathname = empty(a:str) ? getcwd() : a:str
+    let l:pathname = fnamemodify(l:pathname, ':p')
+    let l:pathname = g:NERDTreePath.Resolve(l:pathname)
 
     try
-        let l:path = g:NERDTreePath.New(l:dir)
+        let l:path = g:NERDTreePath.New(l:pathname)
     catch /^NERDTree.InvalidArgumentsError/
         call nerdtree#echo('No bookmark or directory found for: ' . a:str)
         return {}
