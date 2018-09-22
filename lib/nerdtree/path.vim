@@ -575,14 +575,22 @@ function! s:Path.Slash()
     return '/'
 endfunction
 
-" FUNCTION: Path.Resolve() {{{1
-" Invoke the vim resolve() function and return the result
-" This is necessary because in some versions of vim resolve() removes trailing
-" slashes while in other versions it doesn't.  This always removes the trailing
-" slash
-function! s:Path.Resolve(path)
-    let tmp = resolve(a:path)
-    return tmp =~# '.\+/$' ? substitute(tmp, '/$', '', '') : tmp
+" FUNCTION: Path.Resolve(pathname) {{{1
+" This is a wrapper around Vim's builtin "resolve()" function.  Any trailing
+" slash is removed before the result is returned.
+function! s:Path.Resolve(pathname)
+    let l:resolvedPathname = resolve(a:pathname)
+
+    " Do not remove the slash when our path is the root directory.
+    if l:resolvedPathname == '/'
+        return l:resolvedPathname
+    endif
+
+    if !empty(l:resolvedPathname) && l:resolvedPathname[-1:] == self.Slash()
+        return l:resolvedPathname[:-2]
+    endif
+
+    return l:resolvedPathname
 endfunction
 
 " FUNCTION: Path.readInfoFromDisk(fullpath) {{{1
