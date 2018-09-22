@@ -252,6 +252,12 @@ function! s:Creator._pathForString(str)
     let l:pathname = fnamemodify(l:pathname, ':p')
     let l:pathname = g:NERDTreePath.Resolve(l:pathname)
 
+    " Add back the slash removed by "g:NERDTreePath.Resolve()".  This allows
+    " us to create a Path object from just a drive letter on Windows.
+    if isdirectory(l:pathname) && l:pathname != '/'
+        let l:pathname .= g:NERDTreePath.Slash()
+    endif
+
     try
         let l:path = g:NERDTreePath.New(l:pathname)
     catch /^NERDTree.InvalidArgumentsError/
