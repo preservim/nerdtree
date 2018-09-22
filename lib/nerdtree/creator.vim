@@ -237,32 +237,29 @@ function! s:Creator._nextBufferNumber()
 endfunction
 
 " FUNCTION: s:Creator._pathForString(str) {{{1
-" find a bookmark or adirectory for the given string
+" Return a directory Path object derived from the given string argument.  The
+" string must be a valid pathname or the name of a bookmark.  When the string
+" identifies a file, the returned Path represents its containing directory.
 function! s:Creator._pathForString(str)
-    let path = {}
+    let l:path = {}
+
     if g:NERDTreeBookmark.BookmarkExistsFor(a:str)
-        let path = g:NERDTreeBookmark.BookmarkFor(a:str).path
-    else
-        let dir = a:str ==# '' ? getcwd() : a:str
-
-        "hack to get an absolute path if a relative path is given
-        if dir =~# '^\.'
-            let dir = getcwd() . g:NERDTreePath.Slash() . dir
-        endif
-        let dir = g:NERDTreePath.Resolve(dir)
-
-        try
-            let path = g:NERDTreePath.New(dir)
-        catch /^NERDTree.InvalidArgumentsError/
-            call nerdtree#echo("No bookmark or directory found for: " . a:str)
-            return {}
-        endtry
-    endif
-    if !path.isDirectory
-        let path = path.getParent()
+        let l:path = g:NERDTreeBookmark.BookmarkFor(a:str).path
+        return l:path.isDirectory ? l:path : l:path.getParent()
     endif
 
-    return path
+    let l:dir = empty(a:str) ? getcwd() : a:str
+    let l:dir = fnamemodify(l:dir, ':p')
+    let l:dir = g:NERDTreePath.Resolve(l:dir)
+
+    try
+        let l:path = g:NERDTreePath.New(l:dir)
+    catch /^NERDTree.InvalidArgumentsError/
+        call nerdtree#echo('No bookmark or directory found for: ' . a:str)
+        return {}
+    endtry
+
+    return l:path.isDirectory ? l:path : l:path.getParent()
 endfunction
 
 " Function: s:Creator._removeTreeBufForTab()   {{{1
