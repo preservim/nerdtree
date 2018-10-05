@@ -249,13 +249,12 @@ function! NERDTreeListNodeWin32()
 
     if !empty(l:node)
         let l:path = l:node.path.str()
-        let l:file_name = fnamemodify(l:path, ':t')
         call nerdtree#echo(printf("%s  %s  %d  %s  %s",
                     \ strftime("%c", getftime(l:path)),
                     \ getftype(l:path),
                     \ getfsize(l:path),
                     \ getfperm(l:path),
-                    \ l:file_name))
+                    \ fnamemodify(l:path, ':t'))
         return
     endif
 
