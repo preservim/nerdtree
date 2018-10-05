@@ -248,32 +248,14 @@ function! NERDTreeListNodeWin32()
     let l:node = g:NERDTreeFileNode.GetSelected()
 
     if !empty(l:node)
-
-        let l:save_shell = &shell
-        set shell&
-
-        if exists('+shellslash')
-            let l:save_shellslash = &shellslash
-            set noshellslash
-        endif
-
-        let l:command = 'DIR /Q '
-                    \ . shellescape(l:node.path.str())
-                    \ . ' | FINDSTR /i "' . fnamemodify(l:node.path.str(), ':t') . '"'
-        let l:metadata = split(system(l:command), "\n")
-
-        if v:shell_error == 0
-            call nerdtree#echo(l:metadata[0])
-        else
-            call nerdtree#echoError('shell command failed')
-        endif
-
-        let &shell = l:save_shell
-
-        if exists('l:save_shellslash')
-            let &shellslash = l:save_shellslash
-        endif
-
+        let l:path = l:node.path.str()
+        let l:file_name = fnamemodify(l:path, ':t')
+        call nerdtree#echo(printf("%s  %s  %d  %s  %s",
+                    \ strftime("%c", getftime(l:path)),
+                    \ getftype(l:path),
+                    \ getfsize(l:path),
+                    \ getfperm(l:path),
+                    \ l:file_name))
         return
     endif
 
