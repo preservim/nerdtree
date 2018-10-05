@@ -226,9 +226,9 @@ function! NERDTreeListNode()
     let treenode = g:NERDTreeFileNode.GetSelected()
     if !empty(treenode)
         let s:uname = system("uname")
-        let stat_cmd = 'stat -c "%s" ' 
-        
-        if s:uname =~? "Darwin"                
+        let stat_cmd = 'stat -c "%s" '
+
+        if s:uname =~? "Darwin"
             let stat_cmd = 'stat -f "%z" '
         endif
 
