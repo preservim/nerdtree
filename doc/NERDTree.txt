@@ -1014,7 +1014,7 @@ Defines the value for the |'statusline'| setting in NERDTree windows.
 Note: The setting is actually applied using |:let-&|, not |:set|, so
 escaping spaces is not necessary.
 
-Setting this option to -1 will will deactivate it so that your global
+Setting this option to -1 will deactivate it so that your global
 |'statusline'| setting is used.
 
 ------------------------------------------------------------------------------
