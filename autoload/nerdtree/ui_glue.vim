@@ -255,6 +255,7 @@ function! s:findAndRevealPath(pathStr)
     endif
 
     try
+        let l:pathStr = g:NERDTreePath.Resolve(l:pathStr)
         let l:pathObj = g:NERDTreePath.New(l:pathStr)
     catch /^NERDTree.InvalidArgumentsError/
         call nerdtree#echoWarning('invalid path')
