@@ -145,6 +145,9 @@ The following features and functionality are provided by the NERD tree:
     Change the NERDTree root to the current working directory.  If no
     NERDTree exists for this tab, a new one is opened.
 
+:NERDTreeRefreshRoot                                    *:NERDTreeRefreshRoot*
+    Refreshes the NERD tree root node.
+
 ------------------------------------------------------------------------------
 2.2. Bookmarks                                             *NERDTreeBookmarks*
 
