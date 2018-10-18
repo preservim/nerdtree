@@ -817,7 +817,7 @@ function! s:Path.tabnr()
     let str = self.str()
     for t in range(tabpagenr('$'))
         for b in tabpagebuflist(t+1)
-            if str == expand('#' . b . ':p')
+            if str ==# expand('#' . b . ':p')
                 return t+1
             endif
         endfor

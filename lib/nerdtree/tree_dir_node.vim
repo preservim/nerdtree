@@ -153,6 +153,32 @@ function! s:TreeDirNode.getCascade()
     return [self] + visChild.getCascade()
 endfunction
 
+" FUNCTION: TreeDirNode.getCascadeRoot() {{{1
+" Return the first directory node in the cascade in which this directory node
+" is rendered.
+function! s:TreeDirNode.getCascadeRoot()
+
+    " Don't search above the current NERDTree root node.
+    if self.isRoot()
+        return self
+    endif
+
+    let l:cascadeRoot = self
+    let l:parent = self.parent
+
+    while !empty(l:parent) && !l:parent.isRoot()
+
+        if index(l:parent.getCascade(), self) == -1
+            break
+        endif
+
+        let l:cascadeRoot = l:parent
+        let l:parent = l:parent.parent
+    endwhile
+
+    return l:cascadeRoot
+endfunction
+
 " FUNCTION: TreeDirNode.getChildCount() {{{1
 " Returns the number of children this node has
 function! s:TreeDirNode.getChildCount()
@@ -247,7 +273,7 @@ function! s:TreeDirNode._glob(pattern, all)
     if self.path.str() == getcwd()
         let l:pathSpec = ','
     else
-        let l:pathSpec = fnamemodify(self.path.str({'format': 'Glob'}), ':.')
+        let l:pathSpec = escape(fnamemodify(self.path.str({'format': 'Glob'}), ':.'), ',')
 
         " On Windows, the drive letter may be removed by "fnamemodify()".
         if nerdtree#runningWindows() && l:pathSpec[0] == g:NERDTreePath.Slash()
