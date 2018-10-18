@@ -42,7 +42,7 @@ function! s:Path.cacheDisplayString() abort
     let self.cachedDisplayString = g:NERDTreeNodeDelimiter . self.getLastPathComponent(1) . g:NERDTreeNodeDelimiter
 
     if self.isExecutable
-        let self.cachedDisplayString = self.cachedDisplayString . '*'
+        let self.cachedDisplayString .= '*'
     endif
 
     let self._bookmarkNames = []
