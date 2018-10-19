@@ -180,7 +180,7 @@ function! s:TreeFileNode.GetSelected()
         endif
 
         return b:NERDTree.root.findNode(l:path)
-    catch /^NERDTree/
+    catch
         return {}
     endtry
 endfunction

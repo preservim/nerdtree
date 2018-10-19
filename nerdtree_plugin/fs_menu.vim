@@ -128,6 +128,9 @@ function! NERDTreeAddNode()
         let parentNode = b:NERDTree.root.findNode(newPath.getParent())
 
         let newTreeNode = g:NERDTreeFileNode.New(newPath, b:NERDTree)
+        " Emptying g:NERDTreeOldSortOrder forces the sort to
+        " recalculate the cached sortKey so nodes sort correctly.
+        let g:NERDTreeOldSortOrder = []
         if empty(parentNode)
             call b:NERDTree.root.refresh()
             call b:NERDTree.render()
@@ -158,6 +161,9 @@ function! NERDTreeMoveNode()
         let bufnum = bufnr("^".curNode.path.str()."$")
 
         call curNode.rename(newNodePath)
+        " Emptying g:NERDTreeOldSortOrder forces the sort to
+        " recalculate the cached sortKey so nodes sort correctly.
+        let g:NERDTreeOldSortOrder = []
         call b:NERDTree.root.refresh()
         call NERDTreeRender()
 
@@ -283,6 +289,9 @@ function! NERDTreeCopyNode()
         if confirmed
             try
                 let newNode = currentNode.copy(newNodePath)
+                " Emptying g:NERDTreeOldSortOrder forces the sort to
+                " recalculate the cached sortKey so nodes sort correctly.
+                let g:NERDTreeOldSortOrder = []
                 if empty(newNode)
                     call b:NERDTree.root.refresh()
                     call b:NERDTree.render()
