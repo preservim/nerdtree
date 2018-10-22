@@ -392,7 +392,9 @@ endfunction
 " FUNCTION: Path.getSortKey() {{{1
 " returns a key used in compare function for sorting
 function! s:Path.getSortKey()
-    if !exists("self._sortKey") || g:NERDTreeSortOrder !=# g:NERDTreeOldSortOrder
+    let l:ascending = index(g:NERDTreeSortOrder,'[[timestamp]]')
+    let l:descending = index(g:NERDTreeSortOrder,'[[-timestamp]]')
+    if !exists("self._sortKey") || g:NERDTreeSortOrder !=# g:NERDTreeOldSortOrder || l:ascending > 0 || l:descending > 0
         let path = self.getLastPathComponent(1)
         if !g:NERDTreeSortHiddenFirst
             let path = substitute(path, '^[._]', '', '')
@@ -400,13 +402,17 @@ function! s:Path.getSortKey()
         if !g:NERDTreeCaseSensitiveSort
             let path = tolower(path)
         endif
-        if !g:NERDTreeNaturalSort
-            let self._sortKey = [self.getSortOrderIndex(), path]
-        else
-            let self._sortKey = [self.getSortOrderIndex()] + self._splitChunks(path)
-        endif
-    endif
 
+        let self._sortKey = [self.getSortOrderIndex()]
+
+        if l:descending >= 0
+            call insert(self._sortKey, -getftime(self.str()), l:descending == 0 ? 0 : len(self._sortKey))
+        elseif l:ascending >= 0
+            call insert(self._sortKey, getftime(self.str()), l:ascending == 0 ? 0 : len(self._sortKey))
+        endif
+
+        call extend(self._sortKey, (g:NERDTreeNaturalSort ? self._splitChunks(path) : [path]))
+    endif
     return self._sortKey
 endfunction
 
