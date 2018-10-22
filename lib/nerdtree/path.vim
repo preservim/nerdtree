@@ -394,7 +394,7 @@ endfunction
 function! s:Path.getSortKey()
     let l:ascending = index(g:NERDTreeSortOrder,'[[timestamp]]')
     let l:descending = index(g:NERDTreeSortOrder,'[[-timestamp]]')
-    if !exists("self._sortKey") || g:NERDTreeSortOrder !=# g:NERDTreeOldSortOrder || l:ascending > 0 || l:descending > 0
+    if !exists("self._sortKey") || g:NERDTreeSortOrder !=# g:NERDTreeOldSortOrder || l:ascending >= 0 || l:descending >= 0
         let path = self.getLastPathComponent(1)
         if !g:NERDTreeSortHiddenFirst
             let path = substitute(path, '^[._]', '', '')
