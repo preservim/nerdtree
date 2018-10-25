@@ -99,7 +99,8 @@ function! s:TreeDirNode.displayString()
     let l:label = ''
     let l:cascade = self.getCascade()
     for l:dirNode in l:cascade
-        let l:label .= l:dirNode.path.displayString()
+        let l:next = l:dirNode.path.displayString()
+        let l:label .= l:label == '' ? l:next : strcharpart(l:next,1)
     endfor
 
     " Select the appropriate open/closed status indicator symbol.

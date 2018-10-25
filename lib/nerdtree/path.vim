@@ -39,10 +39,10 @@ endfunction
 
 " FUNCTION: Path.cacheDisplayString() {{{1
 function! s:Path.cacheDisplayString() abort
-    let self.cachedDisplayString = self.getLastPathComponent(1)
+    let self.cachedDisplayString = g:NERDTreeNodeDelimiter . self.getLastPathComponent(1)
 
     if self.isExecutable
-        let self.cachedDisplayString = self.cachedDisplayString . '*'
+        let self.cachedDisplayString = self.addDelimiter(self.cachedDisplayString) . '*'
     endif
 
     let self._bookmarkNames = []
@@ -52,15 +52,24 @@ function! s:Path.cacheDisplayString() abort
         endif
     endfor
     if !empty(self._bookmarkNames) && g:NERDTreeMarkBookmarks == 1
-        let self.cachedDisplayString .= ' {' . join(self._bookmarkNames) . '}'
+        let self.cachedDisplayString = self.addDelimiter(self.cachedDisplayString) . ' {' . join(self._bookmarkNames) . '}'
     endif
 
     if self.isSymLink
-        let self.cachedDisplayString .=  ' -> ' . self.symLinkDest
+        let self.cachedDisplayString = self.addDelimiter(self.cachedDisplayString) . ' -> ' . self.symLinkDest
     endif
 
     if self.isReadOnly
-        let self.cachedDisplayString .=  ' ['.g:NERDTreeGlyphReadOnly.']'
+        let self.cachedDisplayString = self.addDelimiter(self.cachedDisplayString) . ' ['.g:NERDTreeGlyphReadOnly.']'
+    endif
+endfunction
+
+" FUNCTION: Path.addDelimiter() {{{1
+function! s:Path.addDelimiter(line)
+    if a:line =~# '\(.*' . g:NERDTreeNodeDelimiter . '\)\{2}'
+        return a:line
+    else
+        return a:line . g:NERDTreeNodeDelimiter
     endif
 endfunction
 

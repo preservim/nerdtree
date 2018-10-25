@@ -242,7 +242,7 @@ endfunction
 
 " FUNCTION: TreeFileNode.openInNewTab(options) {{{1
 function! s:TreeFileNode.openInNewTab(options)
-    echomsg 'TreeFileNode.openInNewTab is deprecated'
+    call nerdtree#deprecated('TreeFileNode.openinNewTab', 'is deprecated, use .open() instead.')
     call self.open(extend({'where': 't'}, a:options))
 endfunction
 
