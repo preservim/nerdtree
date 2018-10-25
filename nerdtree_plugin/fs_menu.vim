@@ -83,31 +83,32 @@ function! s:promptToDelBuffer(bufnum, msg)
     endif
 endfunction
 
-"FUNCTION: s:promptToRenameBuffer(bufnum, msg){{{1
-"prints out the given msg and, if the user responds by pushing 'y' then the
-"buffer with the given bufnum is replaced with a new one
+"FUNCTION: s:renameBuffer(bufNum, newNodeName, isDirectory){{{1
+"The buffer with the given bufNum is replaced with a new one
 "
 "Args:
-"bufnum: the buffer that may be deleted
-"msg: a message that will be echoed to the user asking them if they wish to
-"     del the buffer
-function! s:promptToRenameBuffer(bufnum, msg, newFileName)
-    echo a:msg
-    if g:NERDTreeAutoDeleteBuffer || nr2char(getchar()) ==# 'y'
-        let quotedFileName = fnameescape(a:newFileName)
-        " 1. ensure that a new buffer is loaded
-        exec "badd " . quotedFileName
-        " 2. ensure that all windows which display the just deleted filename
-        " display a buffer for a new filename.
-        let s:originalTabNumber = tabpagenr()
-        let s:originalWindowNumber = winnr()
-        let editStr = g:NERDTreePath.New(a:newFileName).str({'format': 'Edit'})
-        exec "tabdo windo if winbufnr(0) == " . a:bufnum . " | exec ':e! " . editStr . "' | endif"
-        exec "tabnext " . s:originalTabNumber
-        exec s:originalWindowNumber . "wincmd w"
-        " 3. We don't need a previous buffer anymore
-        exec "bwipeout! " . a:bufnum
+"bufNum: the buffer that may be deleted
+"newNodeName: the name given to the renamed node
+"isDirectory: determines how to do the create the new filenames
+function! s:renameBuffer(bufNum, newNodeName, isDirectory)
+    if a:isDirectory
+        let quotedFileName = fnameescape(a:newNodeName . '/' . fnamemodify(bufname(a:bufNum),':t'))
+        let editStr = g:NERDTreePath.New(a:newNodeName . '/' . fnamemodify(bufname(a:bufNum),':t')).str({'format': 'Edit'})
+    else
+        let quotedFileName = fnameescape(a:newNodeName)
+        let editStr = g:NERDTreePath.New(a:newNodeName).str({'format': 'Edit'})
     endif
+    " 1. ensure that a new buffer is loaded
+    exec "badd " . quotedFileName
+    " 2. ensure that all windows which display the just deleted filename
+    " display a buffer for a new filename.
+    let s:originalTabNumber = tabpagenr()
+    let s:originalWindowNumber = winnr()
+    exec "tabdo windo if winbufnr(0) == " . a:bufNum . " | exec ':e! " . editStr . "' | endif"
+    exec "tabnext " . s:originalTabNumber
+    exec s:originalWindowNumber . "wincmd w"
+    " 3. We don't need a previous buffer anymore
+    exec "bwipeout! " . a:bufNum
 endfunction
 "FUNCTION: NERDTreeAddNode(){{{1
 function! NERDTreeAddNode()
@@ -158,7 +159,11 @@ function! NERDTreeMoveNode()
     endif
 
     try
-        let bufnum = bufnr("^".curNode.path.str()."$")
+        if curNode.path.isDirectory
+            let l:openBuffers = filter(range(1,bufnr("$")),'bufexists(v:val) && fnamemodify(bufname(v:val),":p") =~# curNode.path.str() . "/.*"')
+        else
+            let l:openBuffers = filter(range(1,bufnr("$")),'bufexists(v:val) && fnamemodify(bufname(v:val),":p") ==# curNode.path.str()')
+        endif
 
         call curNode.rename(newNodePath)
         " Emptying g:NERDTreeOldSortOrder forces the sort to
@@ -167,11 +172,20 @@ function! NERDTreeMoveNode()
         call b:NERDTree.root.refresh()
         call NERDTreeRender()
 
-        "if the node is open in a buffer, ask the user if they want to
-        "close that buffer
-        if bufnum != -1
-            let prompt = "\nNode renamed.\n\nThe old file is open in buffer ". bufnum . (bufwinnr(bufnum) ==# -1 ? " (hidden)" : "") .". Replace this buffer with the new file? (yN)"
-            call s:promptToRenameBuffer(bufnum,  prompt, newNodePath)
+        " If the file node is open, or files under the directory node are
+        " open, ask the user if they want to replace the file(s) with the
+        " renamed files.
+        if !empty(l:openBuffers)
+            if curNode.path.isDirectory
+                echo "\nDirectory renamed.\n\nFiles with the old directory name are open in buffers " . join(l:openBuffers, ', ') . ". Replace these buffers with the new files? (yN)"
+            else
+                echo "\nFile renamed.\n\nThe old file is open in buffer " . l:openBuffers[0] . ". Replace this buffer with the new file? (yN)"
+            endif
+            if g:NERDTreeAutoDeleteBuffer || nr2char(getchar()) ==# 'y'
+                for bufNum in l:openBuffers
+                    call s:renameBuffer(bufNum, newNodePath, curNode.path.isDirectory)
+                endfor
+            endif
         endif
 
         call curNode.putCursorHere(1, 0)
