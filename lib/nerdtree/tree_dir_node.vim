@@ -376,6 +376,16 @@ function! s:TreeDirNode.isCascadable()
         return 0
     endif
 
+    if self.path.isSymLink
+        return 0
+    endif
+
+    for i in g:NERDTreeBookmark.Bookmarks()
+        if i.path.equals(self.path)
+            return 0
+        endif
+    endfor
+
     let c = self.getVisibleChildren()
     return len(c) == 1 && c[0].path.isDirectory
 endfunction
