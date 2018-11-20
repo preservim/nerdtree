@@ -370,11 +370,25 @@ function! s:TreeDirNode.hasVisibleChildren()
 endfunction
 
 " FUNCTION: TreeDirNode.isCascadable() {{{1
-" true if this dir has only one visible child - which is also a dir
+" true if this dir has only one visible child that is also a dir
+" false if this dir is bookmarked or symlinked. Why? Two reasons:
+"  1. If cascaded, we don't know which dir is bookmarked or is a symlink.
+"  2. If the parent is a symlink or is bookmarked, you end up with unparsable
+"     text, and NERDTree cannot get the path of any child node.
 function! s:TreeDirNode.isCascadable()
     if g:NERDTreeCascadeSingleChildDir == 0
         return 0
     endif
+
+    if self.path.isSymLink
+        return 0
+    endif
+
+    for i in g:NERDTreeBookmark.Bookmarks()
+        if i.path.equals(self.path)
+            return 0
+        endif
+    endfor
 
     let c = self.getVisibleChildren()
     return len(c) == 1 && c[0].path.isDirectory
