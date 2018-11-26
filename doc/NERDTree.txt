@@ -605,6 +605,22 @@ menu item to execute executable files.
 
 Related tags: |NERDTree-m| |NERDTreeApi|
 
+------------------------------------------------------------------------------
+                                                              *NERDTreeMenu-j*
+Default key: j
+Map option: NERDTreeMenuDown
+Applies to: The NERD tree menu.
+
+Moves the cursor down.
+
+------------------------------------------------------------------------------
+                                                              *NERDTreeMenu-k*
+Default key: k
+Map option: NERDTreeMenuUp
+Applies to: The NERD tree menu.
+
+Moves the cursor up.
+
 ==============================================================================
 3. Customisation                                             *NERDTreeOptions*
 

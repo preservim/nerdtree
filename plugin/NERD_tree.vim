@@ -148,6 +148,8 @@ call s:initVariable("g:NERDTreeMapToggleZoom", "A")
 call s:initVariable("g:NERDTreeMapUpdir", "u")
 call s:initVariable("g:NERDTreeMapUpdirKeepOpen", "U")
 call s:initVariable("g:NERDTreeMapCWD", "CD")
+call s:initVariable("g:NERDTreeMenuDown", "j")
+call s:initVariable("g:NERDTreeMenuUp", "k")
 
 "SECTION: Load class files{{{2
 call nerdtree#loadClassFiles()
