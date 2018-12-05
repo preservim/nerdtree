@@ -2,17 +2,17 @@
 
 
 
-    omg its ... ~
-
-    ________  ________   _   ____________  ____     __________  ____________~
-   /_  __/ / / / ____/  / | / / ____/ __ \/ __ \   /_  __/ __ \/ ____/ ____/~
-    / / / /_/ / __/    /  |/ / __/ / /_/ / / / /    / / / /_/ / __/ / __/   ~
-   / / / __  / /___   / /|  / /___/ _, _/ /_/ /    / / / _, _/ /___/ /___   ~
-  /_/ /_/ /_/_____/  /_/ |_/_____/_/ |_/_____/    /_/ /_/ |_/_____/_____/   ~
+   Are you ready for this? It's the...
 
 
-                              Reference Manual~
 
+   Y88b Y88 888'Y88 888 88e  888 88e   88P'888'Y88                           ~
+    Y88b Y8 888 ,'Y 888 888D 888 888b  P'  888  'Y 888,8,  ,e e,   ,e e,     ~
+   b Y88b Y 888C8   888 88"  888 8888D     888     888 "  d88 88b d88 88b    ~
+   8b Y88b  888 ",d 888 b,   888 888P      888     888    888   , 888   ,    ~
+   88b Y88b 888,d88 888 88b, 888 88"       888     888     "YeeP"  "YeeP"    ~
+                                                                             ~
+                              Reference Manual                               ~
 
 
 
@@ -1351,6 +1351,11 @@ issues is, as you may have guessed, to go to
 The latest stable and development versions are on Github.
     Stable: http://github.com/scrooloose/nerdtree
     Development: http://github.com/scrooloose/nerdtree/branches
+
+Title Credit:
+    Patrick Gillespie's Text ASCII Art Generator
+    http://patorjk.com/software/taag
+    http://patorjk.com/software/taag/#p=display&f=Rozzo&t=NERDTree
 
 ==============================================================================
 6. License                                                   *NERDTreeLicense*
