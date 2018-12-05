@@ -1348,8 +1348,9 @@ receive your emails, the best way to submit suggestions and to report issues
 is, as you may have guessed, to go to
     http://github.com/scrooloose/nerdtree/issues.
 
-The latest stable and develpment versions are on Github.
-    http://github.com/scrooloose/nerdtree
+The latest stable and development versions are on Github.
+    Stable: http://github.com/scrooloose/nerdtree
+    Development: http://github.com/scrooloose/nerdtree/branches
 
 ==============================================================================
 6. License                                                   *NERDTreeLicense*
