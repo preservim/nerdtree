@@ -1,4 +1,4 @@
-*NERDTree.txt*   A tree explorer plugin that owns your momma!
+*NERDTree.txt*   A tree explorer plugin to rule the Vim world. Bwahahaha!!
 
 
 
@@ -1342,10 +1342,13 @@ from you, so feel free to send him suggestions and/or comments about this
 plugin.  Don't be shy --- the worst he can do is slaughter you and stuff you in
 the fridge for later ;)
 
-The latest stable versions can be found at
-    http://www.vim.org/scripts/script.php?script_id=1658
+Martyzilla has convinced two other unsuspecting souls to become his minions in
+his attempt to conquer the Vim plugin world. While Martyzilla may still love to
+receive your emails, the best way to submit suggestions and to report issues
+is, as you may have guessed, to go to
+    http://github.com/scrooloose/nerdtree/issues.
 
-The latest dev versions are on github
+The latest stable and develpment versions are on Github.
     http://github.com/scrooloose/nerdtree
 
 ==============================================================================
