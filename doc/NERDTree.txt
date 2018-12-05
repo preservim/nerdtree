@@ -707,6 +707,10 @@ NERD tree. These options should be set in your vimrc.
                                 include one space character at the end of the
                                 command and it applies only to directories.
 
+|NERDTreeNodeDelimiter|       A single character that is used to separate the
+                              file or directory name from the rest of the
+                              characters on the line of text.
+
 ------------------------------------------------------------------------------
 3.2. Customisation details                             *NERDTreeOptionDetails*
 
@@ -1114,6 +1118,29 @@ display its tree view. You can augment this behavior by specifying a prefix
 string such as "keepalt" or similar. For example, to have NERDTree create its
 tree window using `silent keepalt keepjumps edit`:
     let NERDTreeCreatePrefix='silent keepalt keepjumps'
+<
+------------------------------------------------------------------------------
+                                                       *NERDTreeNodeDelimiter*
+Values: Any single character.
+Default: "\x07" - the non-printable character BELL.
+
+This character is used to separate the file or directory name from the rest of
+the characters in the line of text. It allows filenames to contain special
+characters that are otherwise used in the NERDTree, such as square brackets,
+braces, trailing asterisk, and leading space. For more details see the
+resoponsible pull request: https://github.com/scrooloose/nerdtree/pull/868.
+
+The default should work in nearly every situation, but this option exists for
+those very rare cases where it doesn't. "\x07" was chosen because it's
+non-printable, and very unlikely to be used purposefully in a filename or as a
+flag by other NERDTree plugins. If you need to change the delimiter, be sure
+to choose a character that won't appear in your filenames or any of the flags
+set by your installed NERDTree plugins. The suggestions below are but a few of
+the many options. Remember to use double quotes when specifying by hex or
+Unicode. >
+    let NERDTreeNodeDelimiter='😀'
+    let NERDTreeNodeDelimiter="\u00a0"
+    let NERDTreeNodeDelimiter="\xFF"
 <
 
 ==============================================================================
