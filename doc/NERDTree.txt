@@ -1,20 +1,22 @@
 *NERDTree.txt*   A tree explorer plugin to rule the Vim world. Bwahahaha!!
 
 
-
    Are you ready for this? It's the...
 
-
-
-   Y88b Y88 888'Y88 888 88e  888 88e   88P'888'Y88                           ~
-    Y88b Y8 888 ,'Y 888 888D 888 888b  P'  888  'Y 888,8,  ,e e,   ,e e,     ~
-   b Y88b Y 888C8   888 88"  888 8888D     888     888 "  d88 88b d88 88b    ~
-   8b Y88b  888 ",d 888 b,   888 888P      888     888    888   , 888   ,    ~
-   88b Y88b 888,d88 888 88b, 888 88"       888     888     "YeeP"  "YeeP"    ~
-                                                                             ~
-                              Reference Manual                               ~
-
-
+           # #### ####              Y88b Y88 888'Y88 888 88e  888 88e        ~
+         ### \/#|### |/####          Y88b Y8 888 ,'Y 888 888D 888 888b       ~
+        ##\/#/ \||/##/_/##/_#       b Y88b Y 888C8   888 88"  888 8888D 888  ~
+      ###  \/###|/ \/ # ###         8b Y88b  888 ",d 888 b,   888 888P       ~
+    ##_\_#\_\## | #/###_/_####      88b Y88b 888,d88 888 88b, 888 88"        ~
+   ## #### # \ #| /  #### ##/##                                              ~
+    __#_--###`  |{,###---###-~      88P'888'Y88                              ~
+              \ }{                  P'  888  'Y 888,8,  ,e e,   ,e e,        ~
+               }}{                      888     888 "  d88 88b d88 88b       ~
+               }}{                      888     888    888   , 888   ,       ~
+          ejm  {{}                      888     888     "YeeP"  "YeeP"       ~
+         , -=-~{ .-^- _                                                      ~
+               `}                   Reference Manual                         ~
+                {                                                            ~
 
 ==============================================================================
 CONTENTS                                                     *NERDTree-contents*
@@ -1368,7 +1370,9 @@ The latest stable and development versions are on Github.
     Development: http://github.com/scrooloose/nerdtree/branches
 
 Title Credit:
-    Patrick Gillespie's Text ASCII Art Generator
+  * http://ascii.co.uk/art/tree
+
+  * Patrick Gillespie's Text ASCII Art Generator
     http://patorjk.com/software/taag
     http://patorjk.com/software/taag/#p=display&f=Rozzo&t=NERDTree
 
@@ -1379,4 +1383,4 @@ The NERD tree is released under the wtfpl.
 See http://sam.zoy.org/wtfpl/COPYING.
 
 ------------------------------------------------------------------------------
- vim:tw=78:ts=8:ft=help:noet
+ vim:tw=78:ts=8:ft=help:noet:nospell
