@@ -617,29 +617,29 @@ the NERD tree. These settings should be set in your vimrc, using `:let`.
 |loaded_nerd_tree|            Turns off the script.
 
 |NERDTreeAutoCenter|          Controls whether the NERD tree window centers
-                              when the cursor moves within a specified
-                              distance to the top/bottom of the window.
+                            when the cursor moves within a specified
+                            distance to the top/bottom of the window.
 
 |NERDTreeAutoCenterThreshold| Controls the sensitivity of autocentering.
 
 |NERDTreeCaseSensitiveSort|   Tells the NERD tree whether to be case
-                              sensitive or not when sorting nodes.
+                            sensitive or not when sorting nodes.
 
 |NERDTreeNaturalSort|         Tells the NERD tree whether to use natural sort
-                              order or not when sorting nodes.
+                            order or not when sorting nodes.
 
 |NERDTreeSortHiddenFirst|     Tells the NERD tree whether to take the dot at
-                              the beginning of the hidden file names into
-                              account when sorting nodes.
+                            the beginning of the hidden file names into
+                            account when sorting nodes.
 
 |NERDTreeChDirMode|           Tells the NERD tree if/when it should change
-                              vim's current working directory.
+                            vim's current working directory.
 
 |NERDTreeHighlightCursorline| Tell the NERD tree whether to highlight the
-                              current cursor line.
+                            current cursor line.
 
 |NERDTreeHijackNetrw|         Tell the NERD tree whether to replace the netrw
-                              autocommands for exploring local directories.
+                            autocommands for exploring local directories.
 
 |NERDTreeIgnore|              Tells the NERD tree which files to ignore.
 
@@ -656,59 +656,59 @@ the NERD tree. These settings should be set in your vimrc, using `:let`.
 |NERDTreeQuitOnOpen|          Closes the tree window after opening a file.
 
 |NERDTreeShowBookmarks|       Tells the NERD tree whether to display the
-                              bookmarks table on startup.
+                            bookmarks table on startup.
 
 |NERDTreeShowFiles|           Tells the NERD tree whether to display files in
-                              the tree on startup.
+                            the tree on startup.
 
 |NERDTreeShowHidden|          Tells the NERD tree whether to display hidden
-                              files on startup.
+                            files on startup.
 
 |NERDTreeShowLineNumbers|     Tells the NERD tree whether to display line
-                              numbers in the tree window.
+                            numbers in the tree window.
 
 |NERDTreeSortOrder|           Tell the NERD tree how to sort the nodes in the
-                              tree.
+                            tree.
 
 |NERDTreeStatusline|          Set a statusline for NERD tree windows.
 
 |NERDTreeWinPos|              Tells the script where to put the NERD tree
-                              window.
+                            window.
 
 |NERDTreeWinSize|             Sets the window size when the NERD tree is
-                              opened.
+                            opened.
 
 |NERDTreeMinimalUI|           Disables display of the 'Bookmarks' label and
-                              'Press ? for help' text.
+                            'Press ? for help' text.
 
 |NERDTreeCascadeSingleChildDir|
-                              Collapses on the same line directories that have
-                              only one child directory.
+                            Collapses on the same line directories that have
+                            only one child directory.
 
 |NERDTreeCascadeOpenSingleChildDir|
-                              Cascade open while selected directory has only
-                              one child that also is a directory.
+                            Cascade open while selected directory has only
+                            one child that also is a directory.
 
 |NERDTreeAutoDeleteBuffer|    Tells the NERD tree to automatically remove a
-                              buffer when a file is being deleted or renamed
-                              via a context menu command.
+                            buffer when a file is being deleted or renamed
+                            via a context menu command.
 
 |NERDTreeCreatePrefix|        Specify a prefix to be used when creating the
-                              NERDTree window.
+                            NERDTree window.
 
 |NERDTreeRemoveFileCmd|       Specify a custom shell command to be used when
-                              deleting files. Note that it should include one
-                              space character at the end of the command and it
-                              applies only to files.
+                            deleting files. Note that it should include one
+                            space character at the end of the command and it
+                            applies only to files.
 
 |NERDTreeRemoveDirCmd|        Specify a custom shell command to be used when
-                              deleting directories. Note that it should
-                              include one space character at the end of the
-                              command and it applies only to directories.
+                            deleting directories. Note that it should
+                            include one space character at the end of the
+                            command and it applies only to directories.
 
 |NERDTreeNodeDelimiter|       A single character that is used to separate the
-                              file or directory name from the rest of the
-                              characters on the line of text.
+                            file or directory name from the rest of the
+                            characters on the line of text.
 
 ------------------------------------------------------------------------------
 3.2. Customisation details                             *NERDTreeSettingsDetails*
@@ -992,7 +992,7 @@ For example, if the setting is: >
 then all .vim files will be placed at the top, followed by all .c files then
 all .h files. All files containing the string 'foobar' will be placed at the
 end.  The star is a special flag: it tells the script that every node that
-doesnt match any of the other regexps should be placed here.
+doesn't match any of the other regexps should be placed here.
 
 If no star is present in NERDTreeSortOrder then one is automatically
 appended to the array.
@@ -1008,7 +1008,7 @@ done secondarily. See examples 4, 5, and 6 below.
 
 After this sorting is done, the files in each group are sorted alphabetically.
 
-Other examples: >
+Examples: >
     (1) ['*', '\/$']
     (2) []
     (3) ['\/$', '\.rb$', '\.php$', '*', '\.swp$',  '\.bak$', '\~$']
@@ -1127,7 +1127,7 @@ Default: "\x07" - the non-printable character BELL.
 This character is used to separate the file or directory name from the rest of
 the characters in the line of text. It allows filenames to contain special
 characters that are otherwise used in the NERDTree, such as square brackets,
-braces, trailing asterisk, and leading space. For more details see the
+braces, trailing asterisk, and leading space. For more details, see the
 resoponsible pull request: https://github.com/scrooloose/nerdtree/pull/868.
 
 The default should work in nearly every situation, but this setting exists for
@@ -1342,14 +1342,13 @@ from you, so feel free to send him suggestions and/or comments about this
 plugin.  Don't be shy --- the worst he can do is slaughter you and stuff you
 in the fridge for later ;)
 
-Martyzilla has convinced two other unsuspecting souls to become his minions in
-his attempt to conquer the Vim plugin world. While Martyzilla may still love
-to receive your emails, the best way to submit suggestions and to report
-issues is, as you may have guessed, to go to
-    http://github.com/scrooloose/nerdtree/issues.
+Martyzilla recruited two other unwitting accomplices to become his minions in
+his quest to conquer the Vim plugin world. While he may still love to receive
+your emails, the best way to send suggestions, bug reports, and questions is
+to submit an issue at http://github.com/scrooloose/nerdtree/issues.
 
 The latest stable and development versions are on Github.
-    Stable: http://github.com/scrooloose/nerdtree
+    Stable: http://github.com/scrooloose/nerdtree (master branch)
     Development: http://github.com/scrooloose/nerdtree/branches
 
 Title Credit:
