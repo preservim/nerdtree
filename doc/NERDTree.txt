@@ -1,23 +1,21 @@
 *NERDTree.txt*   A tree explorer plugin to rule the Vim world. Bwahahaha!!
 
-
-   Are you ready for this? It's the...
-
-           # #### ####              Y88b Y88 888'Y88 888 88e  888 88e        ~
-         ### \/#|### |/####          Y88b Y8 888 ,'Y 888 888D 888 888b       ~
-        ##\/#/ \||/##/_/##/_#       b Y88b Y 888C8   888 88"  888 8888D 888  ~
-      ###  \/###|/ \/ # ###         8b Y88b  888 ",d 888 b,   888 888P       ~
-    ##_\_#\_\## | #/###_/_####      88b Y88b 888,d88 888 88b, 888 88"        ~
-   ## #### # \ #| /  #### ##/##                                              ~
-    __#_--###`  |{,###---###-~      88P'888'Y88                              ~
-              \ }{                  P'  888  'Y 888,8,  ,e e,   ,e e,        ~
-               }}{                      888     888 "  d88 88b d88 88b       ~
-               }}{                      888     888    888   , 888   ,       ~
-          ejm  {{}                      888     888     "YeeP"  "YeeP"       ~
-         , -=-~{ .-^- _                                                      ~
-               `}                   Reference Manual                         ~
-                {                                                            ~
-
+                                    # #### ####                                ~
+                                  ### \/#|### |/####                           ~
+   d8   888                      ##\/#/ \||/##/_/##/_#                         ~
+  d88   888 ee   ,e e,         ###  \/###|/ \/ # ###                           ~
+ d88888 888 88b d88 88b      ##_\_#\_\## | #/###_/_####                        ~
+  888   888 888 888   ,     ## #### # \ #| /  #### ##/##                       ~
+  888   888 888  "YeeP"     __#_--###`. |{,###---###-~                         ~
+                                     \ % @%                                    ~
+  Y88b Y88 888'Y88 888 88e  888 88e   \%@%  88P'888'Y88                        ~
+   Y88b Y8 888 ,'Y 888 888D 888 888b   %o%  P'  888  'Y 888,8,  ,e e,   ,e e,  ~
+  b Y88b Y 888C8   888 88"  888 8888D  %@%      888     888 "  d88 88b d88 88b ~
+  8b Y88b  888 ",d 888 b,   888 888P   %@%      888     888    888   , 888   , ~
+  88b Y88b 888,d88 888 88b, 888 88"    %@%      888     888     "YeeP"  "YeeP" ~
+                                 , -=-%{@%-^- _                                ~
+                                   ejm `}               Reference Manual       ~
+                                        {                                      ~
 ==============================================================================
 CONTENTS                                                     *NERDTree-contents*
 
@@ -574,7 +572,7 @@ Default key: q
 Map setting: NERDTreeMapQuit
 Applies to: no restrictions.
 
-Closes the NERDtree window.
+Closes the NERDTree window.
 
 ------------------------------------------------------------------------------
                                                                     *NERDTree-A*
@@ -582,7 +580,7 @@ Default key: A
 Map setting: NERDTreeMapToggleZoom
 Applies to: no restrictions.
 
-Maximize (zoom) and minimize the NERDtree window.
+Maximize (zoom) and minimize the NERDTree window.
 
 ------------------------------------------------------------------------------
                                                                     *NERDTree-?*
@@ -1374,7 +1372,7 @@ Title Credit:
 
   * Patrick Gillespie's Text ASCII Art Generator
     http://patorjk.com/software/taag
-    http://patorjk.com/software/taag/#p=display&f=Rozzo&t=NERDTree
+    http://patorjk.com/software/taag/#p=display&f=Rozzo&t=the%20NERD%20Tree
 
 ==============================================================================
 6. License                                                     *NERDTreeLicense*
