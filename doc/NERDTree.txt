@@ -107,6 +107,14 @@ The following features and functionality are provided by the NERD tree:
         :NERDTree /home/marty/vim7/src
         :NERDTree foo   (foo is the name of a bookmark)
 <
+:NERDTreeVCS [<start-directory> | <bookmark>]                     *:NERDTreeVCS*
+    Like |:NERDTree|, but searches up the directory tree to find the top of
+    the version control system repository, and roots the NERD tree there. It
+    works with Git, Subversion, Mercurial, Bazaar, and Darcs repositories. A
+    couple of examples: >
+        :NERDTreeVCS /home/marty/nerdtree/doc  (opens /home/marty/nerdtree)
+        :NERDTreeVCS              (opens root of repository containing CWD)
+<
 :NERDTreeFromBookmark <bookmark>                         *:NERDTreeFromBookmark*
     Opens a fresh NERD tree with the root initialized to the dir for
     <bookmark>.  The only reason to use this command over :NERDTree is for
