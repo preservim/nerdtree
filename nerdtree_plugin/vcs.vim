@@ -1,3 +1,15 @@
+" ============================================================================
+" File:        vcs.vim
+" Description: NERDTree plugin that provides a command to open on the root of
+"              a version control system repository.
+" Maintainer:  Phil Runninger
+" License:     This program is free software. It comes without any warranty,
+"              to the extent permitted by applicable law. You can redistribute
+"              it and/or modify it under the terms of the Do What The Fuck You
+"              Want To Public License, Version 2, as published by Sam Hocevar.
+"              See http://sam.zoy.org/wtfpl/COPYING for more details.
+"
+" ============================================================================
 command! -n=? -complete=dir -bar NERDTreeVCS :call <SID>CreateTabTreeVCS('<args>')
 
 " FUNCTION: s:CreateTabTreeVCS(a:name) {{{1
