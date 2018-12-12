@@ -86,6 +86,9 @@ let g:NERDTreeOldSortOrder = []
 
 call s:initVariable("g:NERDTreeGlyphReadOnly", "RO")
 
+" ASCII 7: bell non-printing character used to delimit items in the tree's nodes.
+call s:initVariable("g:NERDTreeNodeDelimiter", "\x07")
+
 if !exists('g:NERDTreeStatusline')
 
     "the exists() crap here is a hack to stop vim spazzing out when
@@ -145,6 +148,8 @@ call s:initVariable("g:NERDTreeMapToggleZoom", "A")
 call s:initVariable("g:NERDTreeMapUpdir", "u")
 call s:initVariable("g:NERDTreeMapUpdirKeepOpen", "U")
 call s:initVariable("g:NERDTreeMapCWD", "CD")
+call s:initVariable("g:NERDTreeMenuDown", "j")
+call s:initVariable("g:NERDTreeMenuUp", "k")
 
 "SECTION: Load class files{{{2
 call nerdtree#loadClassFiles()
@@ -202,8 +207,28 @@ function! NERDTreeFocus()
 endfunction
 
 function! NERDTreeCWD()
+
+    if empty(getcwd())
+        call nerdtree#echoWarning('current directory does not exist')
+        return
+    endif
+
+    try
+        let l:cwdPath = g:NERDTreePath.New(getcwd())
+    catch /^NERDTree.InvalidArgumentsError/
+        call nerdtree#echoWarning('current directory does not exist')
+        return
+    endtry
+
     call NERDTreeFocus()
-    call nerdtree#ui_glue#chRootCwd()
+
+    if b:NERDTree.root.path.equals(l:cwdPath)
+        return
+    endif
+
+    let l:newRoot = g:NERDTreeFileNode.New(l:cwdPath, b:NERDTree)
+    call b:NERDTree.changeRoot(l:newRoot)
+    normal! ^
 endfunction
 
 function! NERDTreeAddPathFilter(callback)

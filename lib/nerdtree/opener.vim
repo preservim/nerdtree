@@ -233,7 +233,6 @@ endfunction
 
 " FUNCTION: Opener.open(target) {{{1
 function! s:Opener.open(target)
-
     if self._path.isDirectory
         call self._openDirectory(a:target)
         return
@@ -244,6 +243,9 @@ endfunction
 
 " FUNCTION: Opener._openFile() {{{1
 function! s:Opener._openFile()
+    if !self._stay && !g:NERDTreeQuitOnOpen && exists("b:NERDTreeZoomed") && b:NERDTreeZoomed
+        call b:NERDTree.ui.toggleZoom()
+    endif
 
     if self._reuseWindow()
         return
@@ -303,7 +305,7 @@ endfunction
 
 " FUNCTION: Opener._restoreCursorPos() {{{1
 function! s:Opener._restoreCursorPos()
-    call nerdtree#exec('normal ' . self._tabnr . 'gt')
+    call nerdtree#exec(self._tabnr . 'tabnext')
     call nerdtree#exec(bufwinnr(self._bufnr) . 'wincmd w')
 endfunction
 
@@ -332,7 +334,7 @@ function! s:Opener._reuseWindow()
     let tabnr = self._path.tabnr()
     if tabnr
         call self._checkToCloseTree(1)
-        call nerdtree#exec('normal! ' . tabnr . 'gt')
+        call nerdtree#exec(tabnr . 'tabnext')
         let winnr = bufwinnr('^' . self._path.str() . '$')
         call nerdtree#exec(winnr . "wincmd w")
         return 1
