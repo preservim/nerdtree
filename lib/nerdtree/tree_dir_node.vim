@@ -254,6 +254,13 @@ function! s:TreeDirNode.getChildIndex(path)
     return -1
 endfunction
 
+" FUNCTION: TreeDirNode.getDirChildren() {{{1
+" Return a list of all child nodes from "self.children" that are of type
+" TreeDirNode. This function supports http://github.com/scrooloose/nerdtree-project-plugin.git.
+function! s:TreeDirNode.getDirChildren()
+    return filter(copy(self.children), 'v:val.path.isDirectory == 1')
+endfunction
+
 " FUNCTION: TreeDirNode._glob(pattern, all) {{{1
 " Return a list of strings naming the descendants of the directory in this
 " TreeDirNode object that match the specified glob pattern.
