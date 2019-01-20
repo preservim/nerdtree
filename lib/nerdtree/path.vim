@@ -25,7 +25,7 @@ function! s:Path.AbsolutePathFor(pathStr)
     if l:prependWorkingDir
         let l:result = getcwd()
 
-        if nerdtree#runningWindows() && (l:result[-1:] == '\' || l:result[-1:] == '/')
+        if l:result[-1:] == s:Path.Slash()
             let l:result = l:result . a:pathStr
         else
             let l:result = l:result . s:Path.Slash() . a:pathStr
