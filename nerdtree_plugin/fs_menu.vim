@@ -53,27 +53,36 @@ function! s:inputPrompt(action)
     if a:action == "add"
         let title = "Add a childnode"
         let info = "Enter the dir/file name to be created. Dirs end with a '/'"
+        let minimal = "Add node:"
 
     elseif a:action == "copy"
         let title = "Copy the current node"
         let info = "Enter the new path to copy the node to:"
+        let minimal = "Copy to:"
 
     elseif a:action == "delete"
         let title = "Delete the current node"
         let info = "Are you sure you wish to delete the node:"
+        let minimal = "Delete?"
 
     elseif a:action == "deleteNonEmpty"
         let title = "Delete the current node"
         let info =  "STOP! Directory is not empty! To delete, type 'yes'"
+        let minimal = "Delete directory?"
 
     elseif a:action == "move"
         let title = "Rename the current node"
         let info = "Enter the new path for the node:"
+        let minimal = "Move to:"
     endif
 
-    let divider = "=========================================================="
-
-    return title . "\n" . divider . "\n" . info . "\n"
+    if g:NERDTreeMenuController.isMinimal()
+        redraw! " Clear the menu
+        return minimal . " "
+    else
+        let divider = "=========================================================="
+        return title . "\n" . divider . "\n" . info . "\n"
+    end
 endfunction
 
 "FUNCTION: s:promptToDelBuffer(bufnum, msg){{{1
@@ -174,6 +183,8 @@ function! NERDTreeAddNode()
             call NERDTreeRender()
             call newTreeNode.putCursorHere(1, 0)
         endif
+
+        redraw!
     catch /^NERDTree/
         call nerdtree#echoWarning("Node Not Created.")
     endtry
@@ -222,7 +233,7 @@ function! NERDTreeMoveNode()
 
         call curNode.putCursorHere(1, 0)
 
-        redraw
+        redraw!
     catch /^NERDTree/
         call nerdtree#echoWarning("Node Not Renamed.")
     endtry
@@ -260,7 +271,7 @@ function! NERDTreeDeleteNode()
                 call s:promptToDelBuffer(bufnum, prompt)
             endif
 
-            redraw
+            redraw!
         catch /^NERDTree/
             call nerdtree#echoWarning("Could not remove node")
         endtry
@@ -350,7 +361,7 @@ function! NERDTreeCopyNode()
         call nerdtree#echo("Copy aborted.")
     endif
     let &shellslash = l:shellslash
-    redraw
+    redraw!
 endfunction
 
 " FUNCTION: NERDTreeQuickLook() {{{1
