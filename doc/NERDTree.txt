@@ -734,6 +734,12 @@ the NERD tree. These settings should be set in your vimrc, using `:let`.
                             file or directory name from the rest of the
                             characters on the line of text.
 
+|'NERDTreeSplitFromPreviousWindow'|
+                                When horizontal splitting, whether to spawn the
+                                new window from the leftmost non-nerdtree
+                                window (default behavior, either not set or set
+                                0) or from the previous window (set to set 1)
+
 ------------------------------------------------------------------------------
 3.2. Customisation details                             *NERDTreeSettingsDetails*
 
