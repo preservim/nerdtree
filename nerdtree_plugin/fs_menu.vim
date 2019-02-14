@@ -108,7 +108,11 @@ function! s:renameBuffer(bufNum, newNodeName, isDirectory)
     exec "tabnext " . s:originalTabNumber
     exec s:originalWindowNumber . "wincmd w"
     " 3. We don't need a previous buffer anymore
-    exec "bwipeout! " . a:bufNum
+    try
+        exec "confirm bwipeout " . a:bufNum
+    catch
+        " This happens when answering Cancel if confirmation is needed. Do nothing.
+    endtry
 endfunction
 "FUNCTION: NERDTreeAddNode(){{{1
 function! NERDTreeAddNode()
