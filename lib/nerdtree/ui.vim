@@ -503,7 +503,7 @@ function! s:UI.toggleZoom()
         exec "silent vertical resize ". size
         let b:NERDTreeZoomed = 0
     else
-        exec "vertical resize"
+        exec "vertical resize ". get(g:, 'NERDTreeWinSizeMax', '')
         let b:NERDTreeZoomed = 1
     endif
 endfunction
