@@ -287,6 +287,8 @@ endfunction
 
 " FUNCTION: NERDTreeCopyNode() {{{1
 function! NERDTreeCopyNode()
+    let l:shellslash = &shellslash
+    let &shellslash = 0
     let currentNode = g:NERDTreeFileNode.GetSelected()
     let newNodePath = input("Copy the current node\n" .
                           \ "==========================================================\n" .
@@ -324,6 +326,7 @@ function! NERDTreeCopyNode()
     else
         call nerdtree#echo("Copy aborted.")
     endif
+    let &shellslash = l:shellslash
     redraw
 endfunction
 
