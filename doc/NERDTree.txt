@@ -1165,10 +1165,17 @@ to choose a character that won't appear in your filenames or any of the flags
 set by your installed NERDTree plugins. The suggestions below are but a few of
 the many possibilities. Remember to use double quotes when specifying by hex
 or Unicode. >
-    let NERDTreeNodeDelimiter='😀'
-    let NERDTreeNodeDelimiter="\u00a0"
-    let NERDTreeNodeDelimiter="\xFF"
+    let NERDTreeNodeDelimiter="\u00a0"   "non-breaking space
+    let NERDTreeNodeDelimiter="\u00b7"   "middle dot
 <
+The delimiter character is hidden by setting 'conceallevel' to 3. If you use
+autocommands, make sure none of them change that setting in the NERDTree_*
+windows.
+
+If your vim was not compiled with the +conceal feature, NERDTree will use the
+Ignore highlight group, which doesn't hide the BELL character. In this
+situation, you will need to override the delimiter character as described
+above.
 
 ==============================================================================
 4. The NERD tree API                                               *NERDTreeAPI*
