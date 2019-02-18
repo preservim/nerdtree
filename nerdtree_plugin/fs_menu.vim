@@ -202,6 +202,8 @@ endfunction
 
 " FUNCTION: NERDTreeDeleteNode() {{{1
 function! NERDTreeDeleteNode()
+    let l:shellslash = &shellslash
+    let &shellslash = 0
     let currentNode = g:NERDTreeFileNode.GetSelected()
     let confirmed = 0
 
@@ -242,7 +244,7 @@ function! NERDTreeDeleteNode()
     else
         call nerdtree#echo("delete aborted")
     endif
-
+    let &shellslash = l:shellslash
 endfunction
 
 " FUNCTION: NERDTreeListNode() {{{1
