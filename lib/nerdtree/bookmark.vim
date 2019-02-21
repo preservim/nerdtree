@@ -156,6 +156,13 @@ function! s:Bookmark.delete()
     call s:Bookmark.Write()
 endfunction
 
+" FUNCTION: s:Edit() {{{1
+" opens the NERDTreeBookmarks file for manual editing
+function! s:Bookmark.Edit()
+    execute "wincmd w"
+    execute "edit ".g:NERDTreeBookmarksFile
+endfunction
+
 " FUNCTION: Bookmark.getNode(nerdtree, searchFromAbsoluteRoot) {{{1
 " Returns the tree node object associated with this Bookmark.
 " Throws "NERDTree.BookmarkedNodeNotFoundError" if the node is not found.
