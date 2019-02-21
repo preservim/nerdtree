@@ -682,7 +682,8 @@ the NERD tree. These settings should be set in your vimrc, using `:let`.
 
 |NERDTreeMouseMode|           Manage the interpretation of mouse clicks.
 
-|NERDTreeQuitOnOpen|          Closes the tree window after opening a file.
+|NERDTreeQuitOnOpen|          Closes the tree window or bookmark table after
+                            opening a file.
 
 |NERDTreeShowBookmarks|       Tells the NERD tree whether to display the
                             bookmarks table on startup.
@@ -959,11 +960,19 @@ then (to single click activate it) you must click somewhere in
 ------------------------------------------------------------------------------
                                                             *NERDTreeQuitOnOpen*
 
-Values: 0 or 1.
+Values: 0,1,2 or 3.
 Default: 0
 
-If set to 1, the NERD tree window will close after opening a file with the
-|NERDTree-o|, |NERDTree-i|, |NERDTree-t| and |NERDTree-T| mappings.
+This setting governs whether the NERDTree window or the bookmarks table closes
+after opening a file with the |NERDTree-o|, |NERDTree-i|, |NERDTree-t| and
+|NERDTree-T| mappings.
+
+ Value  | NERDTree Window Behavior
+ -------+-------------------------------------------------------
+ 0      | No change
+ 1      | Closes after opening a file
+ 2      | Closes the bookmark table after opening a bookmark
+ 3(1+2) | Same as both 1 and 2
 
 ------------------------------------------------------------------------------
                                                          *NERDTreeShowBookmarks*
