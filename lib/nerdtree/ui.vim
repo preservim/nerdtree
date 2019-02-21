@@ -119,6 +119,9 @@ function! s:UI._dumpHelp()
         let help .= "\" :OpenBookmark <name>\n"
         let help .= "\" :ClearBookmarks [<names>]\n"
         let help .= "\" :ClearAllBookmarks\n"
+        let help .= "\" :ReadBookmarks\n"
+        let help .= "\" :WriteBookmarks\n"
+        let help .= "\" :EditBookmarks\n"
         silent! put =help
     elseif !self.isMinimal()
         let help ="\" Press ". g:NERDTreeMapHelp ." for help\n"
