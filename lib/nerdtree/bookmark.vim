@@ -256,6 +256,10 @@ endfunction
 function! s:Bookmark.open(nerdtree, ...)
     let opts = a:0 ? a:1 : {}
 
+    if and(g:NERDTreeQuitOnOpen,2)
+        call a:nerdtree.ui.toggleShowBookmarks()
+    endif
+
     if self.path.isDirectory && !has_key(opts, 'where')
         call self.toRoot(a:nerdtree)
     else
