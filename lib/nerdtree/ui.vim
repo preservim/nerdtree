@@ -62,6 +62,8 @@ function! s:UI._dumpHelp()
         let help .= "\" Bookmark table mappings~\n"
         let help .= "\" double-click,\n"
         let help .= "\" ". g:NERDTreeMapActivateNode .": open bookmark\n"
+        let help .= "\" ". g:NERDTreeMapPreview .": preview file\n"
+        let help .= "\" ". g:NERDTreeMapPreview .": find dir in tree\n"
         let help .= "\" ". g:NERDTreeMapOpenInTab.": open in new tab\n"
         let help .= "\" ". g:NERDTreeMapOpenInTabSilent .": open in new tab silently\n"
         let help .= "\" ". g:NERDTreeMapDeleteBookmark .": delete bookmark\n"
