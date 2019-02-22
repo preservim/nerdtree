@@ -1126,15 +1126,13 @@ Default: 0
 
 This setting makes NERD tree use a smaller, more compact menu for adding,
 copying, deleting nodes. This menu fits on a single line so Vim doesn't need to
-scroll down to present it. Only the shortcut keys are displayed so this setting
-is recommended for users already familiar with the menu items.
+scroll down to present it. This setting is recommended for users already
+familiar with the menu items. It will look similar to this:
 
-It will look similar to this:
+  Menu: [ (a)dd ,m,d,r,o,q,c,l] (Use j/k/enter or shortcut):
 
-  Which action? (a*/m/d/r/o/q/c/l):
-
-An action can be selected with its shortcut key or by moving the position of the
-* character with NERDTreeMenuUp and NERDTreeMenuDown, then pressing return.
+An action can be selected with its shortcut key or with the NERDTreeMenuUp and
+NERDTreeMenuDown keys, then pressing enter.
 
 Use one of the following lines for this setting: >
     let NERDTreeMinimalMenu=0

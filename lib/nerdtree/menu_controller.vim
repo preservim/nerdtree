@@ -54,14 +54,18 @@ endfunction
 
 "FUNCTION: MenuController._echoPrompt() {{{1
 function! s:MenuController._echoPrompt()
-    if self.isMinimal()
-        let shortcuts = map(copy(self.menuItems), "v:val['shortcut']")
-        let shortcuts[self.selection] .= "*"
+    let navHelp = "Use " . g:NERDTreeMenuDown . "/" . g:NERDTreeMenuUp . "/enter"
 
-        echo "Which action? (" . join(shortcuts, "/") . "): "
+    if self.isMinimal()
+        let selection = self.menuItems[self.selection].text
+
+        let shortcuts = map(copy(self.menuItems), "v:val['shortcut']")
+        let shortcuts[self.selection] = " " . split(selection)[0] . " "
+
+        echo "Menu: [" . join(shortcuts, ",") . "] (" . navHelp . " or shortcut): "
     else
-        echo "NERDTree Menu. Use " . g:NERDTreeMenuDown . "/" . g:NERDTreeMenuUp . "/enter and the shortcuts indicated"
-        echo "=========================================================="
+        echo "NERDTree Menu. " . navHelp . " . or the shortcuts indicated"
+        echo "========================================================="
 
         for i in range(0, len(self.menuItems)-1)
             if self.selection == i
