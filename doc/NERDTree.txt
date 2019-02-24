@@ -719,6 +719,9 @@ the NERD tree. These settings should be set in your vimrc, using `:let`.
 |NERDTreeMinimalUI|           Disables display of the 'Bookmarks' label and
                             'Press ? for help' text.
 
+|NERDTreeMinimalMenu|         Use a compact menu that fits on a single line
+                            for adding, copying, deleting, etc
+
 |NERDTreeCascadeSingleChildDir|
                             Collapses on the same line directories that have
                             only one child directory.
@@ -1115,6 +1118,26 @@ of the following lines for this setting: >
     let NERDTreeMinimalUI=0
     let NERDTreeMinimalUI=1
 <
+
+------------------------------------------------------------------------------
+                                                             *NERDTreeMinimalMenu*
+Values: 0 or 1
+Default: 0
+
+This setting makes NERD tree use a smaller, more compact menu for adding,
+copying, deleting nodes. This menu fits on a single line so Vim doesn't need to
+scroll down to present it. This setting is recommended for users already
+familiar with the menu items. It will look similar to this:
+
+  Menu: [ (a)dd ,m,d,r,o,q,c,l] (Use j/k/enter or shortcut):
+
+An action can be selected with its shortcut key or with the NERDTreeMenuUp and
+NERDTreeMenuDown keys, then pressing enter.
+
+Use one of the following lines for this setting: >
+    let NERDTreeMinimalMenu=0
+    let NERDTreeMinimalMenu=1
+
 
 ------------------------------------------------------------------------------
                                                  *NERDTreeCascadeSingleChildDir*
