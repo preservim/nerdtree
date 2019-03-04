@@ -87,8 +87,13 @@ let g:NERDTreeOldSortOrder = []
 
 call s:initVariable("g:NERDTreeGlyphReadOnly", "RO")
 
-" ASCII 7: bell non-printing character used to delimit items in the tree's nodes.
-call s:initVariable("g:NERDTreeNodeDelimiter", "\x07")
+if has("conceal") && (g:NERDTreeDirArrowExpandable == "\u00a0" || g:NERDTreeDirArrowCollapsible == "\u00a0")
+    echomsg "delimiter=bell"
+    call s:initVariable("g:NERDTreeNodeDelimiter", "\x07")
+else
+    echomsg "delimiter=nbsp"
+    call s:initVariable("g:NERDTreeNodeDelimiter", "\u00a0")
+endif
 
 if !exists('g:NERDTreeStatusline')
 
