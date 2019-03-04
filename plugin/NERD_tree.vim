@@ -87,11 +87,11 @@ let g:NERDTreeOldSortOrder = []
 
 call s:initVariable("g:NERDTreeGlyphReadOnly", "RO")
 
-if has("conceal") && (g:NERDTreeDirArrowExpandable == "\u00a0" || g:NERDTreeDirArrowCollapsible == "\u00a0")
-    echomsg "delimiter=bell"
+if has("conceal")
     call s:initVariable("g:NERDTreeNodeDelimiter", "\x07")
+elseif (g:NERDTreeDirArrowExpandable == "\u00a0" || g:NERDTreeDirArrowCollapsible == "\u00a0")
+    call s:initVariable("g:NERDTreeNodeDelimiter", "\u00b7")
 else
-    echomsg "delimiter=nbsp"
     call s:initVariable("g:NERDTreeNodeDelimiter", "\u00a0")
 endif
 
