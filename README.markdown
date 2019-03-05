@@ -68,7 +68,7 @@ Note: Now start vim with plain `vim`, not `vim .`
 
 This window is tab-specific, meaning it's used by all windows in the tab. This trick also prevents NERDTree from hiding when first selecting a file.
 
-Note: Executing `vim ~/some-directory` will open NERDTree and a new edit window. `exe 'cd '.argv()[]` sets the `pwd` of the new edit window to `~/some-directory`
+Note: Executing `vim ~/some-directory` will open NERDTree and a new edit window. `exe 'cd '.argv()[0]` sets the `pwd` of the new edit window to `~/some-directory`
 
 ---
 > How can I map a specific key or shortcut to open NERDTree?
