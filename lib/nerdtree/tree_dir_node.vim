@@ -405,15 +405,17 @@ endfunction
 " Removes all childen from this node and re-reads them
 "
 " Args:
+" silent: 1 if the function should not echo any "please wait" messages for
+" large directories
 "
 " Return: the number of child nodes read
-function! s:TreeDirNode._initChildren()
+function! s:TreeDirNode._initChildren(silent)
     "remove all the current child nodes
     let self.children = []
 
     let files = self._glob('*', 1) + self._glob('.*', 0)
 
-    if len(files) > g:NERDTreeNotificationThreshold
+    if !a:silent && len(files) > g:NERDTreeNotificationThreshold
         call nerdtree#echo("Please wait, caching a large dir ...")
     endif
 
@@ -490,7 +492,7 @@ function! s:TreeDirNode.open(...)
 
     let l:numChildrenCached = 0
     if empty(self.children)
-        let l:numChildrenCached = self._initChildren()
+        let l:numChildrenCached = self._initChildren(0)
     endif
 
     return l:numChildrenCached
