@@ -490,7 +490,7 @@ function! s:TreeDirNode.open(...)
 
     let l:numChildrenCached = 0
     if empty(self.children)
-        let l:numChildrenCached = self._initChildren
+        let l:numChildrenCached = self._initChildren()
     endif
 
     return l:numChildrenCached
