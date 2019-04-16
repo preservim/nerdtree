@@ -169,7 +169,7 @@ endfunction
 "msg: the message to echo
 function! nerdtree#echo(msg)
     redraw
-    echomsg "NERDTree: " . a:msg
+    echomsg empty(a:msg) ? "" : ("NERDTree: " . a:msg)
 endfunction
 
 "FUNCTION: nerdtree#echoError {{{2
