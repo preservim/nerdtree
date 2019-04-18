@@ -69,6 +69,7 @@ endfunction
 
 " FUNCTION: Opener._gotoTargetWin() {{{1
 function! s:Opener._gotoTargetWin()
+    echomsg "   Opener._gotoTargetWin()"
     if b:NERDTree.isWinTree()
         if self._where == 'v'
             vsplit
@@ -137,6 +138,7 @@ endfunction
 "   'keepopen': boolean (0 or 1); if true, the tree window will not be closed
 "   'stay': boolean (0 or 1); if true, remain in tree window after opening
 function! s:Opener.New(path, opts)
+    echomsg "  Opener.New(".a:path.str().", ".string(a:opts).")"
     let l:newOpener = copy(self)
 
     let l:newOpener._keepopen = nerdtree#has_opt(a:opts, 'keepopen')
@@ -233,6 +235,7 @@ endfunction
 
 " FUNCTION: Opener.open(target) {{{1
 function! s:Opener.open(target)
+    echomsg "  Opener.open(".a:target.path.str().")"
     if self._path.isDirectory
         call self._openDirectory(a:target)
         return
@@ -243,17 +246,20 @@ endfunction
 
 " FUNCTION: Opener._openFile() {{{1
 function! s:Opener._openFile()
+    echomsg "   Opener._openFile()"
     if !self._stay && !and(g:NERDTreeQuitOnOpen,1) && exists("b:NERDTreeZoomed") && b:NERDTreeZoomed
         call b:NERDTree.ui.toggleZoom()
     endif
 
     if self._reuseWindow()
+        echomsg "  _reuseWindow() is true"
         return
     endif
 
     call self._gotoTargetWin()
 
     if self._stay
+        echomsg "  _stay is true"
         silent call self._path.edit()
         call self._restoreCursorPos()
         return
@@ -314,6 +320,7 @@ endfunction
 "
 " return 1 if we were successful
 function! s:Opener._reuseWindow()
+    echomsg "   Opener._reuseWindow()"
     if empty(self._reuse)
         return 0
     endif

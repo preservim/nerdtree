@@ -98,6 +98,7 @@ endfunction
 "FUNCTION: s:activateFileNode() {{{1
 "handle the user activating a tree node
 function! s:activateFileNode(node)
+    echomsg "activateNode(".a:node.path.str().")"
     call a:node.activate({'reuse': 'all', 'where': 'p'})
 endfunction
 

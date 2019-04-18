@@ -290,6 +290,9 @@ endfunction
 
 " FUNCTION: Path.edit() {{{1
 function! s:Path.edit()
+    echomsg "   Path.edit()"
+    echomsg "    vim command: edit " . self.str({'format': 'Edit'})
+    echomsg ""
     exec "edit " . self.str({'format': 'Edit'})
 endfunction
 
