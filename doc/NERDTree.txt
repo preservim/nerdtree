@@ -1189,6 +1189,8 @@ Values: Any single character.
 Defaults:   Windows: ~ and +    Others: ▾ and ▸
 
 These characters indicate whether a directory is collapsible or expandable.
+Any leading or trailing spaces in these variables will be removed to preserve
+the integrity of the indentation calculation.
 
 They can be set to "\u00a0" to hide the arrows, but if you do this you may
 need to change the node delimiter. See |NERDTreeNodeDelimiter|. You cannot use
