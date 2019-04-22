@@ -77,6 +77,7 @@ else
     call s:initVariable("g:NERDTreeDirArrowExpandable", "+")
     call s:initVariable("g:NERDTreeDirArrowCollapsible", "~")
 endif
+
 call s:initVariable("g:NERDTreeCascadeOpenSingleChildDir", 1)
 call s:initVariable("g:NERDTreeCascadeSingleChildDir", 1)
 
