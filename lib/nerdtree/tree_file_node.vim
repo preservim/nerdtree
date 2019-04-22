@@ -11,7 +11,6 @@ let g:NERDTreeFileNode = s:TreeFileNode
 
 " FUNCTION: TreeFileNode.activate(...) {{{1
 function! s:TreeFileNode.activate(...)
-    echomsg " TreeFileNode.activate(".string(a:0 ? a:1 : {}).")"
     call self.open(a:0 ? a:1 : {})
 endfunction
 
@@ -222,7 +221,6 @@ endfunction
 
 " FUNCTION: TreeFileNode.open() {{{1
 function! s:TreeFileNode.open(...)
-    echomsg " TreeFileNode.open(".string(a:0 ? a:1 : {}).")"
     let opts = a:0 ? a:1 : {}
     let opener = g:NERDTreeOpener.New(self.path, opts)
     call opener.open(self)
