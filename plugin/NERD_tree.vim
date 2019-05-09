@@ -14,7 +14,7 @@
 if exists("loaded_nerd_tree")
     finish
 endif
-if v:version < 730
+if v:version < 703
     echoerr "NERDTree: this plugin requires vim >= 7.3. DOWNLOAD IT! You'll thank me later!"
     finish
 endif
