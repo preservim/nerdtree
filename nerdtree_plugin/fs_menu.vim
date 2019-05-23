@@ -37,6 +37,7 @@ endif
 if g:NERDTreePath.CopyingSupported()
     call NERDTreeAddMenuItem({'text': '(c)opy the current node', 'shortcut': 'c', 'callback': 'NERDTreeCopyNode'})
 endif
+call NERDTreeAddMenuItem({'text': 'copy (p)ath to clipboard', 'shortcut': 'p', 'callback': 'NERDTreeCopyPath'})
 
 if has("unix") || has("osx")
     call NERDTreeAddMenuItem({'text': '(l)ist the current node', 'shortcut': 'l', 'callback': 'NERDTreeListNode'})
@@ -362,6 +363,13 @@ function! NERDTreeCopyNode()
     endif
     let &shellslash = l:shellslash
     redraw!
+endfunction
+
+" FUNCTION: NERDTreeCopyPath() {{{1
+function! NERDTreeCopyPath()
+    let l:nodePath = g:NERDTreeFileNode.GetSelected().path.str()
+    let @+ = l:nodePath
+    call nerdtree#echo("The path (" . l:nodePath . ") was copied to your clipboard.")
 endfunction
 
 " FUNCTION: NERDTreeQuickLook() {{{1
