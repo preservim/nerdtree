@@ -226,7 +226,7 @@ function! s:Creator._nextBufferName()
     return name
 endfunction
 
-" FUNCTION: s:Creator._nextBufferNumber() {{{2
+" FUNCTION: s:Creator._nextBufferNumber() {{{1
 " the number to add to the nerd tree buffer name to make the buf name unique
 function! s:Creator._nextBufferNumber()
     if !exists("s:Creator._NextBufNum")
