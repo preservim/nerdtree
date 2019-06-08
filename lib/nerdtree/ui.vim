@@ -6,7 +6,7 @@
 let s:UI = {}
 let g:NERDTreeUI = s:UI
 
-" FUNCTION: s:UI.centerView() {{{2
+" FUNCTION: s:UI.centerView() {{{1
 " centers the nerd tree window around the cursor (provided the nerd tree
 " options permit)
 function! s:UI.centerView()

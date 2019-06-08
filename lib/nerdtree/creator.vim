@@ -96,7 +96,8 @@ function! s:Creator.createWindowTree(dir)
 
     "we need a unique name for each window tree buffer to ensure they are
     "all independent
-    exec g:NERDTreeCreatePrefix . " edit " . self._nextBufferName()
+    let t:NERDTreeBufName = self._nextBufferName()
+    exec g:NERDTreeCreatePrefix . " edit " . t:NERDTreeBufName
 
     call self._createNERDTree(path, "window")
     let b:NERDTree._previousBuf = bufnr(previousBuf)
@@ -218,14 +219,14 @@ function! s:Creator.New()
     return newCreator
 endfunction
 
-" FUNCTION: s:Creator._nextBufferName() {{{2
+" FUNCTION: s:Creator._nextBufferName() {{{1
 " returns the buffer name for the next nerd tree
 function! s:Creator._nextBufferName()
     let name = s:Creator.BufNamePrefix() . self._nextBufferNumber()
     return name
 endfunction
 
-" FUNCTION: s:Creator._nextBufferNumber() {{{2
+" FUNCTION: s:Creator._nextBufferNumber() {{{1
 " the number to add to the nerd tree buffer name to make the buf name unique
 function! s:Creator._nextBufferNumber()
     if !exists("s:Creator._NextBufNum")

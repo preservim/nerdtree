@@ -367,7 +367,7 @@ function! s:jumpToLastChild(node)
     call s:jumpToChild(a:node, 1)
 endfunction
 
-" FUNCTION: s:jumpToChild(node, last) {{{2
+" FUNCTION: s:jumpToChild(node, last) {{{1
 " Jump to the first or last child node at the same file system level.
 "
 " Args:
@@ -425,7 +425,7 @@ function! s:jumpToPrevSibling(node)
     call s:jumpToSibling(a:node, 0)
 endfunction
 
-" FUNCTION: s:jumpToSibling(node, forward) {{{2
+" FUNCTION: s:jumpToSibling(node, forward) {{{1
 " Move the cursor to the next or previous node at the same file system level.
 "
 " Args:
