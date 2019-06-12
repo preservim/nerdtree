@@ -153,7 +153,7 @@ endfunction
 
 "FUNCTION: s:NERDTree.IsOpen() {{{1
 function! s:NERDTree.IsOpen()
-    return s:NERDTree.GetWinNum() != -1
+    return s:NERDTree.GetWinNum() != -1 || bufname('%') =~# '^NERD_tree_\d\+$'
 endfunction
 
 "FUNCTION: s:NERDTree.isTabTree() {{{1
