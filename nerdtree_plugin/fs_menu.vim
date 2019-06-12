@@ -37,7 +37,7 @@ endif
 if g:NERDTreePath.CopyingSupported()
     call NERDTreeAddMenuItem({'text': '(c)opy the current node', 'shortcut': 'c', 'callback': 'NERDTreeCopyNode'})
 endif
-call NERDTreeAddMenuItem({'text': 'copy (p)ath to clipboard', 'shortcut': 'p', 'callback': 'NERDTreeCopyPath'})
+call NERDTreeAddMenuItem({'text': (has("clipboard")?'copy (p)ath to clipboard':'print (p)ath to screen'), 'shortcut': 'p', 'callback': 'NERDTreeCopyPath'})
 
 if has("unix") || has("osx")
     call NERDTreeAddMenuItem({'text': '(l)ist the current node', 'shortcut': 'l', 'callback': 'NERDTreeListNode'})
