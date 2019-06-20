@@ -1,4 +1,5 @@
 # Attention! Please Read!
+
 Please fill out **ALL the information** below so that the issue can be fully understood. Omitting information will delay the resolution of your issue. It will be labeled **`Needs More Info`**, and *may* be closed until there is enough information.
 
 Keep in mind that others may experience the same issue in the future. The better your information, the more likely they'll be able to answer they're own question.
@@ -32,8 +33,8 @@ After reading, and before submitting your issue, please remove this introductory
         - [ ] ryanoasis/vim-devicons
         - [ ] tiagofumo/vim-nerdtree-syntax-highlight
         - [ ] Xuyuanp/nerdtree-git-plugin
-        - [ ] Others: 
-- [ ] I've verified the issue occurs with only NERDTree installed.
+        - [ ] Others (specify): 
+    - [ ] I've verified the issue occurs with only NERDTree installed.
 
 #### Steps to Reproduce the Issue
 1. 
