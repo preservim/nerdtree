@@ -189,10 +189,13 @@ function! s:Creator._createTreeWin()
         let t:NERDTreeBufName = self._nextBufferName()
         silent! execute l:splitLocation . 'vertical ' . l:splitSize . ' new'
         silent! execute 'edit ' . t:NERDTreeBufName
+        silent! execute 'vertical resize '. l:splitSize
     else
         silent! execute l:splitLocation . 'vertical ' . l:splitSize . ' split'
         silent! execute 'buffer ' . t:NERDTreeBufName
     endif
+
+    setlocal winfixwidth
 
     call self._setCommonBufOptions()
 
@@ -200,7 +203,6 @@ function! s:Creator._createTreeWin()
         clearjumps
     endif
 
-    setlocal winfixwidth
 endfunction
 
 " FUNCTION: s:Creator._isBufHidden(nr) {{{1
