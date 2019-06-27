@@ -1,7 +1,7 @@
 # Change Log
 
 ### 5.1...
-- **`.1`**: Update Changelog and create PR Template (@PhilRunninger) #1006
+- **`.1`**: Update Changelog and create PR Template (@PhilRunninger) #1007
 - **`.0`**: Too many changes for one patch...
     - Refresh a dir_node if the file wasn't found in it, and look once more. (@PhilRunninger) #1005
     - Add a "copy path to clipboard" menu option (@PhilRunninger) #1002

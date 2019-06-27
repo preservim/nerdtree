@@ -17,6 +17,6 @@ Closes #
     - **.PATCH**: PR Title (Author) #PR Number
 
     ### 5.1...
-    - **.1**: Update Changelog and create PR Template (@PhilRunninger) #1006
+    - **.1**: Update Changelog and create PR Template (@PhilRunninger) #1007
     - **.0**: Too many changes for one patch...
     ```
