@@ -4,7 +4,7 @@ endif
 let g:loaded_nerdtree_autoload = 1
 
 function! nerdtree#version()
-    return '5.1.1'
+    return '5.1.2'
 endfunction
 
 " SECTION: General Functions {{{1
