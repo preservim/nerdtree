@@ -1,6 +1,7 @@
 # Change Log
 
 ### 5.1...
+- **`.3`**: Remove @mentions from PR template and change log. They weren't working. (PhilRunninger) #1009
 - **`.2`**: Fix NERDTree opening with the wrong size. (PhilRunninger) #1008
 - **`.1`**: Update Changelog and create PR Template (PhilRunninger) #1007
 - **`.0`**: Too many changes for one patch...
