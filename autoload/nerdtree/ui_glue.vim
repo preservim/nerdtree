@@ -14,6 +14,9 @@ function! nerdtree#ui_glue#createDefaultBindings()
     call NERDTreeAddKeyMap({ 'key': '<2-LeftMouse>', 'scope': "Bookmark", 'callback': s."activateBookmark" })
     call NERDTreeAddKeyMap({ 'key': '<2-LeftMouse>', 'scope': "all", 'callback': s."activateAll" })
 
+    call NERDTreeAddKeyMap({ 'key': g:NERDTreeMapUserDefOpen, 'scope':'FileNode', 'callback': s."defaultOpenFile"})
+    call NERDTreeAddKeyMap({ 'key': g:NERDTreeMapUserDefOpen, 'scope':'DirNode', 'callback': s."defaultOpenDir"})
+    call NERDTreeAddKeyMap({ 'key': g:NERDTreeMapUserDefOpen, 'scope':'Bookmark', 'callback': s."defaultOpenBookmark"})
 
     call NERDTreeAddKeyMap({ 'key': g:NERDTreeMapActivateNode, 'scope': "DirNode", 'callback': s."activateDirNode" })
     call NERDTreeAddKeyMap({ 'key': g:NERDTreeMapActivateNode, 'scope': "FileNode", 'callback': s."activateFileNode" })
@@ -76,6 +79,24 @@ endfunction
 "SECTION: Interface bindings {{{1
 "============================================================
 
+"FUNCTION: s:defaultOpenFile() {{{1
+" Open file node with the "default" key, initially <CR>.
+function! s:defaultOpenFile(node)
+    call a:node.activate(g:NERDTreeUserDefOpenArgs)
+endfunction
+
+"FUNCTION: s:defaultOpenDir() {{{1
+" Open directory node with the "default" key, initially <CR>.
+function! s:defaultOpenDir(node)
+    call s:activateDirNode(a:node, g:NERDTreeUserDefOpenArgs)
+endfunction
+
+"FUNCTION: s:defaultOpenBookmark() {{{1
+" Open bookmark node with the "default" key, initially <CR>.
+function! s:defaultOpenBookmark(node)
+    call a:node.activate(b:NERDTree, g:NERDTreeUserDefOpenArgs)
+endfunction
+
 "FUNCTION: s:activateAll() {{{1
 "handle the user activating the updir line
 function! s:activateAll()
@@ -84,15 +105,16 @@ function! s:activateAll()
     endif
 endfunction
 
-" FUNCTION: s:activateDirNode(directoryNode) {{{1
-function! s:activateDirNode(directoryNode)
+" FUNCTION: s:activateDirNode(directoryNode, options) {{{1
+" Open a directory with optional options
+function! s:activateDirNode(directoryNode, ...)
 
     if a:directoryNode.isRoot() && a:directoryNode.isOpen
         call nerdtree#echo('cannot close tree root')
         return
     endif
 
-    call a:directoryNode.activate()
+    call a:directoryNode.activate((a:0 > 0) ? a:1 : {})
 endfunction
 
 "FUNCTION: s:activateFileNode() {{{1
