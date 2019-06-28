@@ -107,8 +107,8 @@ endif
 call s:initVariable("g:NERDTreeWinPos", "left")
 call s:initVariable("g:NERDTreeWinSize", 31)
 
-if !exists('g:NERDTreeUserDefOpenArgs')
-    let g:NERDTreeUserDefOpenArgs = {'reuse': 'all', 'where': 'p'}
+if !exists('g:NERDTreeCustomOpenArgs')
+    let g:NERDTreeCustomOpenArgs = {'reuse': 'all', 'where': 'p'}
 endif
 
 "init the shell commands that will be used to copy nodes, and remove dir trees
@@ -125,7 +125,7 @@ endif
 
 
 "SECTION: Init variable calls for key mappings {{{2
-call s:initVariable("g:NERDTreeMapUserDefOpen", "<CR>")
+call s:initVariable("g:NERDTreeMapCustomOpen", "<CR>")
 call s:initVariable("g:NERDTreeMapActivateNode", "o")
 call s:initVariable("g:NERDTreeMapChangeRoot", "C")
 call s:initVariable("g:NERDTreeMapChdir", "cd")

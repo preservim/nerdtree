@@ -14,9 +14,9 @@ function! nerdtree#ui_glue#createDefaultBindings()
     call NERDTreeAddKeyMap({ 'key': '<2-LeftMouse>', 'scope': "Bookmark", 'callback': s."activateBookmark" })
     call NERDTreeAddKeyMap({ 'key': '<2-LeftMouse>', 'scope': "all", 'callback': s."activateAll" })
 
-    call NERDTreeAddKeyMap({ 'key': g:NERDTreeMapUserDefOpen, 'scope':'FileNode', 'callback': s."defaultOpenFile"})
-    call NERDTreeAddKeyMap({ 'key': g:NERDTreeMapUserDefOpen, 'scope':'DirNode', 'callback': s."defaultOpenDir"})
-    call NERDTreeAddKeyMap({ 'key': g:NERDTreeMapUserDefOpen, 'scope':'Bookmark', 'callback': s."defaultOpenBookmark"})
+    call NERDTreeAddKeyMap({ 'key': g:NERDTreeMapCustomOpen, 'scope':'FileNode', 'callback': s."defaultOpenFile"})
+    call NERDTreeAddKeyMap({ 'key': g:NERDTreeMapCustomOpen, 'scope':'DirNode', 'callback': s."defaultOpenDir"})
+    call NERDTreeAddKeyMap({ 'key': g:NERDTreeMapCustomOpen, 'scope':'Bookmark', 'callback': s."defaultOpenBookmark"})
 
     call NERDTreeAddKeyMap({ 'key': g:NERDTreeMapActivateNode, 'scope': "DirNode", 'callback': s."activateDirNode" })
     call NERDTreeAddKeyMap({ 'key': g:NERDTreeMapActivateNode, 'scope': "FileNode", 'callback': s."activateFileNode" })
@@ -82,19 +82,19 @@ endfunction
 "FUNCTION: s:defaultOpenFile() {{{1
 " Open file node with the "default" key, initially <CR>.
 function! s:defaultOpenFile(node)
-    call a:node.activate(g:NERDTreeUserDefOpenArgs)
+    call a:node.activate(g:NERDTreeCustomOpenArgs)
 endfunction
 
 "FUNCTION: s:defaultOpenDir() {{{1
 " Open directory node with the "default" key, initially <CR>.
 function! s:defaultOpenDir(node)
-    call s:activateDirNode(a:node, g:NERDTreeUserDefOpenArgs)
+    call s:activateDirNode(a:node, g:NERDTreeCustomOpenArgs)
 endfunction
 
 "FUNCTION: s:defaultOpenBookmark() {{{1
 " Open bookmark node with the "default" key, initially <CR>.
 function! s:defaultOpenBookmark(node)
-    call a:node.activate(b:NERDTree, g:NERDTreeUserDefOpenArgs)
+    call a:node.activate(b:NERDTree, g:NERDTreeCustomOpenArgs)
 endfunction
 
 "FUNCTION: s:activateAll() {{{1
