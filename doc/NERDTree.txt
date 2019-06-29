@@ -247,12 +247,12 @@ i........Open selected file in a split window.......................|NERDTree-i|
 gi.......Same as i, but leave the cursor on the NERDTree...........|NERDTree-gi|
 s........Open selected file in a new vsplit.........................|NERDTree-s|
 gs.......Same as s, but leave the cursor on the NERDTree...........|NERDTree-gs|
+<CR>.....User-definable custom open action.......................|NERDTree-<CR>|
 O........Recursively open the selected directory....................|NERDTree-O|
 x........Close the current nodes parent.............................|NERDTree-x|
 X........Recursively close all children of the current node.........|NERDTree-X|
 e........Edit the current dir.......................................|NERDTree-e|
 
-<CR>............same as |NERDTree-o|.
 double-click....same as |NERDTree-o|.
 middle-click....same as |NERDTree-i| for files, and |NERDTree-e| for dirs.
 
@@ -377,6 +377,15 @@ The same as |NERDTree-s| except that the cursor is not moved.
 The default key combo for this mapping is "g" + NERDTreeMapOpenVSplit (see
 |NERDTree-s|).
 
+------------------------------------------------------------------------------
+                                                                 *NERDTree-<CR>*
+Default key: <CR>
+Map setting: *NERDTreeMapCustomOpen*
+Applies to: files, directories, and bookmarks
+
+Performs a customized open action on the selected node. This allows the user
+to define an action that behaves differently from any of the standard
+keys. See |NERDTreeCustomOpenArgs| for more details.
 ------------------------------------------------------------------------------
                                                                     *NERDTree-O*
 Default key: O
@@ -753,6 +762,9 @@ the NERDTree. These settings should be set in your vimrc, using `:let`.
 |NERDTreeNodeDelimiter|       A single character that is used to separate the
                             file or directory name from the rest of the
                             characters on the line of text.
+
+|NERDTreeCustomOpenArgs|      A dictionary with values that control how a node
+                            is opened with the |NERDTree-<CR>| key.
 
 ------------------------------------------------------------------------------
 3.2. Customisation details                             *NERDTreeSettingsDetails*
@@ -1232,6 +1244,30 @@ when specifying by hex or Unicode. >
     let NERDTreeNodeDelimiter="\u00b7"   "middle dot
     let NERDTreeNodeDelimiter="\u00a0"   "non-breaking space
     let NERDTreeNodeDelimiter="😀"       "smiley face
+<
+------------------------------------------------------------------------------
+                                                        *NERDTreeCustomOpenArgs*
+Values: A dictionary, as described below
+Default: {'reuse': 'all', 'where': 'p'}
+
+This dictionary contains parameters used by |NERDTree-<CR>| to open a file.
+Setting these parameters allows you to perform actions that you cannot do with
+the standard keys. The default value matches what |NERDTree-o| does. To change
+that behavior, use these keys and values in the dictionary:
+
+'where':    specifies whether the node should be opened in a new split ("h" or
+            "v"), in a new tab ("t") or, in the last window ("p").
+'reuse':    if file is already shown in a window, jump there; takes values
+            "all", "currenttab", or empty
+'keepopen': boolean (0 or 1); if true, the tree window will not be closed
+'stay':     boolean (0 or 1); if true, remain in tree window after opening
+
+For example:
+To open a file in a new tab, >
+    let g:NERDTreeUserDefOpenArgs = {'where': 't'}
+<
+To open a file always in the current tab, >
+    let g:NERDTreeUserDefOpenArgs = {'reuse':'currenttab', 'where':'p'}
 <
 ==============================================================================
 4. The NERDTree API                                                *NERDTreeAPI*
