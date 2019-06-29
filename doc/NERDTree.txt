@@ -247,7 +247,7 @@ i........Open selected file in a split window.......................|NERDTree-i|
 gi.......Same as i, but leave the cursor on the NERDTree...........|NERDTree-gi|
 s........Open selected file in a new vsplit.........................|NERDTree-s|
 gs.......Same as s, but leave the cursor on the NERDTree...........|NERDTree-gs|
-<CR>.....User-definable custom open action.......................|NERDTree-<CR>|
+<CR>.....User-definable custom open action.........................|NERDTree-CR|
 O........Recursively open the selected directory....................|NERDTree-O|
 x........Close the current nodes parent.............................|NERDTree-x|
 X........Recursively close all children of the current node.........|NERDTree-X|
@@ -378,7 +378,7 @@ The default key combo for this mapping is "g" + NERDTreeMapOpenVSplit (see
 |NERDTree-s|).
 
 ------------------------------------------------------------------------------
-                                                                 *NERDTree-<CR>*
+                                                                   *NERDTree-CR*
 Default key: <CR>
 Map setting: *NERDTreeMapCustomOpen*
 Applies to: files, directories, and bookmarks
@@ -764,7 +764,7 @@ the NERDTree. These settings should be set in your vimrc, using `:let`.
                             characters on the line of text.
 
 |NERDTreeCustomOpenArgs|      A dictionary with values that control how a node
-                            is opened with the |NERDTree-<CR>| key.
+                            is opened with the |NERDTree-CR| key.
 
 ------------------------------------------------------------------------------
 3.2. Customisation details                             *NERDTreeSettingsDetails*
@@ -1250,7 +1250,7 @@ when specifying by hex or Unicode. >
 Values: A dictionary, as described below
 Default: {'reuse': 'all', 'where': 'p'}
 
-This dictionary contains parameters used by |NERDTree-<CR>| to open a file.
+This dictionary contains parameters used by |NERDTree-CR| to open a file.
 Setting these parameters allows you to perform actions that you cannot do with
 the standard keys. The default value matches what |NERDTree-o| does. To change
 that behavior, use these keys and values in the dictionary:
