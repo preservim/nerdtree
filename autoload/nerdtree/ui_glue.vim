@@ -14,9 +14,9 @@ function! nerdtree#ui_glue#createDefaultBindings()
     call NERDTreeAddKeyMap({ 'key': '<2-LeftMouse>', 'scope': "Bookmark", 'callback': s."activateBookmark" })
     call NERDTreeAddKeyMap({ 'key': '<2-LeftMouse>', 'scope': "all", 'callback': s."activateAll" })
 
-    call NERDTreeAddKeyMap({ 'key': g:NERDTreeMapCustomOpen, 'scope':'FileNode', 'callback': s."defaultOpenFile"})
-    call NERDTreeAddKeyMap({ 'key': g:NERDTreeMapCustomOpen, 'scope':'DirNode', 'callback': s."defaultOpenDir"})
-    call NERDTreeAddKeyMap({ 'key': g:NERDTreeMapCustomOpen, 'scope':'Bookmark', 'callback': s."defaultOpenBookmark"})
+    call NERDTreeAddKeyMap({ 'key': g:NERDTreeMapCustomOpen, 'scope':'FileNode', 'callback': s."customOpenFile"})
+    call NERDTreeAddKeyMap({ 'key': g:NERDTreeMapCustomOpen, 'scope':'DirNode', 'callback': s."customOpenDir"})
+    call NERDTreeAddKeyMap({ 'key': g:NERDTreeMapCustomOpen, 'scope':'Bookmark', 'callback': s."customOpenBookmark"})
 
     call NERDTreeAddKeyMap({ 'key': g:NERDTreeMapActivateNode, 'scope': "DirNode", 'callback': s."activateDirNode" })
     call NERDTreeAddKeyMap({ 'key': g:NERDTreeMapActivateNode, 'scope': "FileNode", 'callback': s."activateFileNode" })
@@ -79,21 +79,21 @@ endfunction
 "SECTION: Interface bindings {{{1
 "============================================================
 
-"FUNCTION: s:defaultOpenFile() {{{1
-" Open file node with the "default" key, initially <CR>.
-function! s:defaultOpenFile(node)
+"FUNCTION: s:customOpenFile() {{{1
+" Open file node with the "custom" key, initially <CR>.
+function! s:customOpenFile(node)
     call a:node.activate(g:NERDTreeCustomOpenArgs)
 endfunction
 
-"FUNCTION: s:defaultOpenDir() {{{1
-" Open directory node with the "default" key, initially <CR>.
-function! s:defaultOpenDir(node)
+"FUNCTION: s:customOpenDir() {{{1
+" Open directory node with the "custom" key, initially <CR>.
+function! s:customOpenDir(node)
     call s:activateDirNode(a:node, g:NERDTreeCustomOpenArgs)
 endfunction
 
-"FUNCTION: s:defaultOpenBookmark() {{{1
-" Open bookmark node with the "default" key, initially <CR>.
-function! s:defaultOpenBookmark(node)
+"FUNCTION: s:customOpenBookmark() {{{1
+" Open bookmark node with the "custom" key, initially <CR>.
+function! s:customOpenBookmark(node)
     call a:node.activate(b:NERDTree, g:NERDTreeCustomOpenArgs)
 endfunction
 
