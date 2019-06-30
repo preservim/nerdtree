@@ -1247,13 +1247,15 @@ when specifying by hex or Unicode. >
 <
 ------------------------------------------------------------------------------
                                                         *NERDTreeCustomOpenArgs*
-Values: A dictionary, as described below
-Default: {'reuse': 'all', 'where': 'p'}
+Values: A nested dictionary, as described below
+Default: {'file': {'reuse': 'all', 'where': 'p'}, 'dir': {}}
 
-This dictionary contains parameters used by |NERDTree-CR| to open a file.
-Setting these parameters allows you to perform actions that you cannot do with
-the standard keys. The default value matches what |NERDTree-o| does. To change
-that behavior, use these keys and values in the dictionary:
+This dictionary contains two keys, 'file' and 'dir', whose values each are
+another dictionary. The inner dictionary is a set of parameters used by
+|NERDTree-CR| to open a file or directory. Setting these parameters allows you
+to customize the way the node is opened. The default value matches what
+|NERDTree-o| does. To change that behavior, use these keys and
+values in the inner dictionaries:
 
 'where':    specifies whether the node should be opened in a new split ("h" or
             "v"), in a new tab ("t") or, in the last window ("p").
@@ -1263,11 +1265,11 @@ that behavior, use these keys and values in the dictionary:
 'stay':     boolean (0 or 1); if true, remain in tree window after opening
 
 For example:
-To open a file in a new tab, >
-    let g:NERDTreeUserDefOpenArgs = {'where': 't'}
+To open files and directories (creating a new NERDTree) in a new tab, >
+    {'file':{'where': 't'}, 'dir':{'where':'t'}}
 <
-To open a file always in the current tab, >
-    let g:NERDTreeUserDefOpenArgs = {'reuse':'currenttab', 'where':'p'}
+To open a file always in the current tab, and expand directories in place, >
+    {'file': {'reuse':'currenttab', 'where':'p', 'keepopen':1, 'stay':1}}
 <
 ==============================================================================
 4. The NERDTree API                                                *NERDTreeAPI*
