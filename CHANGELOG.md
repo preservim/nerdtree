@@ -1,5 +1,7 @@
 # Change Log
 
+### 5.2...
+- **`.0**: Expand functionality of <CR> mapping. (PhilRunninger) #1011
 ### 5.1...
 - **`.3`**: Remove @mentions from PR template and change log. They weren't working. (PhilRunninger) #1009
 - **`.2`**: Fix NERDTree opening with the wrong size. (PhilRunninger) #1008
