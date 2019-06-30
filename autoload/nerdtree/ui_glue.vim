@@ -82,19 +82,30 @@ endfunction
 "FUNCTION: s:customOpenFile() {{{1
 " Open file node with the "custom" key, initially <CR>.
 function! s:customOpenFile(node)
-    call a:node.activate(g:NERDTreeCustomOpenArgs)
+    call a:node.activate(s:initCustomOpenArgs().file)
 endfunction
 
 "FUNCTION: s:customOpenDir() {{{1
 " Open directory node with the "custom" key, initially <CR>.
 function! s:customOpenDir(node)
-    call s:activateDirNode(a:node, g:NERDTreeCustomOpenArgs)
+    call s:activateDirNode(a:node, s:initCustomOpenArgs().dir)
 endfunction
 
 "FUNCTION: s:customOpenBookmark() {{{1
 " Open bookmark node with the "custom" key, initially <CR>.
 function! s:customOpenBookmark(node)
-    call a:node.activate(b:NERDTree, g:NERDTreeCustomOpenArgs)
+    if node.isDirectory
+        call a:node.activate(b:NERDTree, s:initCustomOpenArgs().dir)
+    else
+        call a:node.activate(b:NERDTree, s:initCustomOpenArgs().file)
+    endif
+endfunction
+
+"FUNCTION: s:initCustomOpenArgs() {{{1
+" Make sure NERDTreeCustomOpenArgs has needed keys
+function! s:initCustomOpenArgs()
+    let g:NERDTreeCustomOpenArgs = get(g:, 'NERDTreeCustomOpenArgs', {})
+    return extend(g:NERDTreeCustomOpenArgs, {'file':{'reuse': 'all', 'where': 'p'}, 'dir':{}}, 'keep')
 endfunction
 
 "FUNCTION: s:activateAll() {{{1

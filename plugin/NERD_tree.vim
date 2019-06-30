@@ -107,10 +107,6 @@ endif
 call s:initVariable("g:NERDTreeWinPos", "left")
 call s:initVariable("g:NERDTreeWinSize", 31)
 
-if !exists('g:NERDTreeCustomOpenArgs')
-    let g:NERDTreeCustomOpenArgs = {'reuse': 'all', 'where': 'p'}
-endif
-
 "init the shell commands that will be used to copy nodes, and remove dir trees
 "
 "Note: the space after the command is important
