@@ -3,8 +3,18 @@ if exists("g:loaded_nerdtree_autoload")
 endif
 let g:loaded_nerdtree_autoload = 1
 
-function! nerdtree#version()
-    return '5.2.0'
+function! nerdtree#version(...)
+    let l:changelog = readfile(expand("<sfile>:p:h")."/CHANGELOG.md")
+    let l:line = 0
+    while l:line <= len(l:changelog)
+        if l:changelog[l:line] =~ '\d\+\.\d\+'
+            let l:text = substitute(l:changelog[l:line], '.*\(\d\+.\d\+\).*', '\1', '')
+            let l:text .= substitute(l:changelog[l:line+1], '^.\{-}\(\.\d\+\).\{-}:\(.*\)', a:0>0 ? '\1:\2' : '\1', '')
+            break
+        endif
+        let l:line += 1
+    endwhile
+    return l:text
 endfunction
 
 " SECTION: General Functions {{{1

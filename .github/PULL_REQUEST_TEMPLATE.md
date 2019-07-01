@@ -9,7 +9,6 @@ Closes #  <!-- Issue number this PR addresses. If none, remove this line. -->
     - [ ] `MAJOR` version when you make incompatible API changes
     - [ ] `MINOR` version when you add functionality in a backwards-compatible manner
     - [ ] `PATCH` version when you make backwards-compatible bug fixes
-- [ ] Update version number in [autoload/nerdtree.vim](https://github.com/scrooloose/nerdtree/blob/master/autoload/nerdtree.vim#L7).
 - [ ] Update [CHANGELOG.md](https://github.com/scrooloose/nerdtree/blob/master/CHANGELOG.md), following this format/example:
     ```
     #### MAJOR.MINOR...

@@ -23,7 +23,7 @@ After reading, and before submitting your issue, please remove this introductory
 #### Environment (for bug reports)
 - [ ] Operating System: 
 - [ ] Vim/Neovim version `:version`: 
-- [ ] NERDTree version `git rev-parse --short HEAD`: 
+- [ ] NERDTree version `:echo nerdtree#version(0)` or `git rev-parse --short HEAD`: 
 - [ ] A link to my [vimrc](), or
 - [ ] vimrc settings
     - [ ] NERDTree variables
