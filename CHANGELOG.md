@@ -1,12 +1,12 @@
 # Change Log
 
-### 5.2...
-- **`.0`**: Expand functionality of <CR> mapping. (PhilRunninger) #1011
-### 5.1...
-- **`.3`**: Remove @mentions from PR template and change log. They weren't working. (PhilRunninger) #1009
-- **`.2`**: Fix NERDTree opening with the wrong size. (PhilRunninger) #1008
-- **`.1`**: Update Changelog and create PR Template (PhilRunninger) #1007
-- **`.0`**: Too many changes for one patch...
+#### 5.2...
+- **.0**: Expand functionality of `<CR>` mapping. (PhilRunninger) #1011
+#### 5.1...
+- **.3**: Remove @mentions from PR template and change log. They weren't working. (PhilRunninger) #1009
+- **.2**: Fix NERDTree opening with the wrong size. (PhilRunninger) #1008
+- **.1**: Update Changelog and create PR Template (PhilRunninger) #1007
+- **.0**: Too many changes for one patch...
     - Refresh a dir_node if the file wasn't found in it, and look once more. (PhilRunninger) #1005
     - Add a "copy path to clipboard" menu option (PhilRunninger) #1002
     - Enable root refresh on "vim ." a different way than #999. (PhilRunninger) #1001
@@ -124,7 +124,7 @@
     - On windows default to + and ~ for expand/collapse directory symbols.
     - Lots more refactoring. Move a bunch of b: level vars into b:NERDTree and friends.
 
-### 5.0.0
+#### 5.0.0
 - Refactor the code significantly:
     * Break the classes out into their own files.
     * Make the majority of the code OO - previously large parts were effectively a tangle of "global" methods.
@@ -166,7 +166,7 @@
     - @AndrewRadev
     - @Twinside
 
-### 4.2.0
+#### 4.2.0
 - Add NERDTreeDirArrows option to make the UI use pretty arrow chars instead of the old +~| chars to define the tree structure (sickill)
 - shift the syntax highlighting out into its own syntax file (gnap)
 - add some mac specific options to the filesystem menu - for macvim only (andersonfreitas)
@@ -187,7 +187,7 @@
     - @wycats
     - me RAWR!
 
-### 4.1.0
+#### 4.1.0
 - features:
     - NERDTreeFind to reveal the node for the current buffer in the tree, see `|NERDTreeFind|`. This effectively merges the FindInNERDTree plugin (by Doug McInnes) into the script.
     - make NERDTreeQuitOnOpen apply to the t/T keymaps too. Thanks to Stefan Ritter and Rémi Prévost.
@@ -197,7 +197,7 @@
     - really fix window state restoring
     - fix some win32 path escaping issues. Thanks to Stephan Baumeister, Ricky, jfilip1024, and Chris Chambers
 
-### 4.0.0
+#### 4.0.0
 - add a new programmable menu system (see `:help NERDTreeMenu`).
 - add new APIs to add menus/menu-items to the menu system as well as custom key mappings to the NERD tree buffer (see `:help NERDTreeAPI`).
 - removed the old API functions
@@ -208,14 +208,14 @@
 - fix a bug where the cursor position/window size of the nerd tree buffer wasnt being stored on closing the window, thanks to Richard Hart.
 - fix a bug where NERDTreeMirror would mirror the wrong tree
 
-### 3.1.1
+#### 3.1.1
 - fix a bug where a non-listed no-name buffer was getting created every time the tree windows was created, thanks to Derek Wyatt and owen1
 - make `<CR>` behave the same as the `o` mapping
 - some helptag fixes in the doc, thanks @strull
 - fix a bug when using `:set nohidden` and opening a file where the previous buf was modified. Thanks @iElectric
 - other minor fixes
 
-### 3.1.0
+#### 3.1.0
 - New features:
     - add mappings to open files in a vsplit, see `:help NERDTree-s` and `:help NERDTree-gs`
     - make the statusline for the nerd tree window default to something hopefully more useful. See `:help 'NERDTreeStatusline'`
@@ -228,7 +228,7 @@
     - fix a bug where doing a `:cd` would cause `:NERDTreeToggle` to fail (thanks nach)
 
 
-### 3.0.1
+#### 3.0.1
 - Bugfixes:
     - fix bugs with :NERDTreeToggle and :NERDTreeMirror when `'hidden'` was not set
     - fix a bug where `:NERDTree <path>` would fail if `<path>` was relative and didnt start with a `./` or `../`  Thanks to James Kanze.
@@ -236,7 +236,7 @@
     - fix a bunch of small bugs with secondary trees
 - More insane refactoring.
 
-### 3.0.0
+#### 3.0.0
 - hijack netrw so that doing an `:edit <directory>`  will put a NERD tree in the window rather than a netrw browser. See :help 'NERDTreeHijackNetrw'
 - allow sharing of trees across tabs, see `:help :NERDTreeMirror`
 - remove "top" and "bottom" as valid settings for NERDTreeWinPos
