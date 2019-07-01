@@ -141,30 +141,7 @@
 - make the root note render prettier by truncating it at a path slash (gcmt)
 - remove NERDChristmasTree option - its always christmas now
 - add "cascade" open and closing for dirs containing only another single dir. See :help NERDTreeCascadeOpenSingleChildDir (pendulm)
-- Many other fixes, doc updates and contributions from:
-    - @actionshrimp
-    - @SchDen
-    - @egalpin
-    - @cperl82 - many small fixes
-    - @toiffel
-    - @WoLpH
-    - @handcraftedbits
-    - @devmanhinton
-    - @xiaodili
-    - @zhangoose
-    - @gastropoda
-    - @mixvin
-    - @alvan
-    - @lucascaton
-    - @kelaban
-    - @shanesmith
-    - @staeff
-    - @pendulm
-    - @stephenprater
-    - @franksort
-    - @agrussellknives
-    - @AndrewRadev
-    - @Twinside
+- Many other fixes, doc updates and contributions from: **actionshrimp**, **agrussellknives**, **alvan**, **AndrewRadev**, **cperl82** (*many small fixes*), **devmanhinton**, **egalpin**, **franksort**, **gastropoda**, **handcraftedbits**, **kelaban**, **lucascaton**, **mixvin**, **pendulm**, **SchDen**, **shanesmith**, **staeff**, **stephenprater**, **toiffel**, **Twinside**, **WoLpH**, **xiaodili**, **zhangoose**
 
 #### 4.2.0
 - Add NERDTreeDirArrows option to make the UI use pretty arrow chars instead of the old +~| chars to define the tree structure (sickill)
@@ -174,45 +151,34 @@
 - tweak the behaviour of :NERDTreeFind - see :help :NERDTreeFind for the new behaviour (benjamingeiger)
 - if no name is given to :Bookmark, make it default to the name of the target file/dir (minyoung)
 - use `file` completion when doing copying, create, and move operations (EvanDotPro)
-- lots of misc bug fixes from:
-    - @paddyoloughlin
-    - @sdewald
-    - @camthompson
-    - @Vitaly
-    - @Bogdanov
-    - @AndrewRadev
-    - @mathias
-    - @scottstvnsn
-    - @kml
-    - @wycats
-    - me RAWR!
+- lots of misc bug fixes from: **AndrewRadev**, **Bogdanov**, **camthompson**, **kml**, **mathias**, **paddyoloughlin**, **scottstvnsn**, **sdewald**, **Vitaly**, **wycats**, me RAWR!
 
 #### 4.1.0
 - features:
-    - NERDTreeFind to reveal the node for the current buffer in the tree, see `|NERDTreeFind|`. This effectively merges the FindInNERDTree plugin (by Doug McInnes) into the script.
-    - make NERDTreeQuitOnOpen apply to the t/T keymaps too. Thanks to Stefan Ritter and Rémi Prévost.
-    - truncate the root node if wider than the tree window. Thanks to Victor Gonzalez.
+    - NERDTreeFind to reveal the node for the current buffer in the tree, see `|NERDTreeFind|`. This effectively merges the FindInNERDTree plugin (by **Doug McInnes**) into the script.
+    - make NERDTreeQuitOnOpen apply to the t/T keymaps too. Thanks to **Stefan Ritter** and **Rémi Prévost**.
+    - truncate the root node if wider than the tree window. Thanks to **Victor Gonzalez**.
 
 - bugfixes:
     - really fix window state restoring
-    - fix some win32 path escaping issues. Thanks to Stephan Baumeister, Ricky, jfilip1024, and Chris Chambers
+    - fix some win32 path escaping issues. Thanks to **Stephan Baumeister**, **Ricky**, **jfilip1024**, and **Chris Chambers**.
 
 #### 4.0.0
 - add a new programmable menu system (see `:help NERDTreeMenu`).
 - add new APIs to add menus/menu-items to the menu system as well as custom key mappings to the NERD tree buffer (see `:help NERDTreeAPI`).
 - removed the old API functions
 - added a mapping to maximize/restore the size of nerd tree window, thanks to Guillaume Duranceau for the patch. See :help NERDTree-A for details.
-- fix a bug where secondary nerd trees (netrw hijacked trees) and NERDTreeQuitOnOpen didnt play nicely, thanks to Curtis Harvey.
-- fix a bug where the script ignored directories whose name ended in a dot, thanks to Aggelos Orfanakos for the patch.
-- fix a bug when using the x mapping on the tree root, thanks to Bryan Venteicher for the patch.
-- fix a bug where the cursor position/window size of the nerd tree buffer wasnt being stored on closing the window, thanks to Richard Hart.
+- fix a bug where secondary nerd trees (netrw hijacked trees) and NERDTreeQuitOnOpen didnt play nicely, thanks to **Curtis Harvey**.
+- fix a bug where the script ignored directories whose name ended in a dot, thanks to **Aggelos Orfanakos** for the patch.
+- fix a bug when using the x mapping on the tree root, thanks to **Bryan Venteicher** for the patch.
+- fix a bug where the cursor position/window size of the nerd tree buffer wasnt being stored on closing the window, thanks to **Richard Hart**.
 - fix a bug where NERDTreeMirror would mirror the wrong tree
 
 #### 3.1.1
-- fix a bug where a non-listed no-name buffer was getting created every time the tree windows was created, thanks to Derek Wyatt and owen1
+- fix a bug where a non-listed no-name buffer was getting created every time the tree windows was created, thanks to **Derek Wyatt** and **owen1**
 - make `<CR>` behave the same as the `o` mapping
-- some helptag fixes in the doc, thanks @strull
-- fix a bug when using `:set nohidden` and opening a file where the previous buf was modified. Thanks @iElectric
+- some helptag fixes in the doc, thanks **strull**.
+- fix a bug when using `:set nohidden` and opening a file where the previous buf was modified. Thanks **iElectric**.
 - other minor fixes
 
 #### 3.1.0
@@ -220,19 +186,19 @@
     - add mappings to open files in a vsplit, see `:help NERDTree-s` and `:help NERDTree-gs`
     - make the statusline for the nerd tree window default to something hopefully more useful. See `:help 'NERDTreeStatusline'`
 - Bugfixes:
-    - make the hijack netrw functionality work when vim is started with `vim <some dir>` (thanks to Alf Mikula for the patch).
-    - fix a bug where the CWD wasnt being changed for some operations even when NERDTreeChDirMode==2 (thanks to Lucas S. Buchala)
-    - add -bar to all the nerd tree :commands so they can chain with other :commands (thanks to tpope)
-    - fix bugs when ignorecase was set (thanks to nach)
-    - fix a bug with the relative path code (thanks to nach)
-    - fix a bug where doing a `:cd` would cause `:NERDTreeToggle` to fail (thanks nach)
+    - make the hijack netrw functionality work when vim is started with `vim <some dir>` (thanks to **Alf Mikula** for the patch).
+    - fix a bug where the CWD wasnt being changed for some operations even when NERDTreeChDirMode==2 (thanks to **Lucas S. Buchala**)
+    - add -bar to all the nerd tree :commands so they can chain with other :commands (thanks to **tpope**)
+    - fix bugs when ignorecase was set (thanks to **nach**)
+    - fix a bug with the relative path code (thanks to **nach**)
+    - fix a bug where doing a `:cd` would cause `:NERDTreeToggle` to fail (thanks **nach**)
 
 
 #### 3.0.1
 - Bugfixes:
     - fix bugs with :NERDTreeToggle and :NERDTreeMirror when `'hidden'` was not set
-    - fix a bug where `:NERDTree <path>` would fail if `<path>` was relative and didnt start with a `./` or `../`  Thanks to James Kanze.
-    - make the `q` mapping work with secondary (`:e <dir>`  style) trees, thanks to jamessan
+    - fix a bug where `:NERDTree <path>` would fail if `<path>` was relative and didnt start with a `./` or `../`  Thanks to **James Kanze**.
+    - make the `q` mapping work with secondary (`:e <dir>`  style) trees, thanks to **jamessan**
     - fix a bunch of small bugs with secondary trees
 - More insane refactoring.
 
