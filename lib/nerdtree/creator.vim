@@ -13,9 +13,6 @@ let g:NERDTreeCreator = s:Creator
 
 " FUNCTION: s:Creator._bindMappings() {{{1
 function! s:Creator._bindMappings()
-    "make <cr> do the same as the activate node mapping
-    nnoremap <silent> <buffer> <cr> :call nerdtree#ui_glue#invokeKeyMap(g:NERDTreeMapActivateNode)<cr>
-
     call g:NERDTreeKeyMap.BindAll()
 
     command! -buffer -nargs=? Bookmark :call nerdtree#ui_glue#bookmarkNode('<args>')
