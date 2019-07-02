@@ -5,6 +5,7 @@ let g:loaded_nerdtree_autoload = 1
 
 function! nerdtree#version(...)
     let l:changelog = readfile(expand("<sfile>:p:h")."/CHANGELOG.md")
+    let l:text = 'Unknown'
     let l:line = 0
     while l:line <= len(l:changelog)
         if l:changelog[l:line] =~ '\d\+\.\d\+'
