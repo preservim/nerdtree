@@ -22,9 +22,8 @@ After reading, and before submitting your issue, please remove this introductory
 
 #### Environment (for bug reports)
 - [ ] Operating System: 
-- [ ] Vim/Neovim version `:version`: 
-- [ ] NERDTree version `:echo nerdtree#version(0)` or `git rev-parse --short HEAD`: 
-- [ ] A link to my [vimrc](), or
+- [ ] Vim/Neovim version `:echo v:version`: 
+- [ ] NERDTree version, found on 1st line in NERDTree quickhelp `?`: 
 - [ ] vimrc settings
     - [ ] NERDTree variables
     ```vim
