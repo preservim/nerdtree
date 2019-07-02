@@ -1,6 +1,7 @@
 # Change Log
 
 #### 5.2...
+- **.1**: Fix nerdtree#version() on Windows. (PhilRunninger) N/A
 - **.0**: Expand functionality of `<CR>` mapping. (PhilRunninger) #1011
 #### 5.1...
 - **.3**: Remove @mentions from PR template and change log. They weren't working. (PhilRunninger) #1009

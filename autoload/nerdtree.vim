@@ -3,8 +3,9 @@ if exists("g:loaded_nerdtree_autoload")
 endif
 let g:loaded_nerdtree_autoload = 1
 
+let s:rootNERDTreePath = resolve(expand("<sfile>:p:h:h"))
 function! nerdtree#version(...)
-    let l:changelog = readfile(expand("<sfile>:p:h")."/CHANGELOG.md")
+    let l:changelog = readfile(join([s:rootNERDTreePath, "CHANGELOG.md"], nerdtree#slash()))
     let l:text = 'Unknown'
     let l:line = 0
     while l:line <= len(l:changelog)
@@ -20,6 +21,19 @@ endfunction
 
 " SECTION: General Functions {{{1
 "============================================================
+
+function! nerdtree#slash()
+
+    if nerdtree#runningWindows()
+        if exists('+shellslash') && &shellslash
+            return '/'
+        endif
+
+        return '\'
+    endif
+
+    return '/'
+endfunction
 
 "FUNCTION: nerdtree#and(x,y) {{{2
 " Implements and() function for Vim <= 7.2
