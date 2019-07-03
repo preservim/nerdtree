@@ -1,6 +1,7 @@
 # Change Log
 
 #### 5.2...
+- **.3**: Fix `<CR>` key map on the bookmark (lkebin) #1014
 - **.2**: Make Enter work on the `.. ( up a dir )` line (PhilRunninger) #1013
 - **.1**: Fix nerdtree#version() on Windows. (PhilRunninger) N/A
 - **.0**: Expand functionality of `<CR>` mapping. (PhilRunninger) #1011
