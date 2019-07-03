@@ -95,7 +95,7 @@ endfunction
 "FUNCTION: s:customOpenBookmark() {{{1
 " Open bookmark node with the "custom" key, initially <CR>.
 function! s:customOpenBookmark(node)
-    if node.isDirectory
+    if a:node.path.isDirectory
         call a:node.activate(b:NERDTree, s:initCustomOpenArgs().dir)
     else
         call a:node.activate(b:NERDTree, s:initCustomOpenArgs().file)
