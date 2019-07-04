@@ -254,7 +254,7 @@ endfunction
 " gets the line number of the root node
 function! s:UI.getRootLineNum()
     let rootLine = 1
-    while getline(rootLine) !~# '^\(/\|<\)'
+    while rootLine <= line('$') && getline(rootLine) !~# '^\(/\|<\)'
         let rootLine = rootLine + 1
     endwhile
     return rootLine
