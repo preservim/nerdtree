@@ -1,6 +1,7 @@
 # Change Log
 
 #### 5.2...
+- **.6**: In CHANGELOG.md and PR template, make reference to PR a true HTML link. [#1017](https://github.com/scrooloose/nerdtree/pull/1017)
 - **.5**: Use `:mode` instead of `:redraw!` when updating menu. (PhilRunninger) [#1016](https://github.com/scrooloose/nerdtree/pull/1016)
 - **.4**: When searching for root line num, stop at end of file. (PhilRunninger) [#1015](https://github.com/scrooloose/nerdtree/pull/1015)
 - **.3**: Fix `<CR>` key map on the bookmark (lkebin) [#1014](https://github.com/scrooloose/nerdtree/pull/1014)
