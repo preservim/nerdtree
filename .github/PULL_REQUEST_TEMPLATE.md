@@ -12,9 +12,9 @@ Closes #  <!-- Issue number this PR addresses. If none, remove this line. -->
 - [ ] Update [CHANGELOG.md](https://github.com/scrooloose/nerdtree/blob/master/CHANGELOG.md), following this format/example:
     ```
     #### MAJOR.MINOR...
-    - **.PATCH**: PR Title (Author) #PR Number
+    - **.PATCH**: PR Title (Author) [#PR Number](link to PR)
 
     #### 5.1...
-    - **.1**: Update Changelog and create PR Template (PhilRunninger) #1007
+    - **.1**: Update Changelog and create PR Template (PhilRunninger) [#1007](https://github.com/scrooloose/nerdtree/pull/1007)
     - **.0**: Too many changes for one patch...
     ```
