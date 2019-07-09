@@ -19,30 +19,52 @@ if !exists("g:NERDTreeAutoDeleteBuffer")
     let g:NERDTreeAutoDeleteBuffer = 0
 endif
 
-call NERDTreeAddMenuItem({'text': '(a)dd a childnode', 'shortcut': 'a', 'callback': 'NERDTreeAddNode'})
-call NERDTreeAddMenuItem({'text': '(m)ove the current node', 'shortcut': 'm', 'callback': 'NERDTreeMoveNode'})
-call NERDTreeAddMenuItem({'text': '(d)elete the current node', 'shortcut': 'd', 'callback': 'NERDTreeDeleteNode'})
+if get(g:, 'nerdtree_fs_menu_add_node', 1)
+    call NERDTreeAddMenuItem({'text': '(a)dd a childnode', 'shortcut': 'a', 'callback': 'NERDTreeAddNode'})
+endif
+if get(g:, 'nerdtree_fs_menu_move_node', 1)
+    call NERDTreeAddMenuItem({'text': '(m)ove the current node', 'shortcut': 'm', 'callback': 'NERDTreeMoveNode'})
+endif
+if get(g:, 'nerdtree_fs_menu_delete_node', 1)
+    call NERDTreeAddMenuItem({'text': '(d)elete the current node', 'shortcut': 'd', 'callback': 'NERDTreeDeleteNode'})
+endif
 
 if has("gui_mac") || has("gui_macvim") || has("mac")
-    call NERDTreeAddMenuItem({'text': '(r)eveal in Finder the current node', 'shortcut': 'r', 'callback': 'NERDTreeRevealInFinder'})
-    call NERDTreeAddMenuItem({'text': '(o)pen the current node with system editor', 'shortcut': 'o', 'callback': 'NERDTreeExecuteFile'})
-    call NERDTreeAddMenuItem({'text': '(q)uicklook the current node', 'shortcut': 'q', 'callback': 'NERDTreeQuickLook'})
+    if get(g:, 'nerdtree_fs_menu_mac_reveal_in_finder', 1)
+        call NERDTreeAddMenuItem({'text': '(r)eveal in Finder the current node', 'shortcut': 'r', 'callback': 'NERDTreeRevealInFinder'})
+    endif
+    if get(g:, 'nerdtree_fs_menu_mac_open_with_system_editro', 1)
+        call NERDTreeAddMenuItem({'text': '(o)pen the current node with system editor', 'shortcut': 'o', 'callback': 'NERDTreeExecuteFile'})
+    endif
+    if get(g:, 'nerdtree_fs_menu_mac_quicklook_node', 1)
+        call NERDTreeAddMenuItem({'text': '(q)uicklook the current node', 'shortcut': 'q', 'callback': 'NERDTreeQuickLook'})
+    endif
 endif
 
 if executable("xdg-open")
-    call NERDTreeAddMenuItem({'text': '(r)eveal the current node in file manager', 'shortcut': 'r', 'callback': 'NERDTreeRevealFileLinux'})
-    call NERDTreeAddMenuItem({'text': '(o)pen the current node with system editor', 'shortcut': 'o', 'callback': 'NERDTreeExecuteFileLinux'})
+    if get(g:, 'nerdtree_fs_menu_reveal_in_file_manager', 1)
+        call NERDTreeAddMenuItem({'text': '(r)eveal the current node in file manager', 'shortcut': 'r', 'callback': 'NERDTreeRevealFileLinux'})
+    endif
+    if get(g:, 'nerdtree_fs_menu_open_with_system_editor', 1)
+        call NERDTreeAddMenuItem({'text': '(o)pen the current node with system editor', 'shortcut': 'o', 'callback': 'NERDTreeExecuteFileLinux'})
+    endif
 endif
 
-if g:NERDTreePath.CopyingSupported()
-    call NERDTreeAddMenuItem({'text': '(c)opy the current node', 'shortcut': 'c', 'callback': 'NERDTreeCopyNode'})
+if get(g:, 'nerdtree_fs_menu_copy_node', 1)
+    if g:NERDTreePath.CopyingSupported()
+        call NERDTreeAddMenuItem({'text': '(c)opy the current node', 'shortcut': 'c', 'callback': 'NERDTreeCopyNode'})
+    endif
 endif
-call NERDTreeAddMenuItem({'text': (has("clipboard")?'copy (p)ath to clipboard':'print (p)ath to screen'), 'shortcut': 'p', 'callback': 'NERDTreeCopyPath'})
+if get(g:, 'nerdtree_fs_menu_copy_path', 1)
+    call NERDTreeAddMenuItem({'text': (has("clipboard")?'copy (p)ath to clipboard':'print (p)ath to screen'), 'shortcut': 'p', 'callback': 'NERDTreeCopyPath'})
+endif
 
-if has("unix") || has("osx")
-    call NERDTreeAddMenuItem({'text': '(l)ist the current node', 'shortcut': 'l', 'callback': 'NERDTreeListNode'})
-else
-    call NERDTreeAddMenuItem({'text': '(l)ist the current node', 'shortcut': 'l', 'callback': 'NERDTreeListNodeWin32'})
+if get(g:, 'nerdtree_fs_menu_list_node', 1)
+    if has("unix") || has("osx")
+        call NERDTreeAddMenuItem({'text': '(l)ist the current node', 'shortcut': 'l', 'callback': 'NERDTreeListNode'})
+    else
+        call NERDTreeAddMenuItem({'text': '(l)ist the current node', 'shortcut': 'l', 'callback': 'NERDTreeListNodeWin32'})
+    endif
 endif
 
 "FUNCTION: s:inputPrompt(action){{{1
