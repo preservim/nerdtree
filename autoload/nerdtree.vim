@@ -22,14 +22,14 @@ endfunction
 " SECTION: General Functions {{{1
 "============================================================
 
-"FUNCTION: nerdtree#redraw([bang])
-" Redraws the screen (Neovim uses the mode statement). bang is an optional
-" parameter if present and TRUE, use redraw!, not redraw.
-function! nerdtree#redraw(...)
+"FUNCTION: nerdtree#redraw(bang)
+" Redraws the screen (Neovim uses the mode statement). If bang is TRUE, use
+" redraw! instead of redraw.
+function! nerdtree#redraw(bang)
     if has('nvim')
         mode
     else
-        if a:0 > 0 && a:1
+        if a:bang
             redraw!
         else
             redraw
