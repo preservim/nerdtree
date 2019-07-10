@@ -154,13 +154,17 @@ function! nerdtree#deprecated(func, ...)
     endif
 endfunction
 
-" FUNCTION: nerdtree#exec(cmd) {{{2
+" FUNCTION: nerdtree#exec(cmd, [ignoreAll]) {{{2
 " Same as :exec cmd but with eventignore set for the duration
 " to disable the autocommands used by NERDTree (BufEnter,
 " BufLeave and VimEnter)
-function! nerdtree#exec(cmd)
+function! nerdtree#exec(cmd, ...)
     let old_ei = &ei
-    set ei=BufEnter,BufLeave,VimEnter
+    if a:0 > 0
+        set ei=all
+    " else
+    "     set ei=BufEnter,BufLeave,VimEnter
+    endif
     exec a:cmd
     let &ei = old_ei
 endfunction
