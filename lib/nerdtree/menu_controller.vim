@@ -31,7 +31,7 @@ function! s:MenuController.showMenu()
         let l:done = 0
 
         while !l:done
-            mode
+            call nerdtree#redraw()
             call self._echoPrompt()
 
             let l:key = nr2char(getchar())
@@ -42,7 +42,7 @@ function! s:MenuController.showMenu()
 
         " Redraw when "Ctrl-C" or "Esc" is received.
         if !l:done || self.selection == -1
-            redraw!
+            call nerdtree#redraw()
         endif
     endtry
 

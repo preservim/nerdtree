@@ -22,6 +22,14 @@ endfunction
 " SECTION: General Functions {{{1
 "============================================================
 
+function! nerdtree#redraw()
+    if has('nvim')
+        mode
+    else
+        redraw!
+    endif
+endfunction
+
 function! nerdtree#slash()
 
     if nerdtree#runningWindows()
