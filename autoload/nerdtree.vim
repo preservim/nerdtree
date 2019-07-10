@@ -232,7 +232,7 @@ endfunction
 "Args:
 "msg: the message to echo
 function! nerdtree#echo(msg)
-    redraw
+    call nerdtree#redraw(0)
     echomsg empty(a:msg) ? "" : ("NERDTree: " . a:msg)
 endfunction
 
