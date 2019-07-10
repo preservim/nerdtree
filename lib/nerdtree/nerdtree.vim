@@ -44,14 +44,14 @@ function! s:NERDTree.Close()
         let l:useWinId = exists('*win_getid') && exists('*win_gotoid')
 
         if winnr() == s:NERDTree.GetWinNum()
-            call nerdtree#exec("wincmd p")
+            call nerdtree#exec("wincmd p", 1)
             let l:activeBufOrWin = l:useWinId ? win_getid() : bufnr("")
-            call nerdtree#exec("wincmd p")
+            call nerdtree#exec("wincmd p", 1)
         else
             let l:activeBufOrWin = l:useWinId ? win_getid() : bufnr("")
         endif
 
-        call nerdtree#exec(s:NERDTree.GetWinNum() . " wincmd w")
+        call nerdtree#exec(s:NERDTree.GetWinNum() . " wincmd w", 1)
         close
         if l:useWinId
             call nerdtree#exec("call win_gotoid(" . l:activeBufOrWin . ")")
@@ -98,7 +98,7 @@ endfunction
 "Places the cursor in the nerd tree window
 function! s:NERDTree.CursorToTreeWin()
     call g:NERDTree.MustBeOpen()
-    call nerdtree#exec(g:NERDTree.GetWinNum() . "wincmd w")
+    call nerdtree#exec(g:NERDTree.GetWinNum() . "wincmd w", 1)
 endfunction
 
 " Function: s:NERDTree.ExistsForBuffer()   {{{1

@@ -360,7 +360,7 @@ function! s:UI.saveScreenState()
     let self._screenState['oldPos'] = getpos(".")
     let self._screenState['oldTopLine'] = line("w0")
     let self._screenState['oldWindowSize']= winwidth("")
-    call nerdtree#exec(win . "wincmd w")
+    call nerdtree#exec(win . "wincmd w", 1)
 endfunction
 
 " FUNCTION: s:UI.setShowHidden(val) {{{1
