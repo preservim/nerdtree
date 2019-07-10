@@ -78,7 +78,7 @@ function! s:inputPrompt(action)
     endif
 
     if g:NERDTreeMenuController.isMinimal()
-        redraw! " Clear the menu
+        call nerdtree#redraw(1) " Clear the menu
         return minimal . " "
     else
         let divider = "=========================================================="
@@ -185,7 +185,7 @@ function! NERDTreeAddNode()
             call newTreeNode.putCursorHere(1, 0)
         endif
 
-        redraw!
+        call nerdtree#redraw(1)
     catch /^NERDTree/
         call nerdtree#echoWarning("Node Not Created.")
     endtry
@@ -234,7 +234,7 @@ function! NERDTreeMoveNode()
 
         call curNode.putCursorHere(1, 0)
 
-        redraw!
+        call nerdtree#redraw(1)
     catch /^NERDTree/
         call nerdtree#echoWarning("Node Not Renamed.")
     endtry
@@ -272,7 +272,7 @@ function! NERDTreeDeleteNode()
                 call s:promptToDelBuffer(bufnum, prompt)
             endif
 
-            redraw!
+            call nerdtree#redraw(1)
         catch /^NERDTree/
             call nerdtree#echoWarning("Could not remove node")
         endtry
@@ -362,7 +362,7 @@ function! NERDTreeCopyNode()
         call nerdtree#echo("Copy aborted.")
     endif
     let &shellslash = l:shellslash
-    redraw!
+    call nerdtree#redraw(1)
 endfunction
 
 " FUNCTION: NERDTreeCopyPath() {{{1
