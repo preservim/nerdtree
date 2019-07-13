@@ -220,7 +220,7 @@ function! s:Opener._newVSplit()
     endif
 
     call nerdtree#exec('wincmd p', 1)
-    vnew
+    call nerdtree#exec('vnew', 1)
 
     let l:currentWindowNumber = winnr()
 
