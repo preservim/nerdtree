@@ -31,7 +31,11 @@ function! s:MenuController.showMenu()
         let l:done = 0
 
         while !l:done
-            call nerdtree#redraw(1)
+            if has('nvim')
+                mode
+            else
+                redraw!
+            endif
             call self._echoPrompt()
 
             let l:key = nr2char(getchar())
@@ -42,7 +46,7 @@ function! s:MenuController.showMenu()
 
         " Redraw when "Ctrl-C" or "Esc" is received.
         if !l:done || self.selection == -1
-            call nerdtree#redraw(1)
+            redraw!
         endif
     endtry
 
@@ -64,7 +68,7 @@ function! s:MenuController._echoPrompt()
 
         echo "Menu: [" . join(shortcuts, ",") . "] (" . navHelp . " or shortcut): "
     else
-        echo "NERDTree Menu. " . navHelp . " . or the shortcuts indicated"
+        echo "NERDTree Menu. " . navHelp . ", or the shortcuts indicated"
         echo "========================================================="
 
         for i in range(0, len(self.menuItems)-1)

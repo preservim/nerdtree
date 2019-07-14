@@ -254,7 +254,7 @@ function! s:deleteBookmark(bookmark)
 
     let l:choices = "&Yes\n&No"
 
-    echo | call nerdtree#redraw(0)
+    echo | redraw
     let l:selection = confirm(l:message, l:choices, 1, 'Warning')
 
     if l:selection != 1
@@ -266,7 +266,7 @@ function! s:deleteBookmark(bookmark)
         call a:bookmark.delete()
         silent call b:NERDTree.root.refresh()
         call b:NERDTree.render()
-        echo | call nerdtree#redraw(0)
+        echo | redraw
     catch /^NERDTree/
         call nerdtree#echoWarning('could not remove bookmark')
     endtry
@@ -577,7 +577,7 @@ function! s:refreshRoot()
     call nerdtree#exec(g:NERDTree.GetWinNum() . "wincmd w")
     call b:NERDTree.root.refresh()
     call b:NERDTree.render()
-    call nerdtree#redraw(0)
+    redraw
     call nerdtree#exec(l:curWin . "wincmd w")
     call nerdtree#echo("")
 endfunction
