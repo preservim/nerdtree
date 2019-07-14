@@ -31,7 +31,11 @@ function! s:MenuController.showMenu()
         let l:done = 0
 
         while !l:done
-            mode
+            if has('nvim')
+                mode
+            else
+                redraw!
+            endif
             call self._echoPrompt()
 
             let l:key = nr2char(getchar())
