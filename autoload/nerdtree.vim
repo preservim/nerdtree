@@ -22,24 +22,8 @@ endfunction
 " SECTION: General Functions {{{1
 "============================================================
 
-"FUNCTION: nerdtree#redraw(bang)
-" Redraws the screen (Neovim uses the mode statement). If bang is TRUE, use
-" redraw! instead of redraw.
-function! nerdtree#redraw(bang)
-    if has('nvim')
-        mode
-    else
-        if a:bang
-            redraw!
-        else
-            redraw
-        endif
-    endif
-endfunction
-
-"FUNCTION: nerdtree#slash()
-" Returns the directory separator based on OS and &shellslash
 function! nerdtree#slash()
+
     if nerdtree#runningWindows()
         if exists('+shellslash') && &shellslash
             return '/'
@@ -232,7 +216,7 @@ endfunction
 "Args:
 "msg: the message to echo
 function! nerdtree#echo(msg)
-    call nerdtree#redraw(0)
+    redraw
     echomsg empty(a:msg) ? "" : ("NERDTree: " . a:msg)
 endfunction
 
