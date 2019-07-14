@@ -68,7 +68,7 @@ function! s:MenuController._echoPrompt()
 
         echo "Menu: [" . join(shortcuts, ",") . "] (" . navHelp . " or shortcut): "
     else
-        echo "NERDTree Menu. " . navHelp . " . or the shortcuts indicated"
+        echo "NERDTree Menu. " . navHelp . ", or the shortcuts indicated"
         echo "========================================================="
 
         for i in range(0, len(self.menuItems)-1)
