@@ -1,7 +1,9 @@
 # Change Log
 
 #### 5.2...
-- **.7**: Suppress events for intermediate window/tab/buffer changes [#1026](https://github.com/scrooloose/nerdtree/pull/1026)
+- **.9**: Suppress events for intermediate window/tab/buffer changes [#1026](https://github.com/scrooloose/nerdtree/pull/1026)
+- **.8**: Revert [#1019](https://github.com/scrooloose/nerdtree/pull/1019) to fix nvim artifacts and flickering. (PhilRunninger) [#1021](https://github.com/scrooloose/nerdtree/pull/1021)
+- **.7**: Use :mode only in neovim. MacVim still needs to use :redraw! [#1019](https://github.com/scrooloose/nerdtree/pull/1019)
 - **.6**: In CHANGELOG.md and PR template, make reference to PR a true HTML link. [#1017](https://github.com/scrooloose/nerdtree/pull/1017)
 - **.5**: Use `:mode` instead of `:redraw!` when updating menu. (PhilRunninger) [#1016](https://github.com/scrooloose/nerdtree/pull/1016)
 - **.4**: When searching for root line num, stop at end of file. (PhilRunninger) [#1015](https://github.com/scrooloose/nerdtree/pull/1015)
