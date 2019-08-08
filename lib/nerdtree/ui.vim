@@ -340,7 +340,7 @@ function! s:UI.restoreScreenState()
     if !has_key(self, '_screenState')
         return
     endif
-    exec("silent vertical resize " . self._screenState['oldWindowSize'])
+    call nerdtree#exec("silent vertical resize " . self._screenState['oldWindowSize'], 1)
 
     let old_scrolloff=&scrolloff
     let &scrolloff=0
@@ -506,10 +506,10 @@ endfunction
 function! s:UI.toggleZoom()
     if exists("b:NERDTreeZoomed") && b:NERDTreeZoomed
         let size = exists("b:NERDTreeOldWindowSize") ? b:NERDTreeOldWindowSize : g:NERDTreeWinSize
-        exec "silent vertical resize ". size
+        call nerdtree#exec("silent vertical resize ". size,1)
         let b:NERDTreeZoomed = 0
     else
-        exec "vertical resize ". get(g:, 'NERDTreeWinSizeMax', '')
+        call nerdtree#exec("vertical resize ". get(g:, 'NERDTreeWinSizeMax', ''),1)
         let b:NERDTreeZoomed = 1
     endif
 endfunction
