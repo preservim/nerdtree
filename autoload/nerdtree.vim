@@ -157,12 +157,9 @@ endfunction
 " FUNCTION: nerdtree#exec(cmd, ignoreAll) {{{2
 " Same as :exec cmd but, if ignoreAll is TRUE, set eventignore=all for the duration
 function! nerdtree#exec(cmd, ignoreAll)
-    " call writefile([strftime("%F %T").','.a:cmd.','.(a:0>0).','.bufname("")], expand("~/.vim/NT588.log"),"a")
     let old_ei = &ei
     if a:ignoreAll
         set ei=all
-    " else
-    "     set ei=BufEnter,BufLeave,VimEnter
     endif
     exec a:cmd
     let &ei = old_ei
