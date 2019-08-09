@@ -3,8 +3,7 @@ name: "Bug Report"
 about: "NERDTree is misbehaving? Tell us about it."
 labels: bug
 ---
-<!--
-Attention! Please Read!
+<!-- Attention! Please Read!
 
 Please fill out ALL the information below so that the issue can be fully
 understood. Omitting information will delay the resolution of your issue. It
@@ -12,8 +11,8 @@ will be labeled "Needs More Info", and may be closed until there is enough
 information.
 
 Keep in mind that others may have the same question in the future. The better
-your information, the more likely they'll be able to help themselves.
--->
+your information, the more likely they'll be able to help themselves. -->
+
 #### Self-Diagnosis
 <!-- Check the boxes after creating the issue, or use [x]. -->
 - [ ] I have searched the [issues](https://github.com/scrooloose/nerdtree/issues) for an answer to my question.
