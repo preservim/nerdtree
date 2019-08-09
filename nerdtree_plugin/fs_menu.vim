@@ -114,14 +114,14 @@ function! s:promptToDelBuffer(bufnum, msg)
             let l:listedBufferCount = 0
         endif
         if l:listedBufferCount > 1
-            exec "tabdo windo if winbufnr(0) == " . a:bufnum . " | exec ':bnext! ' | endif"
+            call nerdtree#exec("tabdo windo if winbufnr(0) == " . a:bufnum . " | exec ':bnext! ' | endif", 1)
         else
-            exec "tabdo windo if winbufnr(0) == " . a:bufnum . " | exec ':enew! ' | endif"
+            call nerdtree#exec("tabdo windo if winbufnr(0) == " . a:bufnum . " | exec ':enew! ' | endif", 1)
         endif
-        exec "tabnext " . s:originalTabNumber
-        exec s:originalWindowNumber . "wincmd w"
+        call nerdtree#exec("tabnext " . s:originalTabNumber, 1)
+        call nerdtree#exec(s:originalWindowNumber . "wincmd w", 1)
         " 3. We don't need a previous buffer anymore
-        exec "bwipeout! " . a:bufnum
+        call nerdtree#exec("bwipeout! " . a:bufnum, 0)
     endif
 endfunction
 
@@ -141,17 +141,17 @@ function! s:renameBuffer(bufNum, newNodeName, isDirectory)
         let editStr = g:NERDTreePath.New(a:newNodeName).str({'format': 'Edit'})
     endif
     " 1. ensure that a new buffer is loaded
-    exec "badd " . quotedFileName
+    call nerdtree#exec("badd " . quotedFileName, 1)
     " 2. ensure that all windows which display the just deleted filename
     " display a buffer for a new filename.
     let s:originalTabNumber = tabpagenr()
     let s:originalWindowNumber = winnr()
-    exec "tabdo windo if winbufnr(0) == " . a:bufNum . " | exec ':e! " . editStr . "' | endif"
-    exec "tabnext " . s:originalTabNumber
-    exec s:originalWindowNumber . "wincmd w"
+    call nerdtree#exec("tabdo windo if winbufnr(0) == " . a:bufNum . " | exec ':e! " . editStr . "' | endif", 1)
+    call nerdtree#exec("tabnext " . s:originalTabNumber, 1)
+    call nerdtree#exec(s:originalWindowNumber . "wincmd w", 1)
     " 3. We don't need a previous buffer anymore
     try
-        exec "confirm bwipeout " . a:bufNum
+        call nerdtree#exec("confirm bwipeout " . a:bufNum, 0)
     catch
         " This happens when answering Cancel if confirmation is needed. Do nothing.
     endtry

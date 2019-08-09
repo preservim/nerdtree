@@ -574,11 +574,11 @@ function! s:refreshRoot()
     call nerdtree#echo("Refreshing the root node. This could take a while...")
 
     let l:curWin = winnr()
-    call nerdtree#exec(g:NERDTree.GetWinNum() . "wincmd w")
+    call nerdtree#exec(g:NERDTree.GetWinNum() . "wincmd w", 1)
     call b:NERDTree.root.refresh()
     call b:NERDTree.render()
     redraw
-    call nerdtree#exec(l:curWin . "wincmd w")
+    call nerdtree#exec(l:curWin . "wincmd w", 1)
     call nerdtree#echo("")
 endfunction
 
