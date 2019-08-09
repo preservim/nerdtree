@@ -9,12 +9,11 @@ Closes #  <!-- Issue number this PR addresses. If none, remove this line. -->
     - [ ] `MAJOR` version when you make incompatible API changes
     - [ ] `MINOR` version when you add functionality in a backwards-compatible manner
     - [ ] `PATCH` version when you make backwards-compatible bug fixes
-- [ ] Update [CHANGELOG.md](https://github.com/scrooloose/nerdtree/blob/master/CHANGELOG.md), following this format/example:
-    ```
-    #### MAJOR.MINOR...
-    - **.PATCH**: PR Title (Author) [#PR Number](link to PR)
+- [ ] Update [CHANGELOG.md](https://github.com/scrooloose/nerdtree/blob/master/CHANGELOG.md).
+<!--
+Use this format in CHANGELOG.md. Use the existing text as a template.
 
-    #### 5.1...
-    - **.1**: Update Changelog and create PR Template (PhilRunninger) [#1007](https://github.com/scrooloose/nerdtree/pull/1007)
-    - **.0**: Too many changes for one patch...
-    ```
+#### MAJOR.MINOR...
+- **.PATCH**: PR Title (Author) [#PR Number](link to PR)
+
+-->
