@@ -506,10 +506,10 @@ endfunction
 function! s:UI.toggleZoom()
     if exists("b:NERDTreeZoomed") && b:NERDTreeZoomed
         let size = exists("b:NERDTreeOldWindowSize") ? b:NERDTreeOldWindowSize : g:NERDTreeWinSize
-        call nerdtree#exec("silent vertical resize ". size,1)
+        call nerdtree#exec("silent vertical resize ". size, 1)
         let b:NERDTreeZoomed = 0
     else
-        call nerdtree#exec("vertical resize ". get(g:, 'NERDTreeWinSizeMax', ''),1)
+        call nerdtree#exec("vertical resize ". get(g:, 'NERDTreeWinSizeMax', ''), 1)
         let b:NERDTreeZoomed = 1
     endif
 endfunction

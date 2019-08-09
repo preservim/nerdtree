@@ -54,9 +54,9 @@ function! s:NERDTree.Close()
         call nerdtree#exec(s:NERDTree.GetWinNum() . " wincmd w", 1)
         call nerdtree#exec("close", 1)
         if l:useWinId
-            call nerdtree#exec("call win_gotoid(" . l:activeBufOrWin . ")",0)
+            call nerdtree#exec("call win_gotoid(" . l:activeBufOrWin . ")", 0)
         else
-            call nerdtree#exec(bufwinnr(l:activeBufOrWin) . " wincmd w",0)
+            call nerdtree#exec(bufwinnr(l:activeBufOrWin) . " wincmd w", 0)
         endif
     else
         close

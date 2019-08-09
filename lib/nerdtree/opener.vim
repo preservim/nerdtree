@@ -203,7 +203,7 @@ function! s:Opener._newSplit()
         let size = exists("b:NERDTreeOldWindowSize") ? b:NERDTreeOldWindowSize : g:NERDTreeWinSize
         call nerdtree#exec(there, 1)
         exec("silent ". splitMode ." resize ". size)
-        call nerdtree#exec('wincmd p',0)
+        call nerdtree#exec('wincmd p', 0)
     endif
 
     " Restore splitmode settings
@@ -228,7 +228,7 @@ function! s:Opener._newVSplit()
     call g:NERDTree.CursorToTreeWin()
     execute 'silent vertical resize ' . l:winwidth
 
-    call nerdtree#exec(l:currentWindowNumber . 'wincmd w',0)
+    call nerdtree#exec(l:currentWindowNumber . 'wincmd w', 0)
 endfunction
 
 " FUNCTION: Opener.open(target) {{{1
@@ -321,7 +321,7 @@ function! s:Opener._reuseWindow()
     "check the current tab for the window
     let winnr = bufwinnr('^' . self._path.str() . '$')
     if winnr != -1
-        call nerdtree#exec(winnr . "wincmd w",0)
+        call nerdtree#exec(winnr . "wincmd w", 0)
         call self._checkToCloseTree(0)
         return 1
     endif
@@ -336,7 +336,7 @@ function! s:Opener._reuseWindow()
         call self._checkToCloseTree(1)
         call nerdtree#exec(tabnr . 'tabnext', 1)
         let winnr = bufwinnr('^' . self._path.str() . '$')
-        call nerdtree#exec(winnr . "wincmd w",0)
+        call nerdtree#exec(winnr . "wincmd w", 0)
         return 1
     endif
 

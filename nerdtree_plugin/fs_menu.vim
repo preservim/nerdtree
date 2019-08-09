@@ -114,12 +114,12 @@ function! s:promptToDelBuffer(bufnum, msg)
             let l:listedBufferCount = 0
         endif
         if l:listedBufferCount > 1
-            call nerdtree#exec("tabdo windo if winbufnr(0) == " . a:bufnum . " | exec ':bnext! ' | endif",1)
+            call nerdtree#exec("tabdo windo if winbufnr(0) == " . a:bufnum . " | exec ':bnext! ' | endif", 1)
         else
-            call nerdtree#exec("tabdo windo if winbufnr(0) == " . a:bufnum . " | exec ':enew! ' | endif",1)
+            call nerdtree#exec("tabdo windo if winbufnr(0) == " . a:bufnum . " | exec ':enew! ' | endif", 1)
         endif
-        call nerdtree#exec("tabnext " . s:originalTabNumber,1)
-        call nerdtree#exec(s:originalWindowNumber . "wincmd w",1)
+        call nerdtree#exec("tabnext " . s:originalTabNumber, 1)
+        call nerdtree#exec(s:originalWindowNumber . "wincmd w", 1)
         " 3. We don't need a previous buffer anymore
         call nerdtree#exec("bwipeout! " . a:bufnum, 0)
     endif
@@ -141,7 +141,7 @@ function! s:renameBuffer(bufNum, newNodeName, isDirectory)
         let editStr = g:NERDTreePath.New(a:newNodeName).str({'format': 'Edit'})
     endif
     " 1. ensure that a new buffer is loaded
-    call nerdtree#exec("badd " . quotedFileName,1)
+    call nerdtree#exec("badd " . quotedFileName, 1)
     " 2. ensure that all windows which display the just deleted filename
     " display a buffer for a new filename.
     let s:originalTabNumber = tabpagenr()
