@@ -407,15 +407,26 @@ endfunction
 " FUNCTION: Path.getSortKey() {{{1
 " returns a key used in compare function for sorting
 function! s:Path.getSortKey()
-    let l:ascending = index(g:NERDTreeSortOrder,'[[timestamp]]')
-    let l:descending = index(g:NERDTreeSortOrder,'[[-timestamp]]')
-    if !exists("self._sortKey") || g:NERDTreeSortOrder !=# g:NERDTreeOldSortOrder || l:ascending >= 0 || l:descending >= 0
-        let self._sortKey = [self.getSortOrderIndex()]
+    if !exists("self._sortKey") || g:NERDTreeSortOrder !=# g:NERDTreeOldSortOrder
+        " Look for file metadata tags: [[timestamp]], [[extension]], [[size]]
+        let metadata = []
+        for tag in g:NERDTreeSortOrder
+            if tag =~? '\[\[-\?timestamp\]\]'
+                call add(metadata, (tag =~ '-' ? -1 : 1) * getftime(self.str()))
+            elseif tag =~? '\[\[-\?size\]\]'
+                call add(metadata, (tag =~ '-' ? -1 : 1) * getfsize(self.str()))
+            elseif tag =~? '\[\[extension\]\]'
+                let extension = matchstr(self.getLastPathComponent(0), '[^.]\+\.\zs[^.]\+$')
+                call add(metadata, extension == '' ? nr2char(str2nr('0x10ffff',16)) : extension)
+            endif
+        endfor
 
-        if l:descending >= 0
-            call insert(self._sortKey, -getftime(self.str()), l:descending == 0 ? 0 : len(self._sortKey))
-        elseif l:ascending >= 0
-            call insert(self._sortKey, getftime(self.str()), l:ascending == 0 ? 0 : len(self._sortKey))
+        if g:NERDTreeSortOrder[0] =~ '\[\[.*\]\]'
+            " Apply tags' sorting first if specified first.
+            let self._sortKey = metadata + [self.getSortOrderIndex()]
+        else
+            " Otherwise, do regex grouping first.
+            let self._sortKey = [self.getSortOrderIndex()] + metadata
         endif
 
         let path = self.getLastPathComponent(1)
