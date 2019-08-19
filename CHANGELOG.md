@@ -1,5 +1,7 @@
 # Change Log
 
+#### 5.3...
+- **.0**: Add file extension and size to sorting capabilities [#1029](https://github.com/scrooloose/nerdtree/pull/1029)
 #### 5.2...
 - **.9**: Suppress events for intermediate window/tab/buffer changes [#1026](https://github.com/scrooloose/nerdtree/pull/1026)
 - **.8**: Revert [#1019](https://github.com/scrooloose/nerdtree/pull/1019) to fix nvim artifacts and flickering. (PhilRunninger) [#1021](https://github.com/scrooloose/nerdtree/pull/1021)

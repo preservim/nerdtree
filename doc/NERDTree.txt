@@ -1043,28 +1043,31 @@ window.  Use one of the follow lines for this setting: >
 Values: a list of regular expressions.
 Default: ['\/$', '*', '\.swp$',  '\.bak$', '\~$']
 
-This setting is a list of regular expressions which are used to specify the
-order of nodes under their parent.
+This setting is a list of regular expressions which are used to group or sort
+the nodes under their parent.
 
 For example, if the setting is: >
     ['\.vim$', '\.c$', '\.h$', '*', 'foobar']
 <
-then all .vim files will be placed at the top, followed by all .c files then
+then all .vim files will be grouped at the top, followed by all .c files then
 all .h files. All files containing the string 'foobar' will be placed at the
 end.  The star is a special flag: it tells the script that every node that
 doesn't match any of the other regexps should be placed here.
 
-If no star is present in NERDTreeSortOrder then one is automatically
-appended to the array.
+If no star is present in NERDTreeSortOrder, then one is automatically
+appended to the end of the list.
 
 The regex '\/$' should be used to match directory nodes.
 
-A special flag can be used to sort by the modification timestamps of files and
-directories. It is either '[[timestamp]]' for ascending, or '[[-timestamp]]'
-for descending. If placed at the beginning of the list, files and directories
-are sorted by timestamp, and then by the remaining items in the sort order
-list. If this flag is in any other position of the list, timestamp sorting is
-done secondarily. See examples 4, 5, and 6 below.
+Files can also be sorted by 1) the modification timestamp, 2) the size, or 3)
+the extension. Directories are always sorted by name. To accomplish this, the
+following special flags are used:
+  [[timestamp]]   [[-timestamp]]   [[size]]   [[-size]]   [[extension]]
+The hyphen specifies a descending sort; extensions are sorted in ascending
+order only. If placed at the beginning of the list, files are sorted according
+to these flags first, and then grouped by the remaining items in the list. If
+the flags are in any other position of the list, this special sorting is done
+secondarily. See examples 4, 5, and 6 below.
 
 After this sorting is done, the files in each group are sorted alphabetically.
 
@@ -1072,20 +1075,20 @@ Examples: >
     (1) ['*', '\/$']
     (2) []
     (3) ['\/$', '\.rb$', '\.php$', '*', '\.swp$',  '\.bak$', '\~$']
-    (4) ['[[timestamp]]']
-    (5) ['\/$', '*', '[[-timestamp]]']
-    (6) ['\.md$', '\.c$', '[[-timestamp]]', '*']
+    (4) ['[[-size]]']
+    (5) ['\/$', '*', '[[timestamp]]']
+    (6) ['foo','\/$','[[extension]]']
 <
 1. Directories will appear last, everything else will appear above.
 2. Everything will simply appear in alphabetical order.
 3. Dirs will appear first, then ruby and php. Swap files, bak files and vim
    backup files will appear last with everything else preceding them.
-4. All files and directories are sorted by timestamp, oldest first. If any
-   files have identical timestamps, they are sorted alphabetically.
-5. Directories are first, newest to oldest, then everything else, newest to
-   oldest.
-6. Markdown files first, followed by C source files, then everything else.
-   Each group is shown newest to oldest.
+4. Everything is sorted by size, largest to smallest, with directories
+   considered to have size 0 bytes.
+5. Directories will appear first alphabetically, followed by files, sorted by
+   timestamp, oldest first.
+6. Files and directories matching 'foo' first, followed by other directories,
+   then all other files. Each section of files is sorted by file extension.
 
 ------------------------------------------------------------------------------
                                                             *NERDTreeStatusline*
