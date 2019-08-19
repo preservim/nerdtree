@@ -413,24 +413,12 @@ function! s:Path.getSortKey()
         let metadata = []
         for tag in g:NERDTreeSortOrder
             if tag =~? '\[\[-\?timestamp\]\]'
-                if self.isDirectory
-                    call add(metadata, 0)
-                else
-                    call add(metadata, (tag =~ '-' ? -1 : 1) * getftime(self.str()))
-                endif
+                let metadata += [self.isDirectory ? 0 : getftime(self.str()) * (tag =~ '-' ? -1 : 1)]
             elseif tag =~? '\[\[-\?size\]\]'
-                if self.isDirectory
-                    call add(metadata, 0)
-                else
-                    call add(metadata, (tag =~ '-' ? -1 : 1) * getfsize(self.str()))
-                endif
+                let metadata += [self.isDirectory ? 0 : getfsize(self.str()) * (tag =~ '-' ? -1 : 1)]
             elseif tag =~? '\[\[extension\]\]'
-                if self.isDirectory
-                    call add(metadata, '')
-                else
-                    let extension = matchstr(self.getLastPathComponent(0), '[^.]\+\.\zs[^.]\+$')
-                    call add(metadata, extension == '' ? nr2char(str2nr('0x10ffff',16)) : extension)
-                endif
+                let extension = matchstr(self.getLastPathComponent(0), '[^.]\+\.\zs[^.]\+$')
+                let metadata += [self.isDirectory ? '' : (extension == '' ? nr2char(str2nr('0x10ffff',16)) : extension)]
             endif
         endfor
 
