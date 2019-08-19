@@ -380,7 +380,8 @@ endfunction
 function! s:Path.getSortOrderIndex()
     let i = 0
     while i < len(g:NERDTreeSortOrder)
-        if  self.getLastPathComponent(1) =~# g:NERDTreeSortOrder[i]
+        if g:NERDTreeSortOrder[i] !~? '\[\[-\?\(timestamp\|size\|extension\)\]\]' &&
+        \ self.getLastPathComponent(1) =~# g:NERDTreeSortOrder[i]
             return i
         endif
         let i = i + 1
