@@ -1,6 +1,7 @@
 # Change Log
 
 #### 5.3...
+- **.1**: Fix the `e` key mapping to use netrw if desired [#1031](https://github.com/scrooloose/nerdtree/pull/1031)
 - **.0**: Add file extension and size to sorting capabilities [#1029](https://github.com/scrooloose/nerdtree/pull/1029)
 #### 5.2...
 - **.9**: Suppress events for intermediate window/tab/buffer changes [#1026](https://github.com/scrooloose/nerdtree/pull/1026)
