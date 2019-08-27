@@ -525,7 +525,6 @@ endfunction
 function! s:TreeDirNode.openExplorer()
     execute "wincmd p"
     execute "edit ".self.path.str({'format':'Edit'})
-    " call self.open({'where': 'p'})
 endfunction
 
 " FUNCTION: TreeDirNode.openInNewTab(options) {{{1
