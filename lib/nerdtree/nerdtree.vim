@@ -20,7 +20,7 @@ function! s:NERDTree.changeRoot(node)
     call self.root.open()
 
     "change dir to the dir of the new root if instructed to
-    if g:NERDTreeChDirMode ==# 2
+    if g:NERDTreeChDirMode >= 2
         call self.root.path.changeToDir()
     endif
 

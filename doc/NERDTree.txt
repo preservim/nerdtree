@@ -871,6 +871,9 @@ the CWD is changed whenever the tree root is changed. For example, if the CWD
 is /home/marty/foobar and you make the node for /home/marty/foobar/baz the new
 root then the CWD will become /home/marty/foobar/baz.
 
+If the set to 3, then it behaves the same as if set to 2, and the CWD is
+changed whenever changing tabs to whatever the tree root is on that tab.
+
 ------------------------------------------------------------------------------
                                                    *NERDTreeHighlightCursorline*
 Values: 0 or 1.

@@ -183,6 +183,13 @@ if g:NERDTreeHijackNetrw
     augroup END
 endif
 
+if g:NERDTreeChDirMode == 3
+    augroup NERDTreeChDirOnTabSwitch
+        " autocmd TabEnter * if g:NERDTree.ExistsForTab()|execute "cd ".g:NERDTree.ForCurrentTab().getRoot().path.str({'format':'Cd'})|endif
+        autocmd TabEnter * if g:NERDTree.ExistsForTab()|call g:NERDTree.ForCurrentTab().getRoot().path.changeToDir()|endif
+    augroup END
+endif
+
 " SECTION: Public API {{{1
 "============================================================
 function! NERDTreeAddMenuItem(options)
