@@ -851,7 +851,7 @@ above nodes would then be sorted like this: >
 ------------------------------------------------------------------------------
                                                              *NERDTreeChDirMode*
 
-Values: 0, 1 or 2.
+Values: 0, 1, 2, or 3.
 Default: 0.
 
 Use this setting to tell the script when (if at all) to change the current
