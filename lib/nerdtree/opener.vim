@@ -171,10 +171,19 @@ function! s:Opener._newSplit()
     let right= g:NERDTreeWinPos ==# "left"
     let below=0
 
+    let onlyOneWin = (winnr("$") ==# 1)
+
+    " Special case when multiple window exists and user prefers to
+    " split relative to the previous window
+    if !onlyOneWin && exists('g:NERDTreeSplitFromPreviousWindow')
+                \ && g:NERDTreeSplitFromPreviousWindow == 1
+        let back = "wincmd p"
+    endif
+
+    echom back
     " Attempt to go to adjacent window
     call nerdtree#exec(back, 1)
 
-    let onlyOneWin = (winnr("$") ==# 1)
 
     " If no adjacent window, set splitright and splitbelow appropriately
     if onlyOneWin
