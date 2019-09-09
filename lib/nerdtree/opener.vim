@@ -71,9 +71,9 @@ endfunction
 function! s:Opener._gotoTargetWin()
     if b:NERDTree.isWinTree()
         if self._where == 'v'
-            vsplit
+            call self._newVSplit()
         elseif self._where == 'h'
-            split
+            call self._newSplit()
         elseif self._where == 't'
             tabnew
         endif
@@ -155,7 +155,9 @@ endfunction
 function! s:Opener._newSplit()
     let onlyOneWin = (winnr("$") ==# 1)
     let savesplitright = &splitright
-    let &splitright = onlyOneWin ?  (g:NERDTreeWinPos ==# "left") : (g:NERDTreeWinPos !=# "left")
+    if onlyOneWin
+        let &splitright = (g:NERDTreeWinPos ==# "left")
+    endif
 
     " Open the new window
     try
@@ -184,7 +186,10 @@ endfunction
 function! s:Opener._newVSplit()
     let l:winwidth = winwidth('.')
 
-    if winnr('$') == 1
+    let onlyOneWin = (winnr("$") ==# 1)
+    let savesplitright = &splitright
+    if onlyOneWin
+        let &splitright = (g:NERDTreeWinPos ==# "left")
         let l:winwidth = g:NERDTreeWinSize
     endif
 
@@ -198,6 +203,7 @@ function! s:Opener._newVSplit()
     execute 'silent vertical resize ' . l:winwidth
 
     call nerdtree#exec(l:currentWindowNumber . 'wincmd w', 0)
+    let &splitright=savesplitright
 endfunction
 
 " FUNCTION: Opener.open(target) {{{1
