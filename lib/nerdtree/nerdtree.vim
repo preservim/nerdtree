@@ -148,12 +148,19 @@ function! s:NERDTree.GetWinNum()
         return bufwinnr(t:NERDTreeBufName)
     endif
 
+    " If WindowTree, there is no t:NERDTreeBufName variable. Search all windows.
+    for w in range(1,winnr('$'))
+        if bufname(winbufnr(w)) =~# '^' . g:NERDTreeCreator.BufNamePrefix() . '\d\+$'
+            return w
+        endif
+    endfor
+
     return -1
 endfunction
 
 "FUNCTION: s:NERDTree.IsOpen() {{{1
 function! s:NERDTree.IsOpen()
-    return s:NERDTree.GetWinNum() != -1 || bufname('%') =~# '^' . g:NERDTreeCreator.BufNamePrefix() . '\d\+$'
+    return s:NERDTree.GetWinNum() != -1
 endfunction
 
 "FUNCTION: s:NERDTree.isTabTree() {{{1
