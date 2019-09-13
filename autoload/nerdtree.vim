@@ -22,6 +22,10 @@ endfunction
 " SECTION: General Functions {{{1
 "============================================================
 
+" FUNCTION: nerdtree#slash() {{{1
+" Return the path separator used by the underlying file system.  Special
+" consideration is taken for the use of the 'shellslash' option on Windows
+" systems.
 function! nerdtree#slash()
 
     if nerdtree#runningWindows()

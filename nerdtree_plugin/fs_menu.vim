@@ -161,7 +161,7 @@ endfunction
 function! NERDTreeAddNode()
     let curDirNode = g:NERDTreeDirNode.GetSelected()
     let prompt = s:inputPrompt("add")
-    let newNodeName = input(prompt, curDirNode.path.str() . g:NERDTreePath.Slash(), "file")
+    let newNodeName = input(prompt, curDirNode.path.str() . nerdtree#slash(), "file")
 
     if newNodeName ==# ''
         call nerdtree#echo("Node Creation Aborted.")

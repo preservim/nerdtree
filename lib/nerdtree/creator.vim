@@ -247,7 +247,7 @@ function! s:Creator._pathForString(str)
 
         "hack to get an absolute path if a relative path is given
         if dir =~# '^\.'
-            let dir = getcwd() . g:NERDTreePath.Slash() . dir
+            let dir = getcwd() . nerdtree#slash() . dir
         endif
         let dir = g:NERDTreePath.Resolve(dir)
 

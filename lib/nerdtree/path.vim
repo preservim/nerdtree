@@ -25,10 +25,10 @@ function! s:Path.AbsolutePathFor(pathStr)
     if l:prependWorkingDir
         let l:result = getcwd()
 
-        if l:result[-1:] == s:Path.Slash()
+        if l:result[-1:] == nerdtree#slash()
             let l:result = l:result . a:pathStr
         else
-            let l:result = l:result . s:Path.Slash() . a:pathStr
+            let l:result = l:result . nerdtree#slash() . a:pathStr
         endif
     endif
 
@@ -556,7 +556,7 @@ function! s:Path.isUnder(path)
 
     let this = self.str()
     let that = a:path.str()
-    return stridx(this, that . s:Path.Slash()) == 0
+    return stridx(this, that . nerdtree#slash()) == 0
 endfunction
 
 " FUNCTION: Path.JoinPathStrings(...) {{{1
@@ -593,23 +593,6 @@ function! s:Path.New(pathStr)
     let l:newPath.flagSet = g:NERDTreeFlagSet.New()
 
     return l:newPath
-endfunction
-
-" FUNCTION: Path.Slash() {{{1
-" Return the path separator used by the underlying file system.  Special
-" consideration is taken for the use of the 'shellslash' option on Windows
-" systems.
-function! s:Path.Slash()
-
-    if nerdtree#runningWindows()
-        if exists('+shellslash') && &shellslash
-            return '/'
-        endif
-
-        return '\'
-    endif
-
-    return '/'
 endfunction
 
 " FUNCTION: Path.Resolve() {{{1
@@ -796,7 +779,7 @@ function! s:Path._strForEdit()
 
     " On Windows, the drive letter may be removed by "fnamemodify()".  Add it
     " back, if necessary.
-    if nerdtree#runningWindows() && l:result[0] == s:Path.Slash()
+    if nerdtree#runningWindows() && l:result[0] == nerdtree#slash()
         let l:result = self.drive . l:result
     endif
 
@@ -811,14 +794,14 @@ endfunction
 
 " FUNCTION: Path._strForGlob() {{{1
 function! s:Path._strForGlob()
-    let lead = s:Path.Slash()
+    let lead = nerdtree#slash()
 
     "if we are running windows then slap a drive letter on the front
     if nerdtree#runningWindows()
         let lead = self.drive . '\'
     endif
 
-    let toReturn = lead . join(self.pathSegments, s:Path.Slash())
+    let toReturn = lead . join(self.pathSegments, nerdtree#slash())
 
     if !nerdtree#runningWindows()
         let toReturn = escape(toReturn, self._escChars())
@@ -830,7 +813,7 @@ endfunction
 " Return the absolute pathname associated with this Path object.  The pathname
 " returned is appropriate for the underlying file system.
 function! s:Path._str()
-    let l:separator = s:Path.Slash()
+    let l:separator = nerdtree#slash()
     let l:leader = l:separator
 
     if nerdtree#runningWindows()
