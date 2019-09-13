@@ -52,7 +52,7 @@ function! s:NERDTree.Close()
         endif
 
         call nerdtree#exec(s:NERDTree.GetWinNum() . " wincmd w", 1)
-        call nerdtree#exec("close", 1)
+        call nerdtree#exec("close", 0)
         if l:useWinId
             call nerdtree#exec("call win_gotoid(" . l:activeBufOrWin . ")", 0)
         else
