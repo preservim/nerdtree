@@ -27,9 +27,8 @@ endfunction
 " consideration is taken for the use of the 'shellslash' option on Windows
 " systems.
 function! nerdtree#slash()
-
     if nerdtree#runningWindows()
-        if exists('+shellslash') && &shellslash
+        if exists('+shellslash') && &shellslash && &shell !~? '\(command\(\.com\)\?\|cmd\(\.exe\)\?\)'
             return '/'
         endif
 
