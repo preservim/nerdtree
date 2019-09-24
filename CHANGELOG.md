@@ -1,5 +1,7 @@
 # Change Log
 
+#### 6.0...
+- **.0**: Make the behavior of window splits consistent [#1035](https://github.com/scrooloose/nerdtree/pull/1035)
 #### 5.3...
 - **.3**: Fix (p)ath not displaying in the minimal menu [#1038](https://github.com/scrooloose/nerdtree/pull/1038)
 - **.2**: Enable events when closing NerdTree window. [#1037](https://github.com/scrooloose/nerdtree/pull/1037)
