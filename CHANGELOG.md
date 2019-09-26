@@ -2,7 +2,7 @@
 
 #### 6.0...
 - **.1**: Reintroduce necessary variable mistakenly removed. (PhilRunninger) [#1040](https://github.com/scrooloose/nerdtree/pull/1040)
-- **.0**: Make the behavior of window splits consistent (PhilRunninger) [#1035](https://github.com/scrooloose/nerdtree/pull/1035)
+- **.0**: Make the behavior of window splits consistent (dragonxlwang, PhilRunninger) [#1035](https://github.com/scrooloose/nerdtree/pull/1035)
 #### 5.3...
 - **.3**: Fix (p)ath not displaying in the minimal menu (tuzz) [#1038](https://github.com/scrooloose/nerdtree/pull/1038)
 - **.2**: Enable events when closing NerdTree window. (PhilRunninger) [#1037](https://github.com/scrooloose/nerdtree/pull/1037)
