@@ -158,12 +158,13 @@ function! s:Opener._newSplit()
     if onlyOneWin
         let &splitright = (g:NERDTreeWinPos ==# "left")
     endif
+    " If only one window (ie. NERDTree), split vertically instead.
+    let splitMode = onlyOneWin ? "vertical" : ""
 
     " Open the new window
     try
         call nerdtree#exec('wincmd p', 1)
-        " If only one window (ie. NERDTree), split vertically instead.
-        call nerdtree#exec(onlyOneWin ? "vertical split" : "split",1)
+        call nerdtree#exec(splitMode . " split",1)
     catch /^Vim\%((\a\+)\)\=:E37/
         call g:NERDTree.CursorToTreeWin()
         throw "NERDTree.FileAlreadyOpenAndModifiedError: ". self._path.str() ." is already open and modified."
