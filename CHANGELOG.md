@@ -1,5 +1,7 @@
 # Change Log
 
+#### 6.1...
+- **.0**: If file path doesn't exist, :NERDTreeFind its parent directory instead. (PhilRunninger) [#1043](https://github.com/scrooloose/nerdtree/pull/1043)
 #### 6.0...
 - **.1**: Reintroduce necessary variable mistakenly removed. (PhilRunninger) [#1040](https://github.com/scrooloose/nerdtree/pull/1040)
 - **.0**: Make the behavior of window splits consistent (dragonxlwang, PhilRunninger) [#1035](https://github.com/scrooloose/nerdtree/pull/1035)
