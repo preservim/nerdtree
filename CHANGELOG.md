@@ -1,6 +1,7 @@
 # Change Log
 
 #### 6.1...
+- **.1**: Catch errors when trying to read CHANGELOG.md. (PhilRunninger) [#1045](https://github.com/scrooloose/nerdtree/pull/1045)
 - **.0**: If file path doesn't exist, :NERDTreeFind its parent directory instead. (PhilRunninger) [#1043](https://github.com/scrooloose/nerdtree/pull/1043)
 #### 6.0...
 - **.1**: Reintroduce necessary variable mistakenly removed. (PhilRunninger) [#1040](https://github.com/scrooloose/nerdtree/pull/1040)
