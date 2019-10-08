@@ -1,6 +1,7 @@
 # Change Log
 
 #### 6.1...
+- **.2**: Wrap saveScreenState's statements in a try-catch block. (PhilRunninger) [#1047](https://github.com/scrooloose/nerdtree/pull/1047)
 - **.1**: Catch errors when trying to read CHANGELOG.md. (PhilRunninger) [#1045](https://github.com/scrooloose/nerdtree/pull/1045)
 - **.0**: If file path doesn't exist, :NERDTreeFind its parent directory instead. (PhilRunninger) [#1043](https://github.com/scrooloose/nerdtree/pull/1043)
 #### 6.0...
