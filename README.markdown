@@ -17,6 +17,13 @@ included documentation.
 Installation
 ------------
 
+If you are using VIM version 8 or higher you can use its built-in package management; see `:help packages` for more information. Just run these commands in your terminal:
+
+    git clone https://github.com/scrooloose/nerdtree.git ~/.vim/pack/vendor/start/nerdtree
+    vim -u NONE -c "helptags ~/.vim/pack/vendor/start/nerdtree/doc" -c q
+
+Otherwise, these are some of the other options:
+
 #### [pathogen.vim](https://github.com/tpope/vim-pathogen)
 
     git clone https://github.com/scrooloose/nerdtree.git ~/.vim/bundle/nerdtree

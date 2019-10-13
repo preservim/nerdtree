@@ -9,6 +9,7 @@
 -->
 
 #### 6.1
+- **.4**: Add VIM built-in package management to read me file. (pesarkhobeee) [#1049](https://github.com/scrooloose/nerdtree/pull/1049)
 - **.3**: Save/Set screen state also on WinLeave and WinEnter. (PhilRunninger) [#1048](https://github.com/scrooloose/nerdtree/pull/1048)
 - **.2**: Wrap saveScreenState's statements in a try-catch block. (PhilRunninger) [#1047](https://github.com/scrooloose/nerdtree/pull/1047)
 - **.1**: Catch errors when trying to read CHANGELOG.md. (PhilRunninger) [#1045](https://github.com/scrooloose/nerdtree/pull/1045)
