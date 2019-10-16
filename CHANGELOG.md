@@ -8,6 +8,8 @@
         - **.PATCH**: Pull Request Title (PR Author) [PR Number](Link to PR)
 -->
 
+#### 6.2
+- **.0**: Support tab-specific CWDs (PhilRunninger) [#1032](https://github.com/scrooloose/nerdtree/pull/1032)
 #### 6.1
 - **.4**: Add VIM built-in package management to read me file. (pesarkhobeee) [#1049](https://github.com/scrooloose/nerdtree/pull/1049)
 - **.3**: Save/Set screen state also on WinLeave and WinEnter. (PhilRunninger) [#1048](https://github.com/scrooloose/nerdtree/pull/1048)
