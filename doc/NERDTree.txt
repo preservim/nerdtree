@@ -849,8 +849,16 @@ above nodes would then be sorted like this: >
     z110.txt
 <
 ------------------------------------------------------------------------------
-                                                             *NERDTreeChDirMode*
+                                                                *NERDTreeUseTCD*
+Values: 0 or 1.
+Default: 0.
 
+By default, NERDTree will use the `:cd` command to change the current working
+directory. If this setting is turned on, and the `:tcd` command is available, it
+will be used instead.
+
+------------------------------------------------------------------------------
+                                                             *NERDTreeChDirMode*
 Values: 0, 1, 2, or 3.
 Default: 0.
 
@@ -983,7 +991,6 @@ then (to single click activate it) you must click somewhere in
 
 ------------------------------------------------------------------------------
                                                             *NERDTreeQuitOnOpen*
-
 Values: 0,1,2 or 3.
 Default: 0
 
