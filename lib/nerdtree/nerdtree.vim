@@ -52,7 +52,7 @@ function! s:NERDTree.Close()
         endif
 
         call nerdtree#exec(s:NERDTree.GetWinNum() . " wincmd w", 1)
-        call nerdtree#exec("close", 1)
+        call nerdtree#exec("close", 0)
         if l:useWinId
             call nerdtree#exec("call win_gotoid(" . l:activeBufOrWin . ")", 0)
         else
@@ -148,12 +148,19 @@ function! s:NERDTree.GetWinNum()
         return bufwinnr(t:NERDTreeBufName)
     endif
 
+    " If WindowTree, there is no t:NERDTreeBufName variable. Search all windows.
+    for w in range(1,winnr('$'))
+        if bufname(winbufnr(w)) =~# '^' . g:NERDTreeCreator.BufNamePrefix() . '\d\+$'
+            return w
+        endif
+    endfor
+
     return -1
 endfunction
 
 "FUNCTION: s:NERDTree.IsOpen() {{{1
 function! s:NERDTree.IsOpen()
-    return s:NERDTree.GetWinNum() != -1 || bufname('%') =~# '^' . g:NERDTreeCreator.BufNamePrefix() . '\d\+$'
+    return s:NERDTree.GetWinNum() != -1
 endfunction
 
 "FUNCTION: s:NERDTree.isTabTree() {{{1
