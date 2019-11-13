@@ -9,6 +9,7 @@
 -->
 
 #### 6.2
+- **.1**: Menu option, 'copy path to clipboard' is aware of VIM clipboard option (jhzn) [#1056](https://github.com/scrooloose/nerdtree/pull/1056)
 - **.0**: Support tab-specific CWDs (PhilRunninger) [#1032](https://github.com/scrooloose/nerdtree/pull/1032)
 #### 6.1
 - **.4**: Add VIM built-in package management to read me file. (pesarkhobeee) [#1049](https://github.com/scrooloose/nerdtree/pull/1049)
