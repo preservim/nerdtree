@@ -20,7 +20,7 @@ function! s:CreateTabTreeVCS(name)
     call g:NERDTreeCreator.createTabTree(empty(l:path) ? "" : l:path._str())
 endfunction
 
-" FUNCTION: s:ToggleVCS(a:name) {{{1
+" FUNCTION: s:ToggleTabTreeVCS(a:name) {{{1
 " Behaves the same as ToggleTabTree except roots directory at VCS root
 function! s:ToggleTabTreeVCS(name)
     let l:path = g:NERDTreeCreator._pathForString(a:name)
