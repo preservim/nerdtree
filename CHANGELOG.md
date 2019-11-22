@@ -7,9 +7,9 @@
     in an unordered list.  The format is:
         - **.PATCH**: Pull Request Title (PR Author) [PR Number](Link to PR)
 -->
-
+#### 6.3
+- **.0**: Add new command that behaves like NERDTreeToggle but defaults to the root of a VCS repository. (willfindlay) [#1060](https://github.com/scrooloose/nerdtree/pull/1060)
 #### 6.2
-- **.2**: Add new command that behaves like NERDTreeToggle but defaults to the root of a VCS repository. (willfindlay) [#1060](https://github.com/scrooloose/nerdtree/pull/1060)
 - **.1**: Menu option, 'copy path to clipboard' is aware of VIM clipboard option (jhzn) [#1056](https://github.com/scrooloose/nerdtree/pull/1056)
 - **.0**: Support tab-specific CWDs (PhilRunninger) [#1032](https://github.com/scrooloose/nerdtree/pull/1032)
 #### 6.1
