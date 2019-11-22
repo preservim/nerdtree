@@ -25,19 +25,7 @@ endfunction
 function! s:ToggleTabTreeVCS(name)
     let l:path = g:NERDTreeCreator._pathForString(a:name)
     let l:path = s:FindParentVCSRoot(l:path)
-    if g:NERDTree.ExistsForTab()
-        if !g:NERDTree.IsOpen()
-            call g:NERDTreeCreator._createTreeWin()
-            if !&hidden
-                call b:NERDTree.render()
-            endif
-            call b:NERDTree.ui.restoreScreenState()
-        else
-            call g:NERDTree.Close()
-        endif
-    else
-        call g:NERDTreeCreator.createTabTree(empty(l:path) ? "" : l:path._str())
-    endif
+    call g:NERDTreeCreator.toggleTabTree(empty(l:path) ? "" : l:path._str())
 endfunction
 
 " FUNCTION: s:FindParentVCSRoot(a:path) {{{1
