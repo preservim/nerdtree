@@ -9,6 +9,7 @@
 -->
 
 #### 6.2
+- **.2**: Add new command to toggle NERDTree defaulting to the root of a VCS repository. (willfindlay) [#1057](https://github.com/scrooloose/nerdtree/pull/1057)
 - **.1**: Menu option, 'copy path to clipboard' is aware of VIM clipboard option (jhzn) [#1056](https://github.com/scrooloose/nerdtree/pull/1056)
 - **.0**: Support tab-specific CWDs (PhilRunninger) [#1032](https://github.com/scrooloose/nerdtree/pull/1032)
 #### 6.1
