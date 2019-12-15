@@ -7,6 +7,8 @@
     in an unordered list.  The format is:
         - **.PATCH**: Pull Request Title (PR Author) [PR Number](Link to PR)
 -->
+#### 6.4
+- **.0**: Allow use of function references as callbacks (HiPhish) [#1067](https://github.com/scrooloose/nerdtree/pull/1067)
 #### 6.3
 - **.0**: Add new command that behaves like NERDTreeToggle but defaults to the root of a VCS repository. (willfindlay) [#1060](https://github.com/scrooloose/nerdtree/pull/1060)
 #### 6.2
