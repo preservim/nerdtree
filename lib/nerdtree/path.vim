@@ -501,7 +501,7 @@ function! s:Path.ignore(nerdtree)
         endfor
 
         for Callback in g:NERDTree.PathFilters()
-            let Callback = type(Callback) == v:t_func ? Callback : function(Callback)
+            let Callback = type(Callback) == type(function("tr")) ? Callback : function(Callback)
             if Callback({'path': self, 'nerdtree': a:nerdtree})
                 return 1
             endif
