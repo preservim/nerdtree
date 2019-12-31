@@ -27,7 +27,7 @@ exec 'syn match NERDTreeOpenable #' . escape(g:NERDTreeDirArrowExpandable, '~') 
 
 let s:dirArrows = escape(g:NERDTreeDirArrowCollapsible, '~]\-').escape(g:NERDTreeDirArrowExpandable, '~]\-')
 exec 'syn match NERDTreeDir #[^'.s:dirArrows.' ].*/#'
-syn match NERDTreeExecFile  #^ .*\*\($\| \)# contains=NERDTreeRO,NERDTreeBookmark
+syn match NERDTreeExecFile  '^ .*\*\($\| \)' contains=NERDTreeRO,NERDTreeBookmark
 exec 'syn match NERDTreeFile  #^[^"\.'.s:dirArrows.'] *[^'.s:dirArrows.']*# contains=NERDTreeLink,NERDTreeRO,NERDTreeBookmark,NERDTreeExecFile'
 
 "highlighting for readonly files
