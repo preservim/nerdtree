@@ -1,4 +1,4 @@
-The NERDTree
+The NERDTree [![Vint](https://github.com/preservim/nerdtree/workflows/Vint/badge.svg)](https://github.com/preservim/nerdtree/actions?workflow=Vint)
 =============
 
 Introduction
