@@ -11,6 +11,8 @@
 "
 " SECTION: Script init stuff {{{1
 "============================================================
+scriptencoding utf-8
+
 if exists('loaded_nerd_tree')
     finish
 endif
