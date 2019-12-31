@@ -1,9 +1,9 @@
-if exists("g:loaded_nerdtree_autoload")
+if exists('g:loaded_nerdtree_autoload')
     finish
 endif
 let g:loaded_nerdtree_autoload = 1
 
-let s:rootNERDTreePath = resolve(expand("<sfile>:p:h:h"))
+let s:rootNERDTreePath = resolve(expand('<sfile>:p:h:h'))
 
 "FUNCTION: nerdtree#version(...) {{{1
 "  If any value is given as an argument, the entire line of text from the
@@ -12,7 +12,7 @@ let s:rootNERDTreePath = resolve(expand("<sfile>:p:h:h"))
 function! nerdtree#version(...)
     let l:text = 'Unknown'
     try
-        let l:changelog = readfile(join([s:rootNERDTreePath, "CHANGELOG.md"], nerdtree#slash()))
+        let l:changelog = readfile(join([s:rootNERDTreePath, 'CHANGELOG.md'], nerdtree#slash()))
         let l:line = 0
         while l:line <= len(l:changelog)
             if l:changelog[l:line] =~ '\d\+\.\d\+'
@@ -47,7 +47,7 @@ endfunction
 "FUNCTION: nerdtree#and(x,y) {{{2
 " Implements and() function for Vim <= 7.2
 function! nerdtree#and(x,y)
-    if exists("*and")
+    if exists('*and')
         return and(a:x, a:y)
     else
         let l:x = a:x
@@ -83,18 +83,18 @@ endfunction
 "FUNCTION: s:reuseWin(dir) {{{2
 "finds a NERDTree buffer with root of dir, and opens it.
 function! s:reuseWin(dir) abort
-    let path = g:NERDTreePath.New(fnamemodify(a:dir, ":p"))
+    let path = g:NERDTreePath.New(fnamemodify(a:dir, ':p'))
 
-    for i in range(1, bufnr("$"))
+    for i in range(1, bufnr('$'))
         unlet! nt
-        let nt = getbufvar(i, "NERDTree")
+        let nt = getbufvar(i, 'NERDTree')
         if empty(nt)
             continue
         endif
 
         if nt.isWinTree() && nt.root.path.equals(path)
-            call nt.setPreviousBuf(bufnr("#"))
-            exec "buffer " . i
+            call nt.setPreviousBuf(bufnr('#'))
+            exec 'buffer ' . i
             return 1
         endif
     endfor
@@ -207,12 +207,12 @@ endfunction
 
 "FUNCTION: nerdtree#runningWindows(dir) {{{2
 function! nerdtree#runningWindows()
-    return has("win16") || has("win32") || has("win64")
+    return has('win16') || has('win32') || has('win64')
 endfunction
 
 "FUNCTION: nerdtree#runningCygwin(dir) {{{2
 function! nerdtree#runningCygwin()
-    return has("win32unix")
+    return has('win32unix')
 endfunction
 
 " SECTION: View Functions {{{1
@@ -225,7 +225,7 @@ endfunction
 "msg: the message to echo
 function! nerdtree#echo(msg)
     redraw
-    echomsg empty(a:msg) ? "" : ("NERDTree: " . a:msg)
+    echomsg empty(a:msg) ? '' : ('NERDTree: ' . a:msg)
 endfunction
 
 "FUNCTION: nerdtree#echoError {{{2

@@ -44,7 +44,7 @@ function! s:MenuController.showMenu()
     finally
         call self._restoreOptions()
 
-        " Redraw when "Ctrl-C" or "Esc" is received.
+        " Redraw when Ctrl-C or Esc is received.
         if !l:done || self.selection == -1
             redraw!
         endif
@@ -58,25 +58,25 @@ endfunction
 
 "FUNCTION: MenuController._echoPrompt() {{{1
 function! s:MenuController._echoPrompt()
-    let navHelp = "Use " . g:NERDTreeMenuDown . "/" . g:NERDTreeMenuUp . "/enter"
+    let navHelp = 'Use ' . g:NERDTreeMenuDown . '/' . g:NERDTreeMenuUp . '/enter'
 
     if self.isMinimal()
         let selection = self.menuItems[self.selection].text
-        let keyword = matchstr(selection, "\([^ ]*")
+        let keyword = matchstr(selection, '\([^ ]*')
 
         let shortcuts = map(copy(self.menuItems), "v:val['shortcut']")
-        let shortcuts[self.selection] = " " . keyword . " "
+        let shortcuts[self.selection] = ' ' . keyword . ' '
 
-        echo "Menu: [" . join(shortcuts, ",") . "] (" . navHelp . " or shortcut): "
+        echo 'Menu: [' . join(shortcuts, ',') . '] (' . navHelp . ' or shortcut): '
     else
-        echo "NERDTree Menu. " . navHelp . ", or the shortcuts indicated"
-        echo "========================================================="
+        echo 'NERDTree Menu. ' . navHelp . ', or the shortcuts indicated'
+        echo '========================================================='
 
         for i in range(0, len(self.menuItems)-1)
             if self.selection == i
-                echo "> " . self.menuItems[i].text
+                echo '> ' . self.menuItems[i].text
             else
-                echo "  " . self.menuItems[i].text
+                echo '  ' . self.menuItems[i].text
             endif
         endfor
     endif

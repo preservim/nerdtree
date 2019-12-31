@@ -9,7 +9,7 @@
 "              See http://sam.zoy.org/wtfpl/COPYING for more details.
 "
 " ============================================================================
-if exists("g:loaded_nerdtree_exec_menuitem")
+if exists('g:loaded_nerdtree_exec_menuitem')
     finish
 endif
 let g:loaded_nerdtree_exec_menuitem = 1
@@ -35,6 +35,6 @@ function! NERDTreeExecFile()
     if cmd != ''
         exec ':!' . cmd
     else
-        echo "Aborted"
+        echo 'Aborted'
     endif
 endfunction

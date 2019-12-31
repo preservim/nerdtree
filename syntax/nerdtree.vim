@@ -3,7 +3,7 @@ syn match NERDTreeIgnore #\~#
 exec 'syn match NERDTreeIgnore #\['.g:NERDTreeGlyphReadOnly.'\]#'
 
 "highlighting for the .. (up dir) line at the top of the tree
-execute "syn match NERDTreeUp #\\V". s:tree_up_dir_line ."#"
+execute "syn match NERDTreeUp #\\V". s:tree_up_dir_line .'#'
 
 "quickhelp syntax elements
 syn match NERDTreeHelpKey #" \{1,2\}[^ ]*:#ms=s+2,me=e-1
@@ -37,7 +37,7 @@ syn match NERDTreeFlags #^ *\zs\[[^\]]*\]# containedin=NERDTreeFile,NERDTreeExec
 syn match NERDTreeFlags #\[[^\]]*\]# containedin=NERDTreeDir
 
 "highlighing to conceal the delimiter around the file/dir name
-if has("conceal")
+if has('conceal')
     exec 'syn match NERDTreeNodeDelimiters #\%d' . char2nr(g:NERDTreeNodeDelimiter) . '# conceal containedin=ALL'
     setlocal conceallevel=3 concealcursor=nvic
 else

@@ -1,4 +1,4 @@
-if exists("g:loaded_nerdtree_ui_glue_autoload")
+if exists('g:loaded_nerdtree_ui_glue_autoload')
     finish
 endif
 let g:loaded_nerdtree_ui_glue_autoload = 1
@@ -8,73 +8,73 @@ function! nerdtree#ui_glue#createDefaultBindings()
     let s = '<SNR>' . s:SID() . '_'
 
     call NERDTreeAddKeyMap({ 'key': '<MiddleMouse>', 'scope': 'all', 'callback': s . 'handleMiddleMouse' })
-    call NERDTreeAddKeyMap({ 'key': '<LeftRelease>', 'scope': "all", 'callback': s."handleLeftClick" })
-    call NERDTreeAddKeyMap({ 'key': '<2-LeftMouse>', 'scope': "DirNode", 'callback': s."activateDirNode" })
-    call NERDTreeAddKeyMap({ 'key': '<2-LeftMouse>', 'scope': "FileNode", 'callback': s."activateFileNode" })
-    call NERDTreeAddKeyMap({ 'key': '<2-LeftMouse>', 'scope': "Bookmark", 'callback': s."activateBookmark" })
-    call NERDTreeAddKeyMap({ 'key': '<2-LeftMouse>', 'scope': "all", 'callback': s."activateAll" })
+    call NERDTreeAddKeyMap({ 'key': '<LeftRelease>', 'scope': 'all', 'callback': s.'handleLeftClick' })
+    call NERDTreeAddKeyMap({ 'key': '<2-LeftMouse>', 'scope': 'DirNode', 'callback': s.'activateDirNode' })
+    call NERDTreeAddKeyMap({ 'key': '<2-LeftMouse>', 'scope': 'FileNode', 'callback': s.'activateFileNode' })
+    call NERDTreeAddKeyMap({ 'key': '<2-LeftMouse>', 'scope': 'Bookmark', 'callback': s.'activateBookmark' })
+    call NERDTreeAddKeyMap({ 'key': '<2-LeftMouse>', 'scope': 'all', 'callback': s.'activateAll' })
 
-    call NERDTreeAddKeyMap({ 'key': g:NERDTreeMapCustomOpen, 'scope':'FileNode', 'callback': s."customOpenFile"})
-    call NERDTreeAddKeyMap({ 'key': g:NERDTreeMapCustomOpen, 'scope':'DirNode', 'callback': s."customOpenDir"})
-    call NERDTreeAddKeyMap({ 'key': g:NERDTreeMapCustomOpen, 'scope':'Bookmark', 'callback': s."customOpenBookmark"})
-    call NERDTreeAddKeyMap({ 'key': g:NERDTreeMapCustomOpen, 'scope':'all', 'callback': s."activateAll" })
+    call NERDTreeAddKeyMap({ 'key': g:NERDTreeMapCustomOpen, 'scope':'FileNode', 'callback': s.'customOpenFile'})
+    call NERDTreeAddKeyMap({ 'key': g:NERDTreeMapCustomOpen, 'scope':'DirNode', 'callback': s.'customOpenDir'})
+    call NERDTreeAddKeyMap({ 'key': g:NERDTreeMapCustomOpen, 'scope':'Bookmark', 'callback': s.'customOpenBookmark'})
+    call NERDTreeAddKeyMap({ 'key': g:NERDTreeMapCustomOpen, 'scope':'all', 'callback': s.'activateAll' })
 
-    call NERDTreeAddKeyMap({ 'key': g:NERDTreeMapActivateNode, 'scope': "DirNode", 'callback': s."activateDirNode" })
-    call NERDTreeAddKeyMap({ 'key': g:NERDTreeMapActivateNode, 'scope': "FileNode", 'callback': s."activateFileNode" })
-    call NERDTreeAddKeyMap({ 'key': g:NERDTreeMapActivateNode, 'scope': "Bookmark", 'callback': s."activateBookmark" })
-    call NERDTreeAddKeyMap({ 'key': g:NERDTreeMapPreview, 'scope': "Bookmark", 'callback': s."previewBookmark" })
-    call NERDTreeAddKeyMap({ 'key': g:NERDTreeMapActivateNode, 'scope': "all", 'callback': s."activateAll" })
+    call NERDTreeAddKeyMap({ 'key': g:NERDTreeMapActivateNode, 'scope': 'DirNode', 'callback': s.'activateDirNode' })
+    call NERDTreeAddKeyMap({ 'key': g:NERDTreeMapActivateNode, 'scope': 'FileNode', 'callback': s.'activateFileNode' })
+    call NERDTreeAddKeyMap({ 'key': g:NERDTreeMapActivateNode, 'scope': 'Bookmark', 'callback': s.'activateBookmark' })
+    call NERDTreeAddKeyMap({ 'key': g:NERDTreeMapPreview, 'scope': 'Bookmark', 'callback': s.'previewBookmark' })
+    call NERDTreeAddKeyMap({ 'key': g:NERDTreeMapActivateNode, 'scope': 'all', 'callback': s.'activateAll' })
 
-    call NERDTreeAddKeyMap({ 'key': g:NERDTreeMapOpenSplit, 'scope': "Node", 'callback': s."openHSplit" })
-    call NERDTreeAddKeyMap({ 'key': g:NERDTreeMapOpenVSplit, 'scope': "Node", 'callback': s."openVSplit" })
+    call NERDTreeAddKeyMap({ 'key': g:NERDTreeMapOpenSplit, 'scope': 'Node', 'callback': s.'openHSplit' })
+    call NERDTreeAddKeyMap({ 'key': g:NERDTreeMapOpenVSplit, 'scope': 'Node', 'callback': s.'openVSplit' })
 
-    call NERDTreeAddKeyMap({ 'key': g:NERDTreeMapPreview, 'scope': "Node", 'callback': s."previewNodeCurrent" })
-    call NERDTreeAddKeyMap({ 'key': g:NERDTreeMapPreviewVSplit, 'scope': "Node", 'callback': s."previewNodeVSplit" })
-    call NERDTreeAddKeyMap({ 'key': g:NERDTreeMapPreviewSplit, 'scope': "Node", 'callback': s."previewNodeHSplit" })
+    call NERDTreeAddKeyMap({ 'key': g:NERDTreeMapPreview, 'scope': 'Node', 'callback': s.'previewNodeCurrent' })
+    call NERDTreeAddKeyMap({ 'key': g:NERDTreeMapPreviewVSplit, 'scope': 'Node', 'callback': s.'previewNodeVSplit' })
+    call NERDTreeAddKeyMap({ 'key': g:NERDTreeMapPreviewSplit, 'scope': 'Node', 'callback': s.'previewNodeHSplit' })
 
-    call NERDTreeAddKeyMap({ 'key': g:NERDTreeMapOpenRecursively, 'scope': "DirNode", 'callback': s."openNodeRecursively" })
+    call NERDTreeAddKeyMap({ 'key': g:NERDTreeMapOpenRecursively, 'scope': 'DirNode', 'callback': s.'openNodeRecursively' })
 
     call NERDTreeAddKeyMap({ 'key': g:NERDTreeMapUpdir, 'scope': 'all', 'callback': s . 'upDirCurrentRootClosed' })
     call NERDTreeAddKeyMap({ 'key': g:NERDTreeMapUpdirKeepOpen, 'scope': 'all', 'callback': s . 'upDirCurrentRootOpen' })
     call NERDTreeAddKeyMap({ 'key': g:NERDTreeMapChangeRoot, 'scope': 'Node', 'callback': s . 'chRoot' })
 
-    call NERDTreeAddKeyMap({ 'key': g:NERDTreeMapChdir, 'scope': "Node", 'callback': s."chCwd" })
+    call NERDTreeAddKeyMap({ 'key': g:NERDTreeMapChdir, 'scope': 'Node', 'callback': s.'chCwd' })
 
-    call NERDTreeAddKeyMap({ 'key': g:NERDTreeMapQuit, 'scope': "all", 'callback': s."closeTreeWindow" })
+    call NERDTreeAddKeyMap({ 'key': g:NERDTreeMapQuit, 'scope': 'all', 'callback': s.'closeTreeWindow' })
 
-    call NERDTreeAddKeyMap({ 'key': g:NERDTreeMapCWD, 'scope': "all", 'callback': "nerdtree#ui_glue#chRootCwd" })
+    call NERDTreeAddKeyMap({ 'key': g:NERDTreeMapCWD, 'scope': 'all', 'callback': 'nerdtree#ui_glue#chRootCwd' })
 
-    call NERDTreeAddKeyMap({ 'key': g:NERDTreeMapRefreshRoot, 'scope': "all", 'callback': s."refreshRoot" })
-    call NERDTreeAddKeyMap({ 'key': g:NERDTreeMapRefresh, 'scope': "Node", 'callback': s."refreshCurrent" })
+    call NERDTreeAddKeyMap({ 'key': g:NERDTreeMapRefreshRoot, 'scope': 'all', 'callback': s.'refreshRoot' })
+    call NERDTreeAddKeyMap({ 'key': g:NERDTreeMapRefresh, 'scope': 'Node', 'callback': s.'refreshCurrent' })
 
-    call NERDTreeAddKeyMap({ 'key': g:NERDTreeMapHelp, 'scope': "all", 'callback': s."displayHelp" })
-    call NERDTreeAddKeyMap({ 'key': g:NERDTreeMapToggleZoom, 'scope': "all", 'callback': s."toggleZoom" })
-    call NERDTreeAddKeyMap({ 'key': g:NERDTreeMapToggleHidden, 'scope': "all", 'callback': s."toggleShowHidden" })
-    call NERDTreeAddKeyMap({ 'key': g:NERDTreeMapToggleFilters, 'scope': "all", 'callback': s."toggleIgnoreFilter" })
-    call NERDTreeAddKeyMap({ 'key': g:NERDTreeMapToggleFiles, 'scope': "all", 'callback': s."toggleShowFiles" })
-    call NERDTreeAddKeyMap({ 'key': g:NERDTreeMapToggleBookmarks, 'scope': "all", 'callback': s."toggleShowBookmarks" })
+    call NERDTreeAddKeyMap({ 'key': g:NERDTreeMapHelp, 'scope': 'all', 'callback': s.'displayHelp' })
+    call NERDTreeAddKeyMap({ 'key': g:NERDTreeMapToggleZoom, 'scope': 'all', 'callback': s.'toggleZoom' })
+    call NERDTreeAddKeyMap({ 'key': g:NERDTreeMapToggleHidden, 'scope': 'all', 'callback': s.'toggleShowHidden' })
+    call NERDTreeAddKeyMap({ 'key': g:NERDTreeMapToggleFilters, 'scope': 'all', 'callback': s.'toggleIgnoreFilter' })
+    call NERDTreeAddKeyMap({ 'key': g:NERDTreeMapToggleFiles, 'scope': 'all', 'callback': s.'toggleShowFiles' })
+    call NERDTreeAddKeyMap({ 'key': g:NERDTreeMapToggleBookmarks, 'scope': 'all', 'callback': s.'toggleShowBookmarks' })
 
-    call NERDTreeAddKeyMap({ 'key': g:NERDTreeMapCloseDir, 'scope': "Node", 'callback': s."closeCurrentDir" })
-    call NERDTreeAddKeyMap({ 'key': g:NERDTreeMapCloseChildren, 'scope': "DirNode", 'callback': s."closeChildren" })
+    call NERDTreeAddKeyMap({ 'key': g:NERDTreeMapCloseDir, 'scope': 'Node', 'callback': s.'closeCurrentDir' })
+    call NERDTreeAddKeyMap({ 'key': g:NERDTreeMapCloseChildren, 'scope': 'DirNode', 'callback': s.'closeChildren' })
 
-    call NERDTreeAddKeyMap({ 'key': g:NERDTreeMapMenu, 'scope': "Node", 'callback': s."showMenu" })
+    call NERDTreeAddKeyMap({ 'key': g:NERDTreeMapMenu, 'scope': 'Node', 'callback': s.'showMenu' })
 
-    call NERDTreeAddKeyMap({ 'key': g:NERDTreeMapJumpParent, 'scope': "Node", 'callback': s."jumpToParent" })
-    call NERDTreeAddKeyMap({ 'key': g:NERDTreeMapJumpFirstChild, 'scope': "Node", 'callback': s."jumpToFirstChild" })
-    call NERDTreeAddKeyMap({ 'key': g:NERDTreeMapJumpLastChild, 'scope': "Node", 'callback': s."jumpToLastChild" })
-    call NERDTreeAddKeyMap({ 'key': g:NERDTreeMapJumpRoot, 'scope': "all", 'callback': s."jumpToRoot" })
-    call NERDTreeAddKeyMap({ 'key': g:NERDTreeMapJumpNextSibling, 'scope': "Node", 'callback': s."jumpToNextSibling" })
-    call NERDTreeAddKeyMap({ 'key': g:NERDTreeMapJumpPrevSibling, 'scope': "Node", 'callback': s."jumpToPrevSibling" })
+    call NERDTreeAddKeyMap({ 'key': g:NERDTreeMapJumpParent, 'scope': 'Node', 'callback': s.'jumpToParent' })
+    call NERDTreeAddKeyMap({ 'key': g:NERDTreeMapJumpFirstChild, 'scope': 'Node', 'callback': s.'jumpToFirstChild' })
+    call NERDTreeAddKeyMap({ 'key': g:NERDTreeMapJumpLastChild, 'scope': 'Node', 'callback': s.'jumpToLastChild' })
+    call NERDTreeAddKeyMap({ 'key': g:NERDTreeMapJumpRoot, 'scope': 'all', 'callback': s.'jumpToRoot' })
+    call NERDTreeAddKeyMap({ 'key': g:NERDTreeMapJumpNextSibling, 'scope': 'Node', 'callback': s.'jumpToNextSibling' })
+    call NERDTreeAddKeyMap({ 'key': g:NERDTreeMapJumpPrevSibling, 'scope': 'Node', 'callback': s.'jumpToPrevSibling' })
 
     call NERDTreeAddKeyMap({ 'key': g:NERDTreeMapOpenInTab, 'scope': 'Node', 'callback': s . 'openInNewTab' })
     call NERDTreeAddKeyMap({ 'key': g:NERDTreeMapOpenInTabSilent, 'scope': 'Node', 'callback': s . 'openInNewTabSilent' })
     call NERDTreeAddKeyMap({ 'key': g:NERDTreeMapOpenInTab, 'scope': 'Bookmark', 'callback': s . 'openInNewTab' })
     call NERDTreeAddKeyMap({ 'key': g:NERDTreeMapOpenInTabSilent, 'scope': 'Bookmark', 'callback': s . 'openInNewTabSilent' })
 
-    call NERDTreeAddKeyMap({ 'key': g:NERDTreeMapOpenExpl, 'scope': "DirNode", 'callback': s."openExplorer" })
-    call NERDTreeAddKeyMap({ 'key': g:NERDTreeMapOpenExpl, 'scope': "FileNode", 'callback': s."openExplorer" })
+    call NERDTreeAddKeyMap({ 'key': g:NERDTreeMapOpenExpl, 'scope': 'DirNode', 'callback': s.'openExplorer' })
+    call NERDTreeAddKeyMap({ 'key': g:NERDTreeMapOpenExpl, 'scope': 'FileNode', 'callback': s.'openExplorer' })
 
-    call NERDTreeAddKeyMap({ 'key': g:NERDTreeMapDeleteBookmark, 'scope': "Bookmark", 'callback': s."deleteBookmark" })
+    call NERDTreeAddKeyMap({ 'key': g:NERDTreeMapDeleteBookmark, 'scope': 'Bookmark', 'callback': s.'deleteBookmark' })
 endfunction
 
 
@@ -82,19 +82,19 @@ endfunction
 "============================================================
 
 "FUNCTION: s:customOpenFile() {{{1
-" Open file node with the "custom" key, initially <CR>.
+" Open file node with the 'custom' key, initially <CR>.
 function! s:customOpenFile(node)
     call a:node.activate(s:initCustomOpenArgs().file)
 endfunction
 
 "FUNCTION: s:customOpenDir() {{{1
-" Open directory node with the "custom" key, initially <CR>.
+" Open directory node with the 'custom' key, initially <CR>.
 function! s:customOpenDir(node)
     call s:activateDirNode(a:node, s:initCustomOpenArgs().dir)
 endfunction
 
 "FUNCTION: s:customOpenBookmark() {{{1
-" Open bookmark node with the "custom" key, initially <CR>.
+" Open bookmark node with the 'custom' key, initially <CR>.
 function! s:customOpenBookmark(node)
     if a:node.path.isDirectory
         call a:node.activate(b:NERDTree, s:initCustomOpenArgs().dir)
@@ -113,7 +113,7 @@ endfunction
 "FUNCTION: s:activateAll() {{{1
 "handle the user activating the updir line
 function! s:activateAll()
-    if getline(".") ==# g:NERDTreeUI.UpDirLine()
+    if getline('.') ==# g:NERDTreeUI.UpDirLine()
         return nerdtree#ui_glue#upDir(0)
     endif
 endfunction
@@ -155,10 +155,10 @@ function! nerdtree#ui_glue#bookmarkNode(...)
             call currentNode.bookmark(name)
             call b:NERDTree.render()
         catch /^NERDTree.IllegalBookmarkNameError/
-            call nerdtree#echo("bookmark names must not contain spaces")
+            call nerdtree#echo('bookmark names must not contain spaces')
         endtry
     else
-        call nerdtree#echo("select a node first")
+        call nerdtree#echo('select a node first')
     endif
 endfunction
 
@@ -167,7 +167,7 @@ function! s:chCwd(node)
     try
         call a:node.path.changeToDir()
     catch /^NERDTree.PathChangeError/
-        call nerdtree#echoWarning("could not change cwd")
+        call nerdtree#echoWarning('could not change cwd')
     endtry
 endfunction
 
@@ -237,12 +237,12 @@ endfunction
 " close the tree window
 function! s:closeTreeWindow()
     if b:NERDTree.isWinTree() && b:NERDTree.previousBuf() != -1
-        exec "buffer " . b:NERDTree.previousBuf()
+        exec 'buffer ' . b:NERDTree.previousBuf()
     else
-        if winnr("$") > 1
+        if winnr('$') > 1
             call g:NERDTree.Close()
         else
-            call nerdtree#echo("Cannot close last window")
+            call nerdtree#echo('Cannot close last window')
         endif
     endif
 endfunction
@@ -250,8 +250,8 @@ endfunction
 " FUNCTION: s:deleteBookmark(bookmark) {{{1
 " Prompt the user to confirm the deletion of the selected bookmark.
 function! s:deleteBookmark(bookmark)
-    let l:message = "Delete the bookmark \"" . a:bookmark.name
-                \ . "\" from the bookmark list?"
+    let l:message = 'Delete the bookmark "' . a:bookmark.name
+                \ . '" from the bookmark list?'
 
     let l:choices = "&Yes\n&No"
 
@@ -340,8 +340,8 @@ function! s:handleLeftClick()
         "the dir arrows are multibyte chars, and vim's string functions only
         "deal with single bytes - so split the line up with the hack below and
         "take the line substring manually
-        let line = split(getline(line(".")), '\zs')
-        let startToCur = ""
+        let line = split(getline(line('.')), '\zs')
+        let startToCur = ''
         for i in range(0,len(line)-1)
             let startToCur .= line[i]
         endfor
@@ -483,7 +483,7 @@ endfunction
 
 " FUNCTION: nerdtree#ui_glue#openBookmark(name) {{{1
 " Open the Bookmark that has the specified name. This function provides the
-" implementation for the ":OpenBookmark" command.
+" implementation for the :OpenBookmark command.
 function! nerdtree#ui_glue#openBookmark(name)
     try
         let l:bookmark = g:NERDTreeBookmark.BookmarkFor(a:name)
@@ -527,10 +527,10 @@ endfunction
 
 " FUNCTION: s:openNodeRecursively(node) {{{1
 function! s:openNodeRecursively(node)
-    call nerdtree#echo("Recursively opening node. Please wait...")
+    call nerdtree#echo('Recursively opening node. Please wait...')
     call a:node.openRecursively()
     call b:NERDTree.render()
-    call nerdtree#echo("")
+    call nerdtree#echo('')
 endfunction
 
 " FUNCTION: s:previewBookmark(bookmark) {{{1
@@ -564,7 +564,7 @@ function! nerdtree#ui_glue#revealBookmark(name)
         let targetNode = g:NERDTreeBookmark.GetNodeForName(a:name, 0, b:NERDTree)
         call targetNode.putCursorHere(0, 1)
     catch /^NERDTree.BookmarkNotFoundError/
-        call nerdtree#echo("Bookmark isnt cached under the current root")
+        call nerdtree#echo('Bookmark isnt cached under the current root')
     endtry
 endfunction
 
@@ -575,15 +575,15 @@ function! s:refreshRoot()
     if !g:NERDTree.IsOpen()
         return
     endif
-    call nerdtree#echo("Refreshing the root node. This could take a while...")
+    call nerdtree#echo('Refreshing the root node. This could take a while...')
 
     let l:curWin = winnr()
-    call nerdtree#exec(g:NERDTree.GetWinNum() . "wincmd w", 1)
+    call nerdtree#exec(g:NERDTree.GetWinNum() . 'wincmd w', 1)
     call b:NERDTree.root.refresh()
     call b:NERDTree.render()
     redraw
-    call nerdtree#exec(l:curWin . "wincmd w", 1)
-    call nerdtree#echo("")
+    call nerdtree#exec(l:curWin . 'wincmd w', 1)
+    call nerdtree#echo('')
 endfunction
 
 " FUNCTION: s:refreshCurrent(node) {{{1
@@ -594,10 +594,10 @@ function! s:refreshCurrent(node)
         let node = node.parent
     endif
 
-    call nerdtree#echo("Refreshing node. This could take a while...")
+    call nerdtree#echo('Refreshing node. This could take a while...')
     call node.refresh()
     call b:NERDTree.render()
-    call nerdtree#echo("")
+    call nerdtree#echo('')
 endfunction
 
 " FUNCTION: nerdtree#ui_glue#setupCommands() {{{1
@@ -615,7 +615,7 @@ endfunction
 
 " Function: s:SID()   {{{1
 function s:SID()
-    if !exists("s:sid")
+    if !exists('s:sid')
         let s:sid = matchstr(expand('<sfile>'), '<SNR>\zs\d\+\ze_SID$')
     endif
     return s:sid

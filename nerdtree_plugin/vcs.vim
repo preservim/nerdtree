@@ -17,7 +17,7 @@ command! -n=? -complete=dir -bar NERDTreeToggleVCS :call <SID>ToggleTabTreeVCS('
 function! s:CreateTabTreeVCS(name)
     let l:path = g:NERDTreeCreator._pathForString(a:name)
     let l:path = s:FindParentVCSRoot(l:path)
-    call g:NERDTreeCreator.createTabTree(empty(l:path) ? "" : l:path._str())
+    call g:NERDTreeCreator.createTabTree(empty(l:path) ? '' : l:path._str())
 endfunction
 
 " FUNCTION: s:ToggleTabTreeVCS(a:name) {{{1
@@ -25,7 +25,7 @@ endfunction
 function! s:ToggleTabTreeVCS(name)
     let l:path = g:NERDTreeCreator._pathForString(a:name)
     let l:path = s:FindParentVCSRoot(l:path)
-    call g:NERDTreeCreator.toggleTabTree(empty(l:path) ? "" : l:path._str())
+    call g:NERDTreeCreator.toggleTabTree(empty(l:path) ? '' : l:path._str())
 endfunction
 
 " FUNCTION: s:FindParentVCSRoot(a:path) {{{1
