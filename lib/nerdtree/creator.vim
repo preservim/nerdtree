@@ -300,11 +300,11 @@ function! s:Creator._setCommonBufOptions()
     setlocal nowrap
 
     if g:NERDTreeShowLineNumbers
-        setlocal nu
+        setlocal number
     else
-        setlocal nonu
+        setlocal nonumber
         if v:version >= 703
-            setlocal nornu
+            setlocal norelativenumber
         endif
     endif
 
@@ -330,8 +330,8 @@ endfunction
 " FUNCTION: s:Creator._tabpagevar(tabnr, var) {{{1
 function! s:Creator._tabpagevar(tabnr, var)
     let currentTab = tabpagenr()
-    let old_ei = &ei
-    set ei=all
+    let old_ei = &eventignore
+    set eventignore=all
 
     exec 'tabnext ' . a:tabnr
     let v = -1
@@ -340,7 +340,7 @@ function! s:Creator._tabpagevar(tabnr, var)
     endif
     exec 'tabnext ' . currentTab
 
-    let &ei = old_ei
+    let &eventignore = old_ei
 
     return v
 endfunction

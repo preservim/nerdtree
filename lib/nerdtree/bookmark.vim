@@ -292,7 +292,7 @@ endfunction
 " Get the string that should be rendered in the view for this bookmark
 function! s:Bookmark.str()
     let pathStrMaxLen = winwidth(g:NERDTree.GetWinNum()) - 4 - strdisplaywidth(self.name)
-    if &nu
+    if &number
         let pathStrMaxLen = pathStrMaxLen - &numberwidth
     endif
 

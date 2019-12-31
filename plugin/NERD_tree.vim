@@ -22,9 +22,9 @@ if v:version < 703
 endif
 let loaded_nerd_tree = 1
 
-"for line continuation - i.e dont want C in &cpo
-let s:old_cpo = &cpo
-set cpo&vim
+"for line continuation - i.e dont want C in &cpoptions
+let s:old_cpo = &cpoptions
+set cpoptions&vim
 
 "Function: s:initVariable() function {{{2
 "This function is used to initialise a given variable to a given value. The
@@ -255,7 +255,7 @@ endfunction
 " SECTION: Post Source Actions {{{1
 call nerdtree#postSourceActions()
 
-"reset &cpo back to users setting
-let &cpo = s:old_cpo
+"reset &cpoptions back to users setting
+let &cpoptions = s:old_cpo
 
 " vim: set sw=4 sts=4 et fdm=marker:

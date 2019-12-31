@@ -165,12 +165,12 @@ endfunction
 " FUNCTION: nerdtree#exec(cmd, ignoreAll) {{{2
 " Same as :exec cmd but, if ignoreAll is TRUE, set eventignore=all for the duration
 function! nerdtree#exec(cmd, ignoreAll) abort
-    let old_ei = &ei
+    let old_ei = &eventignore
     if a:ignoreAll
-        set ei=all
+        set eventignore=all
     endif
     exec a:cmd
-    let &ei = old_ei
+    let &eventignore = old_ei
 endfunction
 
 " FUNCTION: nerdtree#has_opt(options, name) {{{2
