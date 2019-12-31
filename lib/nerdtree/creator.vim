@@ -82,7 +82,7 @@ function! s:Creator.createWindowTree(dir)
     try
         let path = g:NERDTreePath.New(a:dir)
     catch /^NERDTree.InvalidArgumentsError/
-        call nerdtree#echo("Invalid directory name:" . a:name)
+        call nerdtree#echo("Invalid directory name:" . a:dir)
         return
     endtry
 
