@@ -4,7 +4,7 @@ endif
 let g:loaded_nerdtree_ui_glue_autoload = 1
 
 " FUNCTION: nerdtree#ui_glue#createDefaultBindings() {{{1
-function! nerdtree#ui_glue#createDefaultBindings()
+function! nerdtree#ui_glue#createDefaultBindings() abort
     let s = '<SNR>' . s:SID() . '_'
 
     call NERDTreeAddKeyMap({ 'key': '<MiddleMouse>', 'scope': 'all', 'callback': s . 'handleMiddleMouse' })
@@ -83,19 +83,19 @@ endfunction
 
 "FUNCTION: s:customOpenFile() {{{1
 " Open file node with the 'custom' key, initially <CR>.
-function! s:customOpenFile(node)
+function! s:customOpenFile(node) abort
     call a:node.activate(s:initCustomOpenArgs().file)
 endfunction
 
 "FUNCTION: s:customOpenDir() {{{1
 " Open directory node with the 'custom' key, initially <CR>.
-function! s:customOpenDir(node)
+function! s:customOpenDir(node) abort
     call s:activateDirNode(a:node, s:initCustomOpenArgs().dir)
 endfunction
 
 "FUNCTION: s:customOpenBookmark() {{{1
 " Open bookmark node with the 'custom' key, initially <CR>.
-function! s:customOpenBookmark(node)
+function! s:customOpenBookmark(node) abort
     if a:node.path.isDirectory
         call a:node.activate(b:NERDTree, s:initCustomOpenArgs().dir)
     else
@@ -105,14 +105,14 @@ endfunction
 
 "FUNCTION: s:initCustomOpenArgs() {{{1
 " Make sure NERDTreeCustomOpenArgs has needed keys
-function! s:initCustomOpenArgs()
+function! s:initCustomOpenArgs() abort
     let g:NERDTreeCustomOpenArgs = get(g:, 'NERDTreeCustomOpenArgs', {})
     return extend(g:NERDTreeCustomOpenArgs, {'file':{'reuse': 'all', 'where': 'p'}, 'dir':{}}, 'keep')
 endfunction
 
 "FUNCTION: s:activateAll() {{{1
 "handle the user activating the updir line
-function! s:activateAll()
+function! s:activateAll() abort
     if getline('.') ==# g:NERDTreeUI.UpDirLine()
         return nerdtree#ui_glue#upDir(0)
     endif
@@ -120,7 +120,7 @@ endfunction
 
 " FUNCTION: s:activateDirNode(directoryNode, options) {{{1
 " Open a directory with optional options
-function! s:activateDirNode(directoryNode, ...)
+function! s:activateDirNode(directoryNode, ...) abort
 
     if a:directoryNode.isRoot() && a:directoryNode.isOpen
         call nerdtree#echo('cannot close tree root')
@@ -132,19 +132,19 @@ endfunction
 
 "FUNCTION: s:activateFileNode() {{{1
 "handle the user activating a tree node
-function! s:activateFileNode(node)
+function! s:activateFileNode(node) abort
     call a:node.activate({'reuse': 'all', 'where': 'p'})
 endfunction
 
 "FUNCTION: s:activateBookmark(bookmark) {{{1
 "handle the user activating a bookmark
-function! s:activateBookmark(bm)
+function! s:activateBookmark(bm) abort
     call a:bm.activate(b:NERDTree, !a:bm.path.isDirectory ? {'where': 'p'} : {})
 endfunction
 
 " FUNCTION: nerdtree#ui_glue#bookmarkNode(name) {{{1
 " Associate the current node with the given name
-function! nerdtree#ui_glue#bookmarkNode(...)
+function! nerdtree#ui_glue#bookmarkNode(...) abort
     let currentNode = g:NERDTreeFileNode.GetSelected()
     if currentNode !=# {}
         let name = a:1
@@ -163,7 +163,7 @@ function! nerdtree#ui_glue#bookmarkNode(...)
 endfunction
 
 " FUNCTION: s:chCwd(node) {{{1
-function! s:chCwd(node)
+function! s:chCwd(node) abort
     try
         call a:node.path.changeToDir()
     catch /^NERDTree.PathChangeError/
@@ -173,18 +173,18 @@ endfunction
 
 " FUNCTION: s:chRoot(node) {{{1
 " changes the current root to the selected one
-function! s:chRoot(node)
+function! s:chRoot(node) abort
     call b:NERDTree.changeRoot(a:node)
 endfunction
 
 " FUNCTION: s:nerdtree#ui_glue#chRootCwd() {{{1
 " Change the NERDTree root to match the current working directory.
-function! nerdtree#ui_glue#chRootCwd()
+function! nerdtree#ui_glue#chRootCwd() abort
     NERDTreeCWD
 endfunction
 
 " FUNCTION: nnerdtree#ui_glue#clearBookmarks(bookmarks) {{{1
-function! nerdtree#ui_glue#clearBookmarks(bookmarks)
+function! nerdtree#ui_glue#clearBookmarks(bookmarks) abort
     if a:bookmarks ==# ''
         let currentNode = g:NERDTreeFileNode.GetSelected()
         if currentNode !=# {}
@@ -202,7 +202,7 @@ endfunction
 
 " FUNCTION: s:closeChildren(node) {{{1
 " closes all childnodes of the current node
-function! s:closeChildren(node)
+function! s:closeChildren(node) abort
     call a:node.closeChildren()
     call b:NERDTree.render()
     call a:node.putCursorHere(0, 0)
@@ -210,7 +210,7 @@ endfunction
 
 " FUNCTION: s:closeCurrentDir(node) {{{1
 " Close the parent directory of the current node.
-function! s:closeCurrentDir(node)
+function! s:closeCurrentDir(node) abort
 
     if a:node.isRoot()
         call nerdtree#echo('cannot close parent of tree root')
@@ -235,7 +235,7 @@ endfunction
 
 " FUNCTION: s:closeTreeWindow() {{{1
 " close the tree window
-function! s:closeTreeWindow()
+function! s:closeTreeWindow() abort
     if b:NERDTree.isWinTree() && b:NERDTree.previousBuf() !=# -1
         exec 'buffer ' . b:NERDTree.previousBuf()
     else
@@ -249,7 +249,7 @@ endfunction
 
 " FUNCTION: s:deleteBookmark(bookmark) {{{1
 " Prompt the user to confirm the deletion of the selected bookmark.
-function! s:deleteBookmark(bookmark)
+function! s:deleteBookmark(bookmark) abort
     let l:message = 'Delete the bookmark "' . a:bookmark.name
                 \ . '" from the bookmark list?'
 
@@ -275,14 +275,14 @@ endfunction
 
 " FUNCTION: s:displayHelp() {{{1
 " toggles the help display
-function! s:displayHelp()
+function! s:displayHelp() abort
     call b:NERDTree.ui.toggleHelp()
     call b:NERDTree.render()
     call b:NERDTree.ui.centerView()
 endfunction
 
 " FUNCTION: s:findAndRevealPath(pathStr) {{{1
-function! s:findAndRevealPath(pathStr)
+function! s:findAndRevealPath(pathStr) abort
     let l:pathStr = !empty(a:pathStr) ? a:pathStr : expand('%:p')
     if !filereadable(l:pathStr)
         let l:pathStr = fnamemodify(l:pathStr, ':h')
@@ -333,7 +333,7 @@ endfunction
 
 "FUNCTION: s:handleLeftClick() {{{1
 "Checks if the click should open the current node
-function! s:handleLeftClick()
+function! s:handleLeftClick() abort
     let currentNode = g:NERDTreeFileNode.GetSelected()
     if currentNode !=# {}
 
@@ -368,7 +368,7 @@ function! s:handleLeftClick()
 endfunction
 
 " FUNCTION: s:handleMiddleMouse() {{{1
-function! s:handleMiddleMouse()
+function! s:handleMiddleMouse() abort
 
     " A middle mouse click does not automatically position the cursor as one
     " would expect. Forcing the execution of a regular left mouse click here
@@ -391,17 +391,17 @@ endfunction
 " FUNCTION: nerdtree#ui_glue#invokeKeyMap(key) {{{1
 "this is needed since I cant figure out how to invoke dict functions from a
 "key map
-function! nerdtree#ui_glue#invokeKeyMap(key)
+function! nerdtree#ui_glue#invokeKeyMap(key) abort
     call g:NERDTreeKeyMap.Invoke(a:key)
 endfunction
 
 " FUNCTION: s:jumpToFirstChild(node) {{{1
-function! s:jumpToFirstChild(node)
+function! s:jumpToFirstChild(node) abort
     call s:jumpToChild(a:node, 0)
 endfunction
 
 " FUNCTION: s:jumpToLastChild(node) {{{1
-function! s:jumpToLastChild(node)
+function! s:jumpToLastChild(node) abort
     call s:jumpToChild(a:node, 1)
 endfunction
 
@@ -411,7 +411,7 @@ endfunction
 " Args:
 " node: the node on which the cursor currently sits
 " last: 1 (true) if jumping to last child, 0 (false) if jumping to first
-function! s:jumpToChild(node, last)
+function! s:jumpToChild(node, last) abort
     let l:node = a:node.path.isDirectory ? a:node.getCascadeRoot() : a:node
 
     if l:node.isRoot()
@@ -430,7 +430,7 @@ endfunction
 " FUNCTION: s:jumpToParent(node) {{{1
 " Move the cursor to the parent of the specified node.  For a cascade, move to
 " the parent of the cascade's first node.  At the root node, do nothing.
-function! s:jumpToParent(node)
+function! s:jumpToParent(node) abort
     let l:node = a:node.path.isDirectory ? a:node.getCascadeRoot() : a:node
 
     if l:node.isRoot()
@@ -448,18 +448,18 @@ endfunction
 
 " FUNCTION: s:jumpToRoot() {{{1
 " moves the cursor to the root node
-function! s:jumpToRoot()
+function! s:jumpToRoot() abort
     call b:NERDTree.root.putCursorHere(1, 0)
     call b:NERDTree.ui.centerView()
 endfunction
 
 " FUNCTION: s:jumpToNextSibling(node) {{{1
-function! s:jumpToNextSibling(node)
+function! s:jumpToNextSibling(node) abort
     call s:jumpToSibling(a:node, 1)
 endfunction
 
 " FUNCTION: s:jumpToPrevSibling(node) {{{1
-function! s:jumpToPrevSibling(node)
+function! s:jumpToPrevSibling(node) abort
     call s:jumpToSibling(a:node, 0)
 endfunction
 
@@ -469,7 +469,7 @@ endfunction
 " Args:
 " node: the node on which the cursor currently sits
 " forward: 0 to jump to previous sibling, 1 to jump to next sibling
-function! s:jumpToSibling(node, forward)
+function! s:jumpToSibling(node, forward) abort
     let l:node = a:node.path.isDirectory ? a:node.getCascadeRoot() : a:node
     let l:sibling = l:node.findSibling(a:forward)
 
@@ -484,7 +484,7 @@ endfunction
 " FUNCTION: nerdtree#ui_glue#openBookmark(name) {{{1
 " Open the Bookmark that has the specified name. This function provides the
 " implementation for the :OpenBookmark command.
-function! nerdtree#ui_glue#openBookmark(name)
+function! nerdtree#ui_glue#openBookmark(name) abort
     try
         let l:bookmark = g:NERDTreeBookmark.BookmarkFor(a:name)
     catch /^NERDTree.BookmarkNotFoundError/
@@ -499,34 +499,34 @@ function! nerdtree#ui_glue#openBookmark(name)
 endfunction
 
 " FUNCTION: s:openHSplit(target) {{{1
-function! s:openHSplit(target)
+function! s:openHSplit(target) abort
     call a:target.activate({'where': 'h'})
 endfunction
 
 " FUNCTION: s:openVSplit(target) {{{1
-function! s:openVSplit(target)
+function! s:openVSplit(target) abort
     call a:target.activate({'where': 'v'})
 endfunction
 
 " FUNCTION: s:openExplorer(node) {{{1
-function! s:openExplorer(node)
+function! s:openExplorer(node) abort
     call a:node.openExplorer()
 endfunction
 
 " FUNCTION: s:openInNewTab(target) {{{1
-function! s:openInNewTab(target)
+function! s:openInNewTab(target) abort
     let l:opener = g:NERDTreeOpener.New(a:target.path, {'where': 't'})
     call l:opener.open(a:target)
 endfunction
 
 " FUNCTION: s:openInNewTabSilent(target) {{{1
-function! s:openInNewTabSilent(target)
+function! s:openInNewTabSilent(target) abort
     let l:opener = g:NERDTreeOpener.New(a:target.path, {'where': 't', 'stay': 1})
     call l:opener.open(a:target)
 endfunction
 
 " FUNCTION: s:openNodeRecursively(node) {{{1
-function! s:openNodeRecursively(node)
+function! s:openNodeRecursively(node) abort
     call nerdtree#echo('Recursively opening node. Please wait...')
     call a:node.openRecursively()
     call b:NERDTree.render()
@@ -534,7 +534,7 @@ function! s:openNodeRecursively(node)
 endfunction
 
 " FUNCTION: s:previewBookmark(bookmark) {{{1
-function! s:previewBookmark(bookmark)
+function! s:previewBookmark(bookmark) abort
     if a:bookmark.path.isDirectory
         execute 'NERDTreeFind '.a:bookmark.path.str()
     else
@@ -543,23 +543,23 @@ function! s:previewBookmark(bookmark)
 endfunction
 
 "FUNCTION: s:previewNodeCurrent(node) {{{1
-function! s:previewNodeCurrent(node)
+function! s:previewNodeCurrent(node) abort
     call a:node.open({'stay': 1, 'where': 'p', 'keepopen': 1})
 endfunction
 
 "FUNCTION: s:previewNodeHSplit(node) {{{1
-function! s:previewNodeHSplit(node)
+function! s:previewNodeHSplit(node) abort
     call a:node.open({'stay': 1, 'where': 'h', 'keepopen': 1})
 endfunction
 
 "FUNCTION: s:previewNodeVSplit(node) {{{1
-function! s:previewNodeVSplit(node)
+function! s:previewNodeVSplit(node) abort
     call a:node.open({'stay': 1, 'where': 'v', 'keepopen': 1})
 endfunction
 
 " FUNCTION: nerdtree#ui_glue#revealBookmark(name) {{{1
 " put the cursor on the node associate with the given name
-function! nerdtree#ui_glue#revealBookmark(name)
+function! nerdtree#ui_glue#revealBookmark(name) abort
     try
         let targetNode = g:NERDTreeBookmark.GetNodeForName(a:name, 0, b:NERDTree)
         call targetNode.putCursorHere(0, 1)
@@ -571,7 +571,7 @@ endfunction
 " FUNCTION: s:refreshRoot() {{{1
 " Reloads the current root. All nodes below this will be lost and the root dir
 " will be reloaded.
-function! s:refreshRoot()
+function! s:refreshRoot() abort
     if !g:NERDTree.IsOpen()
         return
     endif
@@ -588,7 +588,7 @@ endfunction
 
 " FUNCTION: s:refreshCurrent(node) {{{1
 " refreshes the root for the current node
-function! s:refreshCurrent(node)
+function! s:refreshCurrent(node) abort
     let node = a:node
     if !node.path.isDirectory
         let node = node.parent
@@ -601,7 +601,7 @@ function! s:refreshCurrent(node)
 endfunction
 
 " FUNCTION: nerdtree#ui_glue#setupCommands() {{{1
-function! nerdtree#ui_glue#setupCommands()
+function! nerdtree#ui_glue#setupCommands() abort
     command! -n=? -complete=dir -bar NERDTree :call g:NERDTreeCreator.CreateTabTree('<args>')
     command! -n=? -complete=dir -bar NERDTreeToggle :call g:NERDTreeCreator.ToggleTabTree('<args>')
     command! -n=0 -bar NERDTreeClose :call g:NERDTree.Close()
@@ -614,7 +614,7 @@ function! nerdtree#ui_glue#setupCommands()
 endfunction
 
 " Function: s:SID()   {{{1
-function s:SID()
+function! s:SID() abort
     if !exists('s:sid')
         let s:sid = matchstr(expand('<sfile>'), '<SNR>\zs\d\+\ze_SID$')
     endif
@@ -622,34 +622,34 @@ function s:SID()
 endfun
 
 " FUNCTION: s:showMenu(node) {{{1
-function! s:showMenu(node)
+function! s:showMenu(node) abort
     let mc = g:NERDTreeMenuController.New(g:NERDTreeMenuItem.AllEnabled())
     call mc.showMenu()
 endfunction
 
 " FUNCTION: s:toggleIgnoreFilter() {{{1
-function! s:toggleIgnoreFilter()
+function! s:toggleIgnoreFilter() abort
     call b:NERDTree.ui.toggleIgnoreFilter()
 endfunction
 
 " FUNCTION: s:toggleShowBookmarks() {{{1
-function! s:toggleShowBookmarks()
+function! s:toggleShowBookmarks() abort
     call b:NERDTree.ui.toggleShowBookmarks()
 endfunction
 
 " FUNCTION: s:toggleShowFiles() {{{1
-function! s:toggleShowFiles()
+function! s:toggleShowFiles() abort
     call b:NERDTree.ui.toggleShowFiles()
 endfunction
 
 " FUNCTION: s:toggleShowHidden() {{{1
 " toggles the display of hidden files
-function! s:toggleShowHidden()
+function! s:toggleShowHidden() abort
     call b:NERDTree.ui.toggleShowHidden()
 endfunction
 
 " FUNCTION: s:toggleZoom() {{{1
-function! s:toggleZoom()
+function! s:toggleZoom() abort
     call b:NERDTree.ui.toggleZoom()
 endfunction
 
@@ -659,7 +659,7 @@ endfunction
 " Args:
 " preserveState: if 1, the current root is left open when the new tree is
 " rendered; if 0, the current root node is closed
-function! nerdtree#ui_glue#upDir(preserveState)
+function! nerdtree#ui_glue#upDir(preserveState) abort
 
     try
         call b:NERDTree.root.cacheParent()
@@ -683,12 +683,12 @@ function! nerdtree#ui_glue#upDir(preserveState)
 endfunction
 
 " FUNCTION: s:upDirCurrentRootOpen() {{{1
-function! s:upDirCurrentRootOpen()
+function! s:upDirCurrentRootOpen() abort
     call nerdtree#ui_glue#upDir(1)
 endfunction
 
 " FUNCTION: s:upDirCurrentRootClosed() {{{1
-function! s:upDirCurrentRootClosed()
+function! s:upDirCurrentRootClosed() abort
     call nerdtree#ui_glue#upDir(0)
 endfunction
 
