@@ -51,27 +51,27 @@ endif
 "Args:
 "action: the action that is being performed, e.g. 'delete'
 function! s:inputPrompt(action)
-    if a:action == 'add'
+    if a:action ==# 'add'
         let title = 'Add a childnode'
         let info = "Enter the dir/file name to be created. Dirs end with a '/'"
         let minimal = 'Add node:'
 
-    elseif a:action == 'copy'
+    elseif a:action ==# 'copy'
         let title = 'Copy the current node'
         let info = 'Enter the new path to copy the node to:'
         let minimal = 'Copy to:'
 
-    elseif a:action == 'delete'
+    elseif a:action ==# 'delete'
         let title = 'Delete the current node'
         let info = 'Are you sure you wish to delete the node:'
         let minimal = 'Delete?'
 
-    elseif a:action == 'deleteNonEmpty'
+    elseif a:action ==# 'deleteNonEmpty'
         let title = 'Delete the current node'
         let info =  "STOP! Directory is not empty! To delete, type 'yes'"
         let minimal = 'Delete directory?'
 
-    elseif a:action == 'move'
+    elseif a:action ==# 'move'
         let title = 'Rename the current node'
         let info = 'Enter the new path for the node:'
         let minimal = 'Move to:'
@@ -114,9 +114,9 @@ function! s:promptToDelBuffer(bufnum, msg)
             let l:listedBufferCount = 0
         endif
         if l:listedBufferCount > 1
-            call nerdtree#exec('tabdo windo if winbufnr(0) == ' . a:bufnum . " | exec ':bnext! ' | endif", 1)
+            call nerdtree#exec('tabdo windo if winbufnr(0) ==# ' . a:bufnum . " | exec ':bnext! ' | endif", 1)
         else
-            call nerdtree#exec('tabdo windo if winbufnr(0) == ' . a:bufnum . " | exec ':enew! ' | endif", 1)
+            call nerdtree#exec('tabdo windo if winbufnr(0) ==# ' . a:bufnum . " | exec ':enew! ' | endif", 1)
         endif
         call nerdtree#exec('tabnext ' . s:originalTabNumber, 1)
         call nerdtree#exec(s:originalWindowNumber . 'wincmd w', 1)
@@ -146,7 +146,7 @@ function! s:renameBuffer(bufNum, newNodeName, isDirectory)
     " display a buffer for a new filename.
     let s:originalTabNumber = tabpagenr()
     let s:originalWindowNumber = winnr()
-    call nerdtree#exec('tabdo windo if winbufnr(0) == ' . a:bufNum . " | exec ':e! " . editStr . "' | endif", 1)
+    call nerdtree#exec('tabdo windo if winbufnr(0) ==# ' . a:bufNum . " | exec ':e! " . editStr . "' | endif", 1)
     call nerdtree#exec('tabnext ' . s:originalTabNumber, 1)
     call nerdtree#exec(s:originalWindowNumber . 'wincmd w', 1)
     " 3. We don't need a previous buffer anymore
@@ -330,7 +330,7 @@ function! NERDTreeCopyNode()
     let prompt = s:inputPrompt('copy')
     let newNodePath = input(prompt, currentNode.path.str(), 'file')
 
-    if newNodePath != ''
+    if newNodePath !=# ''
         "strip trailing slash
         let newNodePath = substitute(newNodePath, '\/$', '', '')
 
@@ -369,7 +369,7 @@ endfunction
 function! NERDTreeCopyPath()
     let l:nodePath = g:NERDTreeFileNode.GetSelected().path.str()
     if has('clipboard')
-        if &clipboard == 'unnamedplus'
+        if &clipboard ==# 'unnamedplus'
             let @+ = l:nodePath
         else
             let @* = l:nodePath
@@ -383,7 +383,7 @@ endfunction
 " FUNCTION: NERDTreeQuickLook() {{{1
 function! NERDTreeQuickLook()
     let treenode = g:NERDTreeFileNode.GetSelected()
-    if treenode != {}
+    if treenode !=# {}
         call system("qlmanage -p 2>/dev/null '" . treenode.path.str() . "'")
     endif
 endfunction
@@ -391,7 +391,7 @@ endfunction
 " FUNCTION: NERDTreeRevealInFinder() {{{1
 function! NERDTreeRevealInFinder()
     let treenode = g:NERDTreeFileNode.GetSelected()
-    if treenode != {}
+    if treenode !=# {}
         call system("open -R '" . treenode.path.str() . "'")
     endif
 endfunction
@@ -399,7 +399,7 @@ endfunction
 " FUNCTION: NERDTreeExecuteFile() {{{1
 function! NERDTreeExecuteFile()
     let treenode = g:NERDTreeFileNode.GetSelected()
-    if treenode != {}
+    if treenode !=# {}
         call system("open '" . treenode.path.str() . "'")
     endif
 endfunction
@@ -408,7 +408,7 @@ endfunction
 function! NERDTreeRevealFileLinux()
     let treenode = g:NERDTreeFileNode.GetSelected()
     let parentnode = treenode.parent
-    if parentnode != {}
+    if parentnode !=# {}
         call system("xdg-open '" . parentnode.path.str() . "' &")
     endif
 endfunction
@@ -416,7 +416,7 @@ endfunction
 " FUNCTION: NERDTreeExecuteFileLinux() {{{1
 function! NERDTreeExecuteFileLinux()
     let treenode = g:NERDTreeFileNode.GetSelected()
-    if treenode != {}
+    if treenode !=# {}
         call system("xdg-open '" . treenode.path.str() . "' &")
     endif
 endfunction

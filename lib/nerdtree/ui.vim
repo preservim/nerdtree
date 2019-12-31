@@ -157,7 +157,7 @@ function! s:UI.getPath(ln)
 
     let rootLine = self.getRootLineNum()
 
-    if a:ln == rootLine
+    if a:ln ==# rootLine
         return self.nerdtree.root.path
     endif
 
@@ -182,7 +182,7 @@ function! s:UI.getPath(ln)
         let curLineStripped = self._stripMarkup(curLine)
 
         " have we reached the top of the tree?
-        if lnum == rootLine
+        if lnum ==# rootLine
             let dir = self.nerdtree.root.path.str({'format': 'UI'}) . dir
             break
         endif
@@ -219,7 +219,7 @@ function! s:UI.getLineNum(node)
         let l:currentLine = getline(l:lineNumber)
         let l:indentLevel = self._indentLevelFor(l:currentLine)
 
-        if l:indentLevel != l:currentPathComponent
+        if l:indentLevel !=# l:currentPathComponent
             continue
         endif
 
@@ -229,7 +229,7 @@ function! s:UI.getLineNum(node)
         " Directories: If the current path 'starts with' the full path, then
         " either the paths are equal or the line is a cascade containing the
         " full path.
-        if l:fullPath[-1:] == '/' && stridx(l:currentPath, l:fullPath) == 0
+        if l:fullPath[-1:] ==# '/' && stridx(l:currentPath, l:fullPath) ==# 0
             return l:lineNumber
         endif
 
@@ -240,7 +240,7 @@ function! s:UI.getLineNum(node)
 
         " Otherwise: If the full path starts with the current path and the
         " current path is a directory, we add a new path component.
-        if stridx(l:fullPath, l:currentPath) == 0 && l:currentPath[-1:] == '/'
+        if stridx(l:fullPath, l:currentPath) ==# 0 && l:currentPath[-1:] ==# '/'
             let l:currentLine = substitute(l:currentLine, '/\s*$', '', '')
             call add(l:pathComponents, l:currentLine)
             let l:currentPathComponent += 1
@@ -296,7 +296,7 @@ endfunction
 
 " FUNCTION: s:UI.isIgnoreFilterEnabled() {{{1
 function! s:UI.isIgnoreFilterEnabled()
-    return self._ignoreEnabled == 1
+    return self._ignoreEnabled ==# 1
 endfunction
 
 " FUNCTION: s:UI.isMinimal() {{{1
@@ -317,7 +317,7 @@ function! s:UI._renderBookmarks()
         call cursor(line('.')+1, col('.'))
     endif
 
-    if g:NERDTreeBookmarksSort == 1 || g:NERDTreeBookmarksSort == 2
+    if g:NERDTreeBookmarksSort ==# 1 || g:NERDTreeBookmarksSort ==# 2
         call g:NERDTreeBookmark.SortBookmarksList()
     endif
 
@@ -443,13 +443,13 @@ function! s:UI.renderViewSavingPosition()
 
     " go up the tree till we find a node that will be visible or till we run
     " out of nodes
-    while currentNode != {} && !currentNode.isVisible() && !currentNode.isRoot()
+    while currentNode !=# {} && !currentNode.isVisible() && !currentNode.isRoot()
         let currentNode = currentNode.parent
     endwhile
 
     call self.render()
 
-    if currentNode != {}
+    if currentNode !=# {}
         call currentNode.putCursorHere(0, 0)
     endif
 endfunction

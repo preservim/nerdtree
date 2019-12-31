@@ -146,7 +146,7 @@ endfunction
 " Associate the current node with the given name
 function! nerdtree#ui_glue#bookmarkNode(...)
     let currentNode = g:NERDTreeFileNode.GetSelected()
-    if currentNode != {}
+    if currentNode !=# {}
         let name = a:1
         if empty(name)
             let name = currentNode.path.getLastPathComponent(0)
@@ -187,7 +187,7 @@ endfunction
 function! nerdtree#ui_glue#clearBookmarks(bookmarks)
     if a:bookmarks ==# ''
         let currentNode = g:NERDTreeFileNode.GetSelected()
-        if currentNode != {}
+        if currentNode !=# {}
             call currentNode.clearBookmarks()
         endif
     else
@@ -236,7 +236,7 @@ endfunction
 " FUNCTION: s:closeTreeWindow() {{{1
 " close the tree window
 function! s:closeTreeWindow()
-    if b:NERDTree.isWinTree() && b:NERDTree.previousBuf() != -1
+    if b:NERDTree.isWinTree() && b:NERDTree.previousBuf() !=# -1
         exec 'buffer ' . b:NERDTree.previousBuf()
     else
         if winnr('$') > 1
@@ -258,7 +258,7 @@ function! s:deleteBookmark(bookmark)
     echo | redraw
     let l:selection = confirm(l:message, l:choices, 1, 'Warning')
 
-    if l:selection != 1
+    if l:selection !=# 1
         call nerdtree#echo('bookmark not deleted')
         return
     endif
@@ -335,7 +335,7 @@ endfunction
 "Checks if the click should open the current node
 function! s:handleLeftClick()
     let currentNode = g:NERDTreeFileNode.GetSelected()
-    if currentNode != {}
+    if currentNode !=# {}
 
         "the dir arrows are multibyte chars, and vim's string functions only
         "deal with single bytes - so split the line up with the hack below and

@@ -32,7 +32,7 @@ function! NERDTreeExecFile()
     let cmd = treenode.path.str({'escape': 1})
     let cmd = input(':!', cmd . ' ')
 
-    if cmd != ''
+    if cmd !=# ''
         exec ':!' . cmd
     else
         echo 'Aborted'

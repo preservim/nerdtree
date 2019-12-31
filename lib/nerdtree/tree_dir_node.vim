@@ -14,7 +14,7 @@ let g:NERDTreeDirNode = s:TreeDirNode
 " Class method that returns the highest cached ancestor of the current root.
 function! s:TreeDirNode.AbsoluteTreeRoot()
     let currentNode = b:NERDTree.root
-    while currentNode.parent != {}
+    while currentNode.parent !=# {}
         let currentNode = currentNode.parent
     endwhile
     return currentNode
@@ -100,7 +100,7 @@ function! s:TreeDirNode.displayString()
     let l:cascade = self.getCascade()
     for l:dirNode in l:cascade
         let l:next = l:dirNode.path.displayString()
-        let l:label .= l:label == '' ? l:next : substitute(l:next,'^.','','')
+        let l:label .= l:label ==# '' ? l:next : substitute(l:next,'^.','','')
     endfor
 
     " Select the appropriate open/closed status indicator symbol.
@@ -133,7 +133,7 @@ function! s:TreeDirNode.findNode(path)
     if self.path.isDirectory
         for i in self.children
             let retVal = i.findNode(a:path)
-            if retVal != {}
+            if retVal !=# {}
                 return retVal
             endif
         endfor
@@ -169,7 +169,7 @@ function! s:TreeDirNode.getCascadeRoot()
 
     while !empty(l:parent) && !l:parent.isRoot()
 
-        if index(l:parent.getCascade(), self) == -1
+        if index(l:parent.getCascade(), self) ==# -1
             break
         endif
 
@@ -258,7 +258,7 @@ endfunction
 " Return a list of all child nodes from 'self.children' that are of type
 " TreeDirNode. This function supports http://github.com/scrooloose/nerdtree-project-plugin.git.
 function! s:TreeDirNode.getDirChildren()
-    return filter(copy(self.children), 'v:val.path.isDirectory == 1')
+    return filter(copy(self.children), 'v:val.path.isDirectory ==# 1')
 endfunction
 
 " FUNCTION: TreeDirNode._glob(pattern, all) {{{1
@@ -278,13 +278,13 @@ function! s:TreeDirNode._glob(pattern, all)
 
     " Construct a path specification such that globpath() will return
     " relative pathnames, if possible.
-    if self.path.str() == getcwd()
+    if self.path.str() ==# getcwd()
         let l:pathSpec = ','
     else
         let l:pathSpec = escape(fnamemodify(self.path.str({'format': 'Glob'}), ':.'), ',')
 
         " On Windows, the drive letter may be removed by fnamemodify().
-        if nerdtree#runningWindows() && l:pathSpec[0] == g:NERDTreePath.Slash()
+        if nerdtree#runningWindows() && l:pathSpec[0] ==# g:NERDTreePath.Slash()
             let l:pathSpec = self.path.drive . l:pathSpec
         endif
     endif
@@ -293,11 +293,11 @@ function! s:TreeDirNode._glob(pattern, all)
 
     " See ':h version7.txt' and ':h version8.txt' for details on the
     " development of the glob() and globpath() functions.
-    if v:version > 704 || (v:version == 704 && has('patch654'))
+    if v:version > 704 || (v:version ==# 704 && has('patch654'))
         let l:globList = globpath(l:pathSpec, a:pattern, !g:NERDTreeRespectWildIgnore, 1, 0)
-    elseif v:version == 704 && has('patch279')
+    elseif v:version ==# 704 && has('patch279')
         let l:globList = globpath(l:pathSpec, a:pattern, !g:NERDTreeRespectWildIgnore, 1)
-    elseif v:version > 702 || (v:version == 702 && has('patch051'))
+    elseif v:version > 702 || (v:version ==# 702 && has('patch051'))
         let l:globString = globpath(l:pathSpec, a:pattern, !g:NERDTreeRespectWildIgnore)
         let l:globList = split(l:globString, "\n")
     else
@@ -315,13 +315,13 @@ function! s:TreeDirNode._glob(pattern, all)
             " If l:file has a trailing slash, then its :tail will be ''. Use
             " :h to drop the slash and the empty string after it; then use :t
             " to get the directory name.
-            if l:tail == ''
+            if l:tail ==# ''
                 let l:tail = fnamemodify(l:file, ':h:t')
             endif
 
-            if l:tail == '.' || l:tail == '..'
+            if l:tail ==# '.' || l:tail ==# '..'
                 call add(l:toRemove, l:file)
-                if len(l:toRemove) == 2
+                if len(l:toRemove) ==# 2
                     break
                 endif
             endif
@@ -341,7 +341,7 @@ endfunction
 unlet s:TreeDirNode.GetSelected
 function! s:TreeDirNode.GetSelected()
     let currentDir = g:NERDTreeFileNode.GetSelected()
-    if currentDir != {} && !currentDir.isRoot()
+    if currentDir !=# {} && !currentDir.isRoot()
         if currentDir.path.isDirectory ==# 0
             let currentDir = currentDir.parent
         endif
@@ -373,7 +373,7 @@ endfunction
 " FUNCTION: TreeDirNode.hasVisibleChildren() {{{1
 " returns 1 if this node has any childre, 0 otherwise..
 function! s:TreeDirNode.hasVisibleChildren()
-    return self.getVisibleChildCount() != 0
+    return self.getVisibleChildCount() !=# 0
 endfunction
 
 " FUNCTION: TreeDirNode.isCascadable() {{{1
@@ -383,7 +383,7 @@ endfunction
 "  2. If the parent is a symlink or is bookmarked, you end up with unparsable
 "     text, and NERDTree cannot get the path of any child node.
 function! s:TreeDirNode.isCascadable()
-    if g:NERDTreeCascadeSingleChildDir == 0
+    if g:NERDTreeCascadeSingleChildDir ==# 0
         return 0
     endif
 
@@ -398,7 +398,7 @@ function! s:TreeDirNode.isCascadable()
     endfor
 
     let c = self.getVisibleChildren()
-    return len(c) == 1 && c[0].path.isDirectory
+    return len(c) ==# 1 && c[0].path.isDirectory
 endfunction
 
 " FUNCTION: TreeDirNode._initChildren() {{{1
@@ -447,7 +447,7 @@ endfunction
 " path: dir that the node represents
 " nerdtree: the tree the node belongs to
 function! s:TreeDirNode.New(path, nerdtree)
-    if a:path.isDirectory != 1
+    if a:path.isDirectory !=# 1
         throw 'NERDTree.InvalidArgumentsError: A TreeDirNode object must be instantiated with a directory Path object.'
     endif
 
@@ -510,7 +510,7 @@ function! s:TreeDirNode.openAlong(...)
     while node.path.isDirectory
         call node.open(opts)
         let level += 1
-        if node.getVisibleChildCount() == 1
+        if node.getVisibleChildCount() ==# 1
             let node = node.getChildByIndex(0, 1)
         else
             break
@@ -567,7 +567,7 @@ function! s:TreeDirNode.refresh()
                 "create a new path and see if it exists in this nodes children
                 let path = g:NERDTreePath.New(i)
                 let newNode = self.getChild(path)
-                if newNode != {}
+                if newNode !=# {}
                     call newNode.refresh()
                     call add(newChildNodes, newNode)
 
@@ -622,7 +622,7 @@ function! s:TreeDirNode.reveal(path, ...)
     if self.path.equals(a:path.getParent())
         let n = self.findNode(a:path)
         " We may be looking for a newly-saved file that isn't in the tree yet.
-        if n == {}
+        if n ==# {}
             call self.refresh()
             let n = self.findNode(a:path)
         endif
@@ -676,7 +676,7 @@ function! s:TreeDirNode.toggleOpen(...)
     if self.isOpen ==# 1
         call self.close()
     else
-        if g:NERDTreeCascadeOpenSingleChildDir == 0
+        if g:NERDTreeCascadeOpenSingleChildDir ==# 0
             call self.open(opts)
         else
             call self.openAlong(opts)

@@ -53,7 +53,7 @@ function! s:KeyMap.bind()
     endif
     let keymapInvokeString = escape(keymapInvokeString, '\')
 
-    let premap = self.key == '<LeftRelease>' ? ' <LeftRelease>' : ' '
+    let premap = self.key ==# '<LeftRelease>' ? ' <LeftRelease>' : ' '
 
     exec 'nnoremap <buffer> <silent> '. self.key . premap . ':call nerdtree#ui_glue#invokeKeyMap("'. keymapInvokeString .'")<cr>'
 endfunction
@@ -66,7 +66,7 @@ endfunction
 "FUNCTION: KeyMap.invoke() {{{1
 "Call the KeyMaps callback function
 function! s:KeyMap.invoke(...)
-    let Callback = type(self.callback) == type(function('tr')) ? self.callback : function(self.callback)
+    let Callback = type(self.callback) ==# type(function('tr')) ? self.callback : function(self.callback)
     if a:0
         call Callback(a:1)
     else
@@ -143,7 +143,7 @@ function! s:KeyMap.Create(options)
     let opts = extend({'scope': 'all', 'quickhelpText': ''}, copy(a:options))
 
     "dont override other mappings unless the 'override' option is given
-    if get(opts, 'override', 0) == 0 && !empty(s:KeyMap.FindFor(opts['key'], opts['scope']))
+    if get(opts, 'override', 0) ==# 0 && !empty(s:KeyMap.FindFor(opts['key'], opts['scope']))
         return
     end
 

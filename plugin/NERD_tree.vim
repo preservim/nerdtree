@@ -91,7 +91,7 @@ call s:initVariable('g:NERDTreeGlyphReadOnly', 'RO')
 
 if has('conceal')
     call s:initVariable('g:NERDTreeNodeDelimiter', "\x07")
-elseif (g:NERDTreeDirArrowExpandable == "\u00a0" || g:NERDTreeDirArrowCollapsible == "\u00a0")
+elseif (g:NERDTreeDirArrowExpandable ==# "\u00a0" || g:NERDTreeDirArrowCollapsible ==# "\u00a0")
     call s:initVariable('g:NERDTreeNodeDelimiter', "\u00b7")
 else
     call s:initVariable('g:NERDTreeNodeDelimiter', "\u00a0")
@@ -184,7 +184,7 @@ if g:NERDTreeHijackNetrw
     augroup END
 endif
 
-if g:NERDTreeChDirMode == 3
+if g:NERDTreeChDirMode ==# 3
     augroup NERDTreeChDirOnTabSwitch
         autocmd TabEnter * if g:NERDTree.ExistsForTab()|call g:NERDTree.ForCurrentTab().getRoot().path.changeToDir()|endif
     augroup END

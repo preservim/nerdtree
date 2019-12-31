@@ -15,7 +15,7 @@ function! nerdtree#version(...)
         let l:changelog = readfile(join([s:rootNERDTreePath, 'CHANGELOG.md'], nerdtree#slash()))
         let l:line = 0
         while l:line <= len(l:changelog)
-            if l:changelog[l:line] =~ '\d\+\.\d\+'
+            if l:changelog[l:line] =~# '\d\+\.\d\+'
                 let l:text = substitute(l:changelog[l:line], '.*\(\d\+.\d\+\).*', '\1', '')
                 let l:text .= substitute(l:changelog[l:line+1], '^.\{-}\(\.\d\+\).\{-}:\(.*\)', a:0>0 ? '\1:\2' : '\1', '')
                 break
@@ -122,15 +122,15 @@ function! nerdtree#compareNodesBySortKey(n1, n2)
         " Compare chunks upto common length.
         " If chunks have different type, the one which has
         " integer type is the lesser.
-        if type(sortKey1[i]) == type(sortKey2[i])
+        if type(sortKey1[i]) ==# type(sortKey2[i])
             if sortKey1[i] <# sortKey2[i]
                 return - 1
             elseif sortKey1[i] ># sortKey2[i]
                 return 1
             endif
-        elseif type(sortKey1[i]) == v:t_number
+        elseif type(sortKey1[i]) ==# v:t_number
             return -1
-        elseif type(sortKey2[i]) == v:t_number
+        elseif type(sortKey2[i]) ==# v:t_number
             return 1
         endif
         let i = i + 1
@@ -175,7 +175,7 @@ endfunction
 
 " FUNCTION: nerdtree#has_opt(options, name) {{{2
 function! nerdtree#has_opt(options, name)
-    return has_key(a:options, a:name) && a:options[a:name] == 1
+    return has_key(a:options, a:name) && a:options[a:name] ==# 1
 endfunction
 
 " FUNCTION: nerdtree#loadClassFiles() {{{2

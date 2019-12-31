@@ -37,13 +37,13 @@ function! s:NERDTree.Close()
         return
     endif
 
-    if winnr('$') != 1
+    if winnr('$') !=# 1
         " Use the window ID to identify the currently active window or fall
         " back on the buffer ID if win_getid/win_gotoid are not available, in
         " which case we'll focus an arbitrary window showing the buffer.
         let l:useWinId = exists('*win_getid') && exists('*win_gotoid')
 
-        if winnr() == s:NERDTree.GetWinNum()
+        if winnr() ==# s:NERDTree.GetWinNum()
             call nerdtree#exec('wincmd p', 1)
             let l:activeBufOrWin = l:useWinId ? win_getid() : bufnr('')
             call nerdtree#exec('wincmd p', 1)
@@ -160,17 +160,17 @@ endfunction
 
 "FUNCTION: s:NERDTree.IsOpen() {{{1
 function! s:NERDTree.IsOpen()
-    return s:NERDTree.GetWinNum() != -1
+    return s:NERDTree.GetWinNum() !=# -1
 endfunction
 
 "FUNCTION: s:NERDTree.isTabTree() {{{1
 function! s:NERDTree.isTabTree()
-    return self._type == 'tab'
+    return self._type ==# 'tab'
 endfunction
 
 "FUNCTION: s:NERDTree.isWinTree() {{{1
 function! s:NERDTree.isWinTree()
-    return self._type == 'window'
+    return self._type ==# 'window'
 endfunction
 
 "FUNCTION: s:NERDTree.MustBeOpen() {{{1

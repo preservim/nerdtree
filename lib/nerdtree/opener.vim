@@ -45,7 +45,7 @@ function! s:Opener._checkToCloseTree(newtab)
         return
     endif
 
-    if (a:newtab && self._where == 't') || !a:newtab
+    if (a:newtab && self._where ==# 't') || !a:newtab
         call g:NERDTree.CloseIfQuitOnOpen()
     endif
 endfunction
@@ -56,7 +56,7 @@ function! s:Opener._firstUsableWindow()
     let i = 1
     while i <= winnr('$')
         let bnum = winbufnr(i)
-        if bnum != -1 && getbufvar(bnum, '&buftype') ==# ''
+        if bnum !=# -1 && getbufvar(bnum, '&buftype') ==# ''
                     \ && !getwinvar(i, '&previewwindow')
                     \ && (!getbufvar(bnum, '&modified') || &hidden)
             return i
@@ -70,23 +70,23 @@ endfunction
 " FUNCTION: Opener._gotoTargetWin() {{{1
 function! s:Opener._gotoTargetWin()
     if b:NERDTree.isWinTree()
-        if self._where == 'v'
+        if self._where ==# 'v'
             call self._newVSplit()
-        elseif self._where == 'h'
+        elseif self._where ==# 'h'
             call self._newSplit()
-        elseif self._where == 't'
+        elseif self._where ==# 't'
             tabnew
         endif
     else
         call self._checkToCloseTree(1)
 
-        if self._where == 'v'
+        if self._where ==# 'v'
             call self._newVSplit()
-        elseif self._where == 'h'
+        elseif self._where ==# 'h'
             call self._newSplit()
-        elseif self._where == 't'
+        elseif self._where ==# 't'
             tabnew
-        elseif self._where == 'p'
+        elseif self._where ==# 'p'
             call self._previousWindow()
         endif
 
@@ -108,7 +108,7 @@ function! s:Opener._isWindowUsable(winnumber)
 
     let oldwinnr = winnr()
     call nerdtree#exec(a:winnumber . 'wincmd p', 1)
-    let specialWindow = getbufvar('%', '&buftype') != '' || getwinvar('%', '&previewwindow')
+    let specialWindow = getbufvar('%', '&buftype') !=# '' || getwinvar('%', '&previewwindow')
     let modified = &modified
     call nerdtree#exec(oldwinnr . 'wincmd p', 1)
 
@@ -247,7 +247,7 @@ function! s:Opener._openDirectory(node)
     else
         if empty(self._where)
             call b:NERDTree.changeRoot(a:node)
-        elseif self._where == 't'
+        elseif self._where ==# 't'
             call g:NERDTreeCreator.CreateTabTree(a:node.path.str())
         else
             call g:NERDTreeCreator.CreateWindowTree(a:node.path.str())
@@ -296,13 +296,13 @@ function! s:Opener._reuseWindow()
 
     "check the current tab for the window
     let winnr = bufwinnr('^' . self._path.str() . '$')
-    if winnr != -1
+    if winnr !=# -1
         call nerdtree#exec(winnr . 'wincmd w', 0)
         call self._checkToCloseTree(0)
         return 1
     endif
 
-    if self._reuse == 'currenttab'
+    if self._reuse ==# 'currenttab'
         return 0
     endif
 

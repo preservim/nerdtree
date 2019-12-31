@@ -93,7 +93,7 @@ function! s:Bookmark.CacheBookmarks(silent)
         for i in bookmarkStrings
 
             "ignore blank lines
-            if i != ''
+            if i !=# ''
 
                 let name = substitute(i, '^\(.\{-}\) .*$', '\1', '')
                 let path = substitute(i, '^.\{-} \(.*\)$', '\1', '')
@@ -123,13 +123,13 @@ endfunction
 " option. Supports the s:Bookmark.SortBookmarksList() method.
 function! s:Bookmark.CompareBookmarksByName(firstBookmark, secondBookmark)
     let l:result = 0
-    if g:NERDTreeBookmarksSort == 1
+    if g:NERDTreeBookmarksSort ==# 1
         if a:firstBookmark.name <? a:secondBookmark.name
             let l:result = -1
         elseif a:firstBookmark.name >? a:secondBookmark.name
             let l:result = 1
         endif
-    elseif g:NERDTreeBookmarksSort == 2
+    elseif g:NERDTreeBookmarksSort ==# 2
         if a:firstBookmark.name <# a:secondBookmark.name
             let l:result = -1
         elseif a:firstBookmark.name ># a:secondBookmark.name
@@ -198,7 +198,7 @@ endfunction
 function! s:Bookmark.GetSelected()
     let line = getline('.')
     let name = substitute(line, '^>\(.\{-}\) .\+$', '\1', '')
-    if name != line
+    if name !=# line
         try
             return s:Bookmark.BookmarkFor(name)
         catch /^NERDTree.BookmarkNotFoundError/
