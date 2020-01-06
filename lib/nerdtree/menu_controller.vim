@@ -62,7 +62,7 @@ function! s:MenuController._echoPrompt()
 
     if self.isMinimal()
         let selection = self.menuItems[self.selection].text
-        let keyword = matchstr(selection, '\([^ ]*')
+        let keyword = matchstr(selection, '[^ ]*([^ ]*')
 
         let shortcuts = map(copy(self.menuItems), "v:val['shortcut']")
         let shortcuts[self.selection] = ' ' . keyword . ' '
