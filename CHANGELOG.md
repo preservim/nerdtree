@@ -8,6 +8,7 @@
         - **.PATCH**: Pull Request Title (PR Author) [PR Number](Link to PR)
 -->
 #### 6.4
+- **.4**: Prevent overwriting existing files/dirs on node move. (PhilRunninger) [#1079](https://github.com/preservim/nerdtree/pull/1079)
 - **.3**: Fix regex that finds keyword for minimal menu. (PhilRunninger) [#1075](https://github.com/preservim/nerdtree/pull/1075)
 - **.2**: Lint vimscript, fix errors and warnings, add CI job to review PRs (Caleb Maclennan) [#1071](https://github.com/preservim/nerdtree/pull/1071)
 - **.1**: Ensure backward compatibility. v:t_func is not available before Vim 8.0 (Phil Runninger)
