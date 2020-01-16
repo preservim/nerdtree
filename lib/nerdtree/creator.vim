@@ -333,14 +333,17 @@ function! s:Creator._tabpagevar(tabnr, var)
     let old_ei = &eventignore
     set eventignore=all
 
-    exec 'tabnext ' . a:tabnr
-    let v = -1
-    if exists('t:' . a:var)
-        exec 'let v = t:' . a:var
-    endif
-    exec 'tabnext ' . currentTab
+    try
+        exec 'tabnext ' . a:tabnr
+        let v = -1
+        if exists('t:' . a:var)
+            exec 'let v = t:' . a:var
+        endif
+        exec 'tabnext ' . currentTab
 
-    let &eventignore = old_ei
+    finally
+        let &eventignore = old_ei
+    endtry
 
     return v
 endfunction
