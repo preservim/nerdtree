@@ -196,6 +196,11 @@ function! NERDTreeMoveNode()
     let curNode = g:NERDTreeFileNode.GetSelected()
     let prompt = s:inputPrompt('move')
     let newNodePath = input(prompt, curNode.path.str(), 'file')
+    while filereadable(newNodePath)
+        call nerdtree#echoWarning('This destination already exists. Try again.')
+        let newNodePath = input(prompt, curNode.path.str(), 'file')
+    endwhile
+
 
     if newNodePath ==# ''
         call nerdtree#echo('Node Renaming Aborted.')
