@@ -8,6 +8,7 @@
         - **.PATCH**: Pull Request Title (PR Author) [PR Number](Link to PR)
 -->
 #### 6.4
+- **.6:** NERDTreeFind shows expected message if file doesn't exist e.g. with vim-startify (andys8). [#1081](https://github.com/preservim/nerdtree/pull/1081)
 - **.5**: Ensure events are (or aren't) being ignored correctly. (PhilRunninger) [#1080](https://github.com/preservim/nerdtree/pull/1080)
 - **.4**: Prevent overwriting existing files/dirs on node move. (PhilRunninger) [#1079](https://github.com/preservim/nerdtree/pull/1079)
 - **.3**: Fix regex that finds keyword for minimal menu. (PhilRunninger) [#1075](https://github.com/preservim/nerdtree/pull/1075)
