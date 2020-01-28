@@ -8,7 +8,7 @@
         - **.PATCH**: Pull Request Title (PR Author) [PR Number](Link to PR)
 -->
 #### 6.5
-- **.0**: `NERDTreeToggle <start-directory>` always sets NERDTree root. (PhilRunninger) [#1082](https://github.com/preservim/nerdtree/pull/1082)
+- **.0**: `NERDTreeToggle <start-directory>` always sets NERDTree root. (PhilRunninger) [#1083](https://github.com/preservim/nerdtree/pull/1083)
 #### 6.4
 - **.6**: NERDTreeFind shows expected message if file doesn't exist e.g. with vim-startify (andys8). [#1081](https://github.com/preservim/nerdtree/pull/1081)
 - **.5**: Ensure events are (or aren't) being ignored correctly. (PhilRunninger) [#1080](https://github.com/preservim/nerdtree/pull/1080)
