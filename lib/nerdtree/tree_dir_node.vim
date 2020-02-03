@@ -104,8 +104,8 @@ function! s:TreeDirNode.displayString()
     endfor
 
     " Select the appropriate open/closed status indicator symbol.
-    let l:padding = g:NERDTreeDirArrowExpandable ==# '' ? '' : ' '
-    let l:symbol = (l:cascade[-1].isOpen ? g:NERDTreeDirArrowCollapsible : g:NERDTreeDirArrowExpandable ) . l:padding
+    let l:symbol = (l:cascade[-1].isOpen ? g:NERDTreeDirArrowCollapsible : g:NERDTreeDirArrowExpandable )
+    let l:symbol .= (g:NERDTreeDirArrowExpandable ==# '' ? '' : ' ')
     let l:flags = l:cascade[-1].path.flagSet.renderToString()
 
     return l:symbol . l:flags . l:label
