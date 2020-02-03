@@ -321,13 +321,11 @@ function! s:TreeFileNode._renderToString(depth, drawText)
     if a:drawText ==# 1
 
         let treeParts = repeat('  ', a:depth - 1)
-
-        if !self.path.isDirectory
-            let treeParts = treeParts . '  '
+        if !self.path.isDirectory && g:NERDTreeDirArrowExpandable != ''
+            let treeParts .= '  '
         endif
 
         let line = treeParts . self.displayString()
-
         let output = output . line . "\n"
     endif
 
