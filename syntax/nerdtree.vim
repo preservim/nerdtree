@@ -31,8 +31,8 @@ if g:NERDTreeDirArrowExpandable !=# ''
     exec 'syn match NERDTreeFile  #^[^"\.'.s:dirArrows.'] *[^'.s:dirArrows.']*# contains=NERDTreeLink,NERDTreeRO,NERDTreeBookmark,NERDTreeExecFile'
 else
     exec 'syn match NERDTreeDir #[^'.g:NERDTreeNodeDelimiter.']\{-}/\ze\($\|'.g:NERDTreeNodeDelimiter.'\)#'
-    exec 'syn match NERDTreeExecFile #'.g:NERDTreeNodeDelimiter.'.\{-}\*\($\|'.g:NERDTreeNodeDelimiter.'\)# contains=NERDTreeRO,NERDTreeBookmark'
-    exec 'syn match NERDTreeFile     #^.\{-}'.g:NERDTreeNodeDelimiter.'.\{-}[^\/]\($\|'.g:NERDTreeNodeDelimiter.'.*\)# contains=NERDTreeLink,NERDTreeRO,NERDTreeBookmark,NERDTreeExecFile'
+    exec 'syn match NERDTreeExecFile #[^'.g:NERDTreeNodeDelimiter.']\{-}'.g:NERDTreeNodeDelimiter.'\*\($\| \)# contains=NERDTreeRO,NERDTreeBookmark'
+    exec 'syn match NERDTreeFile     #^.*'.g:NERDTreeNodeDelimiter.'.*[^\/]\($\|'.g:NERDTreeNodeDelimiter.'.*\)# contains=NERDTreeLink,NERDTreeRO,NERDTreeBookmark,NERDTreeExecFile'
 endif
 
 "highlighting for readonly files
