@@ -1,12 +1,11 @@
 # NERDTree Change Log
-
-<!--
-    Introduce a new MAJOR.MINOR version with a 4-hash header.
-
-    PATCH versions are listed from newest to oldest under their respective MAJOR.MINOR version
-    in an unordered list.  The format is:
+<!-- Introduce a new MAJOR or MINOR version with a 4-hash header.
+     PATCH versions are listed from newest to oldest under their respective MAJOR.MINOR
+     version in an unordered list.  The format is:
         - **.PATCH**: Pull Request Title (PR Author) [PR Number](Link to PR)
 -->
+#### 6.6
+- **.0**: Add the ability to turn off directory arrows (PhilRunninger) [#1085](https://github.com/preservim/nerdtree/pull/1085)
 #### 6.5
 - **.0**: `NERDTreeToggle <start-directory>` always sets NERDTree root. (PhilRunninger) [#1083](https://github.com/preservim/nerdtree/pull/1083)
 #### 6.4
