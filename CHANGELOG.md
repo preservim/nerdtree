@@ -5,7 +5,7 @@
         - **.PATCH**: Pull Request Title (PR Author) [PR Number](Link to PR)
 -->
 #### 6.6
-- **.1**: [add] How to install using dein.vim [#1087](https://github.com/preservim/nerdtree/pull/1087)
+- **.1**: [add] How to install using dein.vim (kazukazuinaina) [#1087](https://github.com/preservim/nerdtree/pull/1087)
 - **.0**: Add the ability to turn off directory arrows (PhilRunninger) [#1085](https://github.com/preservim/nerdtree/pull/1085)
 #### 6.5
 - **.0**: `NERDTreeToggle <start-directory>` always sets NERDTree root. (PhilRunninger) [#1083](https://github.com/preservim/nerdtree/pull/1083)
