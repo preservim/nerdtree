@@ -59,6 +59,13 @@ Plug 'preservim/nerdtree'
 call plug#end()
 ```
 
+#### [dein.vim](https://github.com/Shougo/dein.vim)
+```vim
+call dein#begin()
+call dein#add('preservim/nerdtree')
+call dein#end()
+```
+
 #### [apt-vim](https://github.com/egalpin/apt-vim)
 ```bash
 apt-vim install -y https://github.com/preservim/nerdtree.git
