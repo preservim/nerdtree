@@ -4,6 +4,8 @@
      version in an unordered list.  The format is:
         - **.PATCH**: Pull Request Title (PR Author) [PR Number](Link to PR)
 -->
+#### 6.7
+- **.0**: Open the parent directory when revealing a non-existent file with :NERDTreeFind (bouk) [#1090](https://github.com/preservim/nerdtree/pull/1090)
 #### 6.6
 - **.1**: [add] How to install using dein.vim (kazukazuinaina) [#1087](https://github.com/preservim/nerdtree/pull/1087)
 - **.0**: Add the ability to turn off directory arrows (PhilRunninger) [#1085](https://github.com/preservim/nerdtree/pull/1085)
