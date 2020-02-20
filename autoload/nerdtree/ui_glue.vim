@@ -293,7 +293,7 @@ function! s:findAndRevealPath(pathStr) abort
 
     if !filereadable(l:pathStr)
         let l:pathStr = fnamemodify(l:pathStr, ':h')
-        let l:revealOpts["open"] = 1
+        let l:revealOpts['open'] = 1
     endif
 
     try
