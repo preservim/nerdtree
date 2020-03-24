@@ -5,6 +5,7 @@
         - **.PATCH**: Pull Request Title (PR Author) [PR Number](Link to PR)
 -->
 #### 6.7
+- **.1**: File Move: Escape existing directory name when looking for open files. (PhilRunninger) [#1094](https://github.com/preservim/nerdtree/pull/1094)
 - **.0**: Open the parent directory when revealing a non-existent file with :NERDTreeFind (bouk) [#1090](https://github.com/preservim/nerdtree/pull/1090)
 #### 6.6
 - **.1**: [add] How to install using dein.vim (kazukazuinaina) [#1087](https://github.com/preservim/nerdtree/pull/1087)
