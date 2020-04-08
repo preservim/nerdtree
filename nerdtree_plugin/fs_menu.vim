@@ -388,10 +388,13 @@ endfunction
 
 " FUNCTION: NERDTreeQuickLook() {{{1
 function! NERDTreeQuickLook()
-    let treenode = g:NERDTreeFileNode.GetSelected()
-    if treenode !=# {}
-        call system("qlmanage -p 2>/dev/null '" . treenode.path.str() . "'")
+    let l:node = g:NERDTreeFileNode.GetSelected()
+
+    if empty(l:node)
+        return
     endif
+
+    call system('qlmanage -p 2>/dev/null ' . shellescape(l:node.path.str()))
 endfunction
 
 " FUNCTION: NERDTreeRevealInFinder() {{{1
@@ -428,4 +431,3 @@ function! NERDTreeExecuteFileLinux()
 endfunction
 
 " vim: set sw=4 sts=4 et fdm=marker:
-
