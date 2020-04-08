@@ -410,10 +410,13 @@ endfunction
 
 " FUNCTION: NERDTreeExecuteFile() {{{1
 function! NERDTreeExecuteFile()
-    let treenode = g:NERDTreeFileNode.GetSelected()
-    if treenode !=# {}
-        call system("open '" . treenode.path.str() . "'")
+    let l:node = g:NERDTreeFileNode.GetSelected()
+
+    if empty(l:node)
+        return
     endif
+
+    call system('open ' . shellescape(l:node.path.str()))
 endfunction
 
 " FUNCTION: NERDTreeRevealFileLinux() {{{1
