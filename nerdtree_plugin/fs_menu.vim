@@ -432,10 +432,13 @@ endfunction
 
 " FUNCTION: NERDTreeExecuteFileLinux() {{{1
 function! NERDTreeExecuteFileLinux()
-    let treenode = g:NERDTreeFileNode.GetSelected()
-    if treenode !=# {}
-        call system("xdg-open '" . treenode.path.str() . "' &")
+    let l:node = g:NERDTreeFileNode.GetSelected()
+
+    if empty(l:node)
+        return
     endif
+
+    call system('xdg-open ' . shellescape(l:node.path.str()))
 endfunction
 
 " vim: set sw=4 sts=4 et fdm=marker:
