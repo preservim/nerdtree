@@ -421,11 +421,13 @@ endfunction
 
 " FUNCTION: NERDTreeRevealFileLinux() {{{1
 function! NERDTreeRevealFileLinux()
-    let treenode = g:NERDTreeFileNode.GetSelected()
-    let parentnode = treenode.parent
-    if parentnode !=# {}
-        call system("xdg-open '" . parentnode.path.str() . "' &")
+    let l:node = g:NERDTreeFileNode.GetSelected()
+
+    if empty(l:node.parent)
+        return
     endif
+
+    call system('xdg-open ' . shellescape(l:node.parent.path.str()))
 endfunction
 
 " FUNCTION: NERDTreeExecuteFileLinux() {{{1
