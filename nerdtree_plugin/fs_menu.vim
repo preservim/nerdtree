@@ -399,10 +399,13 @@ endfunction
 
 " FUNCTION: NERDTreeRevealInFinder() {{{1
 function! NERDTreeRevealInFinder()
-    let treenode = g:NERDTreeFileNode.GetSelected()
-    if treenode !=# {}
-        call system("open -R '" . treenode.path.str() . "'")
+    let l:node = g:NERDTreeFileNode.GetSelected()
+
+    if empty(l:node)
+        return
     endif
+
+    call system('open -R ' . shellescape(l:node.path.str()))
 endfunction
 
 " FUNCTION: NERDTreeExecuteFile() {{{1
