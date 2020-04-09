@@ -423,6 +423,16 @@ endfunction
 function! NERDTreeRevealFileLinux()
     let l:node = g:NERDTreeFileNode.GetSelected()
 
+    if empty(l:node)
+        return
+    endif
+
+    " Handle the edge case of "/", which has no parent.
+    if l:node.path.str() ==# '/'
+        call system('xdg-open /')
+        return
+    endif
+
     if empty(l:node.parent)
         return
     endif
