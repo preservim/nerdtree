@@ -199,7 +199,7 @@ function! s:Path.copy(dest)
         let cmd_prefix = (self.isDirectory ? g:NERDTreeCopyDirCmd : g:NERDTreeCopyFileCmd)
     endif
 
-    let cmd = cmd_prefix . ' ' . escape(self.str(), self._escChars()) . ' ' . escape(a:dest, self._escChars())
+    let cmd = cmd_prefix . ' ' . shellescape(self.str()) . ' ' . shellescape(a:dest)
     let success = system(cmd)
     if v:shell_error !=# 0
         throw "NERDTree.CopyError: Could not copy '". self.str() ."' to: '" . a:dest . "'"
