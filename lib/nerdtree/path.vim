@@ -296,7 +296,7 @@ endfunction
 " FUNCTION: Path.edit() {{{1
 function! s:Path.edit()
     let l:bufname = self.str({'format': 'Edit'})
-    if bufname() !=# l:bufname
+    if bufname('%') !=# l:bufname
         exec 'edit ' . l:bufname
     endif
 endfunction

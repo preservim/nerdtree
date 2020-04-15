@@ -5,6 +5,7 @@
         - **.PATCH**: Pull Request Title (PR Author) [PR Number](Link to PR)
 -->
 #### 6.7
+- **.7**: Put '%' argument in bufname() for backwards compatibility. (PhilRunninger) [#1105](https://github.com/preservim/nerdtree/pull/1105)
 - **.6**: If a file's already open in the window, don't edit it again. (PhilRunninger) [#1103](https://github.com/preservim/nerdtree/pull/1103)
 - **.5**: Prevent unneeded tree creation in `:NERDTreeToggle[VCS] <path>` (PhilRunninger) [#1101](https://github.com/preservim/nerdtree/pull/1101)
 - **.4**: Add missing calls to the `shellescape()` function (lifecrisis) [#1099](https://github.com/preservim/nerdtree/pull/1099)
