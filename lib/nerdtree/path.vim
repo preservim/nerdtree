@@ -295,7 +295,10 @@ endfunction
 
 " FUNCTION: Path.edit() {{{1
 function! s:Path.edit()
-    exec 'edit ' . self.str({'format': 'Edit'})
+    let l:bufname = self.str({'format': 'Edit'})
+    if bufname() !=# l:bufname
+        exec 'edit ' . l:bufname
+    endif
 endfunction
 
 " FUNCTION: Path.extractDriveLetter(fullpath) {{{1
