@@ -52,7 +52,15 @@ function! s:FlagSet.renderToString()
         return ''
     endif
 
-    return '[' . flagstring . ']'
+    if !exists('g:NERDTreeFlagstringLeft')
+        let g:NERDTreeFlagstringLeft = '['
+    endif
+
+    if !exists('g:NERDTreeFlagstringRight')
+        let g:NERDTreeFlagstringRight = ']'
+    endif
+
+    return g:NERDTreeFlagstringLeft . flagstring . g:NERDTreeFlagstringRight
 endfunction
 
 " vim: set sw=4 sts=4 et fdm=marker:
