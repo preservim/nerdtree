@@ -547,13 +547,7 @@ endfunction
 "
 " a:path should be a dir
 function! s:Path.isAncestor(path)
-    if !self.isDirectory
-        return 0
-    endif
-
-    let this = self.str()
-    let that = a:path.str()
-    return stridx(that, this) ==# 0
+    return a:path.isUnder(self)
 endfunction
 
 " FUNCTION: Path.isUnder(path) {{{1
@@ -562,10 +556,26 @@ function! s:Path.isUnder(path)
     if a:path.isDirectory ==# 0
         return 0
     endif
-
-    let this = self.str()
-    let that = substitute(a:path.str(), '[\\/]*$', s:Path.Slash(), '')
-    return stridx(this, that) ==# 0
+    if nerdtree#runningWindows() && a:path.drive !=# self.drive
+        return 0
+    endif
+    let l:this_count = len(self.pathSegments)
+    if l:this_count ==# 0
+        return 0
+    endif
+    let l:that_count = len(a:path.pathSegments)
+    if l:that_count ==# 0
+        return 1
+    endif
+    if l:that_count >= l:this_count
+        return 0
+    endif
+    for i in range(0, l:that_count-1)
+        if self.pathSegments[i] !=# a:path.pathSegments[i]
+            return 0
+        endif
+    endfor
+    return 1
 endfunction
 
 " FUNCTION: Path.JoinPathStrings(...) {{{1
