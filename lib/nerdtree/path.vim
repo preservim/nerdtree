@@ -564,8 +564,8 @@ function! s:Path.isUnder(path)
     endif
 
     let this = self.str()
-    let that = a:path.str()
-    return stridx(this, that . s:Path.Slash()) ==# 0
+    let parent = substitute(a:path.str(), escape(s:Path.Slash().'$', '\'), '', '')
+    return stridx(this, parent . s:Path.Slash()) ==# 0
 endfunction
 
 " FUNCTION: Path.JoinPathStrings(...) {{{1
