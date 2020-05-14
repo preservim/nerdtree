@@ -45,9 +45,7 @@ endfunction
 " FUNCTION: s:Creator.createTabTree(a:name) {{{1
 " name: the name of a bookmark or a directory
 function! s:Creator.createTabTree(name)
-    echomsg "creating tabtree for ".a:name
     let l:path = self._pathForString(a:name)
-    echomsg "path = ".l:path.str()
 
     " Abort if an exception was thrown (i.e., if the bookmark or directory
     " does not exist).
@@ -65,13 +63,9 @@ function! s:Creator.createTabTree(name)
         call self._removeTreeBufForTab()
     endif
 
-    echomsg "creating window"
     call self._createTreeWin()
-    echomsg "creating nerdtree"
     call self._createNERDTree(l:path, 'tab')
-    echomsg "rendering"
     call b:NERDTree.render()
-    echomsg "moving cursor. Root=".b:NERDTree.root.path.str()
     call b:NERDTree.root.putCursorHere(0, 0)
 
     call self._broadcastInitEvent()
@@ -112,9 +106,8 @@ endfunction
 
 " FUNCTION: s:Creator._createNERDTree(path) {{{1
 function! s:Creator._createNERDTree(path, type)
-    echomsg "creating tree for ".a:path.str()
     let b:NERDTree = g:NERDTree.New(a:path, a:type)
-    echomsg "root is ".b:NERDTree.root.path.str()
+
     " TODO: This assignment is kept for compatibility reasons.  Many other
     " plugins use b:NERDTreeRoot instead of b:NERDTree.root.  Remove this
     " assignment in the future.
@@ -252,17 +245,15 @@ function! s:Creator._pathForString(str)
     else
         let dir = a:str ==# '' ? getcwd() : a:str
 
-        echomsg "1. dir = {".dir."}"
         "hack to get an absolute path if a relative path is given
         if dir =~# '^\.'
             let dir = getcwd() . g:NERDTreePath.Slash() . dir
         endif
-        echomsg "2. dir = {".dir."}"
+
         "hack to prevent removing slash if dir is the root of the file system.
         if dir !=# '/'
             let dir = g:NERDTreePath.Resolve(dir)
         endif
-        echomsg "3. dir = {".dir."}"
 
         try
             let path = g:NERDTreePath.New(dir)
