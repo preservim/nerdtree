@@ -546,24 +546,24 @@ endfunction
 " return 1 if this path is somewhere above the given path in the filesystem.
 "
 " a:path should be a dir
-function! s:Path.isAncestor(path)
-    return a:path.isUnder(self)
+function! s:Path.isAncestor(child)
+    return a:child.isUnder(self)
 endfunction
 
 " FUNCTION: Path.isUnder(path) {{{1
 " return 1 if this path is somewhere under the given path in the filesystem.
-function! s:Path.isUnder(path)
-    if a:path.isDirectory ==# 0
+function! s:Path.isUnder(parent)
+    if a:parent.isDirectory ==# 0
         return 0
     endif
-    if nerdtree#runningWindows() && a:path.drive !=# self.drive
+    if nerdtree#runningWindows() && a:parent.drive !=# self.drive
         return 0
     endif
     let l:this_count = len(self.pathSegments)
     if l:this_count ==# 0
         return 0
     endif
-    let l:that_count = len(a:path.pathSegments)
+    let l:that_count = len(a:parent.pathSegments)
     if l:that_count ==# 0
         return 1
     endif
@@ -571,7 +571,7 @@ function! s:Path.isUnder(path)
         return 0
     endif
     for i in range(0, l:that_count-1)
-        if self.pathSegments[i] !=# a:path.pathSegments[i]
+        if self.pathSegments[i] !=# a:parent.pathSegments[i]
             return 0
         endif
     endfor
