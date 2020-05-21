@@ -5,6 +5,7 @@
         - **.PATCH**: Pull Request Title (PR Author) [PR Number](Link to PR)
 -->
 #### 6.7
+- **.13**: Add curly braces to the list of characters to be escaped. (PhilRunninger) [#1128](https://github.com/preservim/nerdtree/pull/1128)
 - **.12**: Fixed a bug that caused the file-tree construction to slow down significantly. [#1126](https://github.com/preservim/nerdtree/pull/1126)
 - **.11**: Fix exception in NERDTreeFind (on windows OS and If the file is located in the root directory of the disk)  [#1122](https://github.com/preservim/nerdtree/pull/1122)
 - **.10**: Do not consider the tree root to be "cascadable". (lifecrisis) [#1120](https://github.com/preservim/nerdtree/pull/1120)
