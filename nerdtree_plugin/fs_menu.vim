@@ -463,7 +463,7 @@ function! NERDTreeExecuteFileWindows()
         return
     endif
 
-    call system('pwsh -c Invoke-Item ' . shellescape(l:node.path.str()))
+    call system('cmd.exe /c start "" ' . shellescape(l:node.path.str()))
 endfunction
 
 " vim: set sw=4 sts=4 et fdm=marker:
