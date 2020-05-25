@@ -5,6 +5,7 @@
         - **.PATCH**: Pull Request Title (PR Author) [PR Number](Link to PR)
 -->
 #### 6.7
+- **.14**: Use backward-compatible `nerdtree#and()` in one place that was missed. (PhilRunninger) [#1134](https://github.com/preservim/nerdtree/pull/1134)
 - **.13**: `cmd.exe /c start "" <filename>` for windows default viewer support. (J. Altayó) [#1130](https://github.com/preservim/nerdtree/pull/1130)
 - **.12**: Fixed a bug that caused the file-tree construction to slow down significantly. (Eugenij-W) [#1126](https://github.com/preservim/nerdtree/pull/1126)
 - **.11**: Fix exception in NERDTreeFind (on windows OS and If the file is located in the root directory of the disk) (Eugenij-W) [#1122](https://github.com/preservim/nerdtree/pull/1122)
