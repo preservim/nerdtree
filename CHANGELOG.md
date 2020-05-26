@@ -5,6 +5,7 @@
         - **.PATCH**: Pull Request Title (PR Author) [PR Number](Link to PR)
 -->
 #### 6.7
+- **.15**: Add curly braces to the list of characters to be escaped. (PhilRunninger) [#1128](https://github.com/preservim/nerdtree/pull/1128)
 - **.14**: Use backward-compatible `nerdtree#and()` in one place that was missed. (PhilRunninger) [#1134](https://github.com/preservim/nerdtree/pull/1134)
 - **.13**: `cmd.exe /c start "" <filename>` for windows default viewer support. (J. Altayó) [#1130](https://github.com/preservim/nerdtree/pull/1130)
 - **.12**: Fixed a bug that caused the file-tree construction to slow down significantly. (Eugenij-W) [#1126](https://github.com/preservim/nerdtree/pull/1126)

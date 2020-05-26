@@ -332,7 +332,7 @@ function! s:Path._escChars()
         return " `\|\"#%&,?()\*^<>$"
     endif
 
-    return " \\`\|\"#%&,?()\*^<>[]$"
+    return " \\`\|\"#%&,?()\*^<>[]{}$"
 endfunction
 
 " FUNCTION: Path.getDir() {{{1
