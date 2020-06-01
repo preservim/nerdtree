@@ -4,6 +4,8 @@
      version in an unordered list.  The format is:
         - **.PATCH**: Pull Request Title (PR Author) [PR Number](Link to PR)
 -->
+#### 6.8
+- **.0**: Allow concealed characters to show another character. (PhilRunninger) [#1138](https://github.com/preservim/nerdtree/pull/1138)
 #### 6.7
 - **.15**: Add curly braces to the list of characters to be escaped. (PhilRunninger) [#1128](https://github.com/preservim/nerdtree/pull/1128)
 - **.14**: Use backward-compatible `nerdtree#and()` in one place that was missed. (PhilRunninger) [#1134](https://github.com/preservim/nerdtree/pull/1134)
