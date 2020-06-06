@@ -129,9 +129,9 @@ function! nerdtree#compareNodesBySortKey(n1, n2) abort
                 return 1
             endif
         elseif type(sortKey1[i]) ==# v:t_number
-            return -1
-        elseif type(sortKey2[i]) ==# v:t_number
             return 1
+        elseif type(sortKey2[i]) ==# v:t_number
+            return -1
         endif
         let i = i + 1
     endwhile

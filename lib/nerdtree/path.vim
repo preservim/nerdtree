@@ -401,11 +401,15 @@ endfunction
 " FUNCTION: Path._splitChunks(path) {{{1
 " returns a list of path chunks
 function! s:Path._splitChunks(path)
-    let chunks = split(a:path, '\(\D\+\|\d\+\)\zs')
+    let chunks = split(a:path, '\(\D\+\|\d\+[_.-]\)\zs')
     let i = 0
     while i < len(chunks)
         "convert number literals to numbers
-        if match(chunks[i], '^\d\+$') ==# 0
+        if match(chunks[i], '^\d\+[_.-]$') ==# 0
+            if i == 0
+                let chunks = insert(chunks, '\x01', 0)
+                let i = 1
+            endif
             let chunks[i] = str2nr(chunks[i])
         endif
         let i = i + 1
