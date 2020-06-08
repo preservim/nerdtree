@@ -403,17 +403,21 @@ endfunction
 function! s:Path._splitChunks(path)
     let chunks = split(a:path, '\([_.-]\+\|\D\+\|\d\+\)\zs')
     let i = 0
-    if match(chunks[0], '^\d\+$') ==# 0
+    if match(chunks[0], '^\d') ==# 0
         let chunks = insert(chunks, '/', 0)
-                let i = 1
-            endif
+        let i = 1
+    endif
     while i < len(chunks)
         "convert number literals to numbers
         if match(chunks[i], '^\d\+$') ==# 0
             let chunks[i] = str2nr(chunks[i])
+        elseif chunks[i] ==# '.'
+            let chunks = insert(chunks, '*', i)
+            let i = i + 1
         endif
         let i = i + 1
     endwhile
+    let chunks = add(chunks, '*')
     return chunks
 endfunction
 
