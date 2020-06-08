@@ -121,7 +121,7 @@ function! nerdtree#compareNodesBySortKey(n1, n2) abort
     while i < min([len(sortKey1), len(sortKey2)])
         " Compare chunks upto common length.
         " If chunks have different type, the one which has
-        " integer type is the lesser.
+        " integer type is the greater.
         if type(sortKey1[i]) ==# type(sortKey2[i])
             if sortKey1[i] <# sortKey2[i]
                 return - 1

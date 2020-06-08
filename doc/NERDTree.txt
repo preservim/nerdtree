@@ -846,6 +846,23 @@ could appear like this: >
     z20.txt
     z3.txt
 <
+or like this: >
+    part-1-1-sfx.txt
+    part-1-2-sfx.txt
+    part-1-sfx.txt
+    part-2-1-sfx.txt
+    part-2-2-sfx.txt
+    part-2-3-1-sfx.txt
+    part-2-3-2-sfx.txt
+    part-2-3-3-sfx.txt
+    part-2-3-sfx.txt
+    part-2-sfx.txt
+    part-3-1-sfx.txt
+    part-3-2-sfx.txt
+    part-3-sfx.txt
+    part-4-1-sfx.txt
+    part-4-sfx.txt
+<
 But if you set this setting to 1 then the natural sort order will be used. The
 above nodes would then be sorted like this: >
     z1.txt
@@ -856,6 +873,23 @@ above nodes would then be sorted like this: >
     z20.txt
     z100.txt
     z110.txt
+<
+or like this: >
+    part-1-sfx.txt
+    part-1-1-sfx.txt
+    part-1-2-sfx.txt
+    part-2-sfx.txt
+    part-2-1-sfx.txt
+    part-2-2-sfx.txt
+    part-2-3-sfx.txt
+    part-2-3-1-sfx.txt
+    part-2-3-2-sfx.txt
+    part-2-3-3-sfx.txt
+    part-3-sfx.txt
+    part-3-1-sfx.txt
+    part-3-2-sfx.txt
+    part-4-sfx.txt
+    part-4-1-sfx.txt
 <
 ------------------------------------------------------------------------------
                                                                 *NERDTreeUseTCD*
