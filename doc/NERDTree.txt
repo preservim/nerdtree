@@ -350,7 +350,7 @@ The same as |NERDTree-t| except that the focus is kept in the current tab.
                                                                     *NERDTree-i*
 Default key: i
 Map setting: *NERDTreeMapOpenSplit*
-Applies to: files.
+Applies to: files, and bookmarks pointing to files.
 
 Opens the selected file in a new split window and puts the cursor in the new
 window.
@@ -370,7 +370,7 @@ The default key combo for this mapping is "g" + NERDTreeMapOpenSplit (see
                                                                     *NERDTree-s*
 Default key: s
 Map setting: *NERDTreeMapOpenVSplit*
-Applies to: files.
+Applies to: files, and bookmarks pointing to files.
 
 Opens the selected file in a new vertically split window and puts the cursor
 in the new window.
