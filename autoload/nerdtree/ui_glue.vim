@@ -529,9 +529,7 @@ endfunction
 
 " FUNCTION: s:previewHSplitBookmark(bookmark) {{{1
 function! s:previewNodeHSplitBookmark(bookmark) abort
-    if a:bookmark.path.isDirectory
-        execute 'NERDTreeFind '.a:bookmark.path.str()
-    else
+    if !a:bookmark.path.isDirectory
         call a:bookmark.activate(b:NERDTree, {'stay': 1, 'where': 'h', 'keepopen': 1})
     endif
 endfunction
@@ -539,9 +537,7 @@ endfunction
 
 " FUNCTION: s:previewVSplitBookmark(bookmark) {{{1
 function! s:previewNodeVSplitBookmark(bookmark) abort
-    if a:bookmark.path.isDirectory
-        execute 'NERDTreeFind '.a:bookmark.path.str()
-    else
+    if !a:bookmark.path.isDirectory
         call a:bookmark.activate(b:NERDTree, {'stay': 1, 'where': 'v', 'keepopen': 1})
     endif
 endfunction
