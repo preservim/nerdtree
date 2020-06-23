@@ -67,6 +67,10 @@ function! s:UI._dumpHelp()
         let help .= '" '. g:NERDTreeMapPreview .": find dir in tree\n"
         let help .= '" '. g:NERDTreeMapOpenInTab.": open in new tab\n"
         let help .= '" '. g:NERDTreeMapOpenInTabSilent .": open in new tab silently\n"
+        let help .= '" '. g:NERDTreeMapOpenSplit .": open split\n"
+        let help .= '" '. g:NERDTreeMapPreviewSplit .": preview split\n"
+        let help .= '" '. g:NERDTreeMapOpenVSplit .": open vsplit\n"
+        let help .= '" '. g:NERDTreeMapPreviewVSplit .": preview vsplit\n"
         let help .= '" '. g:NERDTreeMapCustomOpen .": custom open\n"
         let help .= '" '. g:NERDTreeMapDeleteBookmark .": delete bookmark\n"
 
