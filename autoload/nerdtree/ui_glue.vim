@@ -529,19 +529,13 @@ endfunction
 
 " FUNCTION: s:previewHSplitBookmark(bookmark) {{{1
 function! s:previewNodeHSplitBookmark(bookmark) abort
-    if !a:bookmark.path.isDirectory
-        call a:bookmark.activate(b:NERDTree, {'stay': 1, 'where': 'h', 'keepopen': 1})
-    endif
+    call a:bookmark.activate(b:NERDTree, !a:bookmark.path.isDirectory ? {'stay': 1, 'where': 'h', 'keepopen': 1} : {})
 endfunction
-
 
 " FUNCTION: s:previewVSplitBookmark(bookmark) {{{1
 function! s:previewNodeVSplitBookmark(bookmark) abort
-    if !a:bookmark.path.isDirectory
-        call a:bookmark.activate(b:NERDTree, {'stay': 1, 'where': 'v', 'keepopen': 1})
-    endif
+    call a:bookmark.activate(b:NERDTree, !a:bookmark.path.isDirectory ? {'stay': 1, 'where': 'v', 'keepopen': 1} : {})
 endfunction
-
 
 " FUNCTION: s:openExplorer(node) {{{1
 function! s:openExplorer(node) abort
