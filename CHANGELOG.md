@@ -5,6 +5,7 @@
         - **.PATCH**: Pull Request Title (PR Author) [PR Number](Link to PR)
 -->
 #### 6.9
+- **.1**: Respect user's `&shellslash` setting in CopyNode and RemoveNode functions (PhilRunninger) [#1150](https://github.com/preservim/nerdtree/pull/1150)
 - **.0**: Enable opening bookmarks in split windows. (PhilRunninger) [#1144](https://github.com/preservim/nerdtree/pull/1144)
 #### 6.8
 - **.0**: Allow concealed characters to show another character. (PhilRunninger) [#1138](https://github.com/preservim/nerdtree/pull/1138)
