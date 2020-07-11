@@ -9,13 +9,13 @@
 "              See http://sam.zoy.org/wtfpl/COPYING for more details.
 "
 " ============================================================================
-if exists("g:loaded_nerdtree_fs_menu")
+if exists('g:loaded_nerdtree_fs_menu')
     finish
 endif
 let g:loaded_nerdtree_fs_menu = 1
 
 "Automatically delete the buffer after deleting or renaming a file
-if !exists("g:NERDTreeAutoDeleteBuffer")
+if !exists('g:NERDTreeAutoDeleteBuffer')
     let g:NERDTreeAutoDeleteBuffer = 0
 endif
 
@@ -23,23 +23,27 @@ call NERDTreeAddMenuItem({'text': '(a)dd a childnode', 'shortcut': 'a', 'callbac
 call NERDTreeAddMenuItem({'text': '(m)ove the current node', 'shortcut': 'm', 'callback': 'NERDTreeMoveNode'})
 call NERDTreeAddMenuItem({'text': '(d)elete the current node', 'shortcut': 'd', 'callback': 'NERDTreeDeleteNode'})
 
-if has("gui_mac") || has("gui_macvim") || has("mac")
+if has('gui_mac') || has('gui_macvim') || has('mac')
     call NERDTreeAddMenuItem({'text': '(r)eveal in Finder the current node', 'shortcut': 'r', 'callback': 'NERDTreeRevealInFinder'})
     call NERDTreeAddMenuItem({'text': '(o)pen the current node with system editor', 'shortcut': 'o', 'callback': 'NERDTreeExecuteFile'})
     call NERDTreeAddMenuItem({'text': '(q)uicklook the current node', 'shortcut': 'q', 'callback': 'NERDTreeQuickLook'})
 endif
 
-if executable("xdg-open")
+if executable('xdg-open')
     call NERDTreeAddMenuItem({'text': '(r)eveal the current node in file manager', 'shortcut': 'r', 'callback': 'NERDTreeRevealFileLinux'})
     call NERDTreeAddMenuItem({'text': '(o)pen the current node with system editor', 'shortcut': 'o', 'callback': 'NERDTreeExecuteFileLinux'})
+endif
+
+if nerdtree#runningWindows()
+    call NERDTreeAddMenuItem({'text': '(o)pen the current node with system editor', 'shortcut': 'o', 'callback': 'NERDTreeExecuteFileWindows'})
 endif
 
 if g:NERDTreePath.CopyingSupported()
     call NERDTreeAddMenuItem({'text': '(c)opy the current node', 'shortcut': 'c', 'callback': 'NERDTreeCopyNode'})
 endif
-call NERDTreeAddMenuItem({'text': (has("clipboard")?'copy (p)ath to clipboard':'print (p)ath to screen'), 'shortcut': 'p', 'callback': 'NERDTreeCopyPath'})
+call NERDTreeAddMenuItem({'text': (has('clipboard')?'copy (p)ath to clipboard':'print (p)ath to screen'), 'shortcut': 'p', 'callback': 'NERDTreeCopyPath'})
 
-if has("unix") || has("osx")
+if has('unix') || has('osx')
     call NERDTreeAddMenuItem({'text': '(l)ist the current node', 'shortcut': 'l', 'callback': 'NERDTreeListNode'})
 else
     call NERDTreeAddMenuItem({'text': '(l)ist the current node', 'shortcut': 'l', 'callback': 'NERDTreeListNodeWin32'})
@@ -51,37 +55,37 @@ endif
 "Args:
 "action: the action that is being performed, e.g. 'delete'
 function! s:inputPrompt(action)
-    if a:action == "add"
-        let title = "Add a childnode"
+    if a:action ==# 'add'
+        let title = 'Add a childnode'
         let info = "Enter the dir/file name to be created. Dirs end with a '/'"
-        let minimal = "Add node:"
+        let minimal = 'Add node:'
 
-    elseif a:action == "copy"
-        let title = "Copy the current node"
-        let info = "Enter the new path to copy the node to:"
-        let minimal = "Copy to:"
+    elseif a:action ==# 'copy'
+        let title = 'Copy the current node'
+        let info = 'Enter the new path to copy the node to:'
+        let minimal = 'Copy to:'
 
-    elseif a:action == "delete"
-        let title = "Delete the current node"
-        let info = "Are you sure you wish to delete the node:"
-        let minimal = "Delete?"
+    elseif a:action ==# 'delete'
+        let title = 'Delete the current node'
+        let info = 'Are you sure you wish to delete the node:'
+        let minimal = 'Delete?'
 
-    elseif a:action == "deleteNonEmpty"
-        let title = "Delete the current node"
+    elseif a:action ==# 'deleteNonEmpty'
+        let title = 'Delete the current node'
         let info =  "STOP! Directory is not empty! To delete, type 'yes'"
-        let minimal = "Delete directory?"
+        let minimal = 'Delete directory?'
 
-    elseif a:action == "move"
-        let title = "Rename the current node"
-        let info = "Enter the new path for the node:"
-        let minimal = "Move to:"
+    elseif a:action ==# 'move'
+        let title = 'Rename the current node'
+        let info = 'Enter the new path for the node:'
+        let minimal = 'Move to:'
     endif
 
     if g:NERDTreeMenuController.isMinimal()
         redraw! " Clear the menu
-        return minimal . " "
+        return minimal . ' '
     else
-        let divider = "=========================================================="
+        let divider = '=========================================================='
         return title . "\n" . divider . "\n" . info . "\n"
     end
 endfunction
@@ -114,14 +118,14 @@ function! s:promptToDelBuffer(bufnum, msg)
             let l:listedBufferCount = 0
         endif
         if l:listedBufferCount > 1
-            call nerdtree#exec("tabdo windo if winbufnr(0) == " . a:bufnum . " | exec ':bnext! ' | endif", 1)
+            call nerdtree#exec('tabdo windo if winbufnr(0) ==# ' . a:bufnum . " | exec ':bnext! ' | endif", 1)
         else
-            call nerdtree#exec("tabdo windo if winbufnr(0) == " . a:bufnum . " | exec ':enew! ' | endif", 1)
+            call nerdtree#exec('tabdo windo if winbufnr(0) ==# ' . a:bufnum . " | exec ':enew! ' | endif", 1)
         endif
-        call nerdtree#exec("tabnext " . s:originalTabNumber, 1)
-        call nerdtree#exec(s:originalWindowNumber . "wincmd w", 1)
+        call nerdtree#exec('tabnext ' . s:originalTabNumber, 1)
+        call nerdtree#exec(s:originalWindowNumber . 'wincmd w', 1)
         " 3. We don't need a previous buffer anymore
-        call nerdtree#exec("bwipeout! " . a:bufnum, 0)
+        call nerdtree#exec('bwipeout! ' . a:bufnum, 0)
     endif
 endfunction
 
@@ -141,17 +145,17 @@ function! s:renameBuffer(bufNum, newNodeName, isDirectory)
         let editStr = g:NERDTreePath.New(a:newNodeName).str({'format': 'Edit'})
     endif
     " 1. ensure that a new buffer is loaded
-    call nerdtree#exec("badd " . quotedFileName, 1)
+    call nerdtree#exec('badd ' . quotedFileName, 0)
     " 2. ensure that all windows which display the just deleted filename
     " display a buffer for a new filename.
     let s:originalTabNumber = tabpagenr()
     let s:originalWindowNumber = winnr()
-    call nerdtree#exec("tabdo windo if winbufnr(0) == " . a:bufNum . " | exec ':e! " . editStr . "' | endif", 1)
-    call nerdtree#exec("tabnext " . s:originalTabNumber, 1)
-    call nerdtree#exec(s:originalWindowNumber . "wincmd w", 1)
+    call nerdtree#exec('tabdo windo if winbufnr(0) ==# ' . a:bufNum . " | exec ':e! " . editStr . "' | endif", 0)
+    call nerdtree#exec('tabnext ' . s:originalTabNumber, 1)
+    call nerdtree#exec(s:originalWindowNumber . 'wincmd w', 1)
     " 3. We don't need a previous buffer anymore
     try
-        call nerdtree#exec("confirm bwipeout " . a:bufNum, 0)
+        call nerdtree#exec('confirm bwipeout ' . a:bufNum, 0)
     catch
         " This happens when answering Cancel if confirmation is needed. Do nothing.
     endtry
@@ -160,11 +164,11 @@ endfunction
 "FUNCTION: NERDTreeAddNode(){{{1
 function! NERDTreeAddNode()
     let curDirNode = g:NERDTreeDirNode.GetSelected()
-    let prompt = s:inputPrompt("add")
-    let newNodeName = input(prompt, curDirNode.path.str() . nerdtree#slash(), "file")
+    let prompt = s:inputPrompt('add')
+    let newNodeName = input(prompt, curDirNode.path.str() . nerdtree#slash(), 'file')
 
     if newNodeName ==# ''
-        call nerdtree#echo("Node Creation Aborted.")
+        call nerdtree#echo('Node Creation Aborted.')
         return
     endif
 
@@ -187,26 +191,32 @@ function! NERDTreeAddNode()
 
         redraw!
     catch /^NERDTree/
-        call nerdtree#echoWarning("Node Not Created.")
+        call nerdtree#echoWarning('Node Not Created.')
     endtry
 endfunction
 
 "FUNCTION: NERDTreeMoveNode(){{{1
 function! NERDTreeMoveNode()
     let curNode = g:NERDTreeFileNode.GetSelected()
-    let prompt = s:inputPrompt("move")
-    let newNodePath = input(prompt, curNode.path.str(), "file")
+    let prompt = s:inputPrompt('move')
+    let newNodePath = input(prompt, curNode.path.str(), 'file')
+    while filereadable(newNodePath)
+        call nerdtree#echoWarning('This destination already exists. Try again.')
+        let newNodePath = input(prompt, curNode.path.str(), 'file')
+    endwhile
+
 
     if newNodePath ==# ''
-        call nerdtree#echo("Node Renaming Aborted.")
+        call nerdtree#echo('Node Renaming Aborted.')
         return
     endif
 
     try
         if curNode.path.isDirectory
-            let l:openBuffers = filter(range(1,bufnr("$")),'bufexists(v:val) && fnamemodify(bufname(v:val),":p") =~# curNode.path.str() . "/.*"')
+            let l:curPath = escape(curNode.path.str(),'\') . (nerdtree#runningWindows()?'\\':'/') . '.*'
+            let l:openBuffers = filter(range(1,bufnr('$')),'bufexists(v:val) && fnamemodify(bufname(v:val),":p") =~# "'.escape(l:curPath,'\').'"')
         else
-            let l:openBuffers = filter(range(1,bufnr("$")),'bufexists(v:val) && fnamemodify(bufname(v:val),":p") ==# curNode.path.str()')
+            let l:openBuffers = filter(range(1,bufnr('$')),'bufexists(v:val) && fnamemodify(bufname(v:val),":p") ==# curNode.path.str()')
         endif
 
         call curNode.rename(newNodePath)
@@ -221,9 +231,9 @@ function! NERDTreeMoveNode()
         " renamed files.
         if !empty(l:openBuffers)
             if curNode.path.isDirectory
-                echo "\nDirectory renamed.\n\nFiles with the old directory name are open in buffers " . join(l:openBuffers, ', ') . ". Replace these buffers with the new files? (yN)"
+                echo "\nDirectory renamed.\n\nFiles with the old directory name are open in buffers " . join(l:openBuffers, ', ') . '. Replace these buffers with the new files? (yN)'
             else
-                echo "\nFile renamed.\n\nThe old file is open in buffer " . l:openBuffers[0] . ". Replace this buffer with the new file? (yN)"
+                echo "\nFile renamed.\n\nThe old file is open in buffer " . l:openBuffers[0] . '. Replace this buffer with the new file? (yN)'
             endif
             if g:NERDTreeAutoDeleteBuffer || nr2char(getchar()) ==# 'y'
                 for bufNum in l:openBuffers
@@ -236,7 +246,7 @@ function! NERDTreeMoveNode()
 
         redraw!
     catch /^NERDTree/
-        call nerdtree#echoWarning("Node Not Renamed.")
+        call nerdtree#echoWarning('Node Not Renamed.')
     endtry
 endfunction
 
@@ -247,11 +257,11 @@ function! NERDTreeDeleteNode()
 
     if currentNode.path.isDirectory && ((currentNode.isOpen && currentNode.getChildCount() > 0) ||
                                       \ (len(currentNode._glob('*', 1)) > 0))
-        let prompt = s:inputPrompt("deleteNonEmpty") . currentNode.path.str() . ": "
+        let prompt = s:inputPrompt('deleteNonEmpty') . currentNode.path.str() . ': '
         let choice = input(prompt)
         let confirmed = choice ==# 'yes'
     else
-        let prompt = s:inputPrompt("delete") . currentNode.path.str() . " (yN): "
+        let prompt = s:inputPrompt('delete') . currentNode.path.str() . ' (yN): '
         echo prompt
         let choice = nr2char(getchar())
         let confirmed = choice ==# 'y'
@@ -264,18 +274,18 @@ function! NERDTreeDeleteNode()
 
             "if the node is open in a buffer, ask the user if they want to
             "close that buffer
-            let bufnum = bufnr("^".currentNode.path.str()."$")
+            let bufnum = bufnr('^'.currentNode.path.str().'$')
             if buflisted(bufnum)
-                let prompt = "\nNode deleted.\n\nThe file is open in buffer ". bufnum . (bufwinnr(bufnum) ==# -1 ? " (hidden)" : "") .". Delete this buffer? (yN)"
+                let prompt = "\nNode deleted.\n\nThe file is open in buffer ". bufnum . (bufwinnr(bufnum) ==# -1 ? ' (hidden)' : '') .'. Delete this buffer? (yN)'
                 call s:promptToDelBuffer(bufnum, prompt)
             endif
 
             redraw!
         catch /^NERDTree/
-            call nerdtree#echoWarning("Could not remove node")
+            call nerdtree#echoWarning('Could not remove node')
         endtry
     else
-        call nerdtree#echo("delete aborted")
+        call nerdtree#echo('delete aborted')
     endif
 endfunction
 
@@ -283,10 +293,10 @@ endfunction
 function! NERDTreeListNode()
     let treenode = g:NERDTreeFileNode.GetSelected()
     if !empty(treenode)
-        let s:uname = system("uname")
+        let s:uname = system('uname')
         let stat_cmd = 'stat -c "%s" '
 
-        if s:uname =~? "Darwin"
+        if s:uname =~? 'Darwin'
             let stat_cmd = 'stat -f "%z" '
         endif
 
@@ -297,7 +307,7 @@ function! NERDTreeListNode()
         let metadata = split(system(cmd),'\n')
         call nerdtree#echo(metadata[0])
     else
-        call nerdtree#echo("No information available")
+        call nerdtree#echo('No information available')
     endif
 endfunction
 
@@ -307,10 +317,10 @@ function! NERDTreeListNodeWin32()
 
     if !empty(l:node)
         let l:path = l:node.path.str()
-        call nerdtree#echo(printf("%s:%s  MOD:%s  BYTES:%d  PERMISSIONS:%s",
+        call nerdtree#echo(printf('%s:%s  MOD:%s  BYTES:%d  PERMISSIONS:%s',
                     \ toupper(getftype(l:path)),
                     \ fnamemodify(l:path, ':t'),
-                    \ strftime("%c", getftime(l:path)),
+                    \ strftime('%c', getftime(l:path)),
                     \ getfsize(l:path),
                     \ getfperm(l:path)))
         return
@@ -322,16 +332,16 @@ endfunction
 " FUNCTION: NERDTreeCopyNode() {{{1
 function! NERDTreeCopyNode()
     let currentNode = g:NERDTreeFileNode.GetSelected()
-    let prompt = s:inputPrompt("copy")
-    let newNodePath = input(prompt, currentNode.path.str(), "file")
+    let prompt = s:inputPrompt('copy')
+    let newNodePath = input(prompt, currentNode.path.str(), 'file')
 
-    if newNodePath != ""
+    if newNodePath !=# ''
         "strip trailing slash
         let newNodePath = substitute(newNodePath, '\/$', '', '')
 
         let confirmed = 1
         if currentNode.path.copyingWillOverwrite(newNodePath)
-            call nerdtree#echo("Warning: copying may overwrite files! Continue? (yN)")
+            call nerdtree#echo('Warning: copying may overwrite files! Continue? (yN)')
             let choice = nr2char(getchar())
             let confirmed = choice ==# 'y'
         endif
@@ -350,11 +360,11 @@ function! NERDTreeCopyNode()
                     call newNode.putCursorHere(0, 0)
                 endif
             catch /^NERDTree/
-                call nerdtree#echoWarning("Could not copy node")
+                call nerdtree#echoWarning('Could not copy node')
             endtry
         endif
     else
-        call nerdtree#echo("Copy aborted.")
+        call nerdtree#echo('Copy aborted.')
     endif
     redraw!
 endfunction
@@ -362,54 +372,92 @@ endfunction
 " FUNCTION: NERDTreeCopyPath() {{{1
 function! NERDTreeCopyPath()
     let l:nodePath = g:NERDTreeFileNode.GetSelected().path.str()
-    if has("clipboard")
-        let @* = l:nodePath
-        call nerdtree#echo("The path [" . l:nodePath . "] was copied to your clipboard.")
+    if has('clipboard')
+        if &clipboard ==# 'unnamedplus'
+            let @+ = l:nodePath
+        else
+            let @* = l:nodePath
+        endif
+        call nerdtree#echo('The path [' . l:nodePath . '] was copied to your clipboard.')
     else
-        call nerdtree#echo("The full path is: " . l:nodePath)
+        call nerdtree#echo('The full path is: ' . l:nodePath)
     endif
 endfunction
 
 " FUNCTION: NERDTreeQuickLook() {{{1
 function! NERDTreeQuickLook()
-    let treenode = g:NERDTreeFileNode.GetSelected()
-    if treenode != {}
-        call system("qlmanage -p 2>/dev/null '" . treenode.path.str() . "'")
+    let l:node = g:NERDTreeFileNode.GetSelected()
+
+    if empty(l:node)
+        return
     endif
+
+    call system('qlmanage -p 2>/dev/null ' . shellescape(l:node.path.str()))
 endfunction
 
 " FUNCTION: NERDTreeRevealInFinder() {{{1
 function! NERDTreeRevealInFinder()
-    let treenode = g:NERDTreeFileNode.GetSelected()
-    if treenode != {}
-        call system("open -R '" . treenode.path.str() . "'")
+    let l:node = g:NERDTreeFileNode.GetSelected()
+
+    if empty(l:node)
+        return
     endif
+
+    call system('open -R ' . shellescape(l:node.path.str()))
 endfunction
 
 " FUNCTION: NERDTreeExecuteFile() {{{1
 function! NERDTreeExecuteFile()
-    let treenode = g:NERDTreeFileNode.GetSelected()
-    if treenode != {}
-        call system("open '" . treenode.path.str() . "'")
+    let l:node = g:NERDTreeFileNode.GetSelected()
+
+    if empty(l:node)
+        return
     endif
+
+    call system('open ' . shellescape(l:node.path.str()))
 endfunction
 
 " FUNCTION: NERDTreeRevealFileLinux() {{{1
 function! NERDTreeRevealFileLinux()
-    let treenode = g:NERDTreeFileNode.GetSelected()
-    let parentnode = treenode.parent
-    if parentnode != {}
-        call system("xdg-open '" . parentnode.path.str() . "' &")
+    let l:node = g:NERDTreeFileNode.GetSelected()
+
+    if empty(l:node)
+        return
     endif
+
+    " Handle the edge case of "/", which has no parent.
+    if l:node.path.str() ==# '/'
+        call system('xdg-open /')
+        return
+    endif
+
+    if empty(l:node.parent)
+        return
+    endif
+
+    call system('xdg-open ' . shellescape(l:node.parent.path.str()))
 endfunction
 
 " FUNCTION: NERDTreeExecuteFileLinux() {{{1
 function! NERDTreeExecuteFileLinux()
-    let treenode = g:NERDTreeFileNode.GetSelected()
-    if treenode != {}
-        call system("xdg-open '" . treenode.path.str() . "' &")
+    let l:node = g:NERDTreeFileNode.GetSelected()
+
+    if empty(l:node)
+        return
     endif
+
+    call system('xdg-open ' . shellescape(l:node.path.str()))
+endfunction
+
+" FUNCTION: NERDTreeExecuteFileWindows() {{{1
+function! NERDTreeExecuteFileWindows()
+    let l:node = g:NERDTreeFileNode.GetSelected()
+
+    if empty(l:node)
+        return
+    endif
+
+    call system('cmd.exe /c start "" ' . shellescape(l:node.path.str()))
 endfunction
 
 " vim: set sw=4 sts=4 et fdm=marker:
-

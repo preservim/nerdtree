@@ -122,8 +122,17 @@ The following features and functionality are provided by the NERDTree:
 
 :NERDTreeToggle [<start-directory> | <bookmark>]               *:NERDTreeToggle*
     If a NERDTree already exists for this tab, it is reopened and rendered
-    again.  If no NERDTree exists for this tab then this command acts the
-    same as the |:NERDTree| command.
+    again. If <start-directory> or <bookmark> is given, the root of NERDTree
+    is set to that path. If no NERDTree exists for this tab then this command
+    acts the same as the |:NERDTree| command.
+
+:NERDTreeToggleVCS [<start-directory> | <bookmark>]            *:NERDTreeToggleVCS*
+    Like |:NERDTreeToggle|, but searches up the directory tree to find the top of
+    the version control system repository, and roots the NERDTree there. It
+    works with Git, Subversion, Mercurial, Bazaar, and Darcs repositories. A
+    couple of examples: >
+        :NERDTreeToggleVCS /home/marty/nerdtree/doc  (opens /home/marty/nerdtree)
+        :NERDTreeToggleVCS              (opens root of repository containing CWD)
 
 :NERDTreeFocus                                                  *:NERDTreeFocus*
     Opens (or reopens) the NERDTree if it is not currently visible;
@@ -341,7 +350,7 @@ The same as |NERDTree-t| except that the focus is kept in the current tab.
                                                                     *NERDTree-i*
 Default key: i
 Map setting: *NERDTreeMapOpenSplit*
-Applies to: files.
+Applies to: files, and bookmarks pointing to files.
 
 Opens the selected file in a new split window and puts the cursor in the new
 window.
@@ -361,7 +370,7 @@ The default key combo for this mapping is "g" + NERDTreeMapOpenSplit (see
                                                                     *NERDTree-s*
 Default key: s
 Map setting: *NERDTreeMapOpenVSplit*
-Applies to: files.
+Applies to: files, and bookmarks pointing to files.
 
 Opens the selected file in a new vertically split window and puts the cursor
 in the new window.
@@ -849,9 +858,17 @@ above nodes would then be sorted like this: >
     z110.txt
 <
 ------------------------------------------------------------------------------
-                                                             *NERDTreeChDirMode*
+                                                                *NERDTreeUseTCD*
+Values: 0 or 1.
+Default: 0.
 
-Values: 0, 1 or 2.
+By default, NERDTree will use the `:cd` command to change the current working
+directory. If this setting is turned on, and the `:tcd` command is available, it
+will be used instead.
+
+------------------------------------------------------------------------------
+                                                             *NERDTreeChDirMode*
+Values: 0, 1, 2, or 3.
 Default: 0.
 
 Use this setting to tell the script when (if at all) to change the current
@@ -870,6 +887,9 @@ If the setting is set to 2 then it behaves the same as if set to 1 except that
 the CWD is changed whenever the tree root is changed. For example, if the CWD
 is /home/marty/foobar and you make the node for /home/marty/foobar/baz the new
 root then the CWD will become /home/marty/foobar/baz.
+
+If the set to 3, then it behaves the same as if set to 2, and the CWD is
+changed whenever changing tabs to whatever the tree root is on that tab.
 
 ------------------------------------------------------------------------------
                                                    *NERDTreeHighlightCursorline*
@@ -980,7 +1000,6 @@ then (to single click activate it) you must click somewhere in
 
 ------------------------------------------------------------------------------
                                                             *NERDTreeQuitOnOpen*
-
 Values: 0,1,2 or 3.
 Default: 0
 
@@ -1204,13 +1223,19 @@ Values: Any single character.
 Defaults:   Windows: ~ and +    Others: ▾ and ▸
 
 These characters indicate whether a directory is collapsible or expandable.
-
-They can be set to "\u00a0" to hide the arrows, but if you do this you may
-need to change the node delimiter. See |NERDTreeNodeDelimiter|. You cannot use
-the same character for both the arrows and the delimiter. Example: >
+Example: >
     let NERDTreeDirArrowExpandable=">"
     let NERDTreeDirArrowCollapsible="v"
 <
+They can be set to "\u00a0" to replace the arrows with a non-breaking space.
+If you do this you may need to change the node delimiter. See
+|NERDTreeNodeDelimiter|. You cannot use the same character for both the arrows
+and the delimiter.
+
+Alternatively, they can be set to '' (an empty string). This removes the
+arrows and the single space that follows them, shifting the entire tree two
+character positions to the left.
+
 ------------------------------------------------------------------------------
                                                          *NERDTreeNodeDelimiter*
 Values: Any single character.
@@ -1220,7 +1245,7 @@ This character is used to separate the file or directory name from the rest of
 the characters in the line of text. It allows filenames to contain special
 characters that are otherwise used in the NERDTree, such as square brackets,
 braces, trailing asterisk, and leading space. For more details, see the
-responsible pull request: https://github.com/scrooloose/nerdtree/pull/868.
+responsible pull request: https://github.com/preservim/nerdtree/pull/868.
 
 The default value of this variable depends on the features compiled into your
 vim and the values of |NERDTreeDirArrowCollapsible| and
@@ -1297,6 +1322,10 @@ following code conventions are used:
 See this blog post for more details:
  http://got-ravings.blogspot.com/2008/09/vim-pr0n-prototype-based-objects.html
 
+A number of API functions take a callback argument to call. The callback can
+be either a string with the name of a function to call, or a |Funcref| object
+which will be called directly.
+
 ------------------------------------------------------------------------------
 4.1. Key map API                                             *NERDTreeKeymapAPI*
 
@@ -1324,12 +1353,12 @@ NERDTreeAddKeyMap({options})                               *NERDTreeAddKeyMap()*
     Example: >
         call NERDTreeAddKeyMap({
                \ 'key': 'foo',
-               \ 'callback': 'NERDTreeCDHandler',
+               \ 'callback': 'NERDTreeEchoPathHandler',
                \ 'quickhelpText': 'echo full path of current node',
                \ 'scope': 'DirNode' })
 
-        function! NERDTreeCDHandler(dirnode)
-            call a:dirnode.changeToDir()
+        function! NERDTreeEchoPathHandler(dirnode)
+            echo a:dirnode.path.str()
         endfunction
 <
     This code should sit in a file like ~/.vim/nerdtree_plugin/mymapping.vim.
@@ -1476,11 +1505,11 @@ in the fridge for later ;)
 Martyzilla recruited two other unwitting accomplices to become his minions in
 his quest to conquer the Vim plugin world. While he may still love to receive
 your emails, the best way to send suggestions, bug reports, and questions is
-to submit an issue at http://github.com/scrooloose/nerdtree/issues.
+to submit an issue at http://github.com/preservim/nerdtree/issues.
 
 The latest stable and development versions are on Github.
-    Stable: http://github.com/scrooloose/nerdtree (master branch)
-    Development: http://github.com/scrooloose/nerdtree/branches
+    Stable: http://github.com/preservim/nerdtree (master branch)
+    Development: http://github.com/preservim/nerdtree/branches
 
 Title Credit:
   * http://ascii.co.uk/art/tree
