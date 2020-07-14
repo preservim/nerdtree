@@ -17,6 +17,6 @@ Closes #    <!-- Enter the issue number this PR addresses. If none, remove this 
     ```bash
     git checkout master
     git pull
-    sed -n "$(grep -n '####' CHANGELOG.md | head -2 | sed -e 's/:.*//' | sed 'N;s/\n/,/')p" CHANGELOG.md | sed '$d'
+    sed -n "$(grep -n -m2 '####' CHANGELOG.md | cut -f1 -d: | sed 'N;s/\n/,/')p" CHANGELOG.md | sed '$d'
     git tag -a $(read -p "Tag Name: " tag;echo $tag) -m"$(git show --quiet --pretty=%s)";git push origin --tags
     ```
