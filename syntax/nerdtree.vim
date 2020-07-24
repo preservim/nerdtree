@@ -93,3 +93,5 @@ hi def link NERDTreeBookmark Statement
 hi def link NERDTreeFlags Number
 
 hi def link NERDTreeCurrentNode Search
+
+hi NERDTreeFile ctermbg=NONE guibg=NONE
