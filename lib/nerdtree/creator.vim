@@ -28,7 +28,9 @@ endfunction
 
 " FUNCTION: s:Creator._broadcastInitEvent() {{{1
 function! s:Creator._broadcastInitEvent()
-    silent doautocmd User NERDTreeInit
+    if exists('#NERDTreeInit')
+        doautocmd User NERDTreeInit
+    endif
 endfunction
 
 " FUNCTION: s:Creator.BufNamePrefix() {{{1
