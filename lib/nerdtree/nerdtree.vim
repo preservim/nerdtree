@@ -27,7 +27,7 @@ function! s:NERDTree.changeRoot(node)
     call self.render()
     call self.root.putCursorHere(0, 0)
 
-    if exists('#NERDTreeNewRoot')
+    if exists('#User#NERDTreeNewRoot')
         doautocmd User NERDTreeNewRoot
     endif
 endfunction
