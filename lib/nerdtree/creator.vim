@@ -28,7 +28,7 @@ endfunction
 
 " FUNCTION: s:Creator._broadcastInitEvent() {{{1
 function! s:Creator._broadcastInitEvent()
-    if exists('#NERDTreeInit')
+    if exists('#User#NERDTreeInit')
         doautocmd User NERDTreeInit
     endif
 endfunction
