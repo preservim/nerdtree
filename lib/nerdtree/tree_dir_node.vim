@@ -236,7 +236,7 @@ function! s:TreeDirNode.getChildIndex(path)
     let z = self.getChildCount()
     while a < z
         let mid = (a+z)/2
-        let diff = a:path.compareTo(self.children[mid].path)
+        let diff = nerdtree#compareNodePaths(a:path, self.children[mid].path)
 
         if diff ==# -1
             let z = mid
