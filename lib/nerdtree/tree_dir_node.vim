@@ -666,7 +666,7 @@ function! s:TreeDirNode.sortChildren()
     if count(g:NERDTreeSortOrder, '*') < 1
         call add(g:NERDTreeSortOrder, '*')
     endif
-    let CompareFunc = function('nerdtree#compareNodesBySortKey')
+    let CompareFunc = function('nerdtree#compareNodes')
     call sort(self.children, CompareFunc)
     let g:NERDTreeOldSortOrder = g:NERDTreeSortOrder
 endfunction
