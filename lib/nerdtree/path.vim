@@ -99,50 +99,6 @@ function! s:Path.changeToDir()
     endtry
 endfunction
 
-" FUNCTION: Path.compareTo() {{{1
-"
-" Compares this Path to the given path and returns 0 if they are equal, -1 if
-" this Path is 'less than' the given path, or 1 if it is 'greater'.
-"
-" Args:
-" path: the path object to compare this to
-"
-" Return:
-" 1, -1 or 0
-function! s:Path.compareTo(path)
-    let thisPath = self.getLastPathComponent(1)
-    let thatPath = a:path.getLastPathComponent(1)
-
-    "if the paths are the same then clearly we return 0
-    if thisPath ==# thatPath
-        return 0
-    endif
-
-    let thisSS = self.getSortOrderIndex()
-    let thatSS = a:path.getSortOrderIndex()
-
-    "compare the sort sequences, if they are different then the return
-    "value is easy
-    if thisSS < thatSS
-        return -1
-    elseif thisSS > thatSS
-        return 1
-    else
-        if !g:NERDTreeSortHiddenFirst
-            let thisPath = substitute(thisPath, '^[._]', '', '')
-            let thatPath = substitute(thatPath, '^[._]', '', '')
-        endif
-        "if the sort sequences are the same then compare the paths
-        "alphabetically
-        let pathCompare = g:NERDTreeCaseSensitiveSort ? thisPath <# thatPath : thisPath <? thatPath
-        if pathCompare
-            return -1
-        else
-            return 1
-        endif
-    endif
-endfunction
-
 " FUNCTION: Path.Create(fullpath) {{{1
 "
 " Factory method.

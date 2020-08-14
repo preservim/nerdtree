@@ -236,7 +236,7 @@ function! s:TreeDirNode.getChildIndex(path)
     let z = self.getChildCount()
     while a < z
         let mid = (a+z)/2
-        let diff = a:path.compareTo(self.children[mid].path)
+        let diff = nerdtree#compareNodePaths(a:path, self.children[mid].path)
 
         if diff ==# -1
             let z = mid
@@ -666,7 +666,7 @@ function! s:TreeDirNode.sortChildren()
     if count(g:NERDTreeSortOrder, '*') < 1
         call add(g:NERDTreeSortOrder, '*')
     endif
-    let CompareFunc = function('nerdtree#compareNodesBySortKey')
+    let CompareFunc = function('nerdtree#compareNodes')
     call sort(self.children, CompareFunc)
     let g:NERDTreeOldSortOrder = g:NERDTreeSortOrder
 endfunction
