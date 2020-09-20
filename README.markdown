@@ -1,6 +1,32 @@
 The NERDTree [![Vint](https://github.com/preservim/nerdtree/workflows/Vint/badge.svg)](https://github.com/preservim/nerdtree/actions?workflow=Vint)
 =============
 
+Table of Contents
+=================
+
+ * [Introduction](#introduction)
+ * [Installation](#installation)
+      * [Vim 8  packages](#vim-8-packages)
+      * [<a href="https://github.com/tpope/vim-pathogen">pathogen.vim</a>](#pathogenvim)
+      * [<a href="https://github.com/VundleVim/Vundle.vim">Vundle.vim</a>](#vundlevim)
+      * [<a href="https://github.com/junegunn/vim-plug">vim-plug</a>](#vim-plug)
+      * [<a href="https://github.com/Shougo/dein.vim">dein.vim</a>](#deinvim)
+      * [<a href="https://github.com/egalpin/apt-vim">apt-vim</a>](#apt-vim)
+ * [F.A.Q. (here, and in the <a href="https://github.com/preservim/nerdtree/wiki">Wiki</a>)](#faq-here-and-in-the-wiki)
+      * [Is there any support for git flags?](#is-there-any-support-for-git-flags)
+      * [Can I have the nerdtree on every tab automatically?](#can-i-have-the-nerdtree-on-every-tab-automatically)
+      * [How can I open a NERDTree automatically when vim starts up?](#how-can-i-open-a-nerdtree-automatically-when-vim-starts-up)
+      * [How can I open a NERDTree automatically when vim starts up if no files were specified?](#how-can-i-open-a-nerdtree-automatically-when-vim-starts-up-if-no-files-were-specified)
+      * [What if I'm also opening a saved session, for example vim -S session_file.vim? I don't want NERDTree to open in that scenario.](#what-if-im-also-opening-a-saved-session-for-example-vim--s-session_filevim-i-dont-want-nerdtree-to-open-in-that-scenario)
+      * [How can I open NERDTree automatically when vim starts up on opening a directory?](#how-can-i-open-nerdtree-automatically-when-vim-starts-up-on-opening-a-directory)
+      * [How can I map a specific key or shortcut to open NERDTree?](#how-can-i-map-a-specific-key-or-shortcut-to-open-nerdtree)
+      * [How can I close vim if the only window left open is a NERDTree?](#how-can-i-close-vim-if-the-only-window-left-open-is-a-nerdtree)
+      * [Can I have different highlighting for different file extensions?](#can-i-have-different-highlighting-for-different-file-extensions)
+      * [How can I change default arrows?](#how-can-i-change-default-arrows)
+
+
+
+
 Introduction
 ------------
 
@@ -13,7 +39,6 @@ details of this API and of other NERDTree features are described in the
 included documentation.
 
 ![NERDTree Screenshot](https://github.com/preservim/nerdtree/raw/master/screenshot.png)
-
 Installation
 ------------
 
