@@ -39,6 +39,7 @@ details of this API and of other NERDTree features are described in the
 included documentation.
 
 ![NERDTree Screenshot](https://github.com/preservim/nerdtree/raw/master/screenshot.png)
+
 Installation
 ------------
 
