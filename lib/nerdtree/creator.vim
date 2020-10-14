@@ -172,6 +172,7 @@ function! s:Creator.createMirror()
     let t:NERDTreeBufName = bufferName
     call self._createTreeWin()
     exec 'buffer ' .  bufferName
+    call b:NERDTree.ui.restoreScreenState()
     if !&hidden
         call b:NERDTree.render()
     endif
