@@ -13,24 +13,13 @@ Use your favorite plugin manager to install this plugin. [vim-pathogen](https://
 If you have no favorite, or want to manage your plugins without 3rd-party dependencies, consider using Vim 8+ packages, as described in Greg Hurrell's excellent Youtube video: [Vim screencast #75: Plugin managers](https://www.youtube.com/watch?v=X2_R3uxDN6g).
 
 <details>
-<summary>Vim 8+ packages</summary>
-
-If you are using Vim version 8 or higher you can use its built-in package management; see `:help packages` for more information. Just run these commands in your terminal:
-
-```bash
-git clone https://github.com/preservim/nerdtree.git ~/.vim/pack/vendor/start/nerdtree
-vim -u NONE -c "helptags ~/.vim/pack/vendor/start/nerdtree/doc" -c q
-```
-</details>
-
-<details>
 <summary>Pathogen</summary>
 
 In the terminal,
 ```bash
 git clone https://github.com/preservim/nerdtree.git ~/.vim/bundle/nerdtree
 ```
-In your vimrc,
+In your `vimrc`,
 ```vim
 call pathogen#infect()
 syntax on
@@ -70,6 +59,17 @@ call dein#end()
   ```
 </details>
 
+<details>
+<summary>Vim 8+ packages</summary>
+
+If you are using Vim version 8 or higher you can use its built-in package management; see `:help packages` for more information. Just run these commands in your terminal:
+
+```bash
+git clone https://github.com/preservim/nerdtree.git ~/.vim/pack/vendor/start/nerdtree
+vim -u NONE -c "helptags ~/.vim/pack/vendor/start/nerdtree/doc" -c q
+```
+</details>
+
 ## Getting Started
 After installing NERDTree, the best way to learn it is to turn on the Quick Help. Open NERDTree with the `:NERDTree` command, and press `?` to turn on the Quick Help, which will show you all the mappings and commands available in the NERDTree. Of course, your most complete source of information is the documentation: `:help NERDTree`.
 
@@ -89,8 +89,18 @@ If any others should be listed, mention them in an issue or pull request.
 
 ## Frequently Asked Questions
 
-### How do I open NERDTree automatically when Vim starts up?
-Add one of these code blocks to your vimrc. Each one is slightly different, as described in the `" Comment lines`. Use these examples to come up with your own customization behaviours.
+### How can I map a specific key or shortcut to open NERDTree?
+
+NERDTree doesn't create any shortcuts outside of the NERDTree window, so as not to overwrite any of your other shortcuts. Use the `nnoremap` command in your `vimrc`. You, of course, have many keys and NERDTree commands to choose from. Here are but a few examples.
+```vim
+nnoremap <leader>n :NERDTreeFocus<CR>
+nnoremap <C-n> :NERDTree<CR>
+nnoremap <C-t> :NERDTreeToggle<CR>
+nnoremap <C-f> :NERDTreeFind<CR>
+```
+
+### How do I open NERDTree automatically when Vim starts?
+Add one of these code blocks to your `vimrc`. Each one is slightly different, as described in the `" Comment lines`. Or use these examples to derive your own customized behaviours.
 
 ```vim
 " Start NERDTree and leave the cursor in it.
@@ -109,19 +119,19 @@ autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
 ```
 ---
 ```vim
-" Start NERDTree. If Vim is started without file arguments, leave the cursor in NERDTree.
+" Start NERDTree. If a file is specified, move the cursor to its window.
 autocmd StdinReadPre * let s:std_in=1
 autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | else | NERDTree | wincmd p | endif
 ```
 ---
 ```vim
-" Start NERDTree on startup, unless a file or session is specified, eg. vim -S session_file.vim.
+" Start NERDTree, unless a file or session is specified, eg. vim -S session_file.vim.
 autocmd StdinReadPre * let s:std_in=1
 autocmd VimEnter * if argc() == 0 && !exists("s:std_in") && v:this_session == "" | NERDTree | endif
 ```
 ---
 ```vim
-" Start NERDTree when Vim starts up with a directory argument.
+" Start NERDTree when Vim starts with a directory argument.
 autocmd StdinReadPre * let s:std_in=1
 autocmd VimEnter * if argc() == 1 && isdirectory(argv()[0]) && !exists("s:std_in") |
     \ execute 'NERDTree' argv()[0] | wincmd p | enew | execute 'cd '.argv()[0] | endif
@@ -131,22 +141,12 @@ autocmd VimEnter * if argc() == 1 && isdirectory(argv()[0]) && !exists("s:std_in
 
 ```vim
 " Exit Vim if NERDTree is the only window left.
-autocmd BufEnter * if (tabpagenr("$") == 1 && winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
+autocmd BufEnter * if tabpagenr("$") == 1 && winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree() | q | endif
 ```
 
-### How can I map a specific key or shortcut to open NERDTree?
+### How can I change the default arrows?
 
-You, of course, have many keys and NERDTree commands to choose from. Here are but a few examples.
-```vim
-nnoremap <leader>n :NERDTreeFocus<CR>
-nnoremap <C-n> :NERDTree<CR>
-nnoremap <C-t> :NERDTreeToggle<CR>
-nnoremap <C-f> :NERDTreeFind<CR>
-```
-
-### How can I change default arrows?
-
-Use these variables in your vimrc. Note that below are default arrow symbols.
+Use these variables in your `vimrc`. Note that below are the non-Windows default arrow symbols.
 ```vim
 let g:NERDTreeDirArrowExpandable = '▸'
 let g:NERDTreeDirArrowCollapsible = '▾'
