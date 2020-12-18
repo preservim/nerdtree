@@ -93,6 +93,11 @@ If you are interested in this behaviour then consider [vim-nerdtree-tabs](https:
 Stick this in your vimrc: `autocmd vimenter * NERDTree`
 
 ---
+#### How can I open a NERDTree automatically when vim starts up and autofocus on file?
+
+Stick this in your vimrc: `autocmd vimenter * NERDTree | wincmd p`
+
+---
 #### How can I open a NERDTree automatically when vim starts up if no files were specified?
 
 Stick this in your vimrc:
@@ -102,6 +107,15 @@ autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
 ```
 
 Note: Now start vim with plain `vim`, not `vim .`
+
+---
+#### How to autofocus on file and focus on NERDTREE when no files were specified?
+
+Stick this in your vimrc:
+```vim
+autocmd StdinReadPre * let s:std_in=1
+autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | else | NERDTree | wincmd p | endif
+```
 
 ---
 #### What if I'm also opening a saved session, for example `vim -S session_file.vim`? I don't want NERDTree to open in that scenario.
