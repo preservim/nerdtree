@@ -90,7 +90,8 @@ If any others should be listed, mention them in an issue or pull request.
 ## Frequently Asked Questions
 
 ### How do I open NERDTree automatically when Vim starts up?
-Add one of these code blocks to your vimrc.
+Add one of these code blocks to your vimrc. Each one is slightly different, as described in the `" Comment lines`. Use these examples to come up with your own customization behaviours.
+
 ```vim
 " Start NERDTree and leave the cursor in it.
 autocmd VimEnter * NERDTree
@@ -102,19 +103,19 @@ autocmd VimEnter * NERDTree | wincmd p
 ```
 ---
 ```vim
-" Start NERDTree only if Vim is started without arguments.
+" Start NERDTree when Vim is started without file arguments.
 autocmd StdinReadPre * let s:std_in=1
 autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
 ```
 ---
 ```vim
-" Start NERDTree if Vim is started without arguments, and put the cursor back in the empty buffer.
+" Start NERDTree. If Vim is started without file arguments, leave the cursor in NERDTree.
 autocmd StdinReadPre * let s:std_in=1
 autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | else | NERDTree | wincmd p | endif
 ```
 ---
 ```vim
-" Start NERDTree on startup, unless opening a session, eg. vim -S session_file.vim.
+" Start NERDTree on startup, unless a file or session is specified, eg. vim -S session_file.vim.
 autocmd StdinReadPre * let s:std_in=1
 autocmd VimEnter * if argc() == 0 && !exists("s:std_in") && v:this_session == "" | NERDTree | endif
 ```
@@ -130,7 +131,7 @@ autocmd VimEnter * if argc() == 1 && isdirectory(argv()[0]) && !exists("s:std_in
 
 ```vim
 " Exit Vim if NERDTree is the only window left.
-autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
+autocmd BufEnter * if (tabpagenr("$") == 1 && winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
 ```
 
 ### How can I map a specific key or shortcut to open NERDTree?
