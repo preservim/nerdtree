@@ -89,6 +89,8 @@ If any others should be listed, mention them in an issue or pull request.
 
 ## Frequently Asked Questions
 
+In the answers to these questions, you will see code blocks that you can put in your `vimrc` file.
+
 ### How can I map a specific key or shortcut to open NERDTree?
 
 NERDTree doesn't create any shortcuts outside of the NERDTree window, so as not to overwrite any of your other shortcuts. Use the `nnoremap` command in your `vimrc`. You, of course, have many keys and NERDTree commands to choose from. Here are but a few examples.
@@ -100,7 +102,7 @@ nnoremap <C-f> :NERDTreeFind<CR>
 ```
 
 ### How do I open NERDTree automatically when Vim starts?
-Add one of these code blocks to your `vimrc`. Each one is slightly different, as described in the `" Comment lines`. Or use these examples to derive your own customized behaviours.
+Each code block below is slightly different, as described in the `" Comment lines`.
 
 ```vim
 " Start NERDTree and leave the cursor in it.
@@ -141,7 +143,9 @@ autocmd VimEnter * if argc() == 1 && isdirectory(argv()[0]) && !exists("s:std_in
 
 ```vim
 " Exit Vim if NERDTree is the only window left.
-autocmd BufEnter * if tabpagenr("$") == 1 && winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree() | q | endif
+autocmd BufEnter * if tabpagenr("$") == 1 && winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree() |
+    \ quit | endif
+```
 
 ### Can I have the same NERDTree on every tab automatically?
 
@@ -152,11 +156,9 @@ autocmd BufWinEnter * silent NERDTreeMirror
 
 ### How can I change the default arrows?
 
-Use these variables in your `vimrc`. Note that below are the non-Windows default arrow symbols.
 ```vim
 let g:NERDTreeDirArrowExpandable = '▸'
 let g:NERDTreeDirArrowCollapsible = '▾'
 ```
-You can remove the arrows altogether by setting these variables to empty strings. This will remove not only the arrows, but a single space following them, shifting the whole tree two character positions to the left. See `:h NERDTreeDirArrowExpandable` for more details.
-
+The preceding values are the non-Windows default arrow symbols. Setting these variables to empty strings will remove the arrows completely and shift the entire tree two character positions to the left. See `:h NERDTreeDirArrowExpandable` for more details.
 
