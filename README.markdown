@@ -151,17 +151,10 @@ Use these variables in your vimrc. Note that below are default arrow symbols.
 let g:NERDTreeDirArrowExpandable = '▸'
 let g:NERDTreeDirArrowCollapsible = '▾'
 ```
-You can remove the arrows altogether by setting these variables to empty strings, as shown below. This will remove not only the arrows, but a single space following them, shifting the whole tree two character positions to the left.
-```vim
-let g:NERDTreeDirArrowExpandable = ''
-let g:NERDTreeDirArrowCollapsible = ''
-```
-See `:h NERDTreeDirArrowExpandable` for more details.
+You can remove the arrows altogether by setting these variables to empty strings. This will remove not only the arrows, but a single space following them, shifting the whole tree two character positions to the left. See `:h NERDTreeDirArrowExpandable` for more details.
 
 ### Can I have the nerdtree on every tab automatically?
 
-Nope. If this is something you want then chances are you aren't using tabs and
-buffers as they were intended to be used. Read this
-http://stackoverflow.com/questions/102384/using-vims-tabs-like-buffers
+Nope. If this is something you want then chances are you aren't using tabs and buffers as they were intended to be used. Read this http://stackoverflow.com/questions/102384/using-vims-tabs-like-buffers
 
 If you are interested in this behaviour then consider [vim-nerdtree-tabs](https://github.com/jistr/vim-nerdtree-tabs)
