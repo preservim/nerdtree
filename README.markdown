@@ -142,6 +142,12 @@ autocmd VimEnter * if argc() == 1 && isdirectory(argv()[0]) && !exists("s:std_in
 ```vim
 " Exit Vim if NERDTree is the only window left.
 autocmd BufEnter * if tabpagenr("$") == 1 && winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree() | q | endif
+
+### Can I have the same NERDTree on every tab automatically?
+
+```vim
+" Open the existing NERDTree on each new tab.
+autocmd BufWinEnter * silent NERDTreeMirror
 ```
 
 ### How can I change the default arrows?
@@ -153,8 +159,4 @@ let g:NERDTreeDirArrowCollapsible = '▾'
 ```
 You can remove the arrows altogether by setting these variables to empty strings. This will remove not only the arrows, but a single space following them, shifting the whole tree two character positions to the left. See `:h NERDTreeDirArrowExpandable` for more details.
 
-### Can I have the nerdtree on every tab automatically?
 
-Nope. If this is something you want then chances are you aren't using tabs and buffers as they were intended to be used. Read this http://stackoverflow.com/questions/102384/using-vims-tabs-like-buffers
-
-If you are interested in this behaviour then consider [vim-nerdtree-tabs](https://github.com/jistr/vim-nerdtree-tabs)
