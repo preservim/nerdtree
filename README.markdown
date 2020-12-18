@@ -8,55 +8,65 @@ The NERDTree is a file system explorer for the Vim editor. Using this plugin, us
 
 ## Installation
 
-Use your favorite plugin manager to install this plugin. [vim-pathogen](https://github.com/tpope/vim-pathogen), [Vundle.vim](https://github.com/VundleVim/Vundle.vim), [vim-plug](https://github.com/junegunn/vim-plug), [neobundle.vim](https://github.com/Shougo/neobundle.vim), and [dein.vim](https://github.com/Shougo/dein.vim) are some of the more popular ones. A lengthy discussion of these and other managers can be found on [vi.stackexchange.com](https://vi.stackexchange.com/questions/388/what-is-the-difference-between-the-vim-plugin-managers). Be sure to read, understand, and follow all the safety rules that come with your ~~power tools~~ plugin manager.
+Use your favorite plugin manager to install this plugin. [tpope/vim-pathogen](https://github.com/tpope/vim-pathogen), [VundleVimVundle.vim](https://github.com/VundleVim/Vundle.vim), [junegunnvim-plug](https://github.com/junegunn/vim-plug), and [Shougo/dein.vim](https://github.com/Shougo/dein.vim) are some of the more popular ones. A lengthy discussion of these and other managers can be found on [vi.stackexchange.com](https://vi.stackexchange.com/questions/388/what-is-the-difference-between-the-vim-plugin-managers). Basic instructions are provided below, but please **be sure to read, understand, and follow all the safety rules that come with your ~~power tools~~ plugin manager.**
 
 If you have no favorite, or want to manage your plugins without 3rd-party dependencies, consider using Vim 8+ packages, as described in Greg Hurrell's excellent Youtube video: [Vim screencast #75: Plugin managers](https://www.youtube.com/watch?v=X2_R3uxDN6g).
 
 <details>
 <summary>Pathogen</summary>
+Pathogen is more of a runtime path manager than a plugin manager. You must clone the plugins' repositories yourself to a specific location, and Pathogen makes sure they are available in Vim.
 
-In the terminal,
-```bash
-git clone https://github.com/preservim/nerdtree.git ~/.vim/bundle/nerdtree
-```
-In your `vimrc`,
-```vim
-call pathogen#infect()
-syntax on
-filetype plugin indent on
-```
 
-Then reload Vim, run `:helptags ~/.vim/bundle/nerdtree/doc/` or `:Helptags`.
+1. In the terminal,
+    ```bash
+    git clone https://github.com/preservim/nerdtree.git ~/.vim/bundle/nerdtree
+    ```
+1. In your `vimrc`,
+    ```vim
+    call pathogen#infect()
+    syntax on
+    filetype plugin indent on
+    ```
+1. Restart Vim, and run `:helptags ~/.vim/bundle/nerdtree/doc/` or `:Helptags`.
 </details>
 
 <details>
   <summary>Vundle</summary>
 
-```vim
-call vundle#begin()
-  Plugin 'preservim/nerdtree'
-call vundle#end()
-```
+1. Install Vundle, according to its instructions.
+1. Add the following text to your `vimrc`.
+    ```vim
+    call vundle#begin()
+      Plugin 'preservim/nerdtree'
+    call vundle#end()
+    ```
+1. Restart Vim, and run the `:PluginInstall` statement to install your plugins.
 </details>
 
 <details>
   <summary>Vim-Plug</summary>
 
+1. Install Vim-Plug, according to its instructions.
+1. Add the following text to your `vimrc`.
 ```vim
 call plug#begin()
   Plug 'preservim/nerdtree'
 call plug#end()
 ```
+1. Restart Vim, and run the `:PlugInstall` statement to install your plugins.
 </details>
 
 <details>
   <summary>Dein</summary>
 
-```vim
-call dein#begin()
-  call dein#add('preservim/nerdtree')
-call dein#end()
-  ```
+1. Install Dein, according to its instructions.
+1. Add the following text to your `vimrc`.
+    ```vim
+    call dein#begin()
+      call dein#add('preservim/nerdtree')
+    call dein#end()
+    ```
+1. Restart Vim, and run the `:call dein#install()` statement to install your plugins.
 </details>
 
 <details>
@@ -82,7 +92,6 @@ NERDTree can be extended with custom mappings and functions using its built-in A
 * [scrooloose/nerdtree-project-plugin](https://github.com/scrooloose/nerdtree-project-plugin): Saves and restores the state of the NERDTree between sessions.
 * [PhilRunninger/nerdtree-buffer-ops](https://github.com/PhilRunninger/nerdtree-buffer-ops): 1) Highlights open files in a different color. 2) Closes a buffer directly from NERDTree.
 * [PhilRunninger/nerdtree-visual-selection](https://github.com/PhilRunninger/nerdtree-visual-selection): Enables NERDTree to open, delete, move, or copy multiple Visually-selected files at once.
-* [jistr/vim-nerdtree-tabs](https://github.com/jistr/vim-nerdtree-tabs): Maintains a single NERDTree window on all tabs.
 
 If any others should be listed, mention them in an issue or pull request.
 
@@ -117,25 +126,25 @@ autocmd VimEnter * NERDTree | wincmd p
 ```vim
 " Start NERDTree when Vim is started without file arguments.
 autocmd StdinReadPre * let s:std_in=1
-autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
+autocmd VimEnter * if argc() == 0 && !exists('s:std_in') | NERDTree | endif
 ```
 ---
 ```vim
 " Start NERDTree. If a file is specified, move the cursor to its window.
 autocmd StdinReadPre * let s:std_in=1
-autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | else | NERDTree | wincmd p | endif
+autocmd VimEnter * NERDTree | if argc() > 0 || exists("s:std_in") | wincmd p | endif
 ```
 ---
 ```vim
 " Start NERDTree, unless a file or session is specified, eg. vim -S session_file.vim.
 autocmd StdinReadPre * let s:std_in=1
-autocmd VimEnter * if argc() == 0 && !exists("s:std_in") && v:this_session == "" | NERDTree | endif
+autocmd VimEnter * if argc() == 0 && !exists('s:std_in') && v:this_session == '' | NERDTree | endif
 ```
 ---
 ```vim
 " Start NERDTree when Vim starts with a directory argument.
 autocmd StdinReadPre * let s:std_in=1
-autocmd VimEnter * if argc() == 1 && isdirectory(argv()[0]) && !exists("s:std_in") |
+autocmd VimEnter * if argc() == 1 && isdirectory(argv()[0]) && !exists('s:std_in') |
     \ execute 'NERDTree' argv()[0] | wincmd p | enew | execute 'cd '.argv()[0] | endif
 ```
 
@@ -143,7 +152,7 @@ autocmd VimEnter * if argc() == 1 && isdirectory(argv()[0]) && !exists("s:std_in
 
 ```vim
 " Exit Vim if NERDTree is the only window left.
-autocmd BufEnter * if tabpagenr("$") == 1 && winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree() |
+autocmd BufEnter * if tabpagenr('$') == 1 && winnr('$') == 1 && exists('b:NERDTree') && b:NERDTree.isTabTree() |
     \ quit | endif
 ```
 
