@@ -500,9 +500,15 @@ function! nerdtree#ui_glue#openBookmark(name) abort
     endtry
     if l:bookmark.path.isDirectory
         call l:bookmark.open(b:NERDTree)
-    else
-        call l:bookmark.open(b:NERDTree, {'where': 'p'})
+        return
     endif
+
+    let l:openArgs = get(g:, 'NERDTreeCustomOpenArgs', {})
+    let l:options = (
+                \ type(l:openArgs) ==# v:t_dict
+                \ && has_key(l:openArgs, 'file')
+                \ ) ? l:openArgs.file : {'where': 'p'}
+    call l:bookmark.open(b:NERDTree, l:options)
 endfunction
 
 " FUNCTION: s:openHSplit(target) {{{1
