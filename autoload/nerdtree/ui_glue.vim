@@ -124,9 +124,10 @@ function! s:initCustomOpenArgs() abort
         endif
 
         for l:optionName in keys(l:defaultOpenArgs[l:typeKey])
-            if !s:validateType(get(l:customOpenArgs[l:typeKey], l:optionName, v:null), v:t_string)
-                let l:customOpenArgs[l:typeKey][l:optionName] = l:defaultOpenArgs[l:typeKey][l:optionName]
+            if s:validateType(get(l:customOpenArgs[l:typeKey], l:optionName, v:null), v:t_string)
+                continue
             endif
+            let l:customOpenArgs[l:typeKey][l:optionName] = l:defaultOpenArgs[l:typeKey][l:optionName]
         endfor
     endfor
 
