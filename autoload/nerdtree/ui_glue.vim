@@ -130,7 +130,7 @@ function! s:initCustomOpenArgs() abort
         endfor
     endfor
 
-    let g:NERDTreeCustomOpenArgs = l:defaultOpenArgs
+    let g:NERDTreeCustomOpenArgs = l:customOpenArgs
 
     return extend(l:customOpenArgs, l:defaultOpenArgs, 'keep')
 endfunction
