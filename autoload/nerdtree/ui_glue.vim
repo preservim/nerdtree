@@ -135,7 +135,7 @@ function! s:initCustomOpenArgs() abort
     return extend(l:customOpenArgs, l:defaultOpenArgs, 'keep')
 endfunction
 
-function s:validateType(variable, type) abort
+function! s:validateType(variable, type) abort
     if type(a:variable) is# a:type
         return v:true
     endif
