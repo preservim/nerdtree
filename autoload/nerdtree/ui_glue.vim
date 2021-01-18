@@ -108,24 +108,23 @@ function! s:customOpenBookmark(node) abort
 endfunction
 
 "FUNCTION: s:initCustomOpenArgs() {{{1
-" Make sure NERDTreeCustomOpenArgs has needed keys
 function! s:initCustomOpenArgs() abort
     let l:defaultOpenArgs = {'file': {'reuse': 'all', 'where': 'p'}, 'dir': {}}
     let l:customOpenArgs = get(g:, 'NERDTreeCustomOpenArgs', {})
-    return extend(l:customOpenArgs, l:defaultOpenArgs, 'keep')
 
-    if v:false is# s:validateType(l:customOpenArgs, v:t_dict)
+    if v:false is# s:validateType(l:customOpenArgs, type({}))
         return l:defaultOpenArgs
     endif
 
     for l:typeKey in keys(l:defaultOpenArgs)
-        if v:false is# s:validateType(get(l:customOpenArgs, l:typeKey, {}), v:t_dict)
+        if v:false is# s:validateType(get(l:customOpenArgs, l:typeKey, {}), type({}))
+              \ || !has_key(l:customOpenArgs, l:typeKey)
             let l:customOpenArgs[l:typeKey] = l:defaultOpenArgs[l:typeKey]
             continue
         endif
 
         for l:optionName in keys(l:defaultOpenArgs[l:typeKey])
-            if s:validateType(get(l:customOpenArgs[l:typeKey], l:optionName, v:null), v:t_string)
+            if s:validateType(get(l:customOpenArgs[l:typeKey], l:optionName, v:null), type(''))
                 continue
             endif
             let l:customOpenArgs[l:typeKey][l:optionName] = l:defaultOpenArgs[l:typeKey][l:optionName]
