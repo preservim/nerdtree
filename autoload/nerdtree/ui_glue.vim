@@ -112,6 +112,7 @@ endfunction
 function! s:initCustomOpenArgs() abort
     let l:defaultOpenArgs = {'file': {'reuse': 'all', 'where': 'p'}, 'dir': {}}
     let l:customOpenArgs = get(g:, 'NERDTreeCustomOpenArgs', {})
+    return extend(l:customOpenArgs, l:defaultOpenArgs, 'keep')
 
     if v:false is# s:validateType(l:customOpenArgs, v:t_dict)
         return l:defaultOpenArgs
