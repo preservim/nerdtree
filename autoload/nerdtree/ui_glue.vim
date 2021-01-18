@@ -112,7 +112,8 @@ function! s:initCustomOpenArgs() abort
     let l:defaultOpenArgs = {'file': {'reuse': 'all', 'where': 'p'}, 'dir': {}}
     let l:customOpenArgs = get(g:, 'NERDTreeCustomOpenArgs', {})
 
-    if v:false is# s:validateType(l:customOpenArgs, type({}))
+    if v:false is# s:validateType(l:customOpenArgs, type({})) || empty(l:customOpenArgs)
+        let g:NERDTreeCustomOpenArgs = l:customOpenArgs
         return l:defaultOpenArgs
     endif
 
