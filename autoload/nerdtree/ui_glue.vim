@@ -110,8 +110,38 @@ endfunction
 "FUNCTION: s:initCustomOpenArgs() {{{1
 " Make sure NERDTreeCustomOpenArgs has needed keys
 function! s:initCustomOpenArgs() abort
-    let g:NERDTreeCustomOpenArgs = get(g:, 'NERDTreeCustomOpenArgs', {})
-    return extend(g:NERDTreeCustomOpenArgs, {'file':{'reuse': 'all', 'where': 'p'}, 'dir':{}}, 'keep')
+    let l:defaultOpenArgs = {'file': {'reuse': 'all', 'where': 'p'}, 'dir': {}}
+    let l:customOpenArgs = get(g:, 'NERDTreeCustomOpenArgs', {})
+
+    if v:false is# s:validateType(l:customOpenArgs, v:t_dict)
+        return l:defaultOpenArgs
+    endif
+
+    for l:typeKey in keys(l:defaultOpenArgs)
+        if v:false is# s:validateType(get(l:customOpenArgs, l:typeKey, {}), v:t_dict)
+            let l:customOpenArgs[l:typeKey] = l:defaultOpenArgs[l:typeKey]
+            continue
+        endif
+
+        for l:optionName in keys(l:defaultOpenArgs[l:typeKey])
+            if s:validateType(get(l:customOpenArgs[l:typeKey], l:optionName, v:null), v:t_string)
+                continue
+            endif
+            let l:customOpenArgs[l:typeKey][l:optionName] = l:defaultOpenArgs[l:typeKey][l:optionName]
+        endfor
+    endfor
+
+    let g:NERDTreeCustomOpenArgs = l:customOpenArgs
+
+    return extend(l:customOpenArgs, l:defaultOpenArgs, 'keep')
+endfunction
+
+function! s:validateType(variable, type) abort
+    if type(a:variable) is# a:type
+        return v:true
+    endif
+
+    return v:false
 endfunction
 
 "FUNCTION: s:activateAll() {{{1
@@ -500,9 +530,10 @@ function! nerdtree#ui_glue#openBookmark(name) abort
     endtry
     if l:bookmark.path.isDirectory
         call l:bookmark.open(b:NERDTree)
-    else
-        call l:bookmark.open(b:NERDTree, {'where': 'p'})
+        return
     endif
+
+    call l:bookmark.open(b:NERDTree, s:initCustomOpenArgs().file)
 endfunction
 
 " FUNCTION: s:openHSplit(target) {{{1
