@@ -112,13 +112,13 @@ function! s:initCustomOpenArgs() abort
     let l:defaultOpenArgs = {'file': {'reuse': 'all', 'where': 'p'}, 'dir': {}}
     let l:customOpenArgs = get(g:, 'NERDTreeCustomOpenArgs', {})
 
-    if v:false is# s:validateType(l:customOpenArgs, type({})) || empty(l:customOpenArgs)
+    if !s:validateType(l:customOpenArgs, type({})) || empty(l:customOpenArgs)
         let g:NERDTreeCustomOpenArgs = l:customOpenArgs
         return l:defaultOpenArgs
     endif
 
     for l:typeKey in keys(l:defaultOpenArgs)
-        if v:false is# s:validateType(get(l:customOpenArgs, l:typeKey, {}), type({}))
+        if !s:validateType(get(l:customOpenArgs, l:typeKey, {}), type({}))
               \ || !has_key(l:customOpenArgs, l:typeKey)
             let l:customOpenArgs[l:typeKey] = l:defaultOpenArgs[l:typeKey]
             continue
@@ -138,7 +138,7 @@ function! s:initCustomOpenArgs() abort
 endfunction
 
 function! s:validateType(variable, type) abort
-    if type(a:variable) is# a:type
+    if type(a:variable) == a:type
         return v:true
     endif
 
