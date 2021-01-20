@@ -483,7 +483,10 @@ endfunction
 " returns true if this path matches the given ignore pattern
 function! s:Path._ignorePatternMatches(pattern)
     let pat = a:pattern
-    if strpart(pat,len(pat)-7) ==# '[[dir]]'
+    if strpart(pat,len(pat)-8) ==# '[[path]]'
+        let pat = strpart(pat,0, len(pat)-8)
+        return self.str() =~# pat
+    elseif strpart(pat,len(pat)-7) ==# '[[dir]]'
         if !self.isDirectory
             return 0
         endif
