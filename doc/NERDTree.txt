@@ -929,13 +929,18 @@ For example if you put the following line in your vimrc: >
 <
 then all files ending in .vim or ~ will be ignored.
 
-There are 2 magic flags that can be appended to the end of each regular
-expression to specify that the regex should match only files or only dirs.
-These flags are "[[dir]]" and "[[file]]". Example: >
-    let NERDTreeIgnore=['\.d$[[dir]]', '\.o$[[file]]']
+There are 3 magic flags that can be appended to the end of each regular
+expression to specify that the regex should match only filenames, only lowest
+level directories, or a full path. These flags are "[[dir]]", "[[file]]", and
+"[[path]]". Example: >
+    let NERDTreeIgnore=['\.d$[[dir]]', '\.o$[[file]]', 'tmp/cache$[[path]]']
 <
-This will cause all dirs ending in ".d" to be ignored and all files ending in
-".o" to be ignored.
+This will cause all directories ending in ".d" to be ignored, all files ending
+in ".o" to be ignored, and the "cache" subdirectory of any "tmp" directory to
+be ignored. All other "cache" directories will be displayed.
+
+When using the "[[path]]" tag on Windows, make sure you use escaped
+backslashes for the separators in the regex, eg. 'Temp\\cache$[[path]]'
 
 Note: to tell the NERDTree not to ignore any files you must use the following
 line: >
