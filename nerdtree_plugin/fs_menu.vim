@@ -49,7 +49,7 @@ else
     call NERDTreeAddMenuItem({'text': '(l)ist the current node', 'shortcut': 'l', 'callback': 'NERDTreeListNodeWin32'})
 endif
 
-if exists('*systemlist')
+if exists('*system')
     call NERDTreeAddMenuItem({'text': 'Run (s)ystem command in this directory', 'shortcut':'s', 'callback': 'NERDTreeSystemCommand'})
 endif
 
@@ -477,7 +477,7 @@ function! NERDTreeSystemCommand()
     execute 'cd '.l:directory
 
     let l:nl = nr2char(10)
-    echo l:nl . join(systemlist(input(l:directory . (nerdtree#runningWindows() ? '> ' : ' $ '))), l:nl)
+    echo l:nl . system(input(l:directory . (nerdtree#runningWindows() ? '> ' : ' $ ')))
     execute 'cd '.l:cwd
 endfunction
 
