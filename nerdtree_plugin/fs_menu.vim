@@ -49,7 +49,9 @@ else
     call NERDTreeAddMenuItem({'text': '(l)ist the current node', 'shortcut': 'l', 'callback': 'NERDTreeListNodeWin32'})
 endif
 
-call NERDTreeAddMenuItem({'text': 'Run (s)ystem command in this directory', 'shortcut':'s', 'callback': 'NERDTreeSystemCommand'})
+if exists('*systemlist')
+    call NERDTreeAddMenuItem({'text': 'Run (s)ystem command in this directory', 'shortcut':'s', 'callback': 'NERDTreeSystemCommand'})
+endif
 
 "FUNCTION: s:inputPrompt(action){{{1
 "returns the string that should be prompted to the user for the given action
@@ -474,9 +476,8 @@ function! NERDTreeSystemCommand()
     let l:directory = l:node.path.isDirectory ? l:node.path.str() : l:node.parent.path.str()
     execute 'cd '.l:directory
 
-    call system(input(l:directory . (nerdtree#runningWindows() ? "> " : " $ ")))
+    echo "\n".join(systemlist(input(l:directory . (nerdtree#runningWindows() ? "> " : " $ "))), "\n")
     execute 'cd '.l:cwd
 endfunction
-
 
 " vim: set sw=4 sts=4 et fdm=marker:
