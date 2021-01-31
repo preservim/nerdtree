@@ -5,6 +5,7 @@
         - **.PATCH**: Pull Request Title (PR Author) [PR Number](Link to PR)
 -->
 #### 6.10
+- **.2**: New menu command: Run a system command in this directory. (PhilRunninger) [#1214](https://github.com/preservim/nerdtree/pull/1214)
 - **.0**: Enable full path specifications for NERDTreeIgnore (PhilRunninger) [#1207](https://github.com/preservim/nerdtree/pull/1207)
 #### 6.9
 - **.12**: Respect NERDTreeCustomOpenArgs when opening bookmark (przepompownia) [#1200](https://github.com/preservim/nerdtree/pull/1200)
