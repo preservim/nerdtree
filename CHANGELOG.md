@@ -5,6 +5,7 @@
         - **.PATCH**: Pull Request Title (PR Author) [PR Number](Link to PR)
 -->
 #### 6.10
+- **.2**: New menu command: Run a system command in this directory. (PhilRunninger) [#1214](https://github.com/preservim/nerdtree/pull/1214)
 - **.1**: Escape quotation marks so they can be used in key mappings. (PhilRunninger) [#1213](https://github.com/preservim/nerdtree/pull/1213)
 - **.0**: Enable full path specifications for NERDTreeIgnore (PhilRunninger) [#1207](https://github.com/preservim/nerdtree/pull/1207)
 #### 6.9
