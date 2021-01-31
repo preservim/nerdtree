@@ -476,7 +476,7 @@ function! NERDTreeSystemCommand()
     let l:directory = l:node.path.isDirectory ? l:node.path.str() : l:node.parent.path.str()
     execute 'cd '.l:directory
 
-    echo "\n".join(systemlist(input(l:directory . (nerdtree#runningWindows() ? "> " : " $ "))), "\n")
+    echo "\n".join(systemlist(input(l:directory . (nerdtree#runningWindows() ? "> " : " $ "))), nr2char(10))
     execute 'cd '.l:cwd
 endfunction
 
