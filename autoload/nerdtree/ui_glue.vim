@@ -174,7 +174,7 @@ endfunction
 "FUNCTION: s:activateBookmark(bookmark) {{{1
 "handle the user activating a bookmark
 function! s:activateBookmark(bm) abort
-    call a:bm.activate(b:NERDTree, !a:bm.path.isDirectory ? {'where': 'p'} : {'keepopen': !nerdtree#closeTreeOnOpen()})
+    call a:bm.activate(b:NERDTree, !a:bm.path.isDirectory ? {'where': 'p', 'keepopen': !nerdtree#closeTreeOnOpen()} : {})
 endfunction
 
 " FUNCTION: nerdtree#ui_glue#bookmarkNode(name) {{{1

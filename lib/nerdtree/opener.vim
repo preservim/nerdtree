@@ -46,7 +46,7 @@ function! s:Opener._checkToCloseTree(newtab)
     endif
 
     if (a:newtab && self._where ==# 't') || !a:newtab
-        call s:NERDTree.Close()
+        call g:NERDTree.Close()
     endif
 endfunction
 
