@@ -218,7 +218,7 @@ endfunction
 
 " FUNCTION: Opener._openFile() {{{1
 function! s:Opener._openFile()
-    if !self._stay && self._keepopen && exists('b:NERDTreeZoomed') && b:NERDTreeZoomed
+    if !self._stay && self._keepopen && get(b:, 'NERDTreeZoomed', 0)
         call b:NERDTree.ui.toggleZoom()
     endif
 
