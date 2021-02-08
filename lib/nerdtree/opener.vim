@@ -46,7 +46,7 @@ function! s:Opener._checkToCloseTree(newtab)
     endif
 
     if (a:newtab && self._where ==# 't') || !a:newtab
-        call g:NERDTree.CloseIfQuitOnOpen()
+        call s:NERDTree.Close()
     endif
 endfunction
 
@@ -218,7 +218,7 @@ endfunction
 
 " FUNCTION: Opener._openFile() {{{1
 function! s:Opener._openFile()
-    if !self._stay && !nerdtree#and(g:NERDTreeQuitOnOpen,1) && exists('b:NERDTreeZoomed') && b:NERDTreeZoomed
+    if !self._stay && self._keepopen && exists('b:NERDTreeZoomed') && b:NERDTreeZoomed
         call b:NERDTree.ui.toggleZoom()
     endif
 
