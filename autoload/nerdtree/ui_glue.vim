@@ -168,13 +168,13 @@ endfunction
 "FUNCTION: s:activateFileNode() {{{1
 "handle the user activating a tree node
 function! s:activateFileNode(node) abort
-    call a:node.activate({'reuse': 'all', 'where': 'p'})
+    call a:node.activate({'reuse': 'all', 'where': 'p', 'keepopen': !nerdtree#closeTreeOnOpen()})
 endfunction
 
 "FUNCTION: s:activateBookmark(bookmark) {{{1
 "handle the user activating a bookmark
 function! s:activateBookmark(bm) abort
-    call a:bm.activate(b:NERDTree, !a:bm.path.isDirectory ? {'where': 'p'} : {})
+    call a:bm.activate(b:NERDTree, !a:bm.path.isDirectory ? {'where': 'p'} : {'keepopen': !nerdtree#closeTreeOnOpen()})
 endfunction
 
 " FUNCTION: nerdtree#ui_glue#bookmarkNode(name) {{{1
@@ -539,24 +539,24 @@ endfunction
 
 " FUNCTION: s:openHSplit(target) {{{1
 function! s:openHSplit(target) abort
-    call a:target.activate({'where': 'h'})
+    call a:target.activate({'where': 'h', 'keepopen': !nerdtree#closeTreeOnOpen()})
 endfunction
 
 " FUNCTION: s:openVSplit(target) {{{1
 function! s:openVSplit(target) abort
-    call a:target.activate({'where': 'v'})
+    call a:target.activate({'where': 'v', 'keepopen': !nerdtree#closeTreeOnOpen()})
 endfunction
 
 "FUNCTION: s:openHSplitBookmark(bookmark) {{{1
 "handle the user activating a bookmark
 function! s:openHSplitBookmark(bm) abort
-    call a:bm.activate(b:NERDTree, !a:bm.path.isDirectory ? {'where': 'h'} : {})
+    call a:bm.activate(b:NERDTree, !a:bm.path.isDirectory ? {'where': 'h', 'keepopen': !nerdtree#closeTreeOnOpen()} : {})
 endfunction
 
 "FUNCTION: s:openVSplitBookmark(bookmark) {{{1
 "handle the user activating a bookmark
 function! s:openVSplitBookmark(bm) abort
-    call a:bm.activate(b:NERDTree, !a:bm.path.isDirectory ? {'where': 'v'} : {})
+    call a:bm.activate(b:NERDTree, !a:bm.path.isDirectory ? {'where': 'v', 'keepopen': !nerdtree#closeTreeOnOpen()} : {})
 endfunction
 
 " FUNCTION: s:previewHSplitBookmark(bookmark) {{{1
@@ -576,13 +576,13 @@ endfunction
 
 " FUNCTION: s:openInNewTab(target) {{{1
 function! s:openInNewTab(target) abort
-    let l:opener = g:NERDTreeOpener.New(a:target.path, {'where': 't'})
+    let l:opener = g:NERDTreeOpener.New(a:target.path, {'where': 't', 'keepopen': !nerdtree#closeTreeOnOpen()})
     call l:opener.open(a:target)
 endfunction
 
 " FUNCTION: s:openInNewTabSilent(target) {{{1
 function! s:openInNewTabSilent(target) abort
-    let l:opener = g:NERDTreeOpener.New(a:target.path, {'where': 't', 'stay': 1})
+    let l:opener = g:NERDTreeOpener.New(a:target.path, {'where': 't', 'keepopen': !nerdtree#closeTreeOnOpen(), 'stay': 1})
     call l:opener.open(a:target)
 endfunction
 
@@ -621,7 +621,7 @@ function! nerdtree#ui_glue#revealBookmark(name) abort
         let targetNode = g:NERDTreeBookmark.GetNodeForName(a:name, 0, b:NERDTree)
         call targetNode.putCursorHere(0, 1)
     catch /^NERDTree.BookmarkNotFoundError/
-        call nerdtree#echo('Bookmark isnt cached under the current root')
+        call nerdtree#echo('Bookmark isn''t cached under the current root')
     endtry
 endfunction
 
