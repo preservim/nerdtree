@@ -5,6 +5,7 @@
         - **.PATCH**: Pull Request Title (PR Author) [PR Number](Link to PR)
 -->
 #### 6.10
+- **.4**: Removed directory separator from sort key (Daniel E) [#1219](https://github.com/preservim/nerdtree/pull/1219)
 - **.3**: Add new FAQ and answer: How to prevent buffers replacing NERDTree. (PhilRunninger) [#1215](https://github.com/preservim/nerdtree/pull/1215)
 - **.2**: New menu command: Run a system command in this directory. (PhilRunninger) [#1214](https://github.com/preservim/nerdtree/pull/1214)
 - **.1**: Escape quotation marks so they can be used in key mappings. (PhilRunninger) [#1213](https://github.com/preservim/nerdtree/pull/1213)
