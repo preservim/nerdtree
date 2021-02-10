@@ -33,8 +33,7 @@ function! s:Opener._bufInWindows(bnum)
 endfunction
 
 " FUNCTION: Opener._checkToCloseTree(newtab) {{{1
-" Check the class options and global options (i.e. NERDTreeQuitOnOpen) to see
-" if the tree should be closed now.
+" Check the class options to see if the tree should be closed now.
 "
 " Args:
 " a:newtab - boolean. If set, only close the tree now if we are opening the
