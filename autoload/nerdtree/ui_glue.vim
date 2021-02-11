@@ -109,7 +109,7 @@ endfunction
 
 "FUNCTION: s:initCustomOpenArgs() {{{1
 function! s:initCustomOpenArgs() abort
-    let l:defaultOpenArgs = {'file': {'reuse': 'all', 'where': 'p'}, 'dir': {}}
+    let l:defaultOpenArgs = {'file': {'reuse': 'all', 'where': 'p', 'keepopen':!nerdtree#closeTreeOnOpen()}, 'dir': {}}
     let l:customOpenArgs = get(g:, 'NERDTreeCustomOpenArgs', {})
 
     if !s:validateType(l:customOpenArgs, type({})) || empty(l:customOpenArgs)
