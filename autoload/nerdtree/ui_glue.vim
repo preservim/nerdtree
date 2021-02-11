@@ -110,39 +110,15 @@ endfunction
 "FUNCTION: s:initCustomOpenArgs() {{{1
 function! s:initCustomOpenArgs() abort
     let l:defaultOpenArgs = {'file': {'reuse': 'all', 'where': 'p', 'keepopen':!nerdtree#closeTreeOnOpen()}, 'dir': {}}
-    let l:customOpenArgs = get(g:, 'NERDTreeCustomOpenArgs', {})
-
-    if !s:validateType(l:customOpenArgs, type({})) || empty(l:customOpenArgs)
-        let g:NERDTreeCustomOpenArgs = l:customOpenArgs
-        return l:defaultOpenArgs
-    endif
-
-    for l:typeKey in keys(l:defaultOpenArgs)
-        if !s:validateType(get(l:customOpenArgs, l:typeKey, {}), type({}))
-              \ || !has_key(l:customOpenArgs, l:typeKey)
-            let l:customOpenArgs[l:typeKey] = l:defaultOpenArgs[l:typeKey]
-            continue
-        endif
-
-        for l:optionName in keys(l:defaultOpenArgs[l:typeKey])
-            if s:validateType(get(l:customOpenArgs[l:typeKey], l:optionName, v:null), type(''))
-                continue
-            endif
-            let l:customOpenArgs[l:typeKey][l:optionName] = l:defaultOpenArgs[l:typeKey][l:optionName]
-        endfor
-    endfor
-
-    let g:NERDTreeCustomOpenArgs = l:customOpenArgs
-
-    return extend(l:customOpenArgs, l:defaultOpenArgs, 'keep')
-endfunction
-
-function! s:validateType(variable, type) abort
-    if type(a:variable) == a:type
-        return v:true
-    endif
-
-    return v:false
+    try
+        let g:NERDTreeCustomOpenArgs = get(g:, 'NERDTreeCustomOpenArgs', {})
+        call  extend(g:NERDTreeCustomOpenArgs, l:defaultOpenArgs, 'keep')
+    catch /^Vim(\a\+):E712:/
+        call nerdtree#echoWarning('g:NERDTreeCustomOpenArgs is not set properly. Using default value.')
+        let g:NERDTreeCustomOpenArgs = l:defaultOpenArgs
+    finally
+        return g:NERDTreeCustomOpenArgs
+    endtry
 endfunction
 
 "FUNCTION: s:activateAll() {{{1
