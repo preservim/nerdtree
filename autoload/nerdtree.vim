@@ -30,12 +30,12 @@ endfunction
 " SECTION: General Functions {{{1
 "============================================================
 
-" FUNCTION: nerdtree#closeTreeOnOpen()
+" FUNCTION: nerdtree#closeTreeOnOpen() {{{2
 function! nerdtree#closeTreeOnOpen() abort
     return g:NERDTreeQuitOnOpen == 1 || g:NERDTreeQuitOnOpen == 3
 endfunction
 
-" FUNCTION: nerdtree#closeBookmarksOnOpen()
+" FUNCTION: nerdtree#closeBookmarksOnOpen() {{{2
 function! nerdtree#closeBookmarksOnOpen() abort
     return g:NERDTreeQuitOnOpen == 2 || g:NERDTreeQuitOnOpen == 3
 endfunction
