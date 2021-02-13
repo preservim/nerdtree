@@ -373,7 +373,7 @@ function! s:handleLeftClick() abort
                 if currentNode.path.isDirectory
                     call currentNode.activate()
                 else
-                    call currentNode.activate({'reuse': 'all', 'where': 'p'})
+                    call currentNode.activate({'reuse': 'all', 'where': 'p', 'keepopen':!nerdtree#closeTreeOnOpen()})
                 endif
                 return
             endif
