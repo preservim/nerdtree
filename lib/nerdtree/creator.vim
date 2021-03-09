@@ -319,6 +319,14 @@ function! s:Creator._setCommonBufOptions()
 
     if g:NERDTreeHighlightCursorline
         setlocal cursorline
+    else
+        setlocal nocursorline
+    endif
+
+    if g:NERDTreeHighlightCursorcolumn
+        setlocal cursorcolumn
+    else
+        setlocal nocursorcolumn
     endif
 
     call self._setupStatusline()

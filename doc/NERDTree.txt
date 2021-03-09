@@ -689,6 +689,10 @@ the NERDTree. These settings should be set in your vimrc, using `:let`.
 |NERDTreeHighlightCursorline| Tell the NERDTree whether to highlight the
                             current cursor line.
 
+NERDTreeHighlightCursorcolumn
+                            Tell the NERDTree whether to highlight the
+                            current cursor column.
+
 |NERDTreeHijackNetrw|         Tell the NERDTree whether to replace the netrw
                             autocommands for exploring local directories.
 
@@ -897,6 +901,14 @@ Default: 1.
 
 If set to 1, the current cursor line in the NERDTree buffer will be
 highlighted. This is done using the `'cursorline'` Vim option.
+
+-----------------------------------------------------------------------------
+                                                NERDTreeHighlightCursorcolumn
+Values: 0 or 1.
+Default: 0.
+
+If set to 1, the current cursor column in the NERDTree buffer will be
+highlighted. This is done using the 'cursorcolumn' Vim option.
 
 ------------------------------------------------------------------------------
                                                            *NERDTreeHijackNetrw*

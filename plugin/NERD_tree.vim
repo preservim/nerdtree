@@ -41,6 +41,7 @@ let g:NERDTreeIgnore                = get(g:, 'NERDTreeIgnore',                [
 let g:NERDTreeBookmarksFile         = get(g:, 'NERDTreeBookmarksFile',         expand('$HOME') . '/.NERDTreeBookmarks')
 let g:NERDTreeBookmarksSort         = get(g:, 'NERDTreeBookmarksSort',         1)
 let g:NERDTreeHighlightCursorline   = get(g:, 'NERDTreeHighlightCursorline',   1)
+let g:NERDTreeHighlightCursorcolumn = get(g:, 'NERDTREEHighlightCursorcolumn', 0)
 let g:NERDTreeHijackNetrw           = get(g:, 'NERDTreeHijackNetrw',           1)
 let g:NERDTreeMarkBookmarks         = get(g:, 'NERDTreeMarkBookmarks',         1)
 let g:NERDTreeMouseMode             = get(g:, 'NERDTreeMouseMode',             1)
