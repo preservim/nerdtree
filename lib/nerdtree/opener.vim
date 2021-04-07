@@ -157,12 +157,17 @@ function! s:Opener._newSplit()
     if onlyOneWin
         let &splitright = (g:NERDTreeWinPos ==# 'left')
     endif
+
     " If only one window (ie. NERDTree), split vertically instead.
-    let splitMode = onlyOneWin ? 'vertical' : ''
+    let splitMode = onlyOneWin && !g:NERDTreeSplexMode ? 'vertical' : ''
 
     " Open the new window
     try
-        call nerdtree#exec('wincmd p', 1)
+        if g:NERDTreeSplexMode
+            call nerdtree#exec('buffer ' . b:NERDTree.previousBuf(), 1)
+        else
+            call nerdtree#exec('wincmd p', 1)
+        endif
         call nerdtree#exec(splitMode . ' split',1)
     catch /^Vim\%((\a\+)\)\=:E37/
         call g:NERDTree.CursorToTreeWin()
@@ -172,7 +177,7 @@ function! s:Opener._newSplit()
     endtry
 
     "resize the tree window if no other window was open before
-    if onlyOneWin
+    if onlyOneWin && !g:NERDTreeSplexMode
         call nerdtree#exec('wincmd p', 1)
         call nerdtree#exec('silent '. splitMode .' resize '. g:NERDTreeWinSize, 1)
         call nerdtree#exec('wincmd p', 0)
@@ -192,16 +197,22 @@ function! s:Opener._newVSplit()
         let l:winwidth = g:NERDTreeWinSize
     endif
 
-    call nerdtree#exec('wincmd p', 1)
+    if g:NERDTreeSplexMode
+        call nerdtree#exec('buffer ' . b:NERDTree.previousBuf(), 1)
+    else
+        call nerdtree#exec('wincmd p', 1)
+    endif
     call nerdtree#exec('vsplit', 1)
 
-    let l:currentWindowNumber = winnr()
+    if !g:NERDTreeSplexMode
+        let l:currentWindowNumber = winnr()
 
-    " Restore the NERDTree to its original width.
-    call g:NERDTree.CursorToTreeWin()
-    execute 'silent vertical resize ' . l:winwidth
+        " Restore the NERDTree to its original width.
+        call g:NERDTree.CursorToTreeWin()
+        execute 'silent vertical resize ' . l:winwidth
 
-    call nerdtree#exec(l:currentWindowNumber . 'wincmd w', 0)
+        call nerdtree#exec(l:currentWindowNumber . 'wincmd w', 0)
+    endif
     let &splitright=savesplitright
 endfunction
 

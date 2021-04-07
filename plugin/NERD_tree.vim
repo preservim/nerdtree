@@ -96,6 +96,8 @@ else
     let g:NERDTreeCopyCmd      = get(g:, 'NERDTreeCopyCmd',      'cp -r ')
 endif
 
+let g:NERDTreeSplexMode = get(g:, 'NERDTreeSplexMode', 0)
+
 "SECTION: Init variable calls for key mappings {{{2
 let g:NERDTreeMapCustomOpen      = get(g:, 'NERDTreeMapCustomOpen',      '<CR>')
 let g:NERDTreeMapActivateNode    = get(g:, 'NERDTreeMapActivateNode',    'o')
