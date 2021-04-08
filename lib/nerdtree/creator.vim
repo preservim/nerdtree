@@ -109,6 +109,17 @@ function! s:Creator.createWindowTree(dir)
     call self._broadcastInitEvent()
 endfunction
 
+" FUNCTION: s:Creator.CreateDefaultTree(dir) {{{1
+function! s:Creator.CreateDefaultTree(dir)
+    let creator = s:Creator.New()
+    if g:NERDTreeSplexMode
+        enew
+        call creator.createWindowTree(a:dir)
+    else
+        call creator.createTabTree(a:dir)
+    endif
+endfunction
+
 " FUNCTION: s:Creator._createNERDTree(path) {{{1
 function! s:Creator._createNERDTree(path, type)
     let b:NERDTree = g:NERDTree.New(a:path, a:type)

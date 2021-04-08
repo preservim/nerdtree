@@ -324,9 +324,9 @@ function! s:findAndRevealPath(pathStr) abort
         endtry
 
         if l:pathObj.isUnder(l:cwd)
-            call g:NERDTreeCreator.CreateTabTree(l:cwd.str())
+            call g:NERDTreeCreator.CreateDefaultTree(l:cwd.str())
         else
-            call g:NERDTreeCreator.CreateTabTree(l:pathObj.getParent().str())
+            call g:NERDTreeCreator.CreateDefaultTree(l:pathObj.getParent().str())
         endif
     else
         NERDTreeFocus
@@ -639,10 +639,10 @@ endfunction
 
 " FUNCTION: nerdtree#ui_glue#setupCommands() {{{1
 function! nerdtree#ui_glue#setupCommands() abort
-    command! -n=? -complete=dir -bar NERDTree :call g:NERDTreeCreator.CreateTabTree('<args>')
+    command! -n=? -complete=dir -bar NERDTree :call g:NERDTreeCreator.CreateDefaultTree('<args>')
     command! -n=? -complete=dir -bar NERDTreeToggle :call g:NERDTreeCreator.ToggleTabTree('<args>')
     command! -n=0 -bar NERDTreeClose :call g:NERDTree.Close()
-    command! -n=1 -complete=customlist,nerdtree#completeBookmarks -bar NERDTreeFromBookmark call g:NERDTreeCreator.CreateTabTree('<args>')
+    command! -n=1 -complete=customlist,nerdtree#completeBookmarks -bar NERDTreeFromBookmark call g:NERDTreeCreator.CreateDefaultTree('<args>')
     command! -n=0 -bar NERDTreeMirror call g:NERDTreeCreator.CreateMirror()
     command! -n=? -complete=file -bar NERDTreeFind call s:findAndRevealPath('<args>')
     command! -n=0 -bar NERDTreeRefreshRoot call s:refreshRoot()
