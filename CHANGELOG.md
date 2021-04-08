@@ -4,6 +4,8 @@
      version in an unordered list.  The format is:
         - **.PATCH**: Pull Request Title (PR Author) [PR Number](Link to PR)
 -->
+#### 6.11
+- **.0**: Add split explorer capability to NERDTREE (tempoz) [#1237](https://github.com/preservim/nerdtree/pull/1237)
 #### 6.10
 - **.9**: `go` on a bookmark directory will NERDTreeFind it. (PhilRunninger) [#1236](https://github.com/preservim/nerdtree/pull/1236)
 - **.8**: Put `Callback` function variables in local scope. (PhilRunninger) [#1230](https://github.com/preservim/nerdtree/pull/1230)
