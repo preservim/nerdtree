@@ -93,13 +93,16 @@ function! s:Creator.createWindowTree(dir)
 
     let previousBuf = expand('#')
 
+    let bufferName = self._nextBufferName()
     "we need a unique name for each window tree buffer to ensure they are
     "all independent
-    exec g:NERDTreeCreatePrefix . ' edit ' . self._nextBufferName()
+    exec g:NERDTreeCreatePrefix . ' edit ' . bufferName
 
     call self._createNERDTree(path, 'window')
     let b:NERDTree._previousBuf = bufnr(previousBuf)
     call self._setCommonBufOptions()
+
+    let t:NERDTreeBufName = bufferName
 
     call b:NERDTree.render()
 
