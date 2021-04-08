@@ -1305,6 +1305,22 @@ To open files and directories (creating a new NERDTree) in a new tab, >
 To open a file always in the current tab, and expand directories in place, >
     {'file': {'reuse':'currenttab', 'where':'p', 'keepopen':1, 'stay':1}}
 <
+------------------------------------------------------------------------------
+                                                             *NERDTreeSplexMode*
+Values: 0 or 1
+Default: 0.
+
+Changes the default behavior of NERDTree from its standard "project drawer"
+style (where NERDTree appears in its own window on one side of a tab) to a
+"split explorer" style (where NERDTree opens a buffer in the current window
+and then swaps the previous buffer back into place after a file is opened in a
+split, or simply swaps the new buffer into place if a file is opened
+standardly). This is especially useful if you are low on screen space or find
+the splits done in the project drawer mode to be hard to follow. Use one of the
+following lines for this setting: >
+    let NERDTreeSplexMode=0
+    let NERDTreeSplexMode=1
+<
 ==============================================================================
 4. The NERDTree API                                                *NERDTreeAPI*
 
