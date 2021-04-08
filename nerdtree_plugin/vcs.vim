@@ -10,14 +10,14 @@
 "              See http://sam.zoy.org/wtfpl/COPYING for more details.
 "
 " ============================================================================
-command! -n=? -complete=dir -bar NERDTreeVCS :call <SID>CreateTabTreeVCS('<args>')
+command! -n=? -complete=dir -bar NERDTreeVCS :call <SID>CreateDefaultTreeVCS('<args>')
 command! -n=? -complete=dir -bar NERDTreeToggleVCS :call <SID>ToggleTabTreeVCS('<args>')
 
 " FUNCTION: s:CreateTabTreeVCS(a:name) {{{1
-function! s:CreateTabTreeVCS(name)
+function! s:CreateDefaultTreeVCS(name)
     let l:path = g:NERDTreeCreator._pathForString(a:name)
     let l:path = s:FindParentVCSRoot(l:path)
-    call g:NERDTreeCreator.createTabTree(empty(l:path) ? '' : l:path._str())
+    call g:NERDTreeCreator.CreateDefaultTree(empty(l:path) ? '' : l:path._str())
 endfunction
 
 " FUNCTION: s:ToggleTabTreeVCS(a:name) {{{1
