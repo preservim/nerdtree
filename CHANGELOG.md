@@ -7,7 +7,7 @@
 #### 6.10
 - **.8**: Put `Callback` function variables in local scope. [#1230](https://github.com/preservim/nerdtree/pull/1230)
 - **.7**: Fix mouse-clicking a file to open it. (PhilRunninger) [#1225](https://github.com/preservim/nerdtree/pull/1225)
-- **.6**: Restore the default behavior of the <CR> key. (PhilRunninger) [#1221](https://github.com/preservim/nerdtree/pull/1221)
+- **.6**: Restore the default behavior of the `<CR>` key. (PhilRunninger) [#1221](https://github.com/preservim/nerdtree/pull/1221)
 - **.5**: Fix `{'keepopen':0}` in NERDTreeCustomOpenArgs (PhilRunninger) [#1217](https://github.com/preservim/nerdtree/pull/1217)
 - **.4**: Removed directory separator from sort key (Daniel E) [#1219](https://github.com/preservim/nerdtree/pull/1219)
 - **.3**: Add new FAQ and answer: How to prevent buffers replacing NERDTree. (PhilRunninger) [#1215](https://github.com/preservim/nerdtree/pull/1215)
