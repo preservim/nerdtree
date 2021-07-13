@@ -5,19 +5,19 @@ labels: bug
 ---
 <!-- Attention! Please Read!
 
-Please fill out ALL the information below so that the issue can be fully
-understood. Omitting information will delay the resolution of your issue. It
-will be labeled "Needs More Info", and may be closed until there is enough
-information.
+Please fill out ALL the information below so that the issue can be fully understood. Omitting
+information will delay the resolution of your issue. It will be labeled "Needs More Info", and
+may be closed until there is enough information.
 
-Keep in mind that others may have the same question in the future. The better
-your information, the more likely they'll be able to help themselves. -->
+Keep in mind that others may have the same question in the future. The better your information,
+the more likely they'll be able to help themselves.
+-->
 
 #### Self-Diagnosis
 Before creating an issue, take some time to search these resources for an answer. It's possible that someone else has already seen and solved your issue.
 - [old NERDTree issues](https://github.com/preservim/nerdtree/issues?q=is%3Aissue)
 - NERDTree documentation - `:h NERDTree`
-- [NERDTree Wiki](https://github.com/scrooloose/nerdtree/wiki)
+- [NERDTree Wiki](https://github.com/preservim/nerdtree/wiki)
 - Other resources: <https://stackoverflow.com>, <https://vi.stackexchange.com>, etc.
 
 #### Environment
@@ -40,7 +40,7 @@ Before creating an issue, take some time to search these resources for an answer
 #### Steps to Reproduce the Issue
 1. 
 
-#### Current Result (Include screenshots where appropriate.)
+#### Current Behavior (Include screenshots where appropriate.)
 
 #### Expected Result
 
