@@ -5,6 +5,7 @@
         - **.PATCH**: Pull Request Title (PR Author) [PR Number](Link to PR)
 -->
 #### 6.10
+- **.11**: Trim filenames created via the fs_menu (elanorigby) [#1243](https://github.com/preservim/nerdtree/pull/1243)
 - **.10**: Improve F.A.Q. Answers and Issue Templates (PhilRunninger) [#1249](https://github.com/preservim/nerdtree/pull/1249)
 - **.9**: `go` on a bookmark directory will NERDTreeFind it. (PhilRunninger) [#1236](https://github.com/preservim/nerdtree/pull/1236)
 - **.8**: Put `Callback` function variables in local scope. (PhilRunninger) [#1230](https://github.com/preservim/nerdtree/pull/1230)
