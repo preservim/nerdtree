@@ -190,7 +190,7 @@ The preceding values are the non-Windows default arrow symbols. Setting these va
 
 ### Can NERDTree access remote files via scp or ftp?
 
-Short answer: No, and there are no plans to add that functionality. However, Vim ships with a plugin that does just that. It's called netrw, and by adding the following lines to your `.vimrc`, you can use it to open files over the scp, ftp, or other protocols, while still using NERDTree for all local files. The function seamlessly makes the decision to open NERDTree or netrw, and other protocols can be added to the regular expression.
+Short answer: No, and there are no plans to add that functionality. However, Vim ships with a plugin that does just that. It's called netrw, and by adding the following lines to your `.vimrc`, you can use it to open files over the `scp:`, `ftp:`, or other protocols, while still using NERDTree for all local files. The function seamlessly makes the decision to open NERDTree or netrw, and other supported protocols can be added to the regular expression.
 
 ```vim
 " Function to open the file or NERDTree or netrw.
