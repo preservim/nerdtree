@@ -5,6 +5,7 @@
         - **.PATCH**: Pull Request Title (PR Author) [PR Number](Link to PR)
 -->
 #### 6.10
+- **.13**: Change highlighting of bookmarks in the tree. (PhilRunninger) [#1261](https://github.com/preservim/nerdtree/pull/1261)
 - **.12**: Answer the question about accessing files over scp or ftp. (PhilRunninger) [#1259](https://github.com/preservim/nerdtree/pull/1259)
 - **.11**: Trim filenames created via the fs_menu (elanorigby) [#1243](https://github.com/preservim/nerdtree/pull/1243)
 - **.10**: Improve F.A.Q. Answers and Issue Templates (PhilRunninger) [#1249](https://github.com/preservim/nerdtree/pull/1249)
