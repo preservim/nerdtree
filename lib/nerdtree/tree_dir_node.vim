@@ -421,6 +421,7 @@ function! s:TreeDirNode._initChildren(silent)
     endif
 
     let invalidFilesFound = 0
+    let invalidFiles = []
     for i in files
         try
             let path = g:NERDTreePath.New(i)
@@ -428,6 +429,7 @@ function! s:TreeDirNode._initChildren(silent)
             call g:NERDTreePathNotifier.NotifyListeners('init', path, self.getNerdtree(), {})
         catch /^NERDTree.\(InvalidArguments\|InvalidFiletype\)Error/
             let invalidFilesFound += 1
+            let invalidFiles += [i]
         endtry
     endfor
 
@@ -438,6 +440,7 @@ function! s:TreeDirNode._initChildren(silent)
 
     if invalidFilesFound
         call nerdtree#echoWarning(invalidFilesFound . ' file(s) could not be loaded into the NERD tree')
+        call nerdtree#echoWarning('Invalid files: ' . join(invalidFiles, ', '))
     endif
     return self.getChildCount()
 endfunction
