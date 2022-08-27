@@ -46,7 +46,7 @@ function! s:MenuController.showMenu()
 
         " Redraw when Ctrl-C or Esc is received.
         if !l:done || self.selection ==# -1
-            redraw! | resize
+            redraw!
         endif
     endtry
 
@@ -172,6 +172,7 @@ endfunction
 function! s:MenuController._restoreOptions()
     let &cmdheight = self._oldCmdheight
     let &lazyredraw = self._oldLazyredraw
+    resize
 endfunction
 
 "FUNCTION: MenuController._cursorDown() {{{1
