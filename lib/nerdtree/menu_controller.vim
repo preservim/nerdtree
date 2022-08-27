@@ -46,7 +46,7 @@ function! s:MenuController.showMenu()
 
         " Redraw when Ctrl-C or Esc is received.
         if !l:done || self.selection ==# -1
-            redraw!
+            redraw! | resize
         endif
     endtry
 
