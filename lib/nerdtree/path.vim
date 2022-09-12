@@ -252,8 +252,15 @@ endfunction
 " FUNCTION: Path.edit() {{{1
 function! s:Path.edit()
     let l:bufname = self.str({'format': 'Edit'})
-    if bufname('%') !=# l:bufname
-        exec 'edit ' . l:bufname
+    " According to file suffix(extension) to choose the edit command.
+    let suffix = ".".fnamemodify(l:bufname, ':t:e')
+    let a = get(g:Lf_FileActions, suffix, 1)
+    if a != 1
+        exec a . " " . l:bufname
+    else
+        if bufname('%') !=# l:bufname
+            exec 'edit ' . l:bufname
+        endif
     endif
 endfunction
 
