@@ -122,7 +122,7 @@ function! s:TreeDirNode.findNode(path)
         return self
     endif
     if nerdtree#runningWindows()
-        if stridx(lower(a:path.str()), lower(self.path.str()), 0) ==# -1
+        if stridx(tolower(a:path.str()), tolower(self.path.str()), 0) ==# -1
             return {}
         endif
     else

@@ -531,7 +531,7 @@ function! s:Path.isUnder(parent)
     endif
     for i in range(0, l:that_count-1)
         if nerdtree#runningWindows()
-            if lower(self.pathSegments[i]) !=# lower(a:parent.pathSegments[i])
+            if tolower(self.pathSegments[i]) !=# tolower(a:parent.pathSegments[i])
                 return 0
             endif
         else
