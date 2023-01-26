@@ -121,8 +121,14 @@ function! s:TreeDirNode.findNode(path)
     if a:path.equals(self.path)
         return self
     endif
-    if stridx(a:path.str(), self.path.str(), 0) ==# -1
-        return {}
+    if nerdtree#runningWindows()
+        if stridx(lower(a:path.str()), lower(self.path.str()), 0) ==# -1
+            return {}
+        endif
+    else
+        if stridx(a:path.str(), self.path.str(), 0) ==# -1
+            return {}
+        endif
     endif
 
     if self.path.isDirectory
