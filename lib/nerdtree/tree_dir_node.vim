@@ -118,6 +118,7 @@ endfunction
 " path: a path object
 unlet s:TreeDirNode.findNode
 function! s:TreeDirNode.findNode(path)
+    call self.refresh(2)
     if a:path.equals(self.path)
         return self
     endif
@@ -472,13 +473,7 @@ endfunction
 " are provided. Return 0 if options were processed. Otherwise, return the
 " number of new cached nodes.
 function! s:TreeDirNode.open(...)
-    echomsg 'open'
-    if self.lazyRefresh
-        let self.lazyRefresh = 2
-        call nerdtree#echo('Please wait, refreshing a large dir ...')
-        call self.refresh()
-        call nerdtree#echo('')
-    endif
+    call self.refresh(2)
     let l:options = a:0 ? a:1 : {}
 
     " If special options were specified, process them and return.
@@ -564,47 +559,55 @@ function! s:TreeDirNode.openRecursively()
     endfor
 endfunction
 
-" FUNCTION: TreeDirNode.refresh() {{{1
-function! s:TreeDirNode.refresh()
+" FUNCTION: TreeDirNode.refresh([options]) {{{1
+" refreshes the node and its children
+"
+" Args:
+" An optional integer selecting refresh mode
+"
+" 0 == normal (default)
+" 1 == force
+" 2 == lazyRefresh
+"
+function! s:TreeDirNode.refresh(...)
+    let l:mode = a:0 ? a:1 : 0
     call self.path.refresh(self.getNerdtree())
 
     "if this node was ever opened, refresh its children
-    if self.isOpen || !empty(self.children)
-        if g:NERDTreeLazyChildrenRefresh && !self.isOpen && self.lazyRefresh != 2
-            let self.lazyRefresh = 1
-        else
-            let files = self._glob('*', 1) + self._glob('.*', 0)
-            let newChildNodes = []
-            let invalidFilesFound = 0
-            for i in files
-                try
-                    "create a new path and see if it exists in this nodes children
-                    let path = g:NERDTreePath.New(i)
-                    let newNode = self.getChild(path)
-                    if newNode !=# {}
-                        call newNode.refresh()
-                        call add(newChildNodes, newNode)
+    if l:mode == 1 || self.isOpen || (!empty(self.children) && !g:NERDTreeLazyDirRefresh) || (l:mode == 2 && self.lazyRefresh)
+        let files = self._glob('*', 1) + self._glob('.*', 0)
+        let newChildNodes = []
+        let invalidFilesFound = 0
+        for i in files
+            try
+                "create a new path and see if it exists in this nodes children
+                let path = g:NERDTreePath.New(i)
+                let newNode = self.getChild(path)
+                if newNode !=# {}
+                    call newNode.refresh()
+                    call add(newChildNodes, newNode)
 
-                    "the node doesnt exist so create it
-                    else
-                        let newNode = g:NERDTreeFileNode.New(path, self.getNerdtree())
-                        let newNode.parent = self
-                        call add(newChildNodes, newNode)
-                    endif
-                catch /^NERDTree.\(InvalidArguments\|InvalidFiletype\)Error/
-                    let invalidFilesFound = 1
-                endtry
-            endfor
+                "the node doesnt exist so create it
+                else
+                    let newNode = g:NERDTreeFileNode.New(path, self.getNerdtree())
+                    let newNode.parent = self
+                    call add(newChildNodes, newNode)
+                endif
+            catch /^NERDTree.\(InvalidArguments\|InvalidFiletype\)Error/
+                let invalidFilesFound = 1
+            endtry
+        endfor
 
-            "swap this nodes children out for the children we just read/refreshed
-            let self.children = newChildNodes
-            call self.sortChildren()
+        "swap this nodes children out for the children we just read/refreshed
+        let self.children = newChildNodes
+        call self.sortChildren()
 
-            if invalidFilesFound
-                call nerdtree#echoWarning('some files could not be loaded into the NERD tree')
-            endif
-            let self.lazyRefresh = 0
+        if invalidFilesFound
+            call nerdtree#echoWarning('some files could not be loaded into the NERD tree')
         endif
+        let self.lazyRefresh = 0
+    elseif g:NERDTreeLazyDirRefresh && !empty(self.children)
+        let self.lazyRefresh = 1
     endif
 endfunction
 
