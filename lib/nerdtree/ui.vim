@@ -100,6 +100,7 @@ function! s:UI._dumpHelp()
         let help .= "\"\n\" ----------------------------\n"
         let help .= "\" Tree filtering mappings~\n"
         let help .= '" '. g:NERDTreeMapToggleHidden .': hidden files (' . (self.getShowHidden() ? 'on' : 'off') . ")\n"
+        let help .= '" '. g:NERDTreeMapToggleSymlink .': symlinks (' . (self.getShowSymlink() ? 'on' : 'off') . ")\n"
         let help .= '" '. g:NERDTreeMapToggleFilters .': file filters (' . (self.isIgnoreFilterEnabled() ? 'on' : 'off') . ")\n"
         let help .= '" '. g:NERDTreeMapToggleFiles .': files (' . (self.getShowFiles() ? 'on' : 'off') . ")\n"
         let help .= '" '. g:NERDTreeMapToggleBookmarks .': bookmarks (' . (self.getShowBookmarks() ? 'on' : 'off') . ")\n"
@@ -146,6 +147,7 @@ function! s:UI.New(nerdtree)
     let newObj._ignoreEnabled = 1
     let newObj._showFiles = g:NERDTreeShowFiles
     let newObj._showHidden = g:NERDTreeShowHidden
+    let newObj._showSymlink = g:NERDTreeShowSymlink
     let newObj._showBookmarks = g:NERDTreeShowBookmarks
 
     return newObj
@@ -284,6 +286,11 @@ function! s:UI.getShowHidden()
     return self._showHidden
 endfunction
 
+" FUNCTION: s:UI.getShowSymlink() {{{1
+function! s:UI.getShowSymlink()
+    return self._showSymlink
+endfunction
+
 " FUNCTION: s:UI._indentLevelFor(line) {{{1
 function! s:UI._indentLevelFor(line)
     " Replace multi-character DirArrows with a single space so the
@@ -377,6 +384,11 @@ endfunction
 " FUNCTION: s:UI.setShowHidden(val) {{{1
 function! s:UI.setShowHidden(val)
     let self._showHidden = a:val
+endfunction
+
+" FUNCTION: s:UI.setShowSymlink(val) {{{1
+function! s:UI.setShowSymlink(val)
+    let self._showSymlink = a:val
 endfunction
 
 " FUNCTION: s:UI._stripMarkup(line){{{1
@@ -508,6 +520,14 @@ endfunction
 " toggles the display of hidden files
 function! s:UI.toggleShowHidden()
     let self._showHidden = !self._showHidden
+    call self.renderViewSavingPosition()
+    call self.centerView()
+endfunction
+
+" FUNCTION: s:UI.toggleShowSymlink() {{{1
+" toggles the display of symlink files and directories
+function! s:UI.toggleShowSymlink()
+    let self._showSymlink = !self._showSymlink
     call self.renderViewSavingPosition()
     call self.centerView()
 endfunction

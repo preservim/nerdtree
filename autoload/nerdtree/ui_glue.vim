@@ -54,6 +54,7 @@ function! nerdtree#ui_glue#createDefaultBindings() abort
     call NERDTreeAddKeyMap({ 'key': g:NERDTreeMapHelp, 'scope': 'all', 'callback': s.'displayHelp' })
     call NERDTreeAddKeyMap({ 'key': g:NERDTreeMapToggleZoom, 'scope': 'all', 'callback': s.'toggleZoom' })
     call NERDTreeAddKeyMap({ 'key': g:NERDTreeMapToggleHidden, 'scope': 'all', 'callback': s.'toggleShowHidden' })
+    call NERDTreeAddKeyMap({ 'key': g:NERDTreeMapToggleSymlink, 'scope': 'all', 'callback': s.'toggleShowSymlink' })
     call NERDTreeAddKeyMap({ 'key': g:NERDTreeMapToggleFilters, 'scope': 'all', 'callback': s.'toggleIgnoreFilter' })
     call NERDTreeAddKeyMap({ 'key': g:NERDTreeMapToggleFiles, 'scope': 'all', 'callback': s.'toggleShowFiles' })
     call NERDTreeAddKeyMap({ 'key': g:NERDTreeMapToggleBookmarks, 'scope': 'all', 'callback': s.'toggleShowBookmarks' })
@@ -683,6 +684,12 @@ endfunction
 " toggles the display of hidden files
 function! s:toggleShowHidden() abort
     call b:NERDTree.ui.toggleShowHidden()
+endfunction
+
+" FUNCTION: s:toggleShowSymlink() {{{1
+" toggles the display of symlinks
+function! s:toggleShowSymlink() abort
+    call b:NERDTree.ui.toggleShowSymlink()
 endfunction
 
 " FUNCTION: s:toggleZoom() {{{1

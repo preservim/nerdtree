@@ -403,9 +403,10 @@ Applies to: directories.
 Recursively opens the selected directory.
 
 All files and directories are cached, but if a directory would not be
-displayed due to file filters (see |NERDTreeIgnore| |NERDTree-f|) or the
-hidden file filter (see |NERDTreeShowHidden|) then its contents are not
-cached. This is handy, especially if you have .svn directories.
+displayed due to file filters (see |NERDTreeIgnore| |NERDTree-f|), the
+hidden file filter (see |NERDTreeShowHidden|) and the symlinks filter
+(see |NERDTreeShowSymlink|) then its contents are not cached.
+This is handy, especially if you have .svn directories.
 
 ------------------------------------------------------------------------------
                                                                     *NERDTree-x*
@@ -715,6 +716,9 @@ the NERDTree. These settings should be set in your vimrc, using `:let`.
 
 |NERDTreeShowHidden|          Tells the NERDTree whether to display hidden
                             files on startup.
+
+|NERDTreeShowSymlink|         Tells the NERDTree whether to display symlinks
+                            on startup.
 
 |NERDTreeShowLineNumbers|     Tells the NERDTree whether to display line
                             numbers in the tree window.
@@ -1050,6 +1054,17 @@ setting can be dynamically toggled, per tree, with the |NERDTree-I| mapping.
 Use one of the follow lines for this setting: >
     let NERDTreeShowHidden=0
     let NERDTreeShowHidden=1
+<
+------------------------------------------------------------------------------
+                                                            *NERDTreeShowSymlink*
+Values: 0 or 1.
+Default: 1.
+
+This setting tells vim whether to display symlinks by default. This
+setting can be dynamically toggled, per tree, with the |NERDTree-S| mapping.
+Use one of the follow lines for this setting: >
+    let NERDTreeShowSymlink=0
+    let NERDTreeShowSymlink=1
 <
 ------------------------------------------------------------------------------
                                                        *NERDTreeShowLineNumbers*
