@@ -567,13 +567,15 @@ endfunction
 "
 " 0 == normal (default)
 " 1 == force
-" 2 == lazyRefresh
+" 2 == lazyRefresh (refreshes node only if lazyRefresh flag is set)
 "
 function! s:TreeDirNode.refresh(...)
     let l:mode = a:0 ? a:1 : 0
     call self.path.refresh(self.getNerdtree())
 
-    "if this node was ever opened, refresh its children
+    "if refresh is forced, refresh its children
+    "if this node is open, refresh its children
+    "if this node is flaged for lazyRefresh and lazyRefresh requested, refresh its children
     if l:mode == 1 || self.isOpen || (!empty(self.children) && !g:NERDTreeLazyDirRefresh) || (l:mode == 2 && self.lazyRefresh)
         let files = self._glob('*', 1) + self._glob('.*', 0)
         let newChildNodes = []
@@ -606,6 +608,7 @@ function! s:TreeDirNode.refresh(...)
             call nerdtree#echoWarning('some files could not be loaded into the NERD tree')
         endif
         let self.lazyRefresh = 0
+    " if this node is not empty and NERDTreeLazyDirRefresh is enable flag the node for lazyRefresh
     elseif g:NERDTreeLazyDirRefresh && !empty(self.children)
         let self.lazyRefresh = 1
     endif
