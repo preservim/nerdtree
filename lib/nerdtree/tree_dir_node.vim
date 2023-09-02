@@ -566,6 +566,7 @@ function! s:TreeDirNode.refresh()
         let files = self._glob('*', 1) + self._glob('.*', 0)
         let newChildNodes = []
         let invalidFilesFound = 0
+        let invalidFiles = []
         for i in files
             try
                 "create a new path and see if it exists in this nodes children
@@ -582,7 +583,8 @@ function! s:TreeDirNode.refresh()
                     call add(newChildNodes, newNode)
                 endif
             catch /^NERDTree.\(InvalidArguments\|InvalidFiletype\)Error/
-                let invalidFilesFound = 1
+                let invalidFilesFound += 1
+                let invalidFiles += [i]
             endtry
         endfor
 
@@ -591,7 +593,7 @@ function! s:TreeDirNode.refresh()
         call self.sortChildren()
 
         if invalidFilesFound
-            call nerdtree#echoWarning('some files could not be loaded into the NERD tree')
+            call nerdtree#echoWarning(invalidFilesFound . ' Invalid file(s): ' . join(invalidFiles, ', '))
         endif
     endif
 endfunction
