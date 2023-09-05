@@ -52,6 +52,7 @@ let g:NERDTreeShowFiles             = get(g:, 'NERDTreeShowFiles',             1
 let g:NERDTreeShowHidden            = get(g:, 'NERDTreeShowHidden',            0)
 let g:NERDTreeShowLineNumbers       = get(g:, 'NERDTreeShowLineNumbers',       0)
 let g:NERDTreeSortDirs              = get(g:, 'NERDTreeSortDirs',              1)
+let g:NERDTreeShowSymlinkDest       = get(g:, 'NERDTreeShowSymlinkDest',       1)
 
 if !nerdtree#runningWindows() && !nerdtree#runningCygwin()
     let g:NERDTreeDirArrowExpandable  = get(g:, 'NERDTreeDirArrowExpandable',  '▸')
