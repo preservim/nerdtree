@@ -173,7 +173,15 @@ autocmd BufEnter * if winnr('$') == 1 && exists('b:NERDTree') && b:NERDTree.isTa
 autocmd BufEnter * if bufname('#') =~ 'NERD_tree_\d\+' && bufname('%') !~ 'NERD_tree_\d\+' && winnr('$') > 1 |
     \ let buf=bufnr() | buffer# | execute "normal! \<C-W>w" | execute 'buffer'.buf | endif
 ```
+---
 
+### How can I prevent other buffers to swap window with NDERDTree when opening a file (when only NERDTree buffer is opened)?
+```vim
+" Sometimes when you have only the NERDTree buffer in the window and try to open a file, NERDTree changes to the window where the file is suppose to be and the file opens in the space of the NERDTree, this fixes that:
+autocmd BufEnter * if winnr() == winnr('h') && bufname('#') =~ 'NERD_tree_\d\+' && bufname('%') !~ 'NERD_tree_\d\+' && winnr('$') > 1 |
+    \ let buf=bufnr() | buffer# | execute "normal! \<C-W>w" | execute 'buffer'.buf | endif
+```
+---
 ### Can I have the same NERDTree on every tab automatically?
 
 ```vim
