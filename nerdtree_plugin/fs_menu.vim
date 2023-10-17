@@ -148,18 +148,38 @@ function! s:renameBuffer(bufNum, newNodeName, isDirectory)
         let quotedFileName = fnameescape(a:newNodeName)
         let editStr = g:NERDTreePath.New(a:newNodeName).str({'format': 'Edit'})
     endif
-    " 1. ensure that a new buffer is loaded
-    call nerdtree#exec('badd ' . quotedFileName, 0)
-    " 2. ensure that all windows which display the just deleted filename
-    " display a buffer for a new filename.
     let s:originalTabNumber = tabpagenr()
     let s:originalWindowNumber = winnr()
-    call nerdtree#exec('tabdo windo if winbufnr(0) ==# ' . a:bufNum . " | exec ':e! " . editStr . "' | endif", 0)
-    call nerdtree#exec('tabnext ' . s:originalTabNumber, 1)
-    call nerdtree#exec(s:originalWindowNumber . 'wincmd w', 1)
-    " 3. We don't need a previous buffer anymore
+    let l:tempBufferName = 'NERDTreeRenameTempBuffer'
+
+    " 1. swap deleted file buffer with a temporary one
+    " this step is needed to compensate for case insensitive filesystems
+
+    " 1.1. create an intermediate(temporary) buffer
+    call nerdtree#exec('badd ' . l:tempBufferName, 0)
+    let l:tempBufNum = bufnr(l:tempBufferName)
+    " 1.2. ensure that all windows which display the just deleted filename
+    " display the new temp buffer.
+    call nerdtree#exec('tabdo windo if winbufnr(0) ==# ' . a:bufNum . " | exec ':e! " . l:tempBufferName . "' | endif", 0)
+    " 1.3. We don't need the deleted file buffer anymore
     try
         call nerdtree#exec('confirm bwipeout ' . a:bufNum, 0)
+    catch
+        " This happens when answering Cancel if confirmation is needed. Do nothing.
+    endtry
+
+    " 2. swap temporary buffer with the new filename buffer
+    " 2.1. create the actual new file buffer
+    call nerdtree#exec('badd ' . quotedFileName, 0)
+
+    " 2.2. ensure that all windows which display the temporary buffer
+    " display a buffer for the new filename.
+    call nerdtree#exec('tabdo windo if winbufnr(0) ==# ' . l:tempBufNum . " | exec ':e! " . editStr . "' | endif", 0)
+    call nerdtree#exec('tabnext ' . s:originalTabNumber, 1)
+    call nerdtree#exec(s:originalWindowNumber . 'wincmd w', 1)
+    " 2.3. We don't need the temporary buffer anymore
+    try
+        call nerdtree#exec('confirm bwipeout ' . l:tempBufNum, 0)
     catch
         " This happens when answering Cancel if confirmation is needed. Do nothing.
     endtry
@@ -205,6 +225,15 @@ function! NERDTreeMoveNode()
     let prompt = s:inputPrompt('move')
     let newNodePath = input(prompt, curNode.path.str(), 'file')
     while filereadable(newNodePath)
+        " allow renames with different casing when g:NERDTreeCaseInsensitiveFS
+        " is enabled even tho Vim says the destination already exists,
+        " It will result in an undesired overwrite if set to true by accident
+        if g:NERDTreeCaseInsensitiveFS && !(curNode.path.str() ==# newNodePath)
+            if tolower(curNode.path.str()) ==# tolower(newNodePath)
+                break
+            endif
+        endif
+
         call nerdtree#echoWarning('This destination already exists. Try again.')
         let newNodePath = substitute(input(prompt, curNode.path.str(), 'file'), '\(^\s*\|\s*$\)', '', 'g')
     endwhile

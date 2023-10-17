@@ -673,6 +673,9 @@ the NERDTree. These settings should be set in your vimrc, using `:let`.
 
 |NERDTreeAutoCenterThreshold| Controls the sensitivity of autocentering.
 
+|NERDTreeCaseInsensitiveFS|   Tells the NERDTree whether or not it is
+                            running in on a case sensitive file system.
+
 |NERDTreeCaseSensitiveSort|   Tells the NERDTree whether to be case
                             sensitive or not when sorting nodes.
 
@@ -808,6 +811,33 @@ Default: 3
 This setting controls the "sensitivity" of the NERDTree auto centering. See
 |NERDTreeAutoCenter| for details.
 
+------------------------------------------------------------------------------
+                                                     *NERDTreeCaseInsensitiveFS*
+Values: 0 or 1.
+Default: 0.
+
+By default, the NERDTree assumes it is running on a case-sensitive file
+system, With setting this option to 1 you can inform the NERDTree that
+it is running on a case-insensitive file system by doing so it will try
+to compensate for the potential issues that could happen because of it.
+
+Setting it to 1 by accident on a case-sensitive file system could case
+undesirable outcomes, For example, moving a file to another casing path
+could cause an overwrite without warning if the destination file already
+exists.
+
+If you are using your vim across multiple platforms, You can use a simple code
+like this in your configuration to set the default value based on the
+operating system(Keep in mind both macOS and Windows can have case sensitively
+in their file system and this automated approach isn't fool proof!) >
+ if nerdtree#runningWindows()
+     let g:NERDTreeCaseInsensitiveFS = 1
+ elseif has('gui_mac') || has('gui_macvim') || has('mac') || has('osx')
+     let g:NERDTreeCaseInsensitiveFS = 1
+ else
+     let g:NERDTreeCaseInsensitiveFS = 0
+ endif
+<
 ------------------------------------------------------------------------------
                                                      *NERDTreeCaseSensitiveSort*
 Values: 0 or 1.
