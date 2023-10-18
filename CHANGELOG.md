@@ -4,6 +4,8 @@
      version in an unordered list.  The format is:
         - **.PATCH**: Pull Request Title (PR Author) [PR Number](Link to PR)
 -->
+#### 7.0
+- **.0**: Fix typo in the documentation. (chapeupreto) [#1306](https://github.com/preservim/nerdtree/pull/1306)
 #### 6.10
 - **.16**: Fix documentation errors. (lifecrisis) [#1269](https://github.com/preservim/nerdtree/pull/1269)
 - **.15**: Ensure backward compatible testing of types. (lifecrisis) [#1266](https://github.com/preservim/nerdtree/pull/1266)
