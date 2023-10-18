@@ -5,6 +5,7 @@
         - **.PATCH**: Pull Request Title (PR Author) [PR Number](Link to PR)
 -->
 #### 7.0
+- **.3**: Now we warn about invalid files instead of ignoring them silently. (rmonico) [#1365](https://github.com/preservim/nerdtree/pull/1365)
 - **.2**: New g:NERDTreeWinPos options for top and bottom. (rzvxa) [#1363](https://github.com/preservim/nerdtree/pull/1363)
 - **.1**: Fix error in README. (nickspoons) [#1330](https://github.com/preservim/nerdtree/pull/1330)
 - **.0**: Fix typo in the documentation. (chapeupreto) [#1306](https://github.com/preservim/nerdtree/pull/1306)
