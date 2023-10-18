@@ -5,6 +5,7 @@
         - **.PATCH**: Pull Request Title (PR Author) [PR Number](Link to PR)
 -->
 #### 7.0
+- **.1**: Fix error in README. (nickspoons) [#1330](https://github.com/preservim/nerdtree/pull/1330)
 - **.0**: Fix typo in the documentation. (chapeupreto) [#1306](https://github.com/preservim/nerdtree/pull/1306)
 #### 6.10
 - **.16**: Fix documentation errors. (lifecrisis) [#1269](https://github.com/preservim/nerdtree/pull/1269)
