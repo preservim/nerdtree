@@ -337,7 +337,7 @@ endfunction
 " FUNCTION: NERDTreeChangePermissions() {{{1
 function! NERDTreeChangePermissions()
     let l:node = g:NERDTreeFileNode.GetSelected()
-    let l:prompt = "change node permissions: "
+    let l:prompt = "change node permissions(chmod): "
     let l:newNodePerm = input(l:prompt)
 
     if !empty(l:node)
