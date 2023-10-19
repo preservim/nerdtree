@@ -1128,7 +1128,7 @@ setting is used.
 
 ------------------------------------------------------------------------------
                                                                 *NERDTreeWinPos*
-Values: "left" or "right"
+Values: "left", "right", "top" or "bottom"
 Default: "left".
 
 This setting is used to determine where NERDTree window is placed on the
@@ -1138,6 +1138,13 @@ This setting makes it possible to use two different explorer plugins
 simultaneously. For example, you could have the taglist plugin on the left of
 the window and the NERDTree on the right.
 
+When setting this variable to "top" or "bottom" make sure to also change the
+|NERDTreeWinSize| to a more reasonable size.
+
+For example:
+>
+    let g:NERDTreeWinSize = 15
+<
 ------------------------------------------------------------------------------
                                                                *NERDTreeWinSize*
 Values: a positive integer.

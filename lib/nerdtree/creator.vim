@@ -182,16 +182,17 @@ endfunction
 " Initialize the NERDTree window.  Open the window, size it properly, set all
 " local options, etc.
 function! s:Creator._createTreeWin()
-    let l:splitLocation = g:NERDTreeWinPos ==# 'left' ? 'topleft ' : 'botright '
+    let l:splitLocation = g:NERDTreeWinPos ==# 'left' || g:NERDTreeWinPos ==# 'top' ? 'topleft ' : 'botright '
+    let l:splitDirection = g:NERDTreeWinPos ==# 'left' || g:NERDTreeWinPos ==# 'right' ? 'vertical' : ''
     let l:splitSize = g:NERDTreeWinSize
 
     if !g:NERDTree.ExistsForTab()
         let t:NERDTreeBufName = self._nextBufferName()
-        silent! execute l:splitLocation . 'vertical ' . l:splitSize . ' new'
+        silent! execute l:splitLocation . l:splitDirection . ' ' . l:splitSize . ' new'
         silent! execute 'edit ' . t:NERDTreeBufName
-        silent! execute 'vertical resize '. l:splitSize
+        silent! execute l:splitDirection . ' resize '. l:splitSize
     else
-        silent! execute l:splitLocation . 'vertical ' . l:splitSize . ' split'
+        silent! execute l:splitLocation . l:splitDirection . ' ' . l:splitSize . ' split'
         silent! execute 'buffer ' . t:NERDTreeBufName
     endif
 
