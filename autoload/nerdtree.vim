@@ -198,14 +198,19 @@ function! nerdtree#postSourceActions() abort
     runtime! nerdtree_plugin/**/*.vim
 endfunction
 
-"FUNCTION: nerdtree#runningWindows(dir) {{{2
+"FUNCTION: nerdtree#runningWindows() {{{2
 function! nerdtree#runningWindows() abort
     return has('win16') || has('win32') || has('win64')
 endfunction
 
-"FUNCTION: nerdtree#runningCygwin(dir) {{{2
+"FUNCTION: nerdtree#runningCygwin() {{{2
 function! nerdtree#runningCygwin() abort
     return has('win32unix')
+endfunction
+
+"FUNCTION: nerdtree#runningMac() {{{2
+function! nerdtree#runningMac() abort
+    return has('gui_mac') || has('gui_macvim') || has('mac') || has('osx')
 endfunction
 
 "FUNCTION: nerdtree#pathEquals(lhs, rhs) {{{2
