@@ -208,6 +208,15 @@ function! nerdtree#runningCygwin() abort
     return has('win32unix')
 endfunction
 
+"FUNCTION: nerdtree#pathEquals(lhs, rhs) {{{2
+function! nerdtree#pathEquals(lhs, rhs) abort
+    if g:NERDTreeCaseInsensitiveFS
+        return a:lhs ==? a:rhs
+    else
+        return a:lhs ==# a:rhs
+    endif
+endfunction
+
 " SECTION: View Functions {{{1
 "============================================================
 

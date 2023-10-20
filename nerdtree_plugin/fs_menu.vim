@@ -229,10 +229,8 @@ function! NERDTreeMoveNode()
         " allow renames with different casing when g:NERDTreeCaseInsensitiveFS
         " is enabled even tho Vim says the destination already exists,
         " It will result in an undesired overwrite if set to true by accident
-        if g:NERDTreeCaseInsensitiveFS && !(curNode.path.str() ==# newNodePath)
-            if tolower(curNode.path.str()) ==# tolower(newNodePath)
-                break
-            endif
+        if nerdtree#pathEquals(curNode.path.str(), newNodePath)
+            break
         endif
 
         call nerdtree#echoWarning('This destination already exists. Try again.')
