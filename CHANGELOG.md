@@ -3,7 +3,21 @@
      PATCH versions are listed from newest to oldest under their respective MAJOR.MINOR
      version in an unordered list.  The format is:
         - **.PATCH**: Pull Request Title (PR Author) [PR Number](Link to PR)
+            or
+        - **.PATCH**:
+            - Pull Request Title 1 (PR Author) [PR Number](Link to PR)
+            - Pull Request Title 2 (PR Author) [PR Number](Link to PR)
+                .
+                .
+                .
+            - Pull Request Title n (PR Author) [PR Number](Link to PR)
 -->
+#### 7.0
+- **.0**:
+    - Now we warn about invalid files instead of ignoring them silently. (rmonico) [#1365](https://github.com/preservim/nerdtree/pull/1365)
+    - New g:NERDTreeWinPos options for top and bottom. (rzvxa) [#1363](https://github.com/preservim/nerdtree/pull/1363)
+    - Fix error in README. (nickspoons) [#1330](https://github.com/preservim/nerdtree/pull/1330)
+    - Fix typo in the documentation. (chapeupreto) [#1306](https://github.com/preservim/nerdtree/pull/1306)
 #### 6.10
 - **.16**: Fix documentation errors. (lifecrisis) [#1269](https://github.com/preservim/nerdtree/pull/1269)
 - **.15**: Ensure backward compatible testing of types. (lifecrisis) [#1266](https://github.com/preservim/nerdtree/pull/1266)

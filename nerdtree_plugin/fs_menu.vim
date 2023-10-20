@@ -45,6 +45,7 @@ call NERDTreeAddMenuItem({'text': (has('clipboard')?'copy (p)ath to clipboard':'
 
 if has('unix') || has('osx')
     call NERDTreeAddMenuItem({'text': '(l)ist the current node', 'shortcut': 'l', 'callback': 'NERDTreeListNode'})
+    call NERDTreeAddMenuItem({'text': '(C)hange node permissions', 'shortcut':'C', 'callback': 'NERDTreeChangePermissions'})
 else
     call NERDTreeAddMenuItem({'text': '(l)ist the current node', 'shortcut': 'l', 'callback': 'NERDTreeListNodeWin32'})
 endif
@@ -356,6 +357,29 @@ function! NERDTreeListNodeWin32()
                     \ strftime('%c', getftime(l:path)),
                     \ getfsize(l:path),
                     \ getfperm(l:path)))
+        return
+    endif
+
+    call nerdtree#echo('node not recognized')
+endfunction
+
+" FUNCTION: NERDTreeChangePermissions() {{{1
+function! NERDTreeChangePermissions()
+    let l:node = g:NERDTreeFileNode.GetSelected()
+    let l:prompt = "change node permissions: "
+    let l:newNodePerm = input(l:prompt)
+
+    if !empty(l:node)
+        let l:path = l:node.path.str()
+        let l:cmd = 'chmod ' .. newNodePerm .. ' ' .. path
+        let l:error = split(system(l:cmd), '\n')
+
+        if !empty(l:error)
+            call nerdtree#echo(l:error[0])
+        endif
+
+        call b:NERDTree.root.refresh()
+        call b:NERDTree.render()
         return
     endif
 
