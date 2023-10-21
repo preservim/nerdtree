@@ -819,6 +819,8 @@ Default: 2.
 By default, the NERDTree assumes its case sensitivity from the OS it is
 running on. It Will default to case-insensitive on Windows and macOS
 machines and case-sensitive on everything else.
+Turning it off on case-sensitive file systems by mistake may cause
+inconsistent behavior and may cause accidental file writes.
 Leaving it unset may cause some additional confirmations on write actions.
 
 ------------------------------------------------------------------------------
