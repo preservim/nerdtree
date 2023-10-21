@@ -215,7 +215,7 @@ endfunction
 
 "FUNCTION: nerdtree#pathEquals(lhs, rhs) {{{2
 function! nerdtree#pathEquals(lhs, rhs) abort
-    if g:NERDTreeCaseInsensitiveFS
+    if !g:NERDTreeCaseSensitiveFS || (g:NERDTreeCaseSensitiveFS == 2 && !s:osDefaultCaseSensitive)
         return a:lhs ==? a:rhs
     else
         return a:lhs ==# a:rhs
@@ -259,5 +259,13 @@ endfunction
 function! nerdtree#renderView() abort
     call b:NERDTree.render()
 endfunction
+
+if nerdtree#runningWindows()
+    let s:osDefaultCaseSensitive = 0
+elseif nerdtree#runningMac()
+    let s:osDefaultCaseSensitive = 0
+else
+    let s:osDefaultCaseSensitive = 1
+endif
 
 " vim: set sw=4 sts=4 et fdm=marker:
