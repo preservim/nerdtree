@@ -227,7 +227,7 @@ function! NERDTreeMoveNode()
     let newNodePath = input(prompt, curNode.path.str(), 'file')
     while filereadable(newNodePath)
         " allow renames with different casing when g:NERDTreeCaseSensitiveFS
-        " is set to 0 even tho Vim says the destination already exists,
+        " is set to either 0 or 3 and the 2 paths are equal
         if (g:NERDTreeCaseSensitiveFS == 0 || g:NERDTreeCaseSensitiveFS == 3) &&
                     \nerdtree#pathEquals(curNode.path.str(), newNodePath)
             break
@@ -236,6 +236,7 @@ function! NERDTreeMoveNode()
         call nerdtree#echoWarning('This destination already exists, Try again.')
 
         " inform the user about the flag if we think it is a false positive
+        " when g:NERDTreeCaseSensitiveFS is set to 2
         if g:NERDTreeCaseSensitiveFS == 2 &&
                     \!nerdtree#osDefaultCaseSensitiveFS() &&
                     \nerdtree#pathEquals(curNode.path.str(), newNodePath)
