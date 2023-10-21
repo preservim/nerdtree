@@ -220,7 +220,9 @@ endfunction
 
 "FUNCTION: nerdtree#pathEquals(lhs, rhs) {{{2
 function! nerdtree#pathEquals(lhs, rhs) abort
-    if !g:NERDTreeCaseSensitiveFS || (g:NERDTreeCaseSensitiveFS == 2 && !nerdtree#osDefaultCaseSensitiveFS())
+    if !g:NERDTreeCaseSensitiveFS ||
+                \((g:NERDTreeCaseSensitiveFS == 2 || g:NERDTreeCaseSensitiveFS == 3) &&
+                \!nerdtree#osDefaultCaseSensitiveFS())
         return a:lhs ==? a:rhs
     else
         return a:lhs ==# a:rhs
