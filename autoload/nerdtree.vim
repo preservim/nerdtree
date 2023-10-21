@@ -213,9 +213,14 @@ function! nerdtree#runningMac() abort
     return has('gui_mac') || has('gui_macvim') || has('mac') || has('osx')
 endfunction
 
+" FUNCTION: nerdtree#osDefaultCaseSensitiveFS() {{{2
+function! nerdtree#osDefaultCaseSensitiveFS() abort
+    return s:osDefaultCaseSensitiveFS
+endfunction
+
 "FUNCTION: nerdtree#pathEquals(lhs, rhs) {{{2
 function! nerdtree#pathEquals(lhs, rhs) abort
-    if !g:NERDTreeCaseSensitiveFS || (g:NERDTreeCaseSensitiveFS == 2 && !s:osDefaultCaseSensitive)
+    if !g:NERDTreeCaseSensitiveFS || (g:NERDTreeCaseSensitiveFS == 2 && !nerdtree#osDefaultCaseSensitiveFS())
         return a:lhs ==? a:rhs
     else
         return a:lhs ==# a:rhs
@@ -261,11 +266,11 @@ function! nerdtree#renderView() abort
 endfunction
 
 if nerdtree#runningWindows()
-    let s:osDefaultCaseSensitive = 0
+    let s:osDefaultCaseSensitiveFS = 0
 elseif nerdtree#runningMac()
-    let s:osDefaultCaseSensitive = 0
+    let s:osDefaultCaseSensitiveFS = 0
 else
-    let s:osDefaultCaseSensitive = 1
+    let s:osDefaultCaseSensitiveFS = 1
 endif
 
 " vim: set sw=4 sts=4 et fdm=marker:
