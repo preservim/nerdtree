@@ -218,14 +218,19 @@ function! nerdtree#osDefaultCaseSensitiveFS() abort
     return s:osDefaultCaseSensitiveFS
 endfunction
 
+" FUNCTION: nerdtree#caseSensitiveFS() {{{2
+function! nerdtree#caseSensitiveFS() abort
+    return g:NERDTreeCaseSensitiveFS == 1 ||
+                \((g:NERDTreeCaseSensitiveFS == 2 || g:NERDTreeCaseSensitiveFS == 3) &&
+                \nerdtree#osDefaultCaseSensitiveFS())
+endfunction
+
 "FUNCTION: nerdtree#pathEquals(lhs, rhs) {{{2
 function! nerdtree#pathEquals(lhs, rhs) abort
-    if !g:NERDTreeCaseSensitiveFS ||
-                \((g:NERDTreeCaseSensitiveFS == 2 || g:NERDTreeCaseSensitiveFS == 3) &&
-                \!nerdtree#osDefaultCaseSensitiveFS())
-        return a:lhs ==? a:rhs
-    else
+    if nerdtree#caseSensitiveFS()
         return a:lhs ==# a:rhs
+    else
+        return a:lhs ==? a:rhs
     endif
 endfunction
 
