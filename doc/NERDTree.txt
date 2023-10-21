@@ -813,15 +813,23 @@ This setting controls the "sensitivity" of the NERDTree auto centering. See
 
 ------------------------------------------------------------------------------
                                                      *NERDTreeCaseSensitiveFS*
-Values: 0, 1 or 2.
+Values: 0, 1, 2 or 3.
 Default: 2.
 
-By default, the NERDTree assumes its case sensitivity from the OS it is
+If set to 0, the NERDTree will interact with the file system without case
+sensitivity.
+
+If set to 1, the NERDTree will interact with the file system in a case-sensitive
+manner.
+
+If set to 2, the NERDTree assumes its case sensitivity from the OS it is
 running on. It Will default to case-insensitive on Windows and macOS
-machines and case-sensitive on everything else.
-Turning it off on case-sensitive file systems by mistake may cause
-inconsistent behavior and may cause accidental file writes.
-Leaving it unset may cause some additional confirmations on write actions.
+machines and case-sensitive on everything else. Since it's not a foolproof
+way of detection, NERDTree won't proceed with any write actions when
+the destination is ambiguous.
+
+Setting it to 3 will perform just like 2, but without suppressing write
+actions.
 
 ------------------------------------------------------------------------------
                                                      *NERDTreeCaseSensitiveSort*
