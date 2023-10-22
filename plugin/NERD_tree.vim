@@ -29,6 +29,7 @@ set cpoptions&vim
 "SECTION: Initialize variable calls and other random constants {{{2
 let g:NERDTreeAutoCenter            = get(g:, 'NERDTreeAutoCenter',            1)
 let g:NERDTreeAutoCenterThreshold   = get(g:, 'NERDTreeAutoCenterThreshold',   3)
+let g:NERDTreeCaseSensitiveFS       = get(g:, 'NERDTreeCaseSensitiveFS',       2)
 let g:NERDTreeCaseSensitiveSort     = get(g:, 'NERDTreeCaseSensitiveSort',     0)
 let g:NERDTreeNaturalSort           = get(g:, 'NERDTreeNaturalSort',           0)
 let g:NERDTreeSortHiddenFirst       = get(g:, 'NERDTreeSortHiddenFirst',       1)
@@ -52,6 +53,7 @@ let g:NERDTreeShowFiles             = get(g:, 'NERDTreeShowFiles',             1
 let g:NERDTreeShowHidden            = get(g:, 'NERDTreeShowHidden',            0)
 let g:NERDTreeShowLineNumbers       = get(g:, 'NERDTreeShowLineNumbers',       0)
 let g:NERDTreeSortDirs              = get(g:, 'NERDTreeSortDirs',              1)
+
 
 if !nerdtree#runningWindows() && !nerdtree#runningCygwin()
     let g:NERDTreeDirArrowExpandable  = get(g:, 'NERDTreeDirArrowExpandable',  '▸')

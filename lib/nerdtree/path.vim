@@ -554,11 +554,7 @@ endfunction
 " Args:
 " path: the other path obj to compare this with
 function! s:Path.equals(path)
-    if nerdtree#runningWindows()
-        return self.str() ==? a:path.str()
-    else
-        return self.str() ==# a:path.str()
-    endif
+    return nerdtree#pathEquals(self.str(), a:path.str())
 endfunction
 
 " FUNCTION: Path.New(pathStr) {{{1
