@@ -523,10 +523,6 @@ function! NERDTreeRevealInExplorer()
         return
     endif
 
-    if empty(l:node.parent)
-        return
-    endif
-
     call system('cmd.exe /c explorer /select, ' . shellescape(l:node.path.str()))
 endfunction
 
