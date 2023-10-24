@@ -24,7 +24,7 @@ call NERDTreeAddMenuItem({'text': '(m)ove the current node', 'shortcut': 'm', 'c
 call NERDTreeAddMenuItem({'text': '(d)elete the current node', 'shortcut': 'd', 'callback': 'NERDTreeDeleteNode'})
 
 if nerdtree#runningMac()
-    call NERDTreeAddMenuItem({'text': '(r)eveal in Finder the current node', 'shortcut': 'r', 'callback': 'NERDTreeRevealInFinder'})
+    call NERDTreeAddMenuItem({'text': '(r)eveal the current node in the Finder', 'shortcut': 'r', 'callback': 'NERDTreeRevealInFinder'})
     call NERDTreeAddMenuItem({'text': '(o)pen the current node with system editor', 'shortcut': 'o', 'callback': 'NERDTreeExecuteFile'})
     call NERDTreeAddMenuItem({'text': '(q)uicklook the current node', 'shortcut': 'q', 'callback': 'NERDTreeQuickLook'})
 endif
@@ -35,6 +35,7 @@ if executable('xdg-open')
 endif
 
 if nerdtree#runningWindows()
+    call NERDTreeAddMenuItem({'text': '(r)eveal the current node in the Explorer', 'shortcut': 'r', 'callback': 'NERDTreeRevealInExplorer'})
     call NERDTreeAddMenuItem({'text': '(o)pen the current node with system editor', 'shortcut': 'o', 'callback': 'NERDTreeExecuteFileWindows'})
 endif
 
@@ -512,6 +513,17 @@ function! NERDTreeExecuteFileLinux()
     endif
 
     call system('xdg-open ' . shellescape(l:node.path.str()))
+endfunction
+
+" FUNCTION: NERDTreeRevealInExplorer() {{{1
+function! NERDTreeRevealInExplorer()
+    let l:node = g:NERDTreeFileNode.GetSelected()
+
+    if empty(l:node)
+        return
+    endif
+
+    call system('cmd.exe /c explorer /select, ' . shellescape(l:node.path.str()))
 endfunction
 
 " FUNCTION: NERDTreeExecuteFileWindows() {{{1
