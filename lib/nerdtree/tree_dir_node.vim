@@ -576,7 +576,7 @@ function! s:TreeDirNode.refresh()
                 "create a new path and see if it exists in this nodes children
                 let path = g:NERDTreePath.New(i)
                 let newNode = self.getChild(path)
-                if newNode !=# {}
+                if newNode !=# {} && path.str() ==# newNode.path.str()
                     call newNode.refresh()
                     call add(newChildNodes, newNode)
 
