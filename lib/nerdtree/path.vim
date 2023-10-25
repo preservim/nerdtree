@@ -69,7 +69,7 @@ function! s:Path.cacheDisplayString() abort
         let l:bufname = self.str({'format': 'Edit'})
         let l:lines = 0
         if executable('wc') 
-            let l:lines = split(system("wc -l ".l:bufname))[0]
+            let l:lines = split(system('wc -l '.l:bufname))[0]
         else 
             let s:lines = readfile(l:bufname)
             let l:lines = 0
