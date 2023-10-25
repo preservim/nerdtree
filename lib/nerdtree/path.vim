@@ -65,7 +65,7 @@ function! s:Path.cacheDisplayString() abort
         let self.cachedDisplayString = self.addDelimiter(self.cachedDisplayString) . ' -> ' . self.symLinkDest
     endif
 
-    if !self.isDirectory && g:NERDTreeFileLines != 0
+    if !self.isDirectory && b:NERDTree.ui.getShowFileLines() != 0
         let l:bufname = self.str({'format': 'Edit'})
         let l:lines = 0
         if executable('wc') 
