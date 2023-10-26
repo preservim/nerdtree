@@ -777,6 +777,8 @@ the NERDTree. These settings should be set in your vimrc, using `:let`.
 |NERDTreeCustomOpenArgs|      A dictionary with values that control how a node
                             is opened with the |NERDTree-<CR>| key.
 
+|NERDTreeLazyDirRefresh|      Enables lazy directory refreshing (experimental)
+
 ------------------------------------------------------------------------------
 3.2. Customisation details                             *NERDTreeSettingsDetails*
 
@@ -1334,6 +1336,18 @@ To open files and directories (creating a new NERDTree) in a new tab, >
 <
 To open a file always in the current tab, and expand directories in place, >
     {'file': {'reuse':'currenttab', 'where':'p', 'keepopen':1, 'stay':1}}
+<
+------------------------------------------------------------------------------
+                                                        *NERDTreeLazyDirRefresh*
+Values: 0 or 1
+Default: 0
+
+'experimental'
+
+If set to 1, the NERDTree will use lazy refresh on close directories whenever
+a refresh action is performed. Actual refresh happens when it is required.
+It happens on directory open and findNode functions.
+
 <
 ==============================================================================
 4. The NERDTree API                                                *NERDTreeAPI*

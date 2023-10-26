@@ -118,6 +118,7 @@ endfunction
 " path: a path object
 unlet s:TreeDirNode.findNode
 function! s:TreeDirNode.findNode(path)
+    call self.refresh(2)
     if a:path.equals(self.path)
         return self
     endif
@@ -465,6 +466,8 @@ function! s:TreeDirNode.New(path, nerdtree)
     let newTreeNode.isOpen = 0
     let newTreeNode.children = []
 
+    let newTreeNode.lazyRefresh = 0
+
     let newTreeNode.parent = {}
     let newTreeNode._nerdtree = a:nerdtree
 
@@ -476,6 +479,7 @@ endfunction
 " are provided. Return 0 if options were processed. Otherwise, return the
 " number of new cached nodes.
 function! s:TreeDirNode.open(...)
+    call self.refresh(2)
     let l:options = a:0 ? a:1 : {}
 
     " If special options were specified, process them and return.
@@ -561,12 +565,24 @@ function! s:TreeDirNode.openRecursively()
     endfor
 endfunction
 
-" FUNCTION: TreeDirNode.refresh() {{{1
-function! s:TreeDirNode.refresh()
+" FUNCTION: TreeDirNode.refresh([options]) {{{1
+" refreshes the node and its children
+"
+" Args:
+" An optional integer selecting refresh mode
+"
+" 0 == normal (default)
+" 1 == force
+" 2 == lazyRefresh (refreshes node only if lazyRefresh flag is set)
+"
+function! s:TreeDirNode.refresh(...)
+    let l:mode = a:0 ? a:1 : 0
     call self.path.refresh(self.getNerdtree())
 
-    "if this node was ever opened, refresh its children
-    if self.isOpen || !empty(self.children)
+    "if refresh is forced, refresh its children
+    "if this node is open, refresh its children
+    "if this node is flaged for lazyRefresh and lazyRefresh requested, refresh its children
+    if l:mode == 1 || self.isOpen || (!empty(self.children) && !g:NERDTreeLazyDirRefresh) || (l:mode == 2 && self.lazyRefresh)
         let files = self._glob('*', 1) + self._glob('.*', 0)
         let newChildNodes = []
         let invalidFilesFound = 0
@@ -599,6 +615,10 @@ function! s:TreeDirNode.refresh()
         if invalidFilesFound
             call nerdtree#echoWarning(invalidFilesFound . ' Invalid file(s): ' . join(invalidFiles, ', '))
         endif
+        let self.lazyRefresh = 0
+    " if this node is not empty and NERDTreeLazyDirRefresh is enable flag the node for lazyRefresh
+    elseif g:NERDTreeLazyDirRefresh && !empty(self.children)
+        let self.lazyRefresh = 1
     endif
 endfunction
 
