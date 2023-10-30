@@ -61,7 +61,8 @@ function! s:Path.cacheDisplayString() abort
         let self.cachedDisplayString = self.addDelimiter(self.cachedDisplayString) . ' {' . join(self._bookmarkNames) . '}'
     endif
 
-    if self.isSymLink
+    " Show symlink destination if instructed to
+    if self.isSymLink && g:NERDTreeShowSymlinkDest
         let self.cachedDisplayString = self.addDelimiter(self.cachedDisplayString) . ' -> ' . self.symLinkDest
     endif
 

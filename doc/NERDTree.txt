@@ -722,6 +722,9 @@ the NERDTree. These settings should be set in your vimrc, using `:let`.
 |NERDTreeShowLineNumbers|     Tells the NERDTree whether to display line
                             numbers in the tree window.
 
+|NERDTreeShowSymlinkDest|     Tells the NERDTree whether to display symlinks
+                            destination path or display it as a normal node
+
 |NERDTreeSortOrder|           Tell the NERDTree how to sort the nodes in the
                             tree.
 
