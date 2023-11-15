@@ -188,6 +188,28 @@ let g:NERDTreeDirArrowCollapsible = '?'
 ```
 The preceding values are the non-Windows default arrow symbols. Setting these variables to empty strings will remove the arrows completely and shift the entire tree two character positions to the left. See `:h NERDTreeDirArrowExpandable` for more details.
 
+### How can I show lines of files?
+
+```vim
+let g:NERDTreeFileLines = 1
+```
+
+Lines in the file are displayed as shown below.
+```
+</pack/packer/start/nerdtree/
+▸ autoload/
+▸ doc/
+▸ lib/
+▸ nerdtree_plugin/
+▸ plugin/
+▸ syntax/
+  _config.yml (1)
+  CHANGELOG.md (307)
+  LICENCE (13)
+  README.markdown (234)
+  screenshot.png (219)
+```
+
 ### Can NERDTree access remote files via scp or ftp?
 
 Short answer: No, and there are no plans to add that functionality. However, Vim ships with a plugin that does just that. It's called netrw, and by adding the following lines to your `.vimrc`, you can use it to open files over the `scp:`, `ftp:`, or other protocols, while still using NERDTree for all local files. The function seamlessly makes the decision to open NERDTree or netrw, and other supported protocols can be added to the regular expression.

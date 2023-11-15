@@ -53,6 +53,7 @@ let g:NERDTreeShowFiles             = get(g:, 'NERDTreeShowFiles',             1
 let g:NERDTreeShowHidden            = get(g:, 'NERDTreeShowHidden',            0)
 let g:NERDTreeShowLineNumbers       = get(g:, 'NERDTreeShowLineNumbers',       0)
 let g:NERDTreeSortDirs              = get(g:, 'NERDTreeSortDirs',              1)
+let g:NERDTreeFileLines             = get(g:, 'NERDTreeFileLines',             0)
 
 
 if !nerdtree#runningWindows() && !nerdtree#runningCygwin()
@@ -130,6 +131,7 @@ let g:NERDTreeMapToggleBookmarks = get(g:, 'NERDTreeMapToggleBookmarks', 'B')
 let g:NERDTreeMapToggleFiles     = get(g:, 'NERDTreeMapToggleFiles',     'F')
 let g:NERDTreeMapToggleFilters   = get(g:, 'NERDTreeMapToggleFilters',   'f')
 let g:NERDTreeMapToggleHidden    = get(g:, 'NERDTreeMapToggleHidden',    'I')
+let g:NERDTreeMapToggleFileLines = get(g:, 'NERDTreeMapToggleFileLines', 'L')
 let g:NERDTreeMapToggleZoom      = get(g:, 'NERDTreeMapToggleZoom',      'A')
 let g:NERDTreeMapUpdir           = get(g:, 'NERDTreeMapUpdir',           'u')
 let g:NERDTreeMapUpdirKeepOpen   = get(g:, 'NERDTreeMapUpdirKeepOpen',   'U')
@@ -143,6 +145,7 @@ call nerdtree#loadClassFiles()
 " SECTION: Commands {{{1
 "============================================================
 call nerdtree#ui_glue#setupCommands()
+
 
 " SECTION: Auto commands {{{1
 "============================================================
