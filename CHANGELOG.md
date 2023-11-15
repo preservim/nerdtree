@@ -19,7 +19,6 @@
     - Fix error in README. (nickspoons) [#1330](https://github.com/preservim/nerdtree/pull/1330)
     - Fix typo in the documentation. (chapeupreto) [#1306](https://github.com/preservim/nerdtree/pull/1306)
 #### 6.10
-- **.17**: Lines in file are displayed in explorer. (hsnks100) [#1328](https://github.com/preservim/nerdtree/pull/1328)
 - **.16**: Fix documentation errors. (lifecrisis) [#1269](https://github.com/preservim/nerdtree/pull/1269)
 - **.15**: Ensure backward compatible testing of types. (lifecrisis) [#1266](https://github.com/preservim/nerdtree/pull/1266)
 - **.14**: Replace trim() with a version-compatible alternative. (PhilRunninger) [#1265](https://github.com/preservim/nerdtree/pull/1265)
