@@ -121,12 +121,12 @@ function! s:TreeDirNode.findNode(path)
     if a:path.equals(self.path)
         return self
     endif
-    if nerdtree#runningWindows()
-        if stridx(tolower(a:path.str()), tolower(self.path.str()), 0) ==# -1
+    if nerdtree#caseSensitiveFS()
+        if stridx(a:path.str(), self.path.str(), 0) ==# -1
             return {}
         endif
     else
-        if stridx(a:path.str(), self.path.str(), 0) ==# -1
+        if stridx(tolower(a:path.str()), tolower(self.path.str()), 0) ==# -1
             return {}
         endif
     endif
