@@ -549,7 +549,7 @@ function! s:Path.isUnder(parent)
         return 0
     endif
     for i in range(0, l:that_count-1)
-        if self.pathSegments[i] !=# a:parent.pathSegments[i]
+        if !nerdtree#pathEquals(self.pathSegments[i], a:parent.pathSegments[i])
             return 0
         endif
     endfor
