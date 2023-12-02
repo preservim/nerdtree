@@ -13,6 +13,17 @@
             - Pull Request Title n (PR Author) [PR Number](Link to PR)
 -->
 #### 7.0
+- **.1**:
+    - Fix NERDTreeFind to handle directory case sensitivity. (dangibson) [#1387](https://github.com/preservim/nerdtree/pull/1387)
+    - New Show file lines toggle. (hsnks100) [#1384](https://github.com/preservim/nerdtree/pull/1384)
+    - Add case sensitivity for refreshing nodes. (rzvxa) [#1382](https://github.com/preservim/nerdtree/pull/1382)
+    - Clarified the NERDTreeChangePermissions prompt. (rzvxa) [#1381](https://github.com/preservim/nerdtree/pull/1381)
+    - New reveal functionality for Windows. (rzvxa) [#1366](https://github.com/preservim/nerdtree/pull/1366)
+    - Fix bracket escaping in path names. (kai-patel) [#1359](https://github.com/preservim/nerdtree/pull/1359)
+    - Fix Case Sensitive Move Operation. (rzvxa) [#1375](https://github.com/preservim/nerdtree/pull/1375)
+    - New menu command for changing selected node permissions. (mjkloeckner) [#1348](https://github.com/preservim/nerdtree/pull/1348)
+    - Fix documentation errors. (BubuDavid) [#1372](https://github.com/preservim/nerdtree/pull/1372)
+    - Fix typo in nerdtree.vim file. (SandeshPyakurel) [#1380](https://github.com/preservim/nerdtree/pull/1380)
 - **.0**:
     - Now we warn about invalid files instead of ignoring them silently. (rmonico) [#1365](https://github.com/preservim/nerdtree/pull/1365)
     - New g:NERDTreeWinPos options for top and bottom. (rzvxa) [#1363](https://github.com/preservim/nerdtree/pull/1363)
