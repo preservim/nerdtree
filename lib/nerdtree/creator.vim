@@ -40,6 +40,13 @@ endfunction
 
 " FUNCTION: s:Creator.CreateExplorerTree(dir) {{{1
 function! s:Creator.CreateExplorerTree(dir)
+    try
+        let path = g:NERDTreePath.New(a:dir)
+    catch /^NERDTree.InvalidArgumentsError/
+        call nerdtree#echo('Invalid directory name:' . a:dir)
+        return
+    endtry
+
     let creator = s:Creator.New()
     if getbufinfo('%')[0].changed
         let l:splitLocation = g:NERDTreeWinPos ==# 'left' || g:NERDTreeWinPos ==# 'top' ? 'topleft ' : 'botright '
