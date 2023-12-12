@@ -38,6 +38,17 @@ function! s:Creator.BufNamePrefix()
     return 'NERD_tree_'
 endfunction
 
+" FUNCTION: s:Creator.CreateExplorerTree(dir) {{{1
+function! s:Creator.CreateExplorerTree(dir)
+    let creator = s:Creator.New()
+    if getbufinfo('%')[0].changed
+        let l:splitLocation = g:NERDTreeWinPos ==# 'left' || g:NERDTreeWinPos ==# 'top' ? 'topleft ' : 'botright '
+        let l:splitDirection = g:NERDTreeWinPos ==# 'left' || g:NERDTreeWinPos ==# 'right' ? 'vertical' : ''
+    endif
+    silent! execute l:splitLocation . l:splitDirection . ' new'
+    call creator.createWindowTree(a:dir)
+endfunction
+
 " FUNCTION: s:Creator.CreateTabTree(a:name) {{{1
 function! s:Creator.CreateTabTree(name)
     let creator = s:Creator.New()
