@@ -13,7 +13,7 @@
             - Pull Request Title n (PR Author) [PR Number](Link to PR)
 -->
 #### 7.0
-- **.2**: Add split explorer capability to NERDTREE (msibal6) [#1368](https://github.com/preservim/nerdtree/pull/1368)
+- **.2**: Add split explorer capability to NERDTREE (msibal6) [#1389](https://github.com/preservim/nerdtree/pull/1389)
 - **.1**:
     - Fix NERDTreeFind to handle directory case sensitivity. (dangibson) [#1387](https://github.com/preservim/nerdtree/pull/1387)
     - New Show file lines toggle. (hsnks100) [#1384](https://github.com/preservim/nerdtree/pull/1384)
