@@ -605,7 +605,7 @@ Toggles whether the bookmarks table is displayed.
 ------------------------------------------------------------------------------
                                                                     *NERDTree-L*
 Default key: L
-Map setting: *NERDTreeMapToggleFileLiness*
+Map setting: *NERDTreeMapToggleFileLines*
 Applies to: no restrictions.
 
 Toggles whether the number of lines in files is displayed.
