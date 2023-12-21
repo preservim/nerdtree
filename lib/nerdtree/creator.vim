@@ -38,8 +38,8 @@ function! s:Creator.BufNamePrefix()
     return 'NERD_tree_'
 endfunction
 
-" FUNCTION: s:Creator.CreateExplorerTree(dir) {{{1
-function! s:Creator.CreateExplorerTree(dir)
+" FUNCTION: s:Creator.CreateExploreTree(dir) {{{1
+function! s:Creator.CreateExploreTree(dir)
     try
         let path = g:NERDTreePath.New(a:dir)
     catch /^NERDTree.InvalidArgumentsError/
@@ -48,12 +48,17 @@ function! s:Creator.CreateExplorerTree(dir)
     endtry
 
     let creator = s:Creator.New()
-    if getbufinfo('%')[0].changed
+    if getbufinfo('%')[0].changed && !&hidden && !&autowriteall
         let l:splitLocation = g:NERDTreeWinPos ==# 'left' || g:NERDTreeWinPos ==# 'top' ? 'topleft ' : 'botright '
         let l:splitDirection = g:NERDTreeWinPos ==# 'left' || g:NERDTreeWinPos ==# 'right' ? 'vertical' : ''
+        silent! execute l:splitLocation . l:splitDirection . ' new'
+    else
+        silent! execute 'enew'
     endif
-    silent! execute l:splitLocation . l:splitDirection . ' new'
+
     call creator.createWindowTree(a:dir)
+    "we want windowTree buffer to disappear after moving to any other buffer
+    setlocal bufhidden=wipe
 endfunction
 
 " FUNCTION: s:Creator.CreateTabTree(a:name) {{{1
