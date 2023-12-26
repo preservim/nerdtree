@@ -533,7 +533,7 @@ endfunction
 function! s:UI.toggleZoom()
     if exists('b:NERDTreeZoomed') && b:NERDTreeZoomed
         setlocal nowinfixwidth
-        exe "norm! \<C-w>="
+        wincmd =
         setlocal winfixwidth
         call nerdtree#exec('silent vertical resize '. g:NERDTreeWinSize, 1)
         let b:NERDTreeZoomed = 0
