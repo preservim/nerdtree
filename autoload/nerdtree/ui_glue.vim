@@ -498,12 +498,16 @@ function! s:jumpToSibling(node, forward) abort
 endfunction
 
 " FUNCTION: s:jumpToBookmarks() {{{1
-" moves the cursor to the bookmark listing
+" moves the cursor to the bookmark table
 function! s:jumpToBookmarks() abort
     try
-        call g:NERDTree.CursorToBookmarkTable()
-    catch /^NERDTree.BookmarkTableNotFoundError\|^NERDTree.IllegalOperationError/
-        call nerdtree#echoError('bookmark table is closed')
+        if b:NERDTree.ui.getShowBookmarks()
+            call g:NERDTree.CursorToBookmarkTable()
+        else
+            call b:NERDTree.ui.setShowBookmarks(1)
+        endif
+    catch /^NERDTree/
+        call nerdtree#echoError('Failed to jump to the bookmark table')
         return
     endtry
 endfunction
