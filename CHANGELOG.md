@@ -12,6 +12,11 @@
                 .
             - Pull Request Title n (PR Author) [PR Number](Link to PR)
 -->
+#### 7.1
+- **.0**:
+    - fix: typo in the docs. (bl4kraven) [#1390](https://github.com/preservim/nerdtree/pull/1390)
+    - feat: add NERDTreeExplore command. (msibal6) [#1389](https://github.com/preservim/nerdtree/pull/1389)
+    - fix: mapping description in NERDTree.txt. (roccomao) [#1393](https://github.com/preservim/nerdtree/pull/1393)
 #### 7.0
 - **.1**:
     - Fix NERDTreeFind to handle directory case sensitivity. (dangibson) [#1387](https://github.com/preservim/nerdtree/pull/1387)
