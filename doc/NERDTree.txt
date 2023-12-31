@@ -287,7 +287,7 @@ I........Toggle whether hidden files displayed......................|NERDTree-I|
 f........Toggle whether the file filters are used...................|NERDTree-f|
 F........Toggle whether files are displayed.........................|NERDTree-F|
 B........Toggle whether the bookmark table is displayed.............|NERDTree-B|
-L........Toggle whether the bookmark table is displayed.............|NERDTree-L|
+L........Toggle whether the number of lines in files is displayed...|NERDTree-L|
 
 q........Close the NERDTree window..................................|NERDTree-q|
 A........Zoom (maximize/minimize) the NERDTree window...............|NERDTree-A|
