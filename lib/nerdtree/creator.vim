@@ -245,13 +245,18 @@ function! s:Creator.New()
 endfunction
 
 " FUNCTION: s:Creator._nextBufferName(type='') {{{1
-" gets a buffer type of either 'tab' or 'win', defaults to unknown
+" gets an optional buffer type of either 'tab' or 'win'.
 " returns the buffer name for the next nerd tree of such type.
-function! s:Creator._nextBufferName(type='')
+function! s:Creator._nextBufferName(...)
+    if a:0 > 0
+        let type = a:1
+    else
+        let type = ''
+    end
     let name = s:Creator.BufNamePrefix()
-    if a:type == 'tab'
+    if type == 'tab'
         let name = name . 'tab_'
-    elseif a:type == 'win'
+    elseif type == 'win'
         let name = name . 'win_'
     endif
     let name = name . self._nextBufferNumber()
