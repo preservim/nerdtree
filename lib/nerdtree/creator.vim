@@ -254,9 +254,9 @@ function! s:Creator._nextBufferName(...)
         let type = ''
     end
     let name = s:Creator.BufNamePrefix()
-    if type == 'tab'
+    if type ==# 'tab'
         let name = name . 'tab_'
-    elseif type == 'win'
+    elseif type ==# 'win'
         let name = name . 'win_'
     endif
     let name = name . self._nextBufferNumber()
