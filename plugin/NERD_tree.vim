@@ -101,6 +101,7 @@ endif
 
 "SECTION: Init variable calls for key mappings {{{2
 let g:NERDTreeMapCustomOpen      = get(g:, 'NERDTreeMapCustomOpen',      '<CR>')
+let g:NERDTreeMapJumpBookmarks   = get(g:, 'NERDTreeMapJumpBookmarks',   'gb')
 let g:NERDTreeMapActivateNode    = get(g:, 'NERDTreeMapActivateNode',    'o')
 let g:NERDTreeMapChangeRoot      = get(g:, 'NERDTreeMapChangeRoot',      'C')
 let g:NERDTreeMapChdir           = get(g:, 'NERDTreeMapChdir',           'cd')
