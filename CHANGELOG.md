@@ -13,6 +13,9 @@
             - Pull Request Title n (PR Author) [PR Number](Link to PR)
 -->
 #### 7.1
+- **.2**:
+    - fix: GetWinNum regex pattern. (rzvxa) [#1409](https://github.com/preservim/nerdtree/pull/1409)
+    - fix: session restore for nerdtree buffers. (rzvxa) [#1405](https://github.com/preservim/nerdtree/pull/1405)
 - **.1**:
     - fix: change default binding of filelines to `FL`. (rzvxa) [#1400](https://github.com/preservim/nerdtree/pull/1400)
     - fix: toggle zoom resizing. (ds2606) [#1395](https://github.com/preservim/nerdtree/pull/1395)
