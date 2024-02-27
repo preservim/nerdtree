@@ -172,6 +172,7 @@ endfunction
 function! s:MenuController._restoreOptions()
     let &cmdheight = self._oldCmdheight
     let &lazyredraw = self._oldLazyredraw
+    resize
 endfunction
 
 "FUNCTION: MenuController._cursorDown() {{{1
