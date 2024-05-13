@@ -64,7 +64,7 @@ function! s:Path.cacheDisplayString() abort
     if self.isSymLink
         let self.cachedDisplayString = self.addDelimiter(self.cachedDisplayString) . ' -> '
         let self.cachedDisplayString = self.addDelimiter(self.cachedDisplayString) . self.symLinkDest
-        if self.isUnresolved
+        if self.isBroken
             let self.cachedDisplayString = self.addDelimiter(self.cachedDisplayString) . g:NERDTreeGlyphBroken
         endif
     endif
@@ -622,22 +622,22 @@ function! s:Path.readInfoFromDisk(fullpath)
     if isdirectory(a:fullpath)
         let self.isDirectory = 1
     let self.isReadOnly = 0
-    let self.isUnresolved = 0
+    let self.isBroken = 0
     elseif filereadable(a:fullpath)
         let self.isDirectory = 0
         let self.isReadOnly = filewritable(a:fullpath) ==# 0
-    let self.isUnresolved = 0
+    let self.isBroken = 0
     elseif ftype ==# 'link'
     let self.isDirectory = 0
     let self.isReadOnly = 0
-    let self.isUnresolved = 1
+    let self.isBroken = 1
     else
     call nerdtree#echoWarning('invalid ' . a:fullpath . 'file type: ' . ftype)
         throw 'NERDTree.InvalidArgumentsError: Invalid path = ' . a:fullpath
     endif
 
     let self.isExecutable = 0
-    if !self.isDirectory && !self.isUnresolved
+    if !self.isDirectory && !self.isBroken
         let self.isExecutable = getfperm(a:fullpath) =~# 'x'
     endif
 
