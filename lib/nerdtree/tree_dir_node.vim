@@ -299,7 +299,7 @@ function! s:TreeDirNode._glob(pattern, all)
     " See ':h version7.txt' and ':h version8.txt' for details on the
     " development of the glob() and globpath() functions.
     if v:version > 704 || (v:version ==# 704 && has('patch654'))
-        let l:globList = globpath(l:pathSpec, a:pattern, !g:NERDTreeRespectWildIgnore, 1, 0)
+        let l:globList = globpath(l:pathSpec, a:pattern, !g:NERDTreeRespectWildIgnore, 1, 1)
     elseif v:version ==# 704 && has('patch279')
         let l:globList = globpath(l:pathSpec, a:pattern, !g:NERDTreeRespectWildIgnore, 1)
     elseif v:version > 702 || (v:version ==# 702 && has('patch051'))
