@@ -13,7 +13,9 @@
             - Pull Request Title n (PR Author) [PR Number](Link to PR)
 -->
 #### 7.1
-- **.3**: feat: jump to bookmark table shortcut. (ds2606, rzvxa) [#1394](https://github.com/preservim/nerdtree/pull/1394)
+- **.3**:
+    - docs: update FAQ snippets containing quit command. (rzvxa) [#1417](https://github.com/preservim/nerdtree/pull/1417)
+    - feat: jump to bookmark table shortcut. (ds2606, rzvxa) [#1394](https://github.com/preservim/nerdtree/pull/1394)
 - **.2**:
     - fix: GetWinNum regex pattern. (rzvxa) [#1409](https://github.com/preservim/nerdtree/pull/1409)
     - fix: session restore for nerdtree buffers. (rzvxa) [#1405](https://github.com/preservim/nerdtree/pull/1405)
