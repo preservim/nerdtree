@@ -163,7 +163,7 @@ function! s:Opener._newSplit()
     " Open the new window
     try
         call nerdtree#exec('wincmd p', 1)
-        call nerdtree#exec(splitMode . ' split',1)
+        call nerdtree#exec(splitMode . ' split', 0)
     catch /^Vim\%((\a\+)\)\=:E37/
         call g:NERDTree.CursorToTreeWin()
         throw 'NERDTree.FileAlreadyOpenAndModifiedError: '. self._path.str() .' is already open and modified.'
@@ -193,7 +193,7 @@ function! s:Opener._newVSplit()
     endif
 
     call nerdtree#exec('wincmd p', 1)
-    call nerdtree#exec('vsplit', 1)
+    call nerdtree#exec('vsplit', 0)
 
     let l:currentWindowNumber = winnr()
 
@@ -234,6 +234,7 @@ function! s:Opener._openFile()
     endif
 
     call self._path.edit()
+    doautocmd WinEnter
 endfunction
 
 " FUNCTION: Opener._openDirectory(node) {{{1
@@ -264,9 +265,9 @@ function! s:Opener._previousWindow()
     else
         try
             if !self._isWindowUsable(winnr('#'))
-                call nerdtree#exec(self._firstUsableWindow() . 'wincmd w', 1)
+                call nerdtree#exec(self._firstUsableWindow() . 'wincmd w', 0)
             else
-                call nerdtree#exec('wincmd p', 1)
+                call nerdtree#exec('wincmd p', 0)
             endif
         catch /^Vim\%((\a\+)\)\=:E37/
             call g:NERDTree.CursorToTreeWin()
