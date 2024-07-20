@@ -1073,7 +1073,7 @@ mapping and is useful for drastically shrinking the tree when you are
 navigating to a different part of the tree.
 
 ------------------------------------------------------------------------------
-                                                        *NERDTreeShowFilesLines*
+                                                             *NERDTreeFileLines*
 Values: 0 or 1.
 Default: 0.
 
@@ -1083,8 +1083,8 @@ file.
 This setting can be toggled dynamically, per tree, with the |NERDTree-FL|
 mapping.
 Use one of the follow lines for this setting: >
-    let NERDTreeShowFilesLines=0
-    let NERDTreeShowFilesLines=1
+    let NERDTreeFileLines=0
+    let NERDTreeFileLines=1
 <
 ------------------------------------------------------------------------------
                                                             *NERDTreeShowHidden*
