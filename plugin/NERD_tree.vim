@@ -71,6 +71,7 @@ let g:NERDTreeSortOrder    = get(g:, 'NERDTreeSortOrder', ['\/$', '*', '\.swp$',
 let g:NERDTreeOldSortOrder = []
 
 let g:NERDTreeGlyphReadOnly = get(g:, 'NERDTreeGlyphReadOnly', 'RO')
+let g:NERDTreeGlyphBroken = get(g:, 'NERDTreeGlyphBroken', ' [*broken]')
 
 if has('conceal')
     let g:NERDTreeNodeDelimiter = get(g:, 'NERDTreeNodeDelimiter', "\x07")
