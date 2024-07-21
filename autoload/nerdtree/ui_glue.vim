@@ -310,7 +310,9 @@ function! s:findAndRevealPath(pathStr) abort
     endif
 
     try
-        let l:pathStr = g:NERDTreePath.Resolve(l:pathStr)
+        if g:NERDTreeFindResolveSymlinks
+            let l:pathStr = g:NERDTreePath.Resolve(l:pathStr)
+        endif
         let l:pathObj = g:NERDTreePath.New(l:pathStr)
     catch /^NERDTree.InvalidArgumentsError/
         call nerdtree#echoWarning('invalid path')
