@@ -731,6 +731,9 @@ the NERDTree. These settings should be set in your vimrc, using `:let`.
 |NERDTreeShowLineNumbers|     Tells the NERDTree whether to display line
                             numbers in the tree window.
 
+|NERDTreeShowRelLineNumbers|  Tells the NERDTree whether to display relative
+			    line numbers in the tree window.
+
 |NERDTreeSortOrder|           Tell the NERDTree how to sort the nodes in the
                             tree.
 
@@ -1106,6 +1109,16 @@ This setting tells vim whether to display line numbers for the NERDTree
 window.  Use one of the follow lines for this setting: >
     let NERDTreeShowLineNumbers=0
     let NERDTreeShowLineNumbers=1
+<
+------------------------------------------------------------------------------
+                                                    *NERDTreeShowRelLineNumbers*
+Values: 0 or 1.
+Default: 0.
+
+This setting tells vim whether to display relative line numbers for the NERDTree
+window.  Use one of the follow lines for this setting: >
+    let NERDTreeShowRelLineNumbers=0
+    let NERDTreeShowRelLineNumbers=1
 <
 ------------------------------------------------------------------------------
                                                              *NERDTreeSortOrder*

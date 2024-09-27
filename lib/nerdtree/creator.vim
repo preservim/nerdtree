@@ -344,6 +344,8 @@ function! s:Creator._setCommonBufOptions()
 
     if g:NERDTreeShowLineNumbers
         setlocal number
+    elseif g:NERDTreeShowRelLineNumbers
+        setlocal relativenumber
     else
         setlocal nonumber
         if v:version >= 703
