@@ -139,6 +139,7 @@ let g:NERDTreeMapUpdirKeepOpen   = get(g:, 'NERDTreeMapUpdirKeepOpen',   'U')
 let g:NERDTreeMapCWD             = get(g:, 'NERDTreeMapCWD',             'CD')
 let g:NERDTreeMenuDown           = get(g:, 'NERDTreeMenuDown',           'j')
 let g:NERDTreeMenuUp             = get(g:, 'NERDTreeMenuUp',             'k')
+let g:NERDTreeMenuQuit           = get(g:, 'NERDTreeMenuQuit',           nr2char(27))
 
 "SECTION: Load class files{{{2
 call nerdtree#loadClassFiles()

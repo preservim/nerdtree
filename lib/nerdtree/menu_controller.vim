@@ -96,7 +96,7 @@ function! s:MenuController._handleKeypress(key)
         call self._cursorDown()
     elseif a:key ==# g:NERDTreeMenuUp
         call self._cursorUp()
-    elseif a:key ==# nr2char(27) "escape
+    elseif a:key ==# g:NERDTreeMenuQuit
         let self.selection = -1
         return 1
     elseif a:key ==# "\r" || a:key ==# "\n" "enter and ctrl-j
