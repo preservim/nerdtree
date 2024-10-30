@@ -86,7 +86,7 @@ endif
 let g:NERDTreeStatusline = get(g:, 'NERDTreeStatusline', "%{exists('b:NERDTree')?b:NERDTree.root.path.str():''}")
 
 let g:NERDTreeWinPos  = get(g:, 'NERDTreeWinPos', 'left')
-let g:NERDTreeWinSize = get(g:, 'NERDTreeWinSize', 31)
+let g:NERDTreeWinSize = get(g:, 'NERDTreeWinSize', 40)
 
 "init the shell commands that will be used to copy nodes, and remove dir trees
 "Note: the space after the command is important
@@ -101,12 +101,12 @@ endif
 
 "SECTION: Init variable calls for key mappings {{{2
 let g:NERDTreeMapCustomOpen      = get(g:, 'NERDTreeMapCustomOpen',      '<CR>')
-let g:NERDTreeMapJumpBookmarks   = get(g:, 'NERDTreeMapJumpBookmarks',   'gb')
+let g:NERDTreeMapJumpBookmarks   = get(g:, 'NERDTreeMapJumpBookmarks',   'gB')
 let g:NERDTreeMapActivateNode    = get(g:, 'NERDTreeMapActivateNode',    'o')
 let g:NERDTreeMapChangeRoot      = get(g:, 'NERDTreeMapChangeRoot',      'C')
 let g:NERDTreeMapChdir           = get(g:, 'NERDTreeMapChdir',           'cd')
-let g:NERDTreeMapCloseChildren   = get(g:, 'NERDTreeMapCloseChildren',   'X')
-let g:NERDTreeMapCloseDir        = get(g:, 'NERDTreeMapCloseDir',        'x')
+let g:NERDTreeMapCloseChildren   = get(g:, 'NERDTreeMapCloseChildren',   'A')
+let g:NERDTreeMapCloseDir        = get(g:, 'NERDTreeMapCloseDir',        'a')
 let g:NERDTreeMapDeleteBookmark  = get(g:, 'NERDTreeMapDeleteBookmark',  'D')
 let g:NERDTreeMapMenu            = get(g:, 'NERDTreeMapMenu',            'm')
 let g:NERDTreeMapHelp            = get(g:, 'NERDTreeMapHelp',            '?')
@@ -133,7 +133,7 @@ let g:NERDTreeMapToggleFiles     = get(g:, 'NERDTreeMapToggleFiles',     'F')
 let g:NERDTreeMapToggleFilters   = get(g:, 'NERDTreeMapToggleFilters',   'f')
 let g:NERDTreeMapToggleHidden    = get(g:, 'NERDTreeMapToggleHidden',    'I')
 let g:NERDTreeMapToggleFileLines = get(g:, 'NERDTreeMapToggleFileLines', 'FL')
-let g:NERDTreeMapToggleZoom      = get(g:, 'NERDTreeMapToggleZoom',      'A')
+let g:NERDTreeMapToggleZoom      = get(g:, 'NERDTreeMapToggleZoom',      'x')
 let g:NERDTreeMapUpdir           = get(g:, 'NERDTreeMapUpdir',           'u')
 let g:NERDTreeMapUpdirKeepOpen   = get(g:, 'NERDTreeMapUpdirKeepOpen',   'U')
 let g:NERDTreeMapCWD             = get(g:, 'NERDTreeMapCWD',             'CD')
