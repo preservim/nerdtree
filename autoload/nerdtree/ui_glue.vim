@@ -294,6 +294,62 @@ function! s:displayHelp() abort
     call b:NERDTree.ui.centerView()
 endfunction
 
+function! s:findAndRevealPathToggle(pathStr) abort
+    if !g:NERDTree.IsOpen()
+        let l:pathStr = !empty(a:pathStr) ? a:pathStr : expand('%:p')
+        let l:revealOpts = {}
+
+        if empty(l:pathStr)
+            call nerdtree#echoWarning('no file for the current buffer')
+            return
+        endif
+
+        if !filereadable(l:pathStr)
+            call g:NERDTreeCreator.ToggleTabTree(a:pathStr)
+            return
+        endif
+
+        try
+            let l:pathStr = g:NERDTreePath.Resolve(l:pathStr)
+            let l:pathObj = g:NERDTreePath.New(l:pathStr)
+        catch /^NERDTree.InvalidArgumentsError/
+            call nerdtree#echoWarning('invalid path')
+            return
+        endtry
+
+        if !g:NERDTree.ExistsForTab()
+            try
+                let l:cwd = g:NERDTreePath.New(getcwd())
+            catch /^NERDTree.InvalidArgumentsError/
+                call nerdtree#echo('current directory does not exist.')
+                let l:cwd = l:pathObj.getParent()
+            endtry
+
+            if l:pathObj.isUnder(l:cwd)
+                call g:NERDTreeCreator.CreateTabTree(l:cwd.str())
+            else
+                call g:NERDTreeCreator.CreateTabTree(l:pathObj.getParent().str())
+            endif
+        else
+            NERDTreeFocus
+
+            if !l:pathObj.isUnder(b:NERDTree.root.path)
+                call s:chRoot(g:NERDTreeDirNode.New(l:pathObj.getParent(), b:NERDTree))
+            endif
+        endif
+
+        if l:pathObj.isHiddenUnder(b:NERDTree.root.path)
+            call b:NERDTree.ui.setShowHidden(1)
+        endif
+
+        let l:node = b:NERDTree.root.reveal(l:pathObj, l:revealOpts)
+        call b:NERDTree.render()
+        call l:node.putCursorHere(1, 0)
+    else
+        call g:NERDTree.Close()
+    endif
+endfunction
+
 " FUNCTION: s:findAndRevealPath(pathStr) {{{1
 function! s:findAndRevealPath(pathStr) abort
     let l:pathStr = !empty(a:pathStr) ? a:pathStr : expand('%:p')
@@ -663,6 +719,7 @@ function! nerdtree#ui_glue#setupCommands() abort
     command! -n=1 -complete=customlist,nerdtree#completeBookmarks -bar NERDTreeFromBookmark call g:NERDTreeCreator.CreateTabTree('<args>')
     command! -n=0 -bar NERDTreeMirror call g:NERDTreeCreator.CreateMirror()
     command! -n=? -complete=file -bar NERDTreeFind call s:findAndRevealPath('<args>')
+    command! -n=? -complete=file -bar NERDTreeFindToggle call s:findAndRevealPathToggle('<args>')
     command! -n=0 -bar NERDTreeRefreshRoot call s:refreshRoot()
     command! -n=0 -bar NERDTreeFocus call NERDTreeFocus()
     command! -n=0 -bar NERDTreeCWD call NERDTreeCWD()
