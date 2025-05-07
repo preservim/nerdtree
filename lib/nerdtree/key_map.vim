@@ -15,20 +15,32 @@ endfunction
 "FUNCTION: KeyMap.Compare(keyMap1, keyMap2) {{{1
 function! s:KeyMap.Compare(keyMap1, keyMap2)
 
-    if a:keyMap1.key >? a:keyMap2.key
-        return 1
+    let k1 = a:keyMap1.key
+    let k2 = a:keyMap2.key
+
+    if type(k1) == type([])
+        let k1 = k1[0]
+    endif
+    if type(k2) == type([])
+        let k2 = k2[0]
     endif
 
-    if a:keyMap1.key <? a:keyMap2.key
-        return -1
-    endif
-
-    return 0
+    return (k1 >? k2) ?  1  : ((k1 <? k2) ?  -1 :  0)
 endfunction
 
 "FUNCTION: KeyMap.FindFor(key, scope) {{{1
 function! s:KeyMap.FindFor(key, scope)
-    return get(s:keyMaps, a:key . a:scope, {})
+    if type(a:key) == type([])
+        for i in a:key
+            let result = get(s:keyMaps, i . a:scope, {})
+            if result != {}
+                return result
+            endif
+        endfor
+        return {}
+    else
+        return get(s:keyMaps, a:key . a:scope, {})
+    endif
 endfunction
 
 "FUNCTION: KeyMap.BindAll() {{{1
@@ -45,17 +57,21 @@ function! s:KeyMap.bind()
     " is not translated into its corresponding keycode during the later part
     " of the map command below
     " :he <>
-    let specialNotationRegex = '\m<\([[:alnum:]_-]\+>\)'
-    if self.key =~# specialNotationRegex
-        let keymapInvokeString = substitute(self.key, specialNotationRegex, '<lt>\1', 'g')
-    else
-        let keymapInvokeString = self.key
-    endif
-    let keymapInvokeString = escape(keymapInvokeString, '\"')
 
-    let premap = self.key ==# '<LeftRelease>' ? ' <LeftRelease>' : ' '
+    let _keyAsList = type(self.key) == type([]) ? self.key : [self.key]
+    for _key in _keyAsList
+      let specialNotationRegex = '\m<\([[:alnum:]_-]\+>\)'
+      if _key =~# specialNotationRegex
+          let keymapInvokeString = substitute(_key, specialNotationRegex, '<lt>\1', 'g')
+      else
+          let keymapInvokeString = _key
+      endif
+      let keymapInvokeString = escape(keymapInvokeString, '\"')
 
-    exec 'nnoremap <buffer> <silent> '. self.key . premap . ':call nerdtree#ui_glue#invokeKeyMap("'. keymapInvokeString .'")<cr>'
+      let premap = _key ==# '<LeftRelease>' ? ' <LeftRelease>' : ' '
+
+      exec 'nnoremap <buffer> <silent> '. _key . premap . ':call nerdtree#ui_glue#invokeKeyMap("'. keymapInvokeString .'")<cr>'
+    endfor
 endfunction
 
 "FUNCTION: KeyMap.Remove(key, scope) {{{1
@@ -158,7 +174,13 @@ endfunction
 
 "FUNCTION: KeyMap.Add(keymap) {{{1
 function! s:KeyMap.Add(keymap)
-    let s:keyMaps[a:keymap.key . a:keymap.scope] = a:keymap
+    if type(a:keymap.key) == type([])
+        for k in a:keymap.key
+            let s:keyMaps[k . a:keymap.scope] = a:keymap
+        endfor
+    else
+        let s:keyMaps[a:keymap.key . a:keymap.scope] = a:keymap
+    endif
 endfunction
 
 " vim: set sw=4 sts=4 et fdm=marker:
