@@ -140,7 +140,7 @@ function! s:UI._dumpHelp()
         let help .= "\" :EditBookmarks\n"
         silent! put =help
     elseif !self.isMinimal()
-        let help ='" Press '. g:NERDTreeMapHelp ." for help\n"
+        let help ='" Press '. self._keyStr(g:NERDTreeMapHelp)  ." for help\n"
         silent! put =help
     endif
 endfunction
