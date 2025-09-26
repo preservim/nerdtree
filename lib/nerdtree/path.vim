@@ -374,7 +374,6 @@ function! s:Path.getSortOrderIndex()
     return index(g:NERDTreeSortOrder, '*')
 endfunction
 
-
 " FUNCTION: Path._splitChunks(path) {{{1
 " returns a list of path chunks
 function! s:Path._splitChunks(path)
