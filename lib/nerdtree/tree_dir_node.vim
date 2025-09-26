@@ -591,6 +591,7 @@ function! s:TreeDirNode.refresh()
                     let newNode = g:NERDTreeFileNode.New(path, self.getNerdtree())
                     let newNode.parent = self
                     call add(newChildNodes, newNode)
+                    call g:NERDTreePathNotifier.NotifyListeners('init', newNode.path, newNode.getNerdtree(), {})
                 endif
             catch /^NERDTree.\(InvalidArguments\|InvalidFiletype\)Error/
                 let invalidFilesFound += 1
@@ -715,6 +716,7 @@ function! s:TreeDirNode.transplantChild(newNode)
             break
         endif
     endfor
+    call self.refresh()
 endfunction
 
 " vim: set sw=4 sts=4 et fdm=marker:
