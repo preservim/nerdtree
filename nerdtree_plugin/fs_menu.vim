@@ -211,6 +211,7 @@ function! NERDTreeAddNode()
             call b:NERDTree.render()
         elseif parentNode.isOpen || !empty(parentNode.children)
             call parentNode.addChild(newTreeNode, 1)
+            call g:NERDTreePathNotifier.NotifyListeners('init', newTreeNode.path, newTreeNode.getNerdtree(), {})
             call NERDTreeRender()
             call newTreeNode.putCursorHere(1, 0)
         endif
