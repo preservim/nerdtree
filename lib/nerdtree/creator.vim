@@ -341,6 +341,7 @@ function! s:Creator._setCommonBufOptions()
     setlocal nolist
     setlocal nospell
     setlocal nowrap
+    setlocal wincolor=NERDTreeWinColor
 
     if g:NERDTreeShowLineNumbers
         setlocal number

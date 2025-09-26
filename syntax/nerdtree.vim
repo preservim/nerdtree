@@ -91,6 +91,7 @@ hi def link NERDTreeIgnore ignore
 hi def link NERDTreeRO WarningMsg
 hi def link NERDTreeBookmark Statement
 hi def link NERDTreeFlags Number
+hi def link NERDTreeWinColor Normal
 
 hi def link NERDTreeCurrentNode Search
 
