@@ -362,9 +362,10 @@ endfunction
 " returns the index of the pattern in g:NERDTreeSortOrder that this path matches
 function! s:Path.getSortOrderIndex()
     let i = 0
+    let l:lpc = self.getLastPathComponent(1)
     while i < len(g:NERDTreeSortOrder)
         if g:NERDTreeSortOrder[i] !~? '\[\[-\?\(timestamp\|size\|extension\)\]\]' &&
-        \ self.getLastPathComponent(1) =~# g:NERDTreeSortOrder[i]
+        \ l:lpc =~# g:NERDTreeSortOrder[i]
             return i
         endif
         let i = i + 1
